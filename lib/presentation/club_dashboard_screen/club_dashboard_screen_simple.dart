@@ -16,6 +16,7 @@ import '../club_reports_screen/club_reports_screen.dart';
 import '../activity_history_screen/activity_history_screen.dart';
 import '../admin_dashboard_screen/club_rank_change_management_screen.dart';
 import '../../services/club_permission_service.dart';
+import '../../routes/app_routes.dart';
 
 // Temporary mock classes
 class ClubDashboardStats {
@@ -523,6 +524,12 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
         'onTap': _navigateToMemberManagement,
       },
       {
+        'title': 'Nhân viên',
+        'icon': Icons.badge_outlined,
+        'color': Colors.indigo,
+        'onTap': _navigateToStaffManagement,
+      },
+      {
         'title': 'Giải đấu',
         'icon': Icons.add_circle_outline,
         'color': Colors.green,
@@ -796,6 +803,14 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
       MaterialPageRoute(
         builder: (context) => MemberManagementScreen(clubId: widget.clubId),
       ),
+    );
+  }
+
+  void _navigateToStaffManagement() {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.clubStaffManagementScreen,
+      arguments: {'clubId': widget.clubId},
     );
   }
 

@@ -290,11 +290,43 @@ class _MyClubsScreenState extends State<MyClubsScreen> {
               ),
             
             // Action buttons
-            if (club.approvalStatus == 'rejected')
-              Container(
-                margin: EdgeInsets.only(top: 12),
-                child: Row(
-                  children: [
+            Container(
+              margin: EdgeInsets.only(top: 12),
+              child: Row(
+                children: [
+                  if (club.approvalStatus == 'approved') ...[
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context, 
+                            '/club_staff_management',
+                            arguments: {'clubId': club.id},
+                          );
+                        },
+                        icon: Icon(Icons.people_alt, size: 16),
+                        label: Text('Quản lý nhân viên'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          // Navigate to club dashboard
+                          Navigator.pushNamed(
+                            context, 
+                            '/club_dashboard',
+                            arguments: {'clubId': club.id},
+                          );
+                        },
+                        icon: Icon(Icons.dashboard, size: 16),
+                        label: Text('Dashboard'),
+                      ),
+                    ),
+                  ] else if (club.approvalStatus == 'rejected') ...[
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
@@ -304,9 +336,24 @@ class _MyClubsScreenState extends State<MyClubsScreen> {
                         child: Text('Đăng ký lại'),
                       ),
                     ),
+                  ] else ...[
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          'Đang chờ duyệt...',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.orange[600],
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
-                ),
+                ],
               ),
+            ),
           ],
         ),
       ),

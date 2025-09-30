@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../models/club.dart';
 import '../../../models/club_member.dart';
 import '../../../models/club_tournament.dart';
-// import '../../../services/supabase_service.dart'; // Removed unused import
+import '../../../services/supabase_service.dart';
+import '../../../routes/app_routes.dart';
 
 class ClubDetailSection extends StatefulWidget {
   final Club club;
@@ -22,11 +23,24 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
   late TabController _tabController;
   bool _isJoined = false;
   bool _isLoading = false;
+  String? _currentUserId;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    _loadCurrentUser();
+  }
+  
+  Future<void> _loadCurrentUser() async {
+    try {
+      final user = SupabaseService.instance.getCurrentUser();
+      setState(() {
+        _currentUserId = user?.id;
+      });
+    } catch (e) {
+      debugPrint('Error loading current user: $e');
+    }
   }
 
   @override
@@ -184,8 +198,16 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
             ),
           ),
 
-          // Join/Leave button
-          _buildJoinLeaveButton(colorScheme),
+          // Action buttons
+          Column(
+            children: [
+              _buildJoinLeaveButton(colorScheme),
+              if (_isClubOwnerOrAdmin()) ...[
+                const SizedBox(height: 8),
+                _buildStaffManagementButton(colorScheme),
+              ],
+            ],
+          ),
         ],
       ),
     );
@@ -326,6 +348,47 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
         );
       }
     }
+  }
+
+  // Check if current user is club owner or admin
+  bool _isClubOwnerOrAdmin() {
+    if (_currentUserId == null) return false;
+    
+    // Check if user is club owner
+    if (widget.club.ownerId == _currentUserId) return true;
+    
+    // Check if user is admin member (this would need to query the database)
+    // For now, just check ownership
+    return false;
+  }
+
+  Widget _buildStaffManagementButton(ColorScheme colorScheme) {
+    return SizedBox(
+      height: 32,
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          Navigator.pushNamed(
+            context, 
+            AppRoutes.clubStaffManagementScreen,
+            arguments: {'clubId': widget.club.id},
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorScheme.secondary,
+          foregroundColor: colorScheme.onSecondary,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+        ),
+        icon: const Icon(Icons.people_alt, size: 16),
+        label: const Text(
+          'Quản lý nhân viên',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildInfoTab(ColorScheme colorScheme) {

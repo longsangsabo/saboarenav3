@@ -202,14 +202,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       width: 24.w,
                       height: 24.w,
-                      decoration: BoxDecoration(
-                        color: theme.primaryColor,
-                        borderRadius: BorderRadius.circular(2.w),
-                      ),
-                      child: Icon(
-                        Icons.sports_esports,
-                        size: 12.w,
-                        color: Colors.white,
+                      child: Image.asset(
+                        'assets/images/sabo_arena_logo.png',
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: 24.w,
+                            height: 24.w,
+                            decoration: BoxDecoration(
+                              color: theme.primaryColor,
+                              borderRadius: BorderRadius.circular(2.w),
+                            ),
+                            child: Icon(
+                              Icons.sports_esports,
+                              size: 12.w,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(height: 3.h),

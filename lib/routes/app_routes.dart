@@ -21,6 +21,7 @@ import '../presentation/admin_dashboard_screen/admin_tournament_main_screen.dart
 import '../presentation/admin_dashboard_screen/admin_user_management_main_screen.dart';
 import '../presentation/admin_dashboard_screen/admin_more_main_screen.dart';
 import '../presentation/my_clubs_screen/my_clubs_screen.dart';
+// import '../presentation/club_staff_screen/club_staff_management_screen.dart';
 
 class AppRoutes {
   static const String splashScreen = '/splash';
@@ -46,6 +47,7 @@ class AppRoutes {
   static const String clubDashboardScreen = '/club_dashboard';
   static const String clubSelectionScreen = '/club_selection_screen';
   static const String messagingScreen = '/messaging';
+  static const String clubStaffManagementScreen = '/club_staff_management';
 
   static const String initial = splashScreen;
 
@@ -71,6 +73,11 @@ class AppRoutes {
         adminMoreScreen: (context) => const AdminMoreMainScreen(),
         myClubsScreen: (context) => const MyClubsScreen(),
         clubSelectionScreen: (context) => ClubSelectionScreen(),
+        // clubStaffManagementScreen: (context) {
+        //   final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+        //   final clubId = args?['clubId'] ?? '';
+        //   return ClubStaffManagementScreen(clubId: clubId);
+        // },
         // messagingScreen: (context) => const MessagingScreen(),
         // clubDashboardScreen: (context) => const ClubDashboardScreenSimple(clubId: ''),
       };
