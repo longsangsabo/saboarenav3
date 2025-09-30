@@ -9,6 +9,8 @@ import '../tournament_detail_screen/widgets/tournament_stats_view.dart';
 import '../club_profile_edit_screen/club_profile_edit_screen.dart';
 import '../activity_history_screen/activity_history_screen.dart';
 import '../club_settings_screen/club_settings_screen.dart';
+import '../shift_reporting/shift_reporting_dashboard.dart';
+import '../club_owner/club_attendance_dashboard.dart';
 import '../../services/club_service.dart';
 import '../../services/auth_service.dart';
 import '../../models/club.dart';
@@ -405,6 +407,30 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
                 icon: Icons.analytics_outlined,
                 color: Colors.blue.shade100,
                 onPress: () => _onViewTournamentStats(),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        Row(
+          children: [
+            Expanded(
+              child: _buildQuickActionCard(
+                title: "Báo cáo ca",
+                subtitle: "Quản lý ca làm việc & doanh thu",
+                icon: Icons.receipt_long,
+                color: Colors.green.shade100,
+                onPress: () => _onManageShiftReports(),
+              ),
+            ),
+            SizedBox(width: 12.h),
+            Expanded(
+              child: _buildQuickActionCard(
+                title: "Chấm công nhân viên",
+                subtitle: "Theo dõi giờ làm việc",
+                icon: Icons.access_time,
+                color: Colors.purple.shade100,
+                onPress: () => _onManageAttendance(),
               ),
             ),
           ],
@@ -984,6 +1010,48 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
       builder: (context) => TournamentStatsView(
         tournamentId: 'club_tournaments_stats', // Mock ID for club tournament stats
         tournamentStatus: 'active',
+      ),
+    );
+  }
+
+  void _onManageShiftReports() {
+    if (_currentClub?.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Không thể truy cập báo cáo ca'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ShiftReportingDashboard(
+          clubId: _currentClub!.id,
+        ),
+      ),
+    );
+  }
+
+  void _onManageAttendance() {
+    if (_currentClub?.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Không thể truy cập chấm công'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClubAttendanceDashboard(
+          clubId: _currentClub!.id,
+        ),
       ),
     );
   }
