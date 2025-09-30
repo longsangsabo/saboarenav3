@@ -7,9 +7,9 @@ class QRAttendanceScanner extends StatefulWidget {
   final Function(Map<String, dynamic>) onScanResult;
   
   const QRAttendanceScanner({
-    Key? key,
+    super.key,
     required this.onScanResult,
-  }) : super(key: key);
+  });
 
   @override
   State<QRAttendanceScanner> createState() => _QRAttendanceScannerState();

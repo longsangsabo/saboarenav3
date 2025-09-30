@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../services/attendance_service.dart';
-import '../widgets/qr_attendance_scanner.dart';
+import '../../services/attendance_service.dart';
+import '../../services/mock_attendance_service.dart';
+import '../../services/user_role_service.dart';
+import '../../widgets/qr_attendance_scanner.dart';
 
 class AttendanceScreen extends StatefulWidget {
-  const AttendanceScreen({Key? key}) : super(key: key);
+  const AttendanceScreen({super.key});
 
   @override
   State<AttendanceScreen> createState() => _AttendanceScreenState();
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
-  final AttendanceService _attendanceService = AttendanceService();
+  // Use mock service for demo purposes
+  final MockAttendanceService _attendanceService = MockAttendanceService();
   
   Map<String, dynamic>? currentAttendance;
   List<Map<String, dynamic>> todayShifts = [];
   List<Map<String, dynamic>> attendanceHistory = [];
   String? activeBreakId;
+  
+  // User role information
+  Map<String, dynamic>? staffInfo;
+  String? userRole;
   
   bool isLoading = true;
   String? errorMessage;
@@ -24,7 +31,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
+    _loadUserRole();
     _loadAttendanceData();
+  }
+
+  Future<void> _loadUserRole() async {
+    try {
+      staffInfo = await UserRoleService.getCurrentUserStaffInfo();
+      if (staffInfo != null) {
+        userRole = staffInfo!['staff_role'];
+      }
+    } catch (e) {
+      print('Error loading user role: $e');
+    }
   }
 
   Future<void> _loadAttendanceData() async {
@@ -35,7 +54,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     try {
       final results = await Future.wait([
-        _attendanceService.getCurrentAttendanceStatus(),
+        _attendanceService.getCurrentAttendance(),
         _attendanceService.getTodayShifts(),
         _attendanceService.getAttendanceHistory(days: 7),
       ]);
@@ -44,6 +63,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         currentAttendance = results[0] as Map<String, dynamic>?;
         todayShifts = results[1] as List<Map<String, dynamic>>;
         attendanceHistory = results[2] as List<Map<String, dynamic>>;
+        activeBreakId = _attendanceService.activeBreakId;
         isLoading = false;
       });
     } catch (e) {
@@ -65,6 +85,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   Future<void> _handleQRScanResult(Map<String, dynamic> scanResult) async {
+    if (!mounted) return;
     Navigator.of(context).pop(); // Close scanner
     
     if (scanResult['success']) {
@@ -81,42 +102,33 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   Future<void> _performCheckIn(Map<String, dynamic> scanResult) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            CircularProgressIndicator(strokeWidth: 2),
-            SizedBox(width: 16),
-            Text('Đang chấm công...'),
-          ],
-        ),
-      ),
-    );
+    if (!mounted) return;
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       final result = await _attendanceService.checkIn(
-        scanResult['club_id'],
-        scanResult['location'],
+        qrData: scanResult['qrData'],
+        locationLat: scanResult['locationLat'],
+        locationLng: scanResult['locationLng'],
       );
 
-      Navigator.of(context).pop(); // Close loading dialog
-
+      if (!mounted) return;
       if (result['success']) {
-        _showSuccessDialog(
-          'Chấm công thành công!',
-          'Club: ${scanResult['club_name']}\n'
-          'Thời gian: ${DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now())}\n'
-          '${result['late_minutes'] > 0 ? 'Đi muộn: ${result['late_minutes']} phút' : 'Đến đúng giờ'}',
-        );
         await _loadAttendanceData();
+        if (mounted) _showSuccessDialog('Đã check-in thành công!', result['message']);
       } else {
-        _showErrorDialog(result['error']);
+        if (mounted) _showErrorDialog(result['error']);
       }
     } catch (e) {
-      Navigator.of(context).pop();
-      _showErrorDialog('Lỗi chấm công: $e');
+      if (mounted) _showErrorDialog('Lỗi check-in: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -152,46 +164,30 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     );
   }
 
-  Future<void> _performCheckOut(Map<String, dynamic> scanResult) async {
-    if (currentAttendance == null) return;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            CircularProgressIndicator(strokeWidth: 2),
-            SizedBox(width: 16),
-            Text('Đang kết thúc ca...'),
-          ],
-        ),
-      ),
-    );
+  Future<void> _performCheckOut() async {
+    if (!mounted) return;
+    setState(() {
+      isLoading = true;
+    });
 
     try {
-      final result = await _attendanceService.checkOut(
-        currentAttendance!['id'],
-        scanResult['location'],
-      );
+      final result = await _attendanceService.checkOut();
 
-      Navigator.of(context).pop(); // Close loading dialog
-
+      if (!mounted) return;
       if (result['success']) {
-        final hours = result['total_hours']?.toStringAsFixed(1) ?? '0';
-        _showSuccessDialog(
-          'Kết thúc ca thành công!',
-          'Tổng giờ làm: ${hours}h\n'
-          'Thời gian: ${DateFormat('HH:mm dd/MM/yyyy').format(DateTime.now())}\n'
-          '${result['early_departure_minutes'] > 0 ? 'Về sớm: ${result['early_departure_minutes']} phút' : 'Đúng giờ'}',
-        );
         await _loadAttendanceData();
+        if (mounted) _showSuccessDialog('Đã check-out thành công!', 'Tổng thời gian làm việc: ${result['work_hours']} giờ');
       } else {
-        _showErrorDialog(result['error']);
+        if (mounted) _showErrorDialog(result['error']);
       }
     } catch (e) {
-      Navigator.of(context).pop();
-      _showErrorDialog('Lỗi kết thúc ca: $e');
+      if (mounted) _showErrorDialog('Lỗi check-out: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -220,11 +216,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   Future<void> _endBreak() async {
-    if (activeBreakId == null) return;
+    if (activeBreakId == null || !mounted) return;
 
     try {
       final result = await _attendanceService.endBreak(activeBreakId!);
 
+      if (!mounted) return;
       if (result['success']) {
         setState(() {
           activeBreakId = null;
@@ -236,11 +233,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         _showErrorDialog(result['error']);
       }
     } catch (e) {
-      _showErrorDialog('Lỗi kết thúc nghỉ: $e');
+      if (mounted) _showErrorDialog('Lỗi kết thúc nghỉ: $e');
     }
   }
 
   void _showSuccessDialog(String title, String message) {
+    if (!mounted) return;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -262,25 +260,22 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     );
   }
 
-  void _showErrorDialog(String message) {
+  void _showErrorDialog(String error) {
+    if (!mounted) return;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(Icons.error, color: Colors.red),
-            SizedBox(width: 8),
-            Text('Lỗi'),
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Lỗi'),
+          content: Text(error),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
           ],
-        ),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -288,11 +283,22 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chấm công'),
+        title: Text(staffInfo != null 
+          ? 'Chấm công - ${staffInfo!['clubs']['name']}' 
+          : 'Chấm công'),
         backgroundColor: Colors.blue[600],
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
+          if (userRole != null)
+            Chip(
+              label: Text(
+                _getRoleDisplayName(userRole!),
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              backgroundColor: _getRoleColor(userRole!),
+            ),
+          SizedBox(width: 8),
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: _loadAttendanceData,
@@ -303,25 +309,35 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           ? Center(child: CircularProgressIndicator())
           : errorMessage != null
               ? _buildErrorView()
-              : RefreshIndicator(
-                  onRefresh: _loadAttendanceData,
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildCurrentStatusCard(),
-                        SizedBox(height: 16),
-                        _buildTodayShiftsCard(),
-                        SizedBox(height: 16),
-                        _buildQuickActionsCard(),
-                        SizedBox(height: 16),
-                        _buildAttendanceHistoryCard(),
-                      ],
+              : staffInfo == null
+                  ? _buildNoAccessView()
+                  : RefreshIndicator(
+                      onRefresh: _loadAttendanceData,
+                      child: SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildStaffInfoCard(),
+                            SizedBox(height: 16),
+                            _buildCurrentStatusCard(),
+                            SizedBox(height: 16),
+                            _buildTodayShiftsCard(),
+                            SizedBox(height: 16),
+                            _buildQuickActionsCard(),
+                            SizedBox(height: 16),
+                            _buildAttendanceHistoryCard(),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showQRScanner,
+        icon: Icon(Icons.qr_code_scanner),
+        label: Text(currentAttendance == null ? 'Chấm công' : 'Kết thúc ca'),
+        backgroundColor: currentAttendance == null ? Colors.green : Colors.orange,
+      ),
     );
   }
 
@@ -672,5 +688,142 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       default:
         return status;
     }
+  }
+
+  String _getRoleDisplayName(String role) {
+    switch (role) {
+      case 'owner':
+        return 'Chủ CLB';
+      case 'manager':
+        return 'Quản lý';
+      case 'staff':
+        return 'Nhân viên';
+      case 'trainee':
+        return 'Thực tập';
+      default:
+        return role;
+    }
+  }
+
+  Color _getRoleColor(String role) {
+    switch (role) {
+      case 'owner':
+        return Colors.purple;
+      case 'manager':
+        return Colors.indigo;
+      case 'staff':
+        return Colors.blue;
+      case 'trainee':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Widget _buildNoAccessView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.block, color: Colors.red, size: 64),
+          SizedBox(height: 16),
+          Text(
+            'Không có quyền truy cập',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Bạn cần được cấp quyền nhân viên tại câu lạc bộ để sử dụng chức năng chấm công.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Quay lại'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStaffInfoCard() {
+    if (staffInfo == null) return SizedBox.shrink();
+
+    return Card(
+      elevation: 4,
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.badge, color: Colors.blue),
+                SizedBox(width: 8),
+                Text(
+                  'Thông tin nhân viên',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: _getRoleColor(userRole!).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: _getRoleColor(userRole!).withOpacity(0.3)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.business, color: _getRoleColor(userRole!)),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          staffInfo!['clubs']['name'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.person, color: _getRoleColor(userRole!)),
+                      SizedBox(width: 8),
+                      Text(
+                        'Chức vụ: ${_getRoleDisplayName(userRole!)}',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.verified, color: Colors.green),
+                      SizedBox(width: 8),
+                      Text(
+                        'Đang hoạt động',
+                        style: TextStyle(color: Colors.green[700]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

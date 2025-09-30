@@ -1,7 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-import 'dart:math';
 
 class AttendanceService {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -38,24 +37,14 @@ class AttendanceService {
 
       // Verify GPS location (within 50m radius)
       final currentLocation = await _getCurrentLocation();
-      final clubLocation = Position(
-        latitude: qrLocation['lat'].toDouble(),
-        longitude: qrLocation['lng'].toDouble(),
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      final clubLat = qrLocation['lat'].toDouble();
+      final clubLng = qrLocation['lng'].toDouble();
 
       final distance = Geolocator.distanceBetween(
         currentLocation.latitude,
         currentLocation.longitude,
-        clubLocation.latitude,
-        clubLocation.longitude,
+        clubLat,
+        clubLng,
       );
 
       if (distance > 50) {
@@ -118,11 +107,11 @@ class AttendanceService {
         'p_staff_id': staffId,
       });
 
-      if (todayShiftResponse == null || (todayShiftResponse as List).isEmpty) {
+      if (todayShiftResponse == null || todayShiftResponse.isEmpty) {
         throw Exception('Bạn không có ca làm việc hôm nay');
       }
 
-      final todayShift = (todayShiftResponse as List).first;
+      final todayShift = todayShiftResponse.first;
       final shiftId = todayShift['shift_id'];
 
       // Record check-in
@@ -380,7 +369,9 @@ class AttendanceService {
     }
 
     return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ),
     );
   }
 

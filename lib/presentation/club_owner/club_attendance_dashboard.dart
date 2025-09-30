@@ -42,6 +42,7 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
   }
 
   Future<void> _loadDashboardData() async {
+    if (!mounted) return;
     setState(() {
       isLoading = true;
       errorMessage = null;
@@ -54,10 +55,12 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
         _loadSummaryStats(),
       ]);
 
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         errorMessage = 'Không thể tải dữ liệu: $e';
         isLoading = false;

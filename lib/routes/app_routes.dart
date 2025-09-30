@@ -23,6 +23,7 @@ import '../presentation/admin_dashboard_screen/admin_more_main_screen.dart';
 import '../presentation/my_clubs_screen/my_clubs_screen.dart';
 import '../presentation/attendance_screen/attendance_screen.dart';
 import '../presentation/club_owner/club_attendance_dashboard.dart';
+import '../presentation/demo_qr_screen/demo_qr_screen.dart';
 // import '../presentation/club_staff_screen/club_staff_management_screen.dart';
 
 class AppRoutes {
@@ -52,6 +53,7 @@ class AppRoutes {
   static const String clubStaffManagementScreen = '/club_staff_management';
   static const String attendanceScreen = '/attendance';
   static const String attendanceDashboard = '/attendance_dashboard';
+  static const String demoQRScreen = '/demo_qr';
 
   static const String initial = splashScreen;
 
@@ -80,10 +82,11 @@ class AppRoutes {
         attendanceScreen: (context) => const AttendanceScreen(),
         attendanceDashboard: (context) {
           final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-          final clubId = args?['clubId'] ?? '';
-          final clubName = args?['clubName'] ?? '';
+          final clubId = (args?['clubId'] as String?) ?? '';
+          final clubName = (args?['clubName'] as String?) ?? '';
           return ClubAttendanceDashboard(clubId: clubId, clubName: clubName);
         },
+        demoQRScreen: (context) => const DemoQRCodeScreen(),
         // clubStaffManagementScreen: (context) {
         //   final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
         //   final clubId = args?['clubId'] ?? '';

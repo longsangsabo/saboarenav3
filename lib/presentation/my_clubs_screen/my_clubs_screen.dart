@@ -332,6 +332,20 @@ class _MyClubsScreenState extends State<MyClubsScreen> {
                       ),
                     ),
                     SizedBox(width: 6),
+                    // Demo QR button
+                    Container(
+                      width: 40,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/demo_qr');
+                        },
+                        child: Icon(Icons.qr_code, size: 18),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.all(4),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 6),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () {
