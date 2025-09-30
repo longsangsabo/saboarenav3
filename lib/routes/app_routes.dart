@@ -21,6 +21,8 @@ import '../presentation/admin_dashboard_screen/admin_tournament_main_screen.dart
 import '../presentation/admin_dashboard_screen/admin_user_management_main_screen.dart';
 import '../presentation/admin_dashboard_screen/admin_more_main_screen.dart';
 import '../presentation/my_clubs_screen/my_clubs_screen.dart';
+import '../presentation/attendance_screen/attendance_screen.dart';
+import '../presentation/club_owner/club_attendance_dashboard.dart';
 // import '../presentation/club_staff_screen/club_staff_management_screen.dart';
 
 class AppRoutes {
@@ -48,6 +50,8 @@ class AppRoutes {
   static const String clubSelectionScreen = '/club_selection_screen';
   static const String messagingScreen = '/messaging';
   static const String clubStaffManagementScreen = '/club_staff_management';
+  static const String attendanceScreen = '/attendance';
+  static const String attendanceDashboard = '/attendance_dashboard';
 
   static const String initial = splashScreen;
 
@@ -73,6 +77,13 @@ class AppRoutes {
         adminMoreScreen: (context) => const AdminMoreMainScreen(),
         myClubsScreen: (context) => const MyClubsScreen(),
         clubSelectionScreen: (context) => ClubSelectionScreen(),
+        attendanceScreen: (context) => const AttendanceScreen(),
+        attendanceDashboard: (context) {
+          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final clubId = args?['clubId'] ?? '';
+          final clubName = args?['clubName'] ?? '';
+          return ClubAttendanceDashboard(clubId: clubId, clubName: clubName);
+        },
         // clubStaffManagementScreen: (context) {
         //   final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
         //   final clubId = args?['clubId'] ?? '';

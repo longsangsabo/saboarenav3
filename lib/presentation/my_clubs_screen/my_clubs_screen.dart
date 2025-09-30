@@ -311,7 +311,27 @@ class _MyClubsScreenState extends State<MyClubsScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context, 
+                            '/attendance_dashboard',
+                            arguments: {
+                              'clubId': club.id,
+                              'clubName': club.name,
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.access_time, size: 16),
+                        label: Text('Chấm công'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 6),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () {

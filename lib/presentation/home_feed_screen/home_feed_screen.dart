@@ -12,7 +12,28 @@ import '../../services/post_repository.dart';
 import '../../services/auth_service.dart';
 import '../../services/club_service.dart';
 import '../club_registration_screen/club_registration_screen.dart';
-import '../../widgets/comments_modal.dart';
+import '../../            onTap: (index) {
+              switch (index) {
+                case 0:
+                  // Already on home screen, maybe refresh
+                  break;
+                case 1:
+                  _handleNavigation(AppRoutes.findOpponentsScreen);
+                  break;
+                case 2:
+                  _handleNavigation(AppRoutes.attendanceScreen);
+                  break;
+                case 3:
+                  _handleNavigation(AppRoutes.tournamentListScreen);
+                  break;
+                case 4:
+                  _handleNavigation(AppRoutes.clubMainScreen);
+                  break;
+                case 5:
+                  _handleNavigation(AppRoutes.userProfileScreen);
+                  break;
+              }
+            },dal.dart';
 import '../../widgets/share_bottom_sheet.dart';
 import './widgets/create_post_modal_widget.dart';
 import './widgets/empty_feed_widget.dart';
@@ -596,6 +617,11 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
                 icon: Icon(Icons.sports_outlined, size: 24),
                 activeIcon: Icon(Icons.sports_rounded, size: 26),
                 label: 'Đối thủ',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.access_time_outlined, size: 24),
+                activeIcon: Icon(Icons.access_time_rounded, size: 26),
+                label: 'Chấm công',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.emoji_events_outlined, size: 24),
