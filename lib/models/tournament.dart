@@ -13,8 +13,8 @@ class Tournament() {
   final double prizePool;
   final String status;
   final String? skillLevelRequired;
-  final String format; // Tournament elimination format (single_elimination, double_elimination)
-  final String tournamentType; // Game type (8-ball, 9-ball, 10-ball)
+  final String format; // Game type (8-ball, 9-ball, 10-ball) 
+  final String tournamentType; // Tournament elimination format (single_elimination, double_elimination)
   final String? rules;
   final String? requirements;
   final bool isPublic;
@@ -38,8 +38,8 @@ class Tournament() {
     required this.prizePool,
     required this.status,
     this.skillLevelRequired,
-    required this.format, // Tournament elimination format
-    required this.tournamentType, // Game type
+    required this.format, // Game type  
+    required this.tournamentType, // Tournament elimination format
     this.rules,
     this.requirements,
     required this.isPublic,
@@ -66,9 +66,9 @@ class Tournament() {
       prizePool: (json['prize_pool'] ?? 0).toDouble(),
       status: json['status'] ?? 'upcoming',
       skillLevelRequired: json['skill_level_required'],
-      // NOTE: Current database has fields swapped, adapting to existing data
-      format: json['tournament_type'] ?? 'single_elimination', // Tournament format from tournament_type field
-      tournamentType: json['format'] ?? '8-ball', // Game type from format field
+      // CLEAN SCHEMA: Use proper field mapping with new columns
+      format: json['game_format'] ?? '8-ball', // Game type from game_format field
+      tournamentType: json['bracket_format'] ?? 'single_elimination', // Tournament format from bracket_format field
       rules: json['rules'],
       requirements: json['requirements'],
       isPublic: json['is_public'] ?? true,
@@ -81,6 +81,10 @@ class Tournament() {
 
   // Getter for cover image (for backward compatibility)
   String? get coverImage => coverImageUrl;
+  
+  // Helpers for clarity after migration
+  String get gameFormat => format; // 8-ball, 9-ball, etc.
+  String get bracketFormat => tournamentType; // single_elimination, double_elimination, etc.
 
   Map<String, dynamic> toJson() {
     return() {
@@ -98,9 +102,9 @@ class Tournament() {
       'prize_pool': prizePool,
       'status': status,
       'skill_level_required': skillLevelRequired,
-      // NOTE: Saving to match current database structure
-      'tournament_type': format, // Tournament format saved to tournament_type field
-      'format': tournamentType, // Game type saved to format field
+      // CLEAN SCHEMA: Save to proper new columns
+      'bracket_format': tournamentType, // Tournament format saved to bracket_format field
+      'game_format': format, // Game type saved to game_format field
       'rules': rules,
       'requirements': requirements,
       'is_public': isPublic,

@@ -4,9 +4,10 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'complete_sabo_de16_service.dart';
 
 /// Service for generating real tournament brackets with actual participant data
-class BracketGenerationService() {
+class BracketGenerationService {
   static BracketGenerationService? _instance;
   static BracketGenerationService get instance => _instance ??= BracketGenerationService._();
   BracketGenerationService._();
@@ -20,8 +21,8 @@ class BracketGenerationService() {
     required String tournamentId,
     required String tournamentFormat,
     List<String>? customSeeding, // Optional custom participant order
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 Generating bracket for tournament $tournamentId with format $tournamentFormat');
 
       // 1. Get tournament details
@@ -45,7 +46,15 @@ class BracketGenerationService() {
 
       // 4. Generate bracket based on format
       Map<String, dynamic> bracketData;
-      switch (tournamentFormat.toLowerCase()) {
+      
+      // 🚨 SABO FIX: Auto-detect SABO DE16 for 16-player double elimination
+      String actualFormat = tournamentFormat.toLowerCase();
+      if (actualFormat == 'double_elimination' && seededParticipants.length == 16) {
+        debugPrint('🎯 Auto-detecting SABO DE16 for 16-player tournament');
+        actualFormat = 'sabo_de16';
+      }
+      
+      switch (actualFormat) {
         case 'single_elimination':
           bracketData = await _generateSingleEliminationBracket(tournament, seededParticipants);
           break;
@@ -53,8 +62,17 @@ class BracketGenerationService() {
           bracketData = await _generateDoubleEliminationBracket(tournament, seededParticipants);
           break;
         case 'sabo_de16':
-          bracketData = await _generateSaboDE16Bracket(tournament, seededParticipants);
-          break;
+          // Use the existing SABO DE16 service
+          debugPrint('🏆 Using CompleteSaboDE16Service for bracket generation');
+          final saboService = CompleteSaboDE16Service();
+          final result = await saboService.generateSaboDE16Bracket(
+            tournamentId: tournamentId,
+            participants: seededParticipants,
+          );
+          if (!result['success']) {
+            throw Exception(result['error']);
+          }
+          return result; // Return directly since SABO service handles everything
         case 'sabo_de32':
           bracketData = await _generateSaboDE32Bracket(tournament, seededParticipants);
           break;
@@ -76,7 +94,7 @@ class BracketGenerationService() {
 
       debugPrint('✅ Bracket generated successfully for tournament $tournamentId');
       
-      return() {
+      return {
         'success': true,
         'bracketData': bracketData,
         'participantCount': seededParticipants.length,
@@ -86,7 +104,7 @@ class BracketGenerationService() {
 
     } catch (e) {
       debugPrint('❌ Error generating tournament bracket: $e');
-      return() {
+      return {
         'success': false,
         'error': e.toString(),
       };
@@ -96,7 +114,7 @@ class BracketGenerationService() {
   // ==================== PARTICIPANT MANAGEMENT ====================
 
   /// Get tournament participants with their details
-  Future<List<Map<String, dynamic>>> _getTournamentParticipants(String tournamentId) async() {
+  Future<List<Map<String, dynamic>>> _getTournamentParticipants(String tournamentId) async {
     final response = await _supabase
         .from('tournament_participants')
         .select('''
@@ -122,8 +140,8 @@ class BracketGenerationService() {
   Future<List<Map<String, dynamic>>> _applySmartSeeding(
     List<Map<String, dynamic>> participants,
     String tournamentId,
-  ) async() {
-    try() {
+  ) async {
+    try {
       // Sort by rank points (descending) for proper seeding
       participants.sort((a, b) {
         final aRankPoints = (a['user']['ranking_points'] ?? 0) as int;
@@ -174,7 +192,7 @@ class BracketGenerationService() {
   Future<Map<String, dynamic>> _generateSingleEliminationBracket(
     Map<String, dynamic> tournament,
     List<Map<String, dynamic>> participants,
-  ) async() {
+  ) async {
     final participantCount = participants.length;
     final rounds = <Map<String, dynamic>>[];
     
@@ -199,7 +217,7 @@ class BracketGenerationService() {
         roundTitle = 'Bán kết';
       } else if (matchCount == 4) {
         roundTitle = 'Tứ kết';
-      } else() {
+      } else {
         roundTitle = 'Vòng $round';
       }
 
@@ -213,7 +231,7 @@ class BracketGenerationService() {
       currentParticipants = matchCount;
     }
 
-    return() {
+    return {
       "format": 'single_elimination',
       'participantCount': participantCount,
       'rounds': rounds,
@@ -269,7 +287,7 @@ class BracketGenerationService() {
   Future<Map<String, dynamic>> _generateDoubleEliminationBracket(
     Map<String, dynamic> tournament,
     List<Map<String, dynamic>> participants,
-  ) async() {
+  ) async {
     // Double elimination has winners bracket and losers bracket
     final participantCount = participants.length;
     
@@ -282,7 +300,7 @@ class BracketGenerationService() {
     // Generate grand final
     final grandFinal = _generateGrandFinal();
 
-    return() {
+    return {
       "format": 'double_elimination',
       'participantCount': participantCount,
       'winnersBracket': winnersRounds,
@@ -296,7 +314,7 @@ class BracketGenerationService() {
 
   Future<List<Map<String, dynamic>>> _generateWinnersBracketRounds(
     List<Map<String, dynamic>> participants,
-  ) async() {
+  ) async {
     // Similar to single elimination but track losers for losers bracket
     final rounds = <Map<String, dynamic>>[];
     final participantCount = participants.length;
@@ -320,7 +338,7 @@ class BracketGenerationService() {
     return rounds;
   }
 
-  Future<List<Map<String, dynamic>>> _generateLosersBracketRounds(int participantCount) async() {
+  Future<List<Map<String, dynamic>>> _generateLosersBracketRounds(int participantCount) async {
     // Complex losers bracket structure - depends on winners bracket results
     final rounds = <Map<String, dynamic>>[];
     
@@ -339,7 +357,7 @@ class BracketGenerationService() {
   }
 
   Map<String, dynamic> _generateGrandFinal() {
-    return() {
+    return {
       "title": 'Grand Final',
       'matches': [
         {
@@ -362,7 +380,7 @@ class BracketGenerationService() {
   }
 
   /// Get tournament details
-  Future<Map<String, dynamic>?> _getTournamentDetails(String tournamentId) async() {
+  Future<Map<String, dynamic>?> _getTournamentDetails(String tournamentId) async {
     final response = await _supabase
         .from('tournaments')
         .select()
@@ -373,7 +391,7 @@ class BracketGenerationService() {
   }
 
   /// Save bracket data to database
-  Future<void> _saveBracketToDatabase(String tournamentId, Map<String, dynamic> bracketData) async() {
+  Future<void> _saveBracketToDatabase(String tournamentId, Map<String, dynamic> bracketData) async {
     await _supabase
         .from('tournaments')
         .update({
@@ -387,7 +405,7 @@ class BracketGenerationService() {
   Future<void> _generateInitialMatches(
     Map<String, dynamic> tournament,
     Map<String, dynamic> bracketData,
-  ) async() {
+  ) async {
     final matches = <Map<String, dynamic>>[];
     final tournamentId = tournament['id'];
     
@@ -428,19 +446,11 @@ class BracketGenerationService() {
   }
 
   // ==================== ADDITIONAL FORMAT PLACEHOLDERS ====================
-  
-  Future<Map<String, dynamic>> _generateSaboDE16Bracket(
-    Map<String, dynamic> tournament,
-    List<Map<String, dynamic>> participants,
-  ) async() {
-    // TODO: Implement SABO DE16 specific logic
-    return await _generateDoubleEliminationBracket(tournament, participants);
-  }
 
   Future<Map<String, dynamic>> _generateSaboDE32Bracket(
     Map<String, dynamic> tournament,
     List<Map<String, dynamic>> participants,
-  ) async() {
+  ) async {
     // TODO: Implement SABO DE32 specific logic  
     return await _generateDoubleEliminationBracket(tournament, participants);
   }
@@ -448,9 +458,9 @@ class BracketGenerationService() {
   Future<Map<String, dynamic>> _generateRoundRobinBracket(
     Map<String, dynamic> tournament,
     List<Map<String, dynamic>> participants,
-  ) async() {
+  ) async {
     // TODO: Implement Round Robin logic
-    return() {
+    return {
       "format": 'round_robin',
       'participantCount': participants.length,
       "message": 'Round Robin bracket generation not implemented yet',
@@ -460,12 +470,13 @@ class BracketGenerationService() {
   Future<Map<String, dynamic>> _generateSwissSystemBracket(
     Map<String, dynamic> tournament,
     List<Map<String, dynamic>> participants,
-  ) async() {
+  ) async {
     // TODO: Implement Swiss System logic
-    return() {
+    return {
       "format": 'swiss_system',
       'participantCount': participants.length,
       "message": 'Swiss System bracket generation not implemented yet',
     };
   }
+
 }

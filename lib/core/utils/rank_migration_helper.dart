@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import './sabo_rank_system.dart';
 import '../constants/ranking_constants.dart';

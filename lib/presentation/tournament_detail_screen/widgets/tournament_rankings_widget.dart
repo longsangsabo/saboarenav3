@@ -272,85 +272,94 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
   }
 
   Widget _buildRankingsList() {
-    return Column(
-      children: [
-        // Header Row
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 6.sp, horizontal: 8.sp),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(6.sp),
+    return Flexible(
+      child: Column(
+        children: [
+          // Header Row
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 6.sp, horizontal: 8.sp),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(6.sp),
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 20.sp, // Giảm width để tiết kiệm không gian
+                  child: Text(
+                    'Hạng',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.sp, // Giảm font size
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Player',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.sp, // Giảm font size
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 25.sp, // Giảm width
+                  child: Text(
+                    'W/L',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.sp, // Giảm font size
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 30.sp, // Giảm width
+                  child: Text(
+                    '+ELO',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.sp, // Giảm font size
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 30.sp, // Giảm width
+                  child: Text(
+                    '+SPA',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9.sp, // Giảm font size
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 25.sp,
-                child: Text(
-                  'Hạng',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Player',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 30.sp,
-                child: Text(
-                  'W/L',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 35.sp,
-                child: Text(
-                  '+ELO',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 35.sp,
-                child: Text(
-                  '+SPA',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 6.sp),
+          SizedBox(height: 6.sp),
 
-        // Rankings List
-        ...List.generate(_rankings.length, (index) {
-          final ranking = _rankings[index];
-          return _buildRankingItem(ranking, index + 1);
-        }),
-      ],
+          // Rankings List - Scrollable to prevent overflow
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: List.generate(_rankings.length, (index) {
+                  final ranking = _rankings[index];
+                  return _buildRankingItem(ranking, index + 1);
+                }),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

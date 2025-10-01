@@ -289,7 +289,7 @@ class _TournamentListScreenState extends State<TournamentListScreen>
       'id': tournament.id,
       'title': tournament.title,
       'clubName': tournament.clubId ?? 'N/A',
-      'format': tournament.tournamentType,
+      'format': tournament.gameFormat,
       'entryFee': tournament.entryFee > 0
           ? "${tournament.entryFee.toStringAsFixed(0)}đ"
           : 'Miễn phí',

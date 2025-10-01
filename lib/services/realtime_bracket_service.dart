@@ -221,7 +221,7 @@ class RealtimeBracketService() {
         final roundCompleted = roundMatches.every((m) => m.status == 'completed');
         final nextRoundExists = roundGroups.containsKey(round + 1);
 
-        if (roundCompleted && !nextRoundExists && round < _getMaxRounds(tournament.format)) {
+        if (roundCompleted && !nextRoundExists && round < _getMaxRounds(tournament.bracketFormat)) {
           progressionNeeded = true;
           break;
         }
@@ -243,7 +243,7 @@ class RealtimeBracketService() {
       // Call RPC function for bracket progression
       await _supabase.rpc('progress_tournament_bracket', params: {
         'tournament_id': tournamentId,
-        'tournament_format': tournament.format,
+        'tournament_format': tournament.bracketFormat,
       });
 
       debugPrint('✅ Bracket progression completed for tournament $tournamentId');

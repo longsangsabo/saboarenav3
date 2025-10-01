@@ -7,7 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../models/tournament.dart';
 import '../../../services/correct_bracket_logic_service.dart';
-import '../../../services/tournament_progress_service.dart';
+// import '../../../services/tournament_progress_service.dart'; // Currently unused
 import '../../../services/bracket_visualization_service.dart';
 import '../../../services/tournament_service.dart';
 
@@ -26,7 +26,7 @@ class BracketManagementTab extends StatefulWidget() {
 class _BracketManagementTabState extends State<BracketManagementTab> {
   final CorrectBracketLogicService _bracketService = CorrectBracketLogicService.instance;
   final TournamentService _tournamentService = TournamentService.instance;
-  final TournamentProgressService _progressService = TournamentProgressService.instance;
+  // final TournamentProgressService _progressService = TournamentProgressService.instance; // Currently unused
   final BracketVisualizationService _visualizationService = BracketVisualizationService.instance;
 
   bool _isLoading = false;
@@ -257,7 +257,7 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
       ),
       child: Column(
         children: [
-          _buildInfoRow('Format • Status', '${_formatTournamentType(widget.tournament.tournamentType)} • ${widget.tournament.status.toUpperCase()}'),
+          _buildInfoRow('Format • Status', '${_formatTournamentType(widget.tournament.bracketFormat)} • ${widget.tournament.status.toUpperCase()}'),
           SizedBox(height: 1.h),
           _buildInfoRow('Participants', '${widget.tournament.currentParticipants}/${widget.tournament.maxParticipants}'),
         ],
@@ -291,26 +291,41 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
   /// Bracket view
   Widget _buildBracketView() {
     return Expanded(
-      child: FutureBuilder<Widget>(
-        future: _visualizationService.buildTournamentBracket(
-          tournamentId: widget.tournament.id,
-          bracketData: _bracketData!,
-          onMatchTap: _handleMatchTap,
-          showLiveUpdates: true,
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error rendering bracket: ${snapshot.error}'),
+      child: Container(
+        width: double.infinity,
+        child: FutureBuilder<Widget>(
+          future: _visualizationService.buildTournamentBracket(
+            tournamentId: widget.tournament.id,
+            bracketData: _bracketData!,
+            onMatchTap: _handleMatchTap,
+            showLiveUpdates: true,
+          ),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            if (snapshot.hasError) {
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.sp),
+                  child: Text(
+                    'Error rendering bracket: ${snapshot.error}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+              );
+            }
+            
+            return Container(
+              child: snapshot.data ?? const SizedBox(),
             );
-          }
-          
-          return snapshot.data ?? const SizedBox();
-        },
+          },
+        ),
       ),
     );
   }
@@ -352,7 +367,7 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
         final bracketData = {
           'tournament_id': widget.tournament.id,
           'matches': matches,
-          'format': widget.tournament.tournamentType,
+          'format': widget.tournament.bracketFormat,
           'total_participants': widget.tournament.currentParticipants,
         };
         

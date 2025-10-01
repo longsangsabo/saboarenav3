@@ -70,7 +70,7 @@ class BracketExportService() {
       }
 
       final String message = customMessage ?? 
-          'Check out the bracket for ${tournament.title}! 🏆\n\nFormat: ${_getFormatDisplayName(tournament.tournamentType)}\nParticipants: ${tournament.maxParticipants}\n\nShared from SABO Arena';
+          'Check out the bracket for ${tournament.title}! 🏆\n\nFormat: ${_getFormatDisplayName(tournament.bracketFormat)}\nParticipants: ${tournament.maxParticipants}\n\nShared from SABO Arena';
 
       if (files.isNotEmpty) {
         await Share.shareXFiles(
@@ -150,7 +150,7 @@ class BracketExportService() {
       
       summary.writeln('🏆 ${tournament.title}');
       summary.writeln('📅 ${tournament.startDate.toLocal().toString().split(' ')[0]}');
-      summary.writeln('🎮 Format: ${_getFormatDisplayName(tournament.tournamentType)}');
+      summary.writeln('🎮 Format: ${_getFormatDisplayName(tournament.bracketFormat)}');
       summary.writeln('👥 Participants: ${participants.length}/${tournament.maxParticipants}');
       summary.writeln();
       

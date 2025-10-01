@@ -137,7 +137,7 @@ class TournamentProgressService() {
       // Get tournament info
       final tournament = await _supabase
           .from('tournaments')
-          .select('id, status, tournament_type, current_participants')
+          .select('id, status, bracket_format, current_participants')
           .eq('id', tournamentId)
           .single();
 

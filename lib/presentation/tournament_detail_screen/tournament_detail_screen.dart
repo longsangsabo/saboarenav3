@@ -200,7 +200,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     _tournamentData = {
       "id": _tournament!.id,
       "title": _tournament!.title,
-      "format": _tournament!.tournamentType, // Game type (8-ball, 9-ball)
+      "format": _tournament!.gameFormat, // Game type (8-ball, 9-ball)
       "coverImage": _tournament!.coverImageUrl ?? 
           "https://images.unsplash.com/photo-1578662996442-48f60103fc96?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3",
       "location": "Từ dữ liệu CLB", // TODO: Get from club data
@@ -788,7 +788,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
       backgroundColor: Colors.transparent,
       builder: (context) => TournamentBracketView(
         tournamentId: _tournamentData['id'] as String,
-        format: _tournamentData['format'] as String,
+        format: _tournament!.bracketFormat, // Use bracket format for tournament structure
         totalParticipants: _tournamentData['currentParticipants'] as int,
         isEditable: _canManageTournament(),
       ),

@@ -192,7 +192,7 @@ class _LiveTournamentBracketWidgetState extends State<LiveTournamentBracketWidge
   }
 
   Widget _buildLoadingState() {
-    return Container(
+    return SizedBox(
       height: 300.sp,
       child: const Center(
         child: CircularProgressIndicator(),
@@ -201,7 +201,7 @@ class _LiveTournamentBracketWidgetState extends State<LiveTournamentBracketWidge
   }
 
   Widget _buildEmptyState() {
-    return Container(
+    return SizedBox(
       height: 300.sp,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -3,6 +3,8 @@ import '../models/tournament.dart';
 import '../models/user_profile.dart';
 import '../core/constants/tournament_constants.dart';
 import 'notification_service.dart';
+import 'complete_double_elimination_service.dart';
+import 'complete_sabo_de16_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
@@ -351,6 +353,9 @@ class TournamentService() {
     }
   }
 
+  /// No format mapping needed - database will support SABO formats directly
+  /// sabo_de16, sabo_de32 have different logic than double_elimination
+
   Future<Tournament> createTournament({
     required String clubId,
     required String title,
@@ -379,10 +384,9 @@ class TournamentService() {
         'max_participants': maxParticipants,
         'entry_fee': entryFee,
         'prize_pool': prizePool,
-        // NOTE: Database has fields swapped, adapting to existing structure
-        'tournament_type': format, // Tournament elimination format saved to tournament_type field
-        'format': gameType, // Game type saved to format field
-        // 'skill_level_required': removed - không dùng nữa
+        // FIXED: Direct format usage - database will support SABO formats after constraint update
+        'bracket_format': format, // Direct format: sabo_de16, sabo_de32, etc.
+        'game_format': gameType, // Game type (8-ball, 9-ball, 10-ball)
         'rules': rules,
         'requirements': requirements,
         "status": 'upcoming',
@@ -717,7 +721,19 @@ class TournamentService() {
         throw Exception('Invalid player count for format $format');
       }
 
-      // Seeding participants
+      // 🏆 SPECIAL HANDLING: Use SABO DE16 bracket generator (27 matches)
+      if (format == 'sabo_de16' && participants.length == 16) {
+        debugPrint('� Using SABO DE16 bracket generator (27 matches)');
+        return await _generateSaboDE16Bracket(tournamentId, participants, seedingMethod);
+      }
+
+      // 🚀 SPECIAL HANDLING: Use CompleteDoubleEliminationService for standard DE16 (31 matches)
+      if (format == 'double_elimination' && participants.length == 16) {
+        debugPrint('� Using CompleteDoubleEliminationService for standard DE16 (31 matches)');
+        return await _generateDE16Bracket(tournamentId, participants, seedingMethod);
+      }
+
+      // Seeding participants (fallback to original logic)
       final seededParticipants = await _seedParticipants(participants, seedingMethod);
       debugPrint('✅ GenerateBracket: Participants seeded successfully');
 
@@ -751,6 +767,126 @@ class TournamentService() {
       throw Exception('Failed to generate bracket: $error');
     }
   }
+
+  /// 🚀 Generate DE16 bracket using CompleteDoubleEliminationService
+  Future<TournamentBracket> _generateDE16Bracket(
+    String tournamentId,
+    List<UserProfile> participants,
+    String seedingMethod,
+  ) async {
+    try {
+      debugPrint('🎯 DE16: Using CompleteDoubleEliminationService for precise bracket generation');
+
+      // Seeding participants first
+      final seededParticipants = await _seedParticipants(participants, seedingMethod);
+      debugPrint('✅ DE16: Participants seeded successfully');
+
+      // Convert UserProfile to format expected by CompleteDoubleEliminationService
+      final participantsData = seededParticipants.map((seeded) => {
+        'user_id': seeded.participant.id,
+        'seed_number': seeded.seedNumber,
+        'full_name': seeded.participant.fullName,
+        'username': seeded.participant.username,
+        'elo_rating': seeded.participant.eloRating,
+        'avatar_url': seeded.participant.avatarUrl,
+      }).toList();
+
+      // Generate bracket using CompleteDoubleEliminationService
+      final de16Service = CompleteDoubleEliminationService.instance;
+      final result = await de16Service.generateDE16Bracket(
+        tournamentId: tournamentId,
+        participants: participantsData,
+      );
+
+      if (!result['success']) {
+        throw Exception('DE16 bracket generation failed: ${result['error']}');
+      }
+
+      debugPrint('✅ DE16: Generated ${result['matchesGenerated']} matches with CompleteDoubleEliminationService');
+
+      // Update tournament status to ongoing
+      await updateTournamentStatus(tournamentId, 'ongoing');
+      debugPrint('✅ DE16: Tournament status updated to ongoing');
+
+      // Return TournamentBracket with DE16 specific data
+      return TournamentBracket(
+        tournamentId: tournamentId,
+        format: 'double_elimination',
+        participants: seededParticipants,
+        matches: [], // Matches are already in database via CompleteDoubleEliminationService
+        rounds: 8, // DE16 has 8 round levels (WB: 4, LB: 7, GF: 1)
+        status: 'ready',
+        createdAt: DateTime.now(),
+      );
+
+    } catch (error) {
+      debugPrint('❌ DE16 bracket generation error: $error');
+      throw Exception('Failed to generate DE16 bracket: $error');
+    }
+  }
+
+  /// 🏆 Generate SABO DE16 bracket using bracket generator service
+  Future<TournamentBracket> _generateSaboDE16Bracket(
+    String tournamentId,
+    List<UserProfile> participants,
+    String seedingMethod,
+  ) async {
+    try {
+      debugPrint('🏆 SABO DE16: Using CompleteSaboDE16Service for precise bracket generation');
+
+      // Seeding participants first
+      final seededParticipants = await _seedParticipants(participants, seedingMethod);
+      debugPrint('✅ SABO DE16: Participants seeded successfully');
+
+      // Convert UserProfile to format expected by CompleteSaboDE16Service
+      final participantsData = seededParticipants.map((seeded) => {
+        'user_id': seeded.participant.id,
+        'seed_number': seeded.seedNumber,
+        'full_name': seeded.participant.fullName,
+        'username': seeded.participant.username,
+        'elo_rating': seeded.participant.eloRating,
+        'avatar_url': seeded.participant.avatarUrl,
+      }).toList();
+
+      // Generate bracket using CompleteSaboDE16Service
+      final saboDE16Service = CompleteSaboDE16Service();
+      final result = await saboDE16Service.generateSaboDE16Bracket(
+        tournamentId: tournamentId,
+        participants: participantsData,
+      );
+
+      if (!result['success']) {
+        throw Exception('SABO DE16 bracket generation failed: ${result['error']}');
+      }
+
+      debugPrint('✅ SABO DE16: Generated ${result['matchesGenerated']} matches with CompleteSaboDE16Service');
+
+      // Update tournament status to ongoing
+      await updateTournamentStatus(tournamentId, 'ongoing');
+      debugPrint('✅ SABO DE16: Tournament status updated to ongoing');
+
+      // Return TournamentBracket with SABO DE16 specific data
+      return TournamentBracket(
+        tournamentId: tournamentId,
+        format: 'sabo_de16',
+        participants: seededParticipants,
+        matches: [], // Matches are already in database via CompleteSaboDE16Service
+        rounds: 27, // SABO DE16 has 27 total matches
+        status: 'ready',
+        createdAt: DateTime.now(),
+      );
+
+    } catch (error) {
+      debugPrint('❌ SABO DE16 bracket generation error: $error');
+      throw Exception('Failed to generate SABO DE16 bracket: $error');
+    }
+  }
+
+
+
+
+
+
 
   /// Seeding participants dựa trên method được chỉ định
   Future<List<SeededParticipant>> _seedParticipants(
@@ -993,14 +1129,14 @@ class TournamentService() {
         final matchData = {
           'id': match.id,
           'tournament_id': match.tournamentId,
-          'round': match.round,
+          'round_number': match.round,
           'match_number': match.matchNumber,
           'player1_id': match.player1Id,
           'player2_id': match.player2Id,
           'status': match.status,
           'scheduled_time': match.scheduledTime?.toIso8601String(), // REVERT: scheduled_at -> scheduled_time
           'winner_id': match.winnerId,
-          'format': match.format, // REVERT: format tồn tại trong DB thực tế
+          'bracket_format': match.format, // FIXED: Use bracket_format column
           'player1_score': null, // Changed from 'score' to separate scores
           'player2_score': null,
           'created_at': match.createdAt.toIso8601String(),

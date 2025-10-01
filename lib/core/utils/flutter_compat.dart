@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // Extension để thay thế withValues bằng withOpacity
 extension ColorExtension on Color() {
   Color withAlpha(double alpha) {
-    return this.withOpacity(alpha);
+    return withOpacity(alpha);
   }
 }
 
@@ -35,7 +35,7 @@ class CompatDropdownButtonFormField<T> extends DropdownButtonFormField<T> {
     super.disabledHint,
     super.selectedItemBuilder,
   }) : super(
-    value: value ?? initialValue,
+    initialValue: value ?? initialValue,
   );
 }
 

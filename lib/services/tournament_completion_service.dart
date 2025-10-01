@@ -117,7 +117,7 @@ class TournamentCompletionService() {
     // Get tournament info
     final tournament = await _supabase
         .from('tournaments')
-        .select('status, tournament_type, format')
+        .select('status, bracket_format, game_format')
         .eq('id', tournamentId)
         .single();
 
@@ -152,7 +152,7 @@ class TournamentCompletionService() {
     }
 
     // Format-specific validation
-    final format = tournament['format'] ?? tournament['tournament_type'];
+    final format = tournament['bracket_format']; // FIXED: Use migrated schema
     final formatValidation = await _validateFormatSpecificCompletion(tournamentId, format);
     if (!formatValidation['valid']) {
       return() {
@@ -213,11 +213,11 @@ class TournamentCompletionService() {
   Future<List<Map<String, dynamic>>> _calculateFinalStandings(String tournamentId) async() {
     final tournament = await _supabase
         .from('tournaments')
-        .select('format, tournament_type')
+        .select('bracket_format, game_format')
         .eq('id', tournamentId)
         .single();
 
-    final format = tournament['format'] ?? tournament['tournament_type'];
+    final format = tournament['bracket_format'];
 
     switch (format) {
       case TournamentFormats.singleElimination:
@@ -488,11 +488,11 @@ class TournamentCompletionService() {
       // Get tournament format
       final tournamentResponse = await _supabase
           .from('tournaments')
-          .select('tournament_type')
+          .select('bracket_format')
           .eq('id', tournamentId)
           .single();
       
-      final tournamentFormat = tournamentResponse['tournament_type'] ?? 'single_elimination';
+      final tournamentFormat = tournamentResponse['bracket_format'] ?? 'single_elimination';
       
       // TODO: Fix ELO service integration - type mismatch issue
       // return await _eloService.processTournamentEloChanges(

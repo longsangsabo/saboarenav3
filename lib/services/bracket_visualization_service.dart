@@ -3,7 +3,6 @@
 // Converts bracket data into UI-ready components with real-time updates
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../presentation/tournament_detail_screen/widgets/demo_bracket/components/bracket_components.dart';
 import 'dart:math' as math;
@@ -40,6 +39,14 @@ class BracketVisualizationService() {
           );
         case 'double_elimination':
           return await _buildDoubleEliminationBracket(
+            tournamentId,
+            bracketData,
+            onMatchTap,
+            showLiveUpdates,
+          );
+        case 'sabo_de16':
+        case 'sabo_double_elimination':
+          return await _buildSaboDE16Bracket(
             tournamentId,
             bracketData,
             onMatchTap,
@@ -93,20 +100,24 @@ class BracketVisualizationService() {
           
           // Maximized Tournament Bracket Tree (Fill toàn bộ không gian)
           Expanded(
-            child: SizedBox(
+            child: Container(
               width: double.infinity,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
                 child: Container(
-                  // Ensure minimum height for proper bracket display
+                  // Ensure minimum dimensions for proper bracket display
                   constraints: BoxConstraints(
                     minHeight: 300, // Minimum height for bracket visibility
+                    minWidth: 320, // Minimum width for bracket display
                   ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
+                    physics: const BouncingScrollPhysics(),
                     child: IntrinsicHeight(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
                         children: _buildRoundsWithConnectors(rounds),
                       ),
                     ),
@@ -123,6 +134,8 @@ class BracketVisualizationService() {
   // ==================== BRACKET HEADER ====================
 
   /// Compact header for maximum bracket space (1 line only)
+  /*
+  // TEMPORARILY COMMENTED OUT - Unused method
   Widget _buildCompactBracketHeader(Map<String, dynamic> bracketData) {
     // Safely parse participant count
     final participantCountData = bracketData['participantCount'];
@@ -172,6 +185,7 @@ class BracketVisualizationService() {
       ),
     );
   }
+  */
 
   Widget _buildBracketHeader(Map<String, dynamic> bracketData) {
     // Safely parse participant count (could be String or int from database)
@@ -261,6 +275,36 @@ class BracketVisualizationService() {
         ],
       ),
     );
+  }
+
+  // ==================== SABO DE16 BRACKET ====================
+
+  Future<Widget> _buildSaboDE16Bracket(
+    String tournamentId,
+    Map<String, dynamic> bracketData,
+    VoidCallback? onMatchTap,
+    bool showLiveUpdates,
+  ) async {
+    try {
+      // Get actual matches from database
+      final matches = await _getSaboDE16Matches(tournamentId);
+      
+      return Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _buildSaboDE16Header(bracketData, matches),
+            const SizedBox(height: 20),
+            Expanded(
+              child: _buildSaboDE16BracketLayout(matches, onMatchTap),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      debugPrint('❌ Error building SABO DE16 bracket: $e');
+      return _buildErrorWidget(e.toString());
+    }
   }
 
   // ==================== ROUND ROBIN BRACKET ====================
@@ -541,5 +585,507 @@ class BracketVisualizationService() {
     } else() {
       return 'Vòng $round';
     }
+  }
+
+  // ==================== SABO DE16 HELPER METHODS ====================
+
+  /// Get SABO DE16 matches from database
+  Future<List<Map<String, dynamic>>> _getSaboDE16Matches(String tournamentId) async {
+    try {
+      final response = await _supabase
+          .from('matches')
+          .select('*, player1:player1_id(*), player2:player2_id(*), winner:winner_id(*)')
+          .eq('tournament_id', tournamentId)
+          .order('round_number')
+          .order('match_number');
+
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      debugPrint('❌ Error fetching SABO DE16 matches: $e');
+      return [];
+    }
+  }
+
+  /// Build SABO DE16 header with proper round counts
+  Widget _buildSaboDE16Header(Map<String, dynamic> bracketData, List<Map<String, dynamic>> matches) {
+    // Count matches by SABO DE16 structure
+    final wbMatches = matches.where((m) => m['round_number'] <= 3).length;  // WR1,2,3
+    final lbAMatches = matches.where((m) => m['round_number'] >= 101 && m['round_number'] <= 103).length; // LAR101,102,103
+    final lbBMatches = matches.where((m) => m['round_number'] >= 201 && m['round_number'] <= 202).length; // LBR201,202
+    final saboFinalsMatches = matches.where((m) => m['round_number'] >= 250 && m['round_number'] <= 300).length; // R250,251,300
+    
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildHeaderStat('Tổng cộng', '${matches.length}', Colors.green),
+          _buildHeaderStat('WB', '$wbMatches', Colors.blue),
+          _buildHeaderStat('LB-A', '$lbAMatches', Colors.orange),
+          _buildHeaderStat('LB-B', '$lbBMatches', Colors.purple),
+          _buildHeaderStat('Finals', '$saboFinalsMatches', Colors.red),
+        ],
+      ),
+    );
+  }
+
+  /// Build SABO DE16 bracket layout with proper structure
+  Widget _buildSaboDE16BracketLayout(List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Winners Bracket Section
+          _buildSaboWinnerBracketSection(matches, onMatchTap),
+          const SizedBox(height: 20),
+          
+          // Losers Bracket Section
+          _buildSaboLoserBracketSection(matches, onMatchTap),
+          const SizedBox(height: 20),
+          
+          // SABO Finals Section
+          _buildSaboFinalsSection(matches, onMatchTap),
+        ],
+      ),
+    );
+  }
+
+  /// Build SABO Winner Bracket section (R1→R2→R3) - Demo Style
+  Widget _buildSaboWinnerBracketSection(List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    final r1Matches = matches.where((m) => m['round_number'] == 1).toList();
+    final r2Matches = matches.where((m) => m['round_number'] == 2).toList();
+    final r3Matches = matches.where((m) => m['round_number'] == 3).toList();
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header like demo
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.green.shade600,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Text(
+            '🏆 Winners Bracket',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        
+        // Info box like demo
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.green.shade50,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.green.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.green.shade700, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Winners Bracket Logic',
+                    style: TextStyle(
+                      color: Colors.green.shade700,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '• Single elimination format\n• Losers drop to Losers Bracket (second chance)\n• Winner advances to SABO Finals',
+                style: TextStyle(
+                  color: Colors.green.shade600,
+                  fontSize: 11,
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        
+        // Bracket display
+        SizedBox(
+          height: 200,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildRoundColumn('WB R1\n(8 matches)', r1Matches, onMatchTap),
+                const SizedBox(width: 16),
+                _buildRoundColumn('WB R2\n(4 matches)', r2Matches, onMatchTap),
+                const SizedBox(width: 16),
+                _buildRoundColumn('WB R3\n(2 matches)', r3Matches, onMatchTap),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Build SABO Losers Bracket section (Combined A + B) - Demo Style
+  Widget _buildSaboLoserBracketSection(List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    final lbAMatches = matches.where((m) => m['round_number'] >= 101 && m['round_number'] <= 103).toList();
+    final lbBMatches = matches.where((m) => m['round_number'] >= 201 && m['round_number'] <= 202).toList();
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header like demo
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade600,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Text(
+            '🔥 Losers Bracket',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        
+        // Info box like demo
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade50,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.orange.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.warning_amber_outlined, color: Colors.orange.shade700, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Losers Bracket Complex Logic',
+                    style: TextStyle(
+                      color: Colors.orange.shade700,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '• Branch A: WB R1 losers compete (R101→R102→R103)\n• Branch B: WB R2 losers vs Branch A survivor (R201→R202)\n• Final survivor faces WB Champion in SABO Finals',
+                style: TextStyle(
+                  color: Colors.orange.shade600,
+                  fontSize: 11,
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        
+        // Combined bracket display
+        SizedBox(
+          height: 220,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Branch A
+                _buildSaboLoserBranchA(lbAMatches, onMatchTap),
+                const SizedBox(width: 20),
+                // Branch B  
+                _buildSaboLoserBranchB(lbBMatches, onMatchTap),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Build SABO Loser Branch A section (R101→R102→R103) - Compact Style  
+  Widget _buildSaboLoserBranchA(List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    final r101Matches = matches.where((m) => m['round_number'] == 101).toList();
+    final r102Matches = matches.where((m) => m['round_number'] == 102).toList();
+    final r103Matches = matches.where((m) => m['round_number'] == 103).toList();
+    
+    return Column(
+      children: [
+        // Branch A header
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),  
+          decoration: BoxDecoration(
+            color: Colors.red.shade500,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const Text(
+            'Branch A (WB R1 Losers)',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            _buildRoundColumn('LB-A R1', r101Matches, onMatchTap),
+            const SizedBox(width: 10),
+            _buildRoundColumn('LB-A R2', r102Matches, onMatchTap),
+            const SizedBox(width: 10),
+            _buildRoundColumn('LB-A R3', r103Matches, onMatchTap),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// Build SABO Loser Branch B section (R201→R202) - Compact Style
+  Widget _buildSaboLoserBranchB(List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    final r201Matches = matches.where((m) => m['round_number'] == 201).toList();
+    final r202Matches = matches.where((m) => m['round_number'] == 202).toList();
+    
+    return Column(
+      children: [
+        // Branch B header
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade500,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const Text(
+            'Branch B (WB R2 Losers)',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            _buildRoundColumn('LB-B R1', r201Matches, onMatchTap),
+            const SizedBox(width: 10),
+            _buildRoundColumn('LB-B R2', r202Matches, onMatchTap),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// Build SABO Finals section (R250, R251, R300) - Demo Style
+  Widget _buildSaboFinalsSection(List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    final r250Matches = matches.where((m) => m['round_number'] == 250).toList();
+    final r251Matches = matches.where((m) => m['round_number'] == 251).toList();
+    final r300Matches = matches.where((m) => m['round_number'] == 300).toList();
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header like demo
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.purple.shade600,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Text(
+            '🏅 SABO Finals',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        
+        // Info box like demo
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.purple.shade50,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.purple.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.emoji_events, color: Colors.purple.shade700, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    'SABO Finals Rules',
+                    style: TextStyle(
+                      color: Colors.purple.shade700,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '• Semi 1 (R250): WB Champion vs LB Branch B survivor\n• Semi 2 (R251): Loser match if Semi 1 loser survives\n• Final (R300): Ultimate championship match',
+                style: TextStyle(
+                  color: Colors.purple.shade600,
+                  fontSize: 11,
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        
+        // Finals display
+        SizedBox(
+          height: 100,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildRoundColumn('Semi 1\n(R250)', r250Matches, onMatchTap),
+                const SizedBox(width: 16),
+                _buildRoundColumn('Semi 2\n(R251)', r251Matches, onMatchTap),
+                const SizedBox(width: 16),
+                _buildRoundColumn('Final\n(R300)', r300Matches, onMatchTap),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+  /// Build a round column with matches - Compact for SABO DE16
+  Widget _buildRoundColumn(String title, List<Map<String, dynamic>> matches, VoidCallback? onMatchTap) {
+    return Container(
+      width: 100, // Fixed width to prevent overflow
+      constraints: const BoxConstraints(maxHeight: 120), // Max height constraint
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Use minimum space
+        children: [
+          // Compact header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2E86AB),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 4),
+          
+          // Match count badge
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              '${matches.length} matches',
+              style: const TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          
+          // Match details (if any)
+          if (matches.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Flexible(
+              child: Text(
+                'Status: ${matches.first['status'] ?? 'pending'}',
+                style: const TextStyle(
+                  fontSize: 8,
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  /// Build header stat widget
+  Widget _buildHeaderStat(String label, String value, Color color) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12),
+        ),
+      ],
+    );
   }
 }

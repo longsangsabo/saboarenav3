@@ -55,7 +55,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
       case 4:
         return 'TỨ KẾT'; // Quarter-final - còn 4 người
       default:
-        return 'VÒNG ${roundNumber}'; // Regular rounds
+        return 'VÒNG $roundNumber'; // Regular rounds
     }
   }
 

@@ -4,7 +4,7 @@
 
 import '../core/constants/tournament_constants.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:math' as math;
+// import 'dart:math' as math; // Currently unused
 
 /// Tournament participant data
 class TournamentParticipant() {

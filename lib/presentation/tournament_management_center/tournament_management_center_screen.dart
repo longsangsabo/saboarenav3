@@ -3,8 +3,8 @@ import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/app_export.dart';
 import '../../models/tournament.dart';
+import '../../models/user_profile.dart';
 import '../../services/tournament_service.dart';
-import '../../services/bracket_service.dart';
 import '../tournament_detail_screen/widgets/match_management_tab.dart';
 import '../tournament_detail_screen/widgets/participant_management_tab.dart';
 import '../tournament_detail_screen/widgets/tournament_rankings_widget.dart';
@@ -24,7 +24,6 @@ class TournamentManagementCenterScreen extends StatefulWidget() {
 
 class _TournamentManagementCenterScreenState extends State<TournamentManagementCenterScreen> {
   final TournamentService _tournamentService = TournamentService.instance;
-  final BracketService _bracketService = BracketService.instance;
   final SupabaseClient _supabase = Supabase.instance.client;
   
   List<Tournament> _tournaments = [];
@@ -235,7 +234,7 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
                         ),
                         SizedBox(height: 2.sp),
                         Text(
-                          '${_getFormatDisplayName(tournament.format)} (${tournament.tournamentType})',
+                          '${_getFormatDisplayName(tournament.bracketFormat)} (${tournament.gameFormat})',
                           style: TextStyle(
                             fontSize: 8.sp,
                             color: Colors.grey[600],
@@ -385,8 +384,8 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
             child: TabBar(
               labelColor: Colors.white,
               unselectedLabelColor: Colors.grey[600],
-              labelStyle: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w500),
-              unselectedLabelStyle: TextStyle(fontSize: 9.sp, fontWeight: FontWeight.w400),
+              labelStyle: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w500),
+              unselectedLabelStyle: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w400),
               indicator: BoxDecoration(
                 color: AppTheme.primaryLight,
                 borderRadius: BorderRadius.circular(6.sp),
@@ -395,36 +394,36 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
               tabAlignment: TabAlignment.fill,
               isScrollable: false,
               tabs: [
-                Container(
-                  height: 32.sp, // Giảm chiều cao để fit 4 tabs
+                SizedBox(
+                  height: 28.sp, // Giảm chiều cao hơn nữa để fit 4 tabs
                   child: Tab(
-                    icon: Icon(Icons.group, size: 12.sp),
+                    icon: Icon(Icons.group, size: 10.sp),
                     text: 'Thành viên',
-                    iconMargin: EdgeInsets.only(bottom: 1.sp),
+                    iconMargin: EdgeInsets.only(bottom: 0.5.sp),
                   ),
                 ),
-                Container(
-                  height: 32.sp,
+                SizedBox(
+                  height: 28.sp,
                   child: Tab(
-                    icon: Icon(Icons.pool, size: 12.sp),
+                    icon: Icon(Icons.pool, size: 10.sp),
                     text: 'Trận đấu',
-                    iconMargin: EdgeInsets.only(bottom: 1.sp),
+                    iconMargin: EdgeInsets.only(bottom: 0.5.sp),
                   ),
                 ),
-                Container(
-                  height: 32.sp,
+                SizedBox(
+                  height: 28.sp,
                   child: Tab(
-                    icon: Icon(Icons.account_tree, size: 12.sp),
+                    icon: Icon(Icons.account_tree, size: 10.sp),
                     text: 'Bảng đấu',
-                    iconMargin: EdgeInsets.only(bottom: 1.sp),
+                    iconMargin: EdgeInsets.only(bottom: 0.5.sp),
                   ),
                 ),
-                Container(
-                  height: 32.sp,
+                SizedBox(
+                  height: 28.sp,
                   child: Tab(
-                    icon: Icon(Icons.emoji_events, size: 12.sp),
+                    icon: Icon(Icons.emoji_events, size: 10.sp),
                     text: 'Kết quả',
-                    iconMargin: EdgeInsets.only(bottom: 1.sp),
+                    iconMargin: EdgeInsets.only(bottom: 0.5.sp),
                   ),
                 ),
               ],
@@ -564,34 +563,44 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
           "payment_status": 'confirmed', // Add this for BracketService validation
         }).toList();
         
-        // 🔧 DETECT TOURNAMENT FORMAT AND USE APPROPRIATE SERVICE
-        final tournamentFormat = _selectedTournament!.format;
+        // � USE INTEGRATED TOURNAMENT SERVICE WITH COMPLETE DE16 SUPPORT
+        final tournamentFormat = _selectedTournament!.bracketFormat; // Use bracket format for tournament structure
         debugPrint('🎯 Detected tournament format: $tournamentFormat');
         debugPrint('🏆 Creating $tournamentFormat bracket for ${participants.length} players');
         
-        final result = _bracketService.generateBracket(
+        // 🚀 Get full UserProfile data from database for proper integration
+        final participantIds = participants.map((p) => p['user_id']).toList();
+        final userProfilesResponse = await _supabase
+            .from('users')
+            .select('*')
+            .filter('id', 'in', participantIds);
+
+        final List<UserProfile> userProfiles = userProfilesResponse
+            .map((data) => UserProfile.fromJson(data))
+            .toList();
+
+        debugPrint('📊 Loaded ${userProfiles.length} full user profiles for bracket generation');
+        
+        // 🚀 Use TournamentService.generateBracket with CompleteDoubleEliminationService integration
+        final bracket = await _tournamentService.generateBracket(
           tournamentId: _selectedTournament!.id,
           format: tournamentFormat,
-          confirmedParticipants: participants,
-          shufflePlayers: false, // Keep seeding order
+          participants: userProfiles,
+          seedingMethod: 'eloRating', // Use ELO-based seeding
         );
         
-        // Save bracket to database
-        final saveSuccess = await _bracketService.saveBracketToDatabase(result);
-        if (!saveSuccess) {
-          throw Exception('Failed to save bracket to database');
-        }
+        debugPrint('✅ Bracket created successfully');
+        debugPrint('📊 Format: ${bracket.format}, Rounds: ${bracket.rounds}');
         
-        debugPrint('✅ Bracket created and saved successfully');
-        debugPrint('📊 Generated ${result['total_matches']} matches for $tournamentFormat');
+        // Convert bracket result to success format for UI
+        final result = {
+          'success': true,
+          'message': 'Bảng đấu $tournamentFormat đã được tạo thành công',
+          'bracket': bracket,
+          'total_matches': bracket.matches.length,
+        };
         
-        if (!result.containsKey('success')) {
-          // Convert bracket result to success format
-          result['success'] = true;
-          result['message'] = 'Bảng đấu $tournamentFormat đã được tạo với ${result['total_matches']} trận đấu';
-        }
-        
-        if (!result.containsKey('success') || !result['success']) {
+        if (!result.containsKey('success') || result['success'] != true) {
           throw Exception(result['message'] ?? 'Lỗi không xác định khi tạo bảng đấu');
         }
         debugPrint('✅ Bracket created successfully');
