@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class SettingsMenuWidget extends StatelessWidget {
+class SettingsMenuWidget extends StatelessWidget() {
   final VoidCallback? onAccountSettings;
   final VoidCallback? onPrivacySettings;
   final VoidCallback? onNotificationSettings;
@@ -60,7 +60,7 @@ class SettingsMenuWidget extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: AppTheme.lightTheme.colorScheme.shadow
-                    .withValues(alpha: 0.08),
+                    .withOpacity(0.08),
                 blurRadius: 8,
                 offset: Offset(0, 2),
               ),
@@ -153,13 +153,13 @@ class SettingsMenuWidget extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => _showLogoutDialog(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red.withValues(alpha: 0.1),
+              backgroundColor: Colors.red.withOpacity(0.1),
               foregroundColor: Colors.red,
               elevation: 0,
               padding: EdgeInsets.symmetric(vertical: 2.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: Colors.red.withValues(alpha: 0.3)),
+                side: BorderSide(color: Colors.red.withOpacity(0.3)),
               ),
             ),
             child: Row(
@@ -204,8 +204,8 @@ class SettingsMenuWidget extends StatelessWidget {
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
               color: highlight 
-                  ? Colors.orange.withValues(alpha: 0.1)
-                  : AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.1),
+                  ? Colors.orange.withOpacity(0.1)
+                  : AppTheme.lightTheme.colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: CustomIconWidget(
@@ -240,7 +240,7 @@ class SettingsMenuWidget extends StatelessWidget {
             height: 1,
             thickness: 1,
             color:
-                AppTheme.lightTheme.colorScheme.outline.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.outline.withOpacity(0.1),
             indent: 4.w,
             endIndent: 4.w,
           ),
@@ -315,7 +315,7 @@ class SettingsMenuWidget extends StatelessWidget {
           leading: Container(
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
-              color: Colors.green.withValues(alpha: 0.1),
+              color: Colors.green.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: CustomIconWidget(

@@ -4,8 +4,7 @@ import '../presentation/spa_management/club_spa_management_screen.dart';
 import '../presentation/spa_management/admin_spa_management_screen.dart';
 
 /// Navigation utilities for SPA management system
-class SpaNavigationHelper {
-  
+class SpaNavigationHelper() {
   /// Navigate to user SPA rewards screen
   static void navigateToUserSpaRewards(
     BuildContext context, {
@@ -120,7 +119,7 @@ class SpaNavigationHelper {
                       Navigator.pop(context);
                       if (onRedeemRewards != null) {
                         onRedeemRewards();
-                      } else {
+                      } else() {
                         navigateToUserSpaRewards(
                           context,
                           clubId: clubId,
@@ -249,7 +248,7 @@ class SpaNavigationHelper {
             ),
             const SizedBox(width: 4),
             Text(
-              '${balance.toStringAsFixed(0)}${showLabel ? ' SPA' : ''}',
+              '${balance.toStringAsFixed(0)}${showLabel ? " SPA" : ''}',
               style: TextStyle(
                 color: Colors.blue.shade700,
                 fontWeight: FontWeight.bold,

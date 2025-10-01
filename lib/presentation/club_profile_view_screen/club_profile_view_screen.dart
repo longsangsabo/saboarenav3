@@ -3,7 +3,7 @@ import 'package:sabo_arena/core/app_export.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:flutter/foundation.dart';
 
-class ClubProfileViewScreen extends StatefulWidget {
+class ClubProfileViewScreen extends StatefulWidget() {
   const ClubProfileViewScreen({super.key});
 
   @override
@@ -11,7 +11,7 @@ class ClubProfileViewScreen extends StatefulWidget {
 }
 
 class _ClubProfileViewScreenState extends State<ClubProfileViewScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _controller;
   late Animation<double> _coverAnimation;
   late Animation<double> _contentAnimation;

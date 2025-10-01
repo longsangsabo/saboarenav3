@@ -3,7 +3,7 @@ import './club_model.dart';
 /// @deprecated Use Tournament model instead (lib/models/tournament.dart)
 /// This legacy model will be removed in future versions
 @Deprecated('Use Tournament model from lib/models/tournament.dart instead')
-class TournamentModel {
+class TournamentModel() {
   final String id;
   final String title;
   final ClubModel club;

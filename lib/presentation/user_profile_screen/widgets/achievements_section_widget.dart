@@ -6,7 +6,7 @@ import '../../../services/achievement_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
-class AchievementsSectionWidget extends StatefulWidget {
+class AchievementsSectionWidget extends StatefulWidget() {
   final String userId;
   final VoidCallback? onViewAll; // Add optional callback
 
@@ -33,8 +33,8 @@ class _AchievementsSectionWidgetState extends State<AchievementsSectionWidget> {
     _loadAchievements();
   }
 
-  Future<void> _loadAchievements() async {
-    try {
+  Future<void> _loadAchievements() async() {
+    try() {
       setState(() => _isLoading = true);
 
       final achievements = await _achievementService.getUserAchievements(
@@ -147,7 +147,7 @@ class _AchievementsSectionWidgetState extends State<AchievementsSectionWidget> {
                     height: 30,
                     width: 1,
                     color: AppTheme.lightTheme.colorScheme.outline
-                        .withValues(alpha: 0.3),
+                        .withOpacity(0.3),
                   ),
                   _buildStatItem(
                     'Tổng cộng',
@@ -193,7 +193,7 @@ class _AchievementsSectionWidgetState extends State<AchievementsSectionWidget> {
         Text(
           label,
           style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-            color: color.withValues(alpha: 0.8),
+            color: color.withOpacity(0.8),
           ),
         ),
       ],
@@ -208,7 +208,7 @@ class _AchievementsSectionWidgetState extends State<AchievementsSectionWidget> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.lightTheme.shadowColor.withValues(alpha: 0.1),
+            color: AppTheme.lightTheme.shadowColor.withOpacity(0.1),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
@@ -284,7 +284,7 @@ class _AchievementsSectionWidgetState extends State<AchievementsSectionWidget> {
   }
 
   Color _getBorderColor(String category) {
-    return _getBadgeColor(category).withValues(alpha: 0.3);
+    return _getBadgeColor(category).withOpacity(0.3);
   }
 
   String _getCategoryDisplayName(String category) {

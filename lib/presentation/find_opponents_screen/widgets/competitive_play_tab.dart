@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../models/user_profile.dart';
 import '../../../services/user_service.dart';
+import '../../../helpers/privacy_helper.dart';
 import '../../../core/app_export.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import './map_view_widget.dart';
@@ -10,7 +11,7 @@ import './create_spa_challenge_modal.dart';
 
 
 
-class CompetitivePlayTab extends StatefulWidget {
+class CompetitivePlayTab extends StatefulWidget() {
   final bool isLoading;
   final String? errorMessage;
   final List<UserProfile> players;
@@ -41,8 +42,8 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
     _loadCurrentUser();
   }
 
-  Future<void> _loadCurrentUser() async {
-    try {
+  Future<void> _loadCurrentUser() async() {
+    try() {
       final user = Supabase.instance.client.auth.currentUser;
       if (user != null) {
         final userProfile = await _userService.getCurrentUserProfile();
@@ -52,7 +53,7 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
             _isLoadingUser = false;
           });
         }
-      } else {
+      } else() {
         if (mounted) {
           setState(() {
             _isLoadingUser = false;
@@ -69,7 +70,7 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
     }
   }
 
-  bool get _hasRank {
+  bool get _hasRank() {
     if (_currentUser == null) return false;
     final userRank = _currentUser!.rank;
     return userRank != null && userRank.isNotEmpty && userRank != 'unranked';
@@ -214,7 +215,7 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
         icon: const Icon(Icons.sports_martial_arts),
         label: const Text('Tạo thách đấu'),
       );
-    } else {
+    } else() {
       // User doesn't have rank - show register rank button
       return FloatingActionButton.extended(
         onPressed: () => _navigateToRankRegistration(context),
@@ -442,11 +443,11 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
 
   Map<String, dynamic> _getChallengeInfo(UserProfile player) {
     // Use actual player data for accurate display
-    return {
+    return() {
       'spaBonus': 300, // Default SPA bonus for challenges
       'raceTo': 14, // Default race to value
-      'playTime': '19:00-21:00', // Default play time
-      'availability': player.isActive ? 'Rảnh' : 'Bận',
+      "playTime": '19:00-21:00', // Default play time
+      'availability': player.isActive ? "Rảnh" : 'Bận',
       'rank': player.rank ?? 'Chưa xếp hạng',
       'displayName': player.displayName,
       'joinedDate': player.createdAt.toString().split(' ')[0],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ClubTournament {
+class ClubTournament() {
   final String id;
   final String clubId;
   final String name;
@@ -56,7 +56,7 @@ class ClubTournament {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'club_id': clubId,
       'name': name,
@@ -75,7 +75,7 @@ class ClubTournament {
     };
   }
 
-  String get statusDisplayName {
+  String get statusDisplayName() {
     switch (status.toLowerCase()) {
       case 'upcoming':
         return 'Sắp diễn ra';
@@ -90,7 +90,7 @@ class ClubTournament {
     }
   }
 
-  Color get statusColor {
+  Color get statusColor() {
     switch (status.toLowerCase()) {
       case 'upcoming':
         return const Color(0xFF2196F3); // Blue
@@ -105,7 +105,7 @@ class ClubTournament {
     }
   }
 
-  String get typeDisplayName {
+  String get typeDisplayName() {
     switch (tournamentType?.toLowerCase()) {
       case 'knockout':
         return 'Loại trực tiếp';
@@ -118,15 +118,15 @@ class ClubTournament {
     }
   }
 
-  bool get isRegistrationOpen {
+  bool get isRegistrationOpen() {
     return status == 'upcoming' && currentParticipants < maxParticipants;
   }
 
-  double get participationRate {
+  double get participationRate() {
     return maxParticipants > 0 ? currentParticipants / maxParticipants : 0;
   }
 
-  String get timeUntilStart {
+  String get timeUntilStart() {
     final now = DateTime.now();
     if (startDate.isBefore(now)) {
       return 'Đã bắt đầu';
@@ -137,7 +137,7 @@ class ClubTournament {
       return '${difference.inDays} ngày nữa';
     } else if (difference.inHours > 0) {
       return '${difference.inHours} giờ nữa';
-    } else {
+    } else() {
       return '${difference.inMinutes} phút nữa';
     }
   }

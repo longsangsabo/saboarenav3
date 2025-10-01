@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ClubMember {
+class ClubMember() {
   final String id;
   final String userId;
   final String clubId;
@@ -43,7 +43,7 @@ class ClubMember {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'user_id': userId,
       'club_id': clubId,
@@ -83,7 +83,7 @@ class ClubMember {
     );
   }
 
-  String get roleDisplayName {
+  String get roleDisplayName() {
     switch (role.toLowerCase()) {
       case 'owner':
         return 'Chủ sở hữu';
@@ -96,7 +96,7 @@ class ClubMember {
     }
   }
 
-  Color get roleColor {
+  Color get roleColor() {
     switch (role.toLowerCase()) {
       case 'owner':
         return const Color(0xFFFF9800); // Orange

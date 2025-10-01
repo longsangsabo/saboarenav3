@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../theme/app_theme.dart';
 
-class ClubNotificationScreen extends StatefulWidget {
+class ClubNotificationScreen extends StatefulWidget() {
   final String? clubId;
 
   const ClubNotificationScreen({
@@ -192,7 +192,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
           
           // Notification Type
           DropdownButtonFormField<String>(
-            initialValue: _notificationType,
+            value: _notificationType,
             decoration: InputDecoration(
               labelText: 'Loại thông báo',
               border: OutlineInputBorder(
@@ -229,7 +229,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
           
           // Target Audience
           DropdownButtonFormField<String>(
-            initialValue: _targetAudience,
+            value: _targetAudience,
             decoration: InputDecoration(
               labelText: 'Đối tượng nhận',
               border: OutlineInputBorder(
@@ -269,7 +269,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
             title: Text('Thông báo khẩn cấp'),
             subtitle: Text(
               _isUrgent 
-                  ? 'Thông báo sẽ được ưu tiên hiển thị'
+                  ? "Thông báo sẽ được ưu tiên hiển thị"
                   : 'Thông báo thường',
               style: TextStyle(fontSize: 12.sp),
             ),
@@ -420,7 +420,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
               )
             : Icon(Icons.send, color: Colors.white),
         label: Text(
-          _isLoading ? 'Đang gửi...' : 'Gửi thông báo',
+          _isLoading ? "Đang gửi..." : 'Gửi thông báo',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
@@ -446,14 +446,14 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
     }
   }
 
-  Future<void> _sendNotification() async {
+  Future<void> _sendNotification() async() {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
     });
 
-    try {
+    try() {
       // TODO: Implement notification sending API call
       await Future.delayed(const Duration(seconds: 2)); // Simulate API call
       
@@ -475,7 +475,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           _isLoading = false;

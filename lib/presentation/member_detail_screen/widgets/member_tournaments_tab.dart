@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../member_management_screen/member_management_screen.dart';
 
-class MemberTournamentsTab extends StatefulWidget {
+class MemberTournamentsTab extends StatefulWidget() {
   final MemberData memberData;
 
   const MemberTournamentsTab({
@@ -15,7 +15,7 @@ class MemberTournamentsTab extends StatefulWidget {
 }
 
 class _MemberTournamentsTabState extends State<MemberTournamentsTab>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin() {
   @override
   bool get wantKeepAlive => true;
 
@@ -195,10 +195,10 @@ class _MemberTournamentsTabState extends State<MemberTournamentsTab>
 
   Widget _buildTournamentFilters() {
     final filters = [
-      {'key': 'all', 'label': 'Tất cả', 'count': _tournaments.length},
-      {'key': 'ongoing', 'label': 'Đang diễn ra', 'count': _tournaments.where((t) => t.status == TournamentStatus.ongoing).length},
-      {'key': 'completed', 'label': 'Đã kết thúc', 'count': _tournaments.where((t) => t.status == TournamentStatus.completed).length},
-      {'key': 'upcoming', 'label': 'Sắp tới', 'count': _tournaments.where((t) => t.status == TournamentStatus.upcoming).length},
+      {"key": 'all', "label": 'Tất cả', 'count': _tournaments.length},
+      {"key": 'ongoing', "label": 'Đang diễn ra', 'count': _tournaments.where((t) => t.status == TournamentStatus.ongoing).length},
+      {"key": 'completed', "label": 'Đã kết thúc', 'count': _tournaments.where((t) => t.status == TournamentStatus.completed).length},
+      {"key": 'upcoming', "label": 'Sắp tới', 'count': _tournaments.where((t) => t.status == TournamentStatus.upcoming).length},
     ];
 
     return SingleChildScrollView(
@@ -638,7 +638,7 @@ class _MemberTournamentsTabState extends State<MemberTournamentsTab>
 
 enum TournamentStatus { ongoing, completed, upcoming }
 
-class TournamentParticipation {
+class TournamentParticipation() {
   final String id;
   final String name;
   final DateTime startDate;

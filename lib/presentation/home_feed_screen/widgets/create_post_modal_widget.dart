@@ -9,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/app_export.dart';
 import '../../../services/post_repository.dart';
 
-class CreatePostModalWidget extends StatefulWidget {
+class CreatePostModalWidget extends StatefulWidget() {
   final VoidCallback? onPostCreated;
 
   const CreatePostModalWidget({
@@ -33,8 +33,8 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
   bool _isLoading = false;
   bool _showCamera = false;
 
-  Future<Map<String, dynamic>?> _getUserData() async {
-    try {
+  Future<Map<String, dynamic>?> _getUserData() async() {
+    try() {
       final user = Supabase.instance.client.auth.currentUser;
       if (user == null) return null;
       
@@ -65,13 +65,13 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     super.dispose();
   }
 
-  Future<bool> _requestCameraPermission() async {
+  Future<bool> _requestCameraPermission() async() {
     if (kIsWeb) return true;
     return (await Permission.camera.request()).isGranted;
   }
 
-  Future<void> _initializeCamera() async {
-    try {
+  Future<void> _initializeCamera() async() {
+    try() {
       if (!await _requestCameraPermission()) return;
 
       _cameras = await availableCameras();
@@ -101,17 +101,17 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     }
   }
 
-  Future<void> _applySettings() async {
+  Future<void> _applySettings() async() {
     if (_cameraController == null) return;
 
-    try {
+    try() {
       await _cameraController!.setFocusMode(FocusMode.auto);
     } catch (e) {
       debugPrint('Focus mode error: $e');
     }
 
     if (!kIsWeb) {
-      try {
+      try() {
         await _cameraController!.setFlashMode(FlashMode.auto);
       } catch (e) {
         debugPrint('Flash mode error: $e');
@@ -119,12 +119,12 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     }
   }
 
-  Future<void> _capturePhoto() async {
+  Future<void> _capturePhoto() async() {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
 
-    try {
+    try() {
       final XFile photo = await _cameraController!.takePicture();
       setState(() {
         _selectedImage = photo;
@@ -140,8 +140,8 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     }
   }
 
-  Future<void> _pickImageFromGallery() async {
-    try {
+  Future<void> _pickImageFromGallery() async() {
+    try() {
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
         maxWidth: 1920,
@@ -201,7 +201,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     );
   }
 
-  void _createPost() async {
+  void _createPost() async() {
     if (_textController.text.trim().isEmpty && _selectedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Vui lòng nhập nội dung hoặc chọn ảnh')),
@@ -211,7 +211,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
 
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       // Extract hashtags from content
       final content = _textController.text.trim();
       final hashtags = RegExp(r'#\w+')
@@ -238,7 +238,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Đã đăng bài viết thành công!')),
           );
-        } else {
+        } else() {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Lỗi đăng bài viết. Vui lòng thử lại!')),
           );
@@ -274,7 +274,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: colorScheme.outline.withValues(alpha: 0.2),
+                  color: colorScheme.outline.withOpacity(0.2),
                   width: 1,
                 ),
               ),
@@ -344,7 +344,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
               IconButton(
                 onPressed: () => setState(() => _showCamera = false),
                 icon: CircleAvatar(
-                  backgroundColor: Colors.black.withValues(alpha: 0.5),
+                  backgroundColor: Colors.black.withOpacity(0.5),
                   child: CustomIconWidget(
                     iconName: 'close',
                     color: Colors.white,
@@ -367,7 +367,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
               IconButton(
                 onPressed: _pickImageFromGallery,
                 icon: CircleAvatar(
-                  backgroundColor: Colors.black.withValues(alpha: 0.5),
+                  backgroundColor: Colors.black.withOpacity(0.5),
                   child: CustomIconWidget(
                     iconName: 'photo_library',
                     color: Colors.white,
@@ -430,7 +430,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
                     decoration: BoxDecoration(
-                      color: colorScheme.primary.withValues(alpha: 0.1),
+                      color: colorScheme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -471,7 +471,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: colorScheme.outline.withValues(alpha: 0.2),
+                  color: colorScheme.outline.withOpacity(0.2),
                 ),
               ),
               child: Stack(
@@ -500,7 +500,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
                       child: Container(
                         padding: EdgeInsets.all(1.w),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.5),
+                          color: Colors.black.withOpacity(0.5),
                           shape: BoxShape.circle,
                         ),
                         child: CustomIconWidget(
@@ -528,13 +528,13 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: colorScheme.outline.withValues(alpha: 0.2),
+                  color: colorScheme.outline.withOpacity(0.2),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: colorScheme.outline.withValues(alpha: 0.2),
+                  color: colorScheme.outline.withOpacity(0.2),
                 ),
               ),
             ),
@@ -591,7 +591,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
         padding: EdgeInsets.symmetric(vertical: 2.h),
         decoration: BoxDecoration(
           border: Border.all(
-            color: colorScheme.outline.withValues(alpha: 0.2),
+            color: colorScheme.outline.withOpacity(0.2),
           ),
           borderRadius: BorderRadius.circular(12),
         ),

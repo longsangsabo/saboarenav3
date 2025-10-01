@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'app_theme.dart';
 
 // Extension to provide access to theme colors as if they were appTheme instance
-extension AppThemeExtension on BuildContext {
+extension AppThemeExtension on BuildContext() {
   AppThemeData get appTheme => AppThemeData();
 }
 
-class AppThemeData {
+class AppThemeData() {
   // Primary colors
   Color get primaryLight => AppTheme.primaryLight;
   Color get primary => AppTheme.primaryLight;

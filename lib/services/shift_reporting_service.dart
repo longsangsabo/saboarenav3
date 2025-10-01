@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/shift_models.dart';
 
-class ShiftReportingService {
+class ShiftReportingService() {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // =====================================================
@@ -17,8 +17,8 @@ class ShiftReportingService {
     required String endTime,
     required double openingCash,
     String? notes,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('shift_sessions')
           .insert({
@@ -29,7 +29,7 @@ class ShiftReportingService {
             'end_time': endTime,
             'opening_cash': openingCash,
             'actual_start_time': DateTime.now().toIso8601String(),
-            'status': 'active',
+            "status": 'active',
             'notes': notes,
           })
           .select()
@@ -42,8 +42,8 @@ class ShiftReportingService {
   }
 
   /// Get active shift for staff member
-  Future<ShiftSession?> getActiveShift(String staffId) async {
-    try {
+  Future<ShiftSession?> getActiveShift(String staffId) async() {
+    try() {
       final response = await _supabase
           .from('shift_sessions')
           .select('''
@@ -70,8 +70,8 @@ class ShiftReportingService {
   Future<bool> endShift(String sessionId, {
     required double closingCash,
     String? notes,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Calculate cash difference
       final session = await _supabase
           .from('shift_sessions')
@@ -91,7 +91,7 @@ class ShiftReportingService {
             'expected_cash': expectedCash,
             'cash_difference': cashDifference,
             'actual_end_time': DateTime.now().toIso8601String(),
-            'status': 'completed',
+            "status": 'completed',
             'notes': notes,
             'updated_at': DateTime.now().toIso8601String(),
           })
@@ -120,8 +120,8 @@ class ShiftReportingService {
     String? customerId,
     String? receiptNumber,
     required String recordedBy,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('shift_transactions')
           .insert({
@@ -153,8 +153,8 @@ class ShiftReportingService {
   }
 
   /// Update shift revenue totals
-  Future<void> _updateShiftRevenue(String sessionId, double amount, String paymentMethod) async {
-    try {
+  Future<void> _updateShiftRevenue(String sessionId, double amount, String paymentMethod) async() {
+    try() {
       // Get current totals
       final session = await _supabase
           .from('shift_sessions')
@@ -198,8 +198,8 @@ class ShiftReportingService {
   }
 
   /// Get shift transactions
-  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async {
-    try {
+  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async() {
+    try() {
       final response = await _supabase
           .from('shift_transactions')
           .select('''
@@ -238,8 +238,8 @@ class ShiftReportingService {
     double? unitPrice,
     int? totalSold,
     String? notes,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('shift_inventory')
           .insert({
@@ -269,8 +269,8 @@ class ShiftReportingService {
   }
 
   /// Get shift inventory
-  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async {
-    try {
+  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async() {
+    try() {
       final response = await _supabase
           .from('shift_inventory')
           .select()
@@ -299,8 +299,8 @@ class ShiftReportingService {
     String? vendorName,
     required String recordedBy,
     String? approvedBy,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('shift_expenses')
           .insert({
@@ -327,8 +327,8 @@ class ShiftReportingService {
   }
 
   /// Get shift expenses
-  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async {
-    try {
+  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async() {
+    try() {
       final response = await _supabase
           .from('shift_expenses')
           .select('''
@@ -356,8 +356,8 @@ class ShiftReportingService {
   // =====================================================
 
   /// Generate shift report
-  Future<ShiftReport> generateShiftReport(String sessionId) async {
-    try {
+  Future<ShiftReport> generateShiftReport(String sessionId) async() {
+    try() {
       // Get shift summary using database function
       final summaryResponse = await _supabase
           .rpc('calculate_shift_summary', params: {'session_id': sessionId});
@@ -414,7 +414,7 @@ class ShiftReportingService {
         'cash_expected': session['expected_cash'] ?? 0,
         'cash_actual': session['closing_cash'] ?? 0,
         'cash_variance': session['cash_difference'] ?? 0,
-        'status': 'draft',
+        "status": 'draft',
       };
 
       final response = await _supabase
@@ -434,8 +434,8 @@ class ShiftReportingService {
     DateTime? startDate,
     DateTime? endDate,
     String? status,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('shift_reports')
           .select('''
@@ -477,8 +477,8 @@ class ShiftReportingService {
   Future<Map<String, dynamic>> getShiftAnalytics(String clubId, {
     DateTime? startDate,
     DateTime? endDate,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('shift_reports')
           .select('total_revenue, total_expenses, net_profit, created_at')
@@ -505,7 +505,7 @@ class ShiftReportingService {
         totalProfit += (report['net_profit'] as num? ?? 0).toDouble();
       }
 
-      return {
+      return() {
         'total_revenue': totalRevenue,
         'total_expenses': totalExpenses,
         'total_profit': totalProfit,
@@ -527,15 +527,15 @@ class ShiftReportingService {
   Future<bool> handOverShift(String sessionId, {
     required String handOverToStaffId,
     required String handoverNotes,
-  }) async {
-    try {
+  }) async() {
+    try() {
       await _supabase
           .from('shift_sessions')
           .update({
             'handed_over_to': handOverToStaffId,
             'handed_over_at': DateTime.now().toIso8601String(),
             'handover_notes': handoverNotes,
-            'status': 'handed_over',
+            "status": 'handed_over',
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('id', sessionId);

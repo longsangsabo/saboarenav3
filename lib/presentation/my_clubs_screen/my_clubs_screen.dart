@@ -6,7 +6,7 @@ import '../../services/club_service.dart';
 import '../../models/club.dart';
 import '../../widgets/custom_app_bar.dart';
 
-class MyClubsScreen extends StatefulWidget {
+class MyClubsScreen extends StatefulWidget() {
   const MyClubsScreen({super.key});
 
   @override
@@ -38,8 +38,8 @@ class _MyClubsScreenState extends State<MyClubsScreen> {
     super.dispose();
   }
 
-  Future<void> _loadMyClubs() async {
-    try {
+  Future<void> _loadMyClubs() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;

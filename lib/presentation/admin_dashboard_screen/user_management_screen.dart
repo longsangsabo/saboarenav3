@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 
 /// DEMO: User Management Screen for Admin
 /// This is a proposal/mockup for future implementation
-class UserManagementScreen extends StatefulWidget {
+class UserManagementScreen extends StatefulWidget() {
   const UserManagementScreen({super.key});
 
   @override
@@ -49,8 +49,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     });
   }
 
-  Future<void> _loadUsers() async {
-    try {
+  Future<void> _loadUsers() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;

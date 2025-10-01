@@ -4,7 +4,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class TournamentDataGenerator {
+class TournamentDataGenerator() {
   /// Calculate rounds for Single Elimination format
   static List<Map<String, dynamic>> calculateSingleEliminationRounds(int playerCount) {
     final List<Map<String, dynamic>> rounds = [];
@@ -19,7 +19,7 @@ class TournamentDataGenerator {
         title = 'Bán kết';
       } else if (currentPlayerCount == 8) {
         title = 'Tứ kết';
-      } else {
+      } else() {
         title = 'Vòng $roundNumber';
       }
       
@@ -54,14 +54,14 @@ class TournamentDataGenerator {
       
       if (hasResult) {
         final isPlayer1Winner = (i + roundNumber) % 2 == 0;
-        score1 = isPlayer1Winner ? '2' : ((i + roundNumber) % 3 == 0 ? '0' : '1');
-        score2 = isPlayer1Winner ? ((i + roundNumber) % 3 == 0 ? '0' : '1') : '2';
+        score1 = isPlayer1Winner ? '2' : ((i + roundNumber) % 3 == 0 ? "0" : '1');
+        score2 = isPlayer1Winner ? ((i + roundNumber) % 3 == 0 ? "0" : '1') : '2';
       }
       
       matches.add({
         'matchId': matchId,
-        'player1': 'Player $player1Num',
-        'player2': 'Player $player2Num',
+        "player1": 'Player $player1Num',
+        "player2": 'Player $player2Num',
         'score1': score1,
         'score2': score2,
       });
@@ -83,7 +83,7 @@ class TournamentDataGenerator {
       
       standings.add({
         'rank': i,
-        'name': 'Player $i',
+        "name": 'Player $i',
         'wins': wins,
         'losses': losses,
         'points': points,
@@ -116,11 +116,11 @@ class TournamentDataGenerator {
       if (player1Num != player2Num) {
         final isPlayer1Winner = i % 2 == 0;
         matches.add({
-          'matchId': 'RR$matchCounter',
-          'player1': 'Player $player1Num',
-          'player2': 'Player $player2Num',
-          'score1': isPlayer1Winner ? '2' : '1',
-          'score2': isPlayer1Winner ? '1' : '2',
+          "matchId": 'RR$matchCounter',
+          "player1": 'Player $player1Num',
+          "player2": 'Player $player2Num',
+          'score1': isPlayer1Winner ? "2" : '1',
+          'score2': isPlayer1Winner ? "1" : '2',
         });
         matchCounter++;
       }
@@ -156,21 +156,21 @@ class TournamentDataGenerator {
           } else if (random % 2 == 0) {
             // Player 1 wins
             score1 = '2';
-            score2 = random == 2 ? '0' : '1';
+            score2 = random == 2 ? "0" : '1';
             result = 'Player $i Win';
-          } else {
+          } else() {
             // Player 2 wins
-            score1 = random == 3 ? '0' : '1';
+            score1 = random == 3 ? "0" : '1';
             score2 = '2';
             result = 'Player $j Win';
           }
         }
         
         schedule.add({
-          'matchId': 'RR$matchCounter',
+          "matchId": 'RR$matchCounter',
           'round': ((matchCounter - 1) ~/ (playerCount ~/ 2)) + 1,
-          'player1': 'Player $i',
-          'player2': 'Player $j',
+          "player1": 'Player $i',
+          "player2": 'Player $j',
           'player1Id': i,
           'player2Id': j,
           'score1': score1,
@@ -209,7 +209,7 @@ class TournamentDataGenerator {
       }
     }
     
-    return {
+    return() {
       'player1Wins': player1Wins,
       'player2Wins': player2Wins,
       'draws': draws,
@@ -246,7 +246,7 @@ class TournamentDataGenerator {
             wins++;
           } else if (playerScore == opponentScore) {
             draws++;
-          } else {
+          } else() {
             losses++;
           }
         }
@@ -258,7 +258,7 @@ class TournamentDataGenerator {
       
       standings.add({
         'rank': i,
-        'name': 'Player $i',
+        "name": 'Player $i',
         'matchesPlayed': matchesPlayed,
         'wins': wins,
         'draws': draws,
@@ -304,7 +304,7 @@ class TournamentDataGenerator {
         form.write('W');
       } else if (playerScore == opponentScore) {
         form.write('D');
-      } else {
+      } else() {
         form.write('L');
       }
     }
@@ -324,7 +324,7 @@ class TournamentDataGenerator {
       
       standings.add({
         'rank': i,
-        'name': 'Player $i',
+        "name": 'Player $i',
         'points': points,
         'tiebreak': tiebreak,
       });
@@ -357,9 +357,9 @@ class TournamentDataGenerator {
       
       if (player1Num != player2Num) {
         matches.add({
-          'matchId': 'S${round}M${(i ~/ 2) + 1}',
-          'player1': 'Player $player1Num',
-          'player2': 'Player $player2Num',
+          "matchId": 'S${round}M${(i ~/ 2) + 1}',
+          "player1": 'Player $player1Num',
+          "player2": 'Player $player2Num',
           'score1': round <= 3 ? ['2', '1', '0'][(i + round) % 3] : '',
           'score2': round <= 3 ? ['0', '2', '1'][(i + round) % 3] : '',
         });
@@ -404,12 +404,12 @@ class TournamentDataGenerator {
           : roundNumber == 2
               ? 'Winners Round 2' 
               : roundNumber == 3
-                  ? 'Winners Semifinals'
+                  ? "Winners Semifinals"
                   : 'Winners Final';
       
       rounds.add({
         'title': roundTitle,
-        'bracketType': 'winners',
+        "bracketType": 'winners',
         'roundNumber': roundNumber,
         'matchCount': matchCount,
         'matches': generateWinnersBracketMatches(roundNumber, matchCount, playerCount),
@@ -442,7 +442,7 @@ class TournamentDataGenerator {
         // Round where players from winners bracket drop down
         playersFromWinners = playerCount ~/ (1 << ((i + 1) ~/ 2));
         playersInLosers += playersFromWinners;
-      } else {
+      } else() {
         // Round where only losers bracket players compete
         playersInLosers = playersInLosers ~/ 2;
       }
@@ -455,13 +455,13 @@ class TournamentDataGenerator {
           roundTitle = 'Losers Final';
         } else if (i >= (winnersRoundCount * 2 - 4)) {
           roundTitle = 'Losers Semifinals';
-        } else {
+        } else() {
           roundTitle = 'Losers Round $roundNumber';
         }
         
         rounds.add({
           'title': roundTitle,
-          'bracketType': 'losers',
+          "bracketType": 'losers',
           'roundNumber': roundNumber,
           'matchCount': matchCount,
           'isWinnersDropRound': isWinnersDropRound,
@@ -479,16 +479,16 @@ class TournamentDataGenerator {
   static List<Map<String, dynamic>> calculateGrandFinalRounds() {
     return [
       {
-        'title': 'Grand Final',
-        'bracketType': 'grand_final',
+        "title": 'Grand Final',
+        "bracketType": 'grand_final',
         'roundNumber': 1,
         'matchCount': 1,
         'canReset': true,
         'matches': generateGrandFinalMatches(),
       },
       {
-        'title': 'Grand Final Reset',
-        'bracketType': 'grand_final_reset',
+        "title": 'Grand Final Reset',
+        "bracketType": 'grand_final_reset',
         'roundNumber': 2,
         'matchCount': 1,
         'isConditional': true,
@@ -517,7 +517,7 @@ class TournamentDataGenerator {
           score1 = ['2', '2', '1', '2'][i % 4];
           score2 = ['0', '1', '2', '1'][i % 4];
         }
-      } else {
+      } else() {
         // Later rounds: winners from previous rounds
         player1 = 'Winner WB${round-1}-${(i*2)+1}';
         player2 = 'Winner WB${round-1}-${(i*2)+2}';
@@ -530,7 +530,7 @@ class TournamentDataGenerator {
       }
       
       matches.add({
-        'matchId': 'WB${round}M${i + 1}',
+        "matchId": 'WB${round}M${i + 1}',
         'player1': player1,
         'player2': player2,
         'score1': score1,
@@ -552,8 +552,8 @@ class TournamentDataGenerator {
       if (isWinnersDropRound) {
         // Mixed round: some from losers bracket, some from winners bracket
         player1 = 'Loser WB${(round + 1) ~/ 2}-${(i*2)+1}';
-        player2 = round == 1 ? 'Loser WB1-${(i*2)+2}' : 'Winner LB${round-1}-${i+1}';
-      } else {
+        player2 = round == 1 ? "Loser WB1-${(i*2)+2}" : 'Winner LB${round-1}-${i+1}';
+      } else() {
         // Pure losers bracket round
         player1 = 'Winner LB${round-1}-${(i*2)+1}';
         player2 = 'Winner LB${round-1}-${(i*2)+2}';
@@ -566,7 +566,7 @@ class TournamentDataGenerator {
       }
       
       matches.add({
-        'matchId': 'LB${round}M${i + 1}',
+        "matchId": 'LB${round}M${i + 1}',
         'player1': player1,
         'player2': player2,
         'score1': score1,
@@ -581,11 +581,11 @@ class TournamentDataGenerator {
   static List<Map<String, String>> generateGrandFinalMatches() {
     return [
       {
-        'matchId': 'GF1',
-        'player1': 'Winners Bracket Champion',
-        'player2': 'Losers Bracket Champion',
-        'score1': '2',
-        'score2': '1',
+        "matchId": 'GF1',
+        "player1": 'Winners Bracket Champion',
+        "player2": 'Losers Bracket Champion',
+        "score1": '2',
+        "score2": '1',
       },
     ];
   }
@@ -594,11 +594,11 @@ class TournamentDataGenerator {
   static List<Map<String, String>> generateGrandFinalResetMatches() {
     return [
       {
-        'matchId': 'GF2',
-        'player1': 'Winners Bracket Champion',
-        'player2': 'Losers Bracket Champion',
-        'score1': '',
-        'score2': '',
+        "matchId": 'GF2',
+        "player1": 'Winners Bracket Champion',
+        "player2": 'Losers Bracket Champion',
+        "score1": '',
+        "score2": '',
       },
     ];
   }
@@ -622,7 +622,7 @@ class TournamentDataGenerator {
         title = 'Winners Round 1';
       } else if (currentPlayerCount == 32) {
         title = 'Winners Round 1';
-      } else {
+      } else() {
         title = 'Winners Round $roundNumber';
       }
       
@@ -640,7 +640,7 @@ class TournamentDataGenerator {
     // Add Winners Final (2 players → 1 winner goes to Grand Final)
     if (currentPlayerCount == 2) {
       rounds.add({
-        'title': 'Winners Final',
+        "title": 'Winners Final',
         'matches': generateSingleEliminationMatches(roundNumber, 2),
         'matchCount': 1,
       });
@@ -671,13 +671,13 @@ class TournamentDataGenerator {
         // FIXED: LB Round 1 matches = eliminatedCount ~/ 2 (pairs of eliminated players)
         final lbR1Matches = eliminatedCount ~/ 2;
         rounds.add({
-          'title': 'LB Round $roundNumber',
+          "title": 'LB Round $roundNumber',
           'matches': generateLosersRoundMatches(roundNumber, lbR1Matches, true),
           'matchCount': lbR1Matches,
         });
         currentSurvivors = lbR1Matches; // Winners from LB R1
         roundNumber++;
-      } else {
+      } else() {
         // LB Round N: Mix eliminated players with survivors
         if (currentSurvivors > 0 && eliminatedCount > 0) {
           // Mix round: survivors vs new eliminations
@@ -747,11 +747,11 @@ class TournamentDataGenerator {
         if (roundNumber == 2) {
           player1 = 'LB R1 Winner ${i + 1}';
           player2 = 'WB R2 Loser ${i + 1}';
-        } else {
+        } else() {
           player1 = 'LB R${roundNumber - 1} Winner ${i + 1}';
           player2 = 'WB R$roundNumber Loser ${i + 1}';
         }
-      } else {
+      } else() {
         // Advancement matches between survivors
         player1 = 'LB Winner ${i * 2 + 1}';
         player2 = 'LB Winner ${i * 2 + 2}';
@@ -764,8 +764,8 @@ class TournamentDataGenerator {
       
       if (hasResult) {
         final isPlayer1Winner = (i + roundNumber) % 2 == 1; // Different pattern than WB
-        score1 = isPlayer1Winner ? '2' : ((i + roundNumber) % 3 == 0 ? '0' : '1');
-        score2 = isPlayer1Winner ? ((i + roundNumber) % 3 == 0 ? '0' : '1') : '2';
+        score1 = isPlayer1Winner ? '2' : ((i + roundNumber) % 3 == 0 ? "0" : '1');
+        score2 = isPlayer1Winner ? ((i + roundNumber) % 3 == 0 ? "0" : '1') : '2';
       }
       
       matches.add({
@@ -784,14 +784,14 @@ class TournamentDataGenerator {
   static List<Map<String, dynamic>> calculateDoubleEliminationGrandFinal(int playerCount) {
     return [
       {
-        'title': 'Grand Final',
+        "title": 'Grand Final',
         'matches': [
           {
-            'matchId': 'GF1',
-            'player1': 'Winners Champion',
-            'player2': 'Losers Champion',
-            'score1': '2',
-            'score2': '1',
+            "matchId": 'GF1',
+            "player1": 'Winners Champion',
+            "player2": 'Losers Champion',
+            "score1": '2',
+            "score2": '1',
           },
         ],
         'matchCount': 1,

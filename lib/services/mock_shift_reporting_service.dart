@@ -1,7 +1,7 @@
 import '../models/shift_models.dart';
 import 'dart:math';
 
-class MockShiftReportingService {
+class MockShiftReportingService() {
   static final MockShiftReportingService _instance = MockShiftReportingService._internal();
   factory MockShiftReportingService() => _instance;
   MockShiftReportingService._internal();
@@ -55,8 +55,8 @@ class MockShiftReportingService {
         cashRevenue: 800000 + _random.nextDouble() * 400000,
         cardRevenue: 300000 + _random.nextDouble() * 200000,
         digitalRevenue: 100000 + _random.nextDouble() * 200000,
-        status: i == 0 ? 'active' : 'completed',
-        notes: i == 0 ? 'Ca hiện tại đang hoạt động' : 'Ca hoàn thành bình thường',
+        status: i == 0 ? "active" : 'completed',
+        notes: i == 0 ? "Ca hiện tại đang hoạt động" : 'Ca hoàn thành bình thường',
         createdAt: DateTime(date.year, date.month, date.day, 7, 30),
         updatedAt: DateTime(date.year, date.month, date.day, 16, 30),
       );
@@ -90,8 +90,8 @@ class MockShiftReportingService {
         id: 'trans_${sessionId}_$i',
         shiftSessionId: sessionId,
         clubId: clubId,
-        transactionType: _random.nextBool() ? 'revenue' : 'expense',
-        category: _random.nextBool() ? 'table_fee' : 'food',
+        transactionType: _random.nextBool() ? "revenue" : 'expense',
+        category: _random.nextBool() ? "table_fee" : 'food',
         description: _generateTransactionDescription(),
         amount: 20000 + _random.nextDouble() * 180000,
         paymentMethod: _paymentMethods[_random.nextInt(_paymentMethods.length)],
@@ -119,7 +119,7 @@ class MockShiftReportingService {
         clubId: clubId,
         itemName: item,
         category: category,
-        unit: category == 'drink' ? 'chai' : 'phần',
+        unit: category == 'drink' ? "chai" : 'phần',
         openingStock: openingStock,
         closingStock: openingStock - sold - wasted,
         stockUsed: sold,
@@ -258,28 +258,28 @@ class MockShiftReportingService {
   // MOCK SERVICE METHODS
   // =====================================================
 
-  Future<ShiftSession?> getActiveShift(String staffId) async {
+  Future<ShiftSession?> getActiveShift(String staffId) async() {
     await Future.delayed(const Duration(milliseconds: 500));
     _initializeMockData();
     
     return _mockSessions.where((s) => s.staffId == staffId && s.status == 'active').firstOrNull;
   }
 
-  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async {
+  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async() {
     await Future.delayed(const Duration(milliseconds: 300));
     _initializeMockData();
     
     return _mockTransactions.where((t) => t.shiftSessionId == sessionId).toList();
   }
 
-  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async {
+  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async() {
     await Future.delayed(const Duration(milliseconds: 300));
     _initializeMockData();
     
     return _mockInventory.where((i) => i.shiftSessionId == sessionId).toList();
   }
 
-  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async {
+  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async() {
     await Future.delayed(const Duration(milliseconds: 300));
     _initializeMockData();
     
@@ -290,7 +290,7 @@ class MockShiftReportingService {
     DateTime? startDate,
     DateTime? endDate,
     String? status,
-  }) async {
+  }) async() {
     await Future.delayed(const Duration(milliseconds: 400));
     _initializeMockData();
     
@@ -314,7 +314,7 @@ class MockShiftReportingService {
   Future<Map<String, dynamic>> getShiftAnalytics(String clubId, {
     DateTime? startDate,
     DateTime? endDate,
-  }) async {
+  }) async() {
     await Future.delayed(const Duration(milliseconds: 400));
     _initializeMockData();
     
@@ -338,7 +338,7 @@ class MockShiftReportingService {
       totalProfit += report.netProfit;
     }
 
-    return {
+    return() {
       'total_revenue': totalRevenue,
       'total_expenses': totalExpenses,
       'total_profit': totalProfit,
@@ -357,7 +357,7 @@ class MockShiftReportingService {
     required String endTime,
     required double openingCash,
     String? notes,
-  }) async {
+  }) async() {
     await Future.delayed(const Duration(milliseconds: 800));
     
     final newSession = ShiftSession(
@@ -383,7 +383,7 @@ class MockShiftReportingService {
     return newSession;
   }
 
-  Future<bool> endShift(String sessionId, {required double closingCash}) async {
+  Future<bool> endShift(String sessionId, {required double closingCash}) async() {
     await Future.delayed(const Duration(milliseconds: 600));
     
     final sessionIndex = _mockSessions.indexWhere((s) => s.id == sessionId);

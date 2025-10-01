@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class OperatingHoursScreen extends StatefulWidget {
+class OperatingHoursScreen extends StatefulWidget() {
   final String clubId;
 
   const OperatingHoursScreen({
@@ -29,13 +29,13 @@ class _OperatingHoursScreenState extends State<OperatingHoursScreen> {
   List<String> holidays = [];
 
   final Map<String, String> dayNames = {
-    'Monday': 'Thứ Hai',
-    'Tuesday': 'Thứ Ba', 
-    'Wednesday': 'Thứ Tư',
-    'Thursday': 'Thứ Năm',
-    'Friday': 'Thứ Sáu',
-    'Saturday': 'Thứ Bảy',
-    'Sunday': 'Chủ Nhật',
+    "Monday": 'Thứ Hai',
+    "Tuesday": 'Thứ Ba', 
+    "Wednesday": 'Thứ Tư',
+    "Thursday": 'Thứ Năm',
+    "Friday": 'Thứ Sáu',
+    "Saturday": 'Thứ Bảy',
+    "Sunday": 'Chủ Nhật',
   };
 
   @override
@@ -123,7 +123,7 @@ class _OperatingHoursScreenState extends State<OperatingHoursScreen> {
                             operatingHours[day]!['isOpen'] = value;
                           });
                         },
-                        activeThumbColor: AppTheme.primaryLight,
+                        thumbColor: WidgetStateProperty.all(AppTheme.primaryLight),
                       ),
                     ),
                     if (hours['isOpen']) ...[
@@ -451,7 +451,7 @@ class _OperatingHoursScreenState extends State<OperatingHoursScreen> {
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
-  Future<void> _selectTime(BuildContext context, String day, String timeType) async {
+  Future<void> _selectTime(BuildContext context, String day, String timeType) async() {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: operatingHours[day]![timeType],
@@ -513,7 +513,7 @@ class _OperatingHoursScreenState extends State<OperatingHoursScreen> {
             onPressed: () {
               setState(() {
                 breakTimes.add({
-                  'name': 'Nghỉ trưa',
+                  "name": 'Nghỉ trưa',
                   'startTime': TimeOfDay(hour: 12, minute: 0),
                   'endTime': TimeOfDay(hour: 13, minute: 30),
                 });

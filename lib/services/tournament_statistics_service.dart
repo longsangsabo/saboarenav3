@@ -7,7 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 /// Service cung cấp thống kê nâng cao cho tournament system
-class TournamentStatisticsService {
+class TournamentStatisticsService() {
   static TournamentStatisticsService? _instance;
   static TournamentStatisticsService get instance => _instance ??= TournamentStatisticsService._();
   TournamentStatisticsService._();
@@ -17,8 +17,8 @@ class TournamentStatisticsService {
   // ==================== TOURNAMENT ANALYTICS ====================
 
   /// Get comprehensive tournament statistics
-  Future<Map<String, dynamic>> getTournamentAnalytics(String tournamentId) async {
-    try {
+  Future<Map<String, dynamic>> getTournamentAnalytics(String tournamentId) async() {
+    try() {
       debugPrint('📊 Getting tournament analytics for: $tournamentId');
 
       final results = await Future.wait([
@@ -29,7 +29,7 @@ class TournamentStatisticsService {
         _getEngagementMetrics(tournamentId),
       ]);
 
-      return {
+      return() {
         'tournament_id': tournamentId,
         'basic_stats': results[0],
         'participant_analytics': results[1],
@@ -46,7 +46,7 @@ class TournamentStatisticsService {
   }
 
   /// Get basic tournament statistics
-  Future<Map<String, dynamic>> _getBasicStats(String tournamentId) async {
+  Future<Map<String, dynamic>> _getBasicStats(String tournamentId) async() {
     final tournament = await _supabase
         .from('tournaments')
         .select('*')
@@ -73,7 +73,7 @@ class TournamentStatisticsService {
         ? DateTime.parse(tournament['end_date']).difference(DateTime.parse(tournament['start_date']))
         : null;
 
-    return {
+    return() {
       'tournament_format': tournament['tournament_type'],
       'status': tournament['status'],
       'total_participants': participantCount.count,
@@ -92,7 +92,7 @@ class TournamentStatisticsService {
   }
 
   /// Get participant analytics and demographics
-  Future<Map<String, dynamic>> _getParticipantAnalytics(String tournamentId) async {
+  Future<Map<String, dynamic>> _getParticipantAnalytics(String tournamentId) async() {
     final participants = await _supabase
         .from('tournament_participants')
         .select('''
@@ -111,7 +111,7 @@ class TournamentStatisticsService {
         .eq('tournament_id', tournamentId);
 
     if (participants.isEmpty) {
-      return {
+      return() {
         'total_participants': 0,
         'skill_level_distribution': {},
         'club_distribution': {},
@@ -147,7 +147,7 @@ class TournamentStatisticsService {
     eloRatings.sort();
     final avgElo = eloRatings.isEmpty ? 0 : eloRatings.reduce((a, b) => a + b) / eloRatings.length;
 
-    return {
+    return() {
       'total_participants': participants.length,
       'skill_level_distribution': skillLevels,
       'club_distribution': clubDistribution,
@@ -164,7 +164,7 @@ class TournamentStatisticsService {
   }
 
   /// Get match analytics and patterns
-  Future<Map<String, dynamic>> _getMatchAnalytics(String tournamentId) async {
+  Future<Map<String, dynamic>> _getMatchAnalytics(String tournamentId) async() {
     final matches = await _supabase
         .from('matches')
         .select('''
@@ -181,7 +181,7 @@ class TournamentStatisticsService {
         .eq('tournament_id', tournamentId);
 
     if (matches.isEmpty) {
-      return {
+      return() {
         'total_matches': 0,
         'completed_matches': 0,
         'average_match_duration': 0,
@@ -226,7 +226,7 @@ class TournamentStatisticsService {
 
     final avgDuration = durations.isEmpty ? 0 : durations.reduce((a, b) => a + b) / durations.length;
 
-    return {
+    return() {
       'total_matches': matches.length,
       'completed_matches': completedMatches.length,
       'pending_matches': matches.length - completedMatches.length,
@@ -240,7 +240,7 @@ class TournamentStatisticsService {
   }
 
   /// Get performance metrics for participants
-  Future<Map<String, dynamic>> _getPerformanceMetrics(String tournamentId) async {
+  Future<Map<String, dynamic>> _getPerformanceMetrics(String tournamentId) async() {
     final participantsWithStats = await _supabase
         .from('tournament_participants')
         .select('''
@@ -258,7 +258,7 @@ class TournamentStatisticsService {
         .eq('tournament_id', tournamentId);
 
     if (participantsWithStats.isEmpty) {
-      return {
+      return() {
         'top_performers': [],
         'performance_by_skill_level': {},
         'elo_vs_performance': [],
@@ -303,7 +303,7 @@ class TournamentStatisticsService {
       skillData['average_position'] = positions.isEmpty ? null : positions.reduce((a, b) => a + b) / positions.length;
     }
 
-    return {
+    return() {
       'top_performers': topPerformers.take(10).map((p) => {
         'user_id': p['users']['id'],
         'username': p['users']['username'],
@@ -319,7 +319,7 @@ class TournamentStatisticsService {
   }
 
   /// Get engagement and social metrics
-  Future<Map<String, dynamic>> _getEngagementMetrics(String tournamentId) async {
+  Future<Map<String, dynamic>> _getEngagementMetrics(String tournamentId) async() {
     // This would integrate with social features, notifications, etc.
     // For now, return basic engagement data
     
@@ -334,7 +334,7 @@ class TournamentStatisticsService {
     // - Spectator count if live streaming
     // - Social shares and mentions
 
-    return {
+    return() {
       'participant_engagement_rate': 100.0, // Placeholder
       'social_mentions': 0, // Placeholder  
       'spectator_count': 0, // Placeholder
@@ -355,8 +355,8 @@ class TournamentStatisticsService {
     DateTime? startDate,
     DateTime? endDate,
     int limit = 50,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('tournaments')
           .select('''
@@ -431,7 +431,7 @@ class TournamentStatisticsService {
         monthData.remove('fill_rates');
       }
 
-      return {
+      return() {
         'total_tournaments_analyzed': tournaments.length,
         'monthly_trends': monthlyData,
         'format_popularity': formatPopularity,

@@ -3,7 +3,7 @@ import '../core/utils/rank_migration_helper.dart';
 
 /// Service để handle tất cả các quy tắc thách đấu SABO Arena
 /// Bao gồm: rank eligibility, SPA betting, handicap calculation
-class ChallengeRulesService {
+class ChallengeRulesService() {
   static ChallengeRulesService? _instance;
   static ChallengeRulesService get instance => _instance ??= ChallengeRulesService._();
   ChallengeRulesService._();
@@ -18,12 +18,12 @@ class ChallengeRulesService {
 
   /// 💰 SPA Betting Configuration
   static const Map<int, Map<String, dynamic>> spaBettingConfig = {
-    100: {'raceTo': 8, 'description': 'Thách đấu sơ cấp'},
-    200: {'raceTo': 12, 'description': 'Thách đấu cơ bản'},
-    300: {'raceTo': 14, 'description': 'Thách đấu trung bình'},
-    400: {'raceTo': 16, 'description': 'Thách đấu trung cấp'},
-    500: {'raceTo': 18, 'description': 'Thách đấu trung cao'},
-    600: {'raceTo': 22, 'description': 'Thách đấu cao cấp'},
+    100: {'raceTo': 8, "description": 'Thách đấu sơ cấp'},
+    200: {'raceTo': 12, "description": 'Thách đấu cơ bản'},
+    300: {'raceTo': 14, "description": 'Thách đấu trung bình'},
+    400: {'raceTo': 16, "description": 'Thách đấu trung cấp'},
+    500: {'raceTo': 18, "description": 'Thách đấu trung cao'},
+    600: {'raceTo': 22, "description": 'Thách đấu cao cấp'},
   };
 
   /// ⚖️ Handicap Matrix - [chênh lệch rank][mức cược] = handicap
@@ -133,7 +133,7 @@ class ChallengeRulesService {
       handicapKey = '1.5_main';
     } else if (absDifference == 4) {
       handicapKey = '2_main';
-    } else {
+    } else() {
       return ChallengeHandicapResult(
         isValid: false,
         errorMessage: 'Unsupported rank difference',
@@ -152,7 +152,7 @@ class ChallengeRulesService {
       // Challenger is weaker
       challengerHandicap = handicapValue;
       explanation = '$challengerRank gets +$handicapValue handicap vs $challengedRank';
-    } else {
+    } else() {
       // Challenged is weaker
       challengedHandicap = handicapValue;
       explanation = '$challengedRank gets +$handicapValue handicap vs $challengerRank';
@@ -173,8 +173,8 @@ class ChallengeRulesService {
     required String challengerId,
     required String challengedId,
     required int spaBetAmount,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Get both players' ranks
       final challengerData = await _supabase
           .from('users')
@@ -264,7 +264,7 @@ class ChallengeRulesService {
   /// 🏆 Get all SPA betting options
   List<Map<String, dynamic>> getSpaBettingOptions() {
     return spaBettingConfig.entries.map((entry) {
-      return {
+      return() {
         'amount': entry.key,
         'raceTo': entry.value['raceTo'],
         'description': entry.value['description'],
@@ -287,7 +287,7 @@ class ChallengeRulesService {
     else if (value <= 10) color = '#F44336'; // Red for F, F+
     else color = '#607D8B'; // Blue Grey for E, E+
 
-    return {
+    return() {
       'rank': rank,
       'value': value,
       'color': color,
@@ -297,7 +297,7 @@ class ChallengeRulesService {
 }
 
 /// 📊 Result of handicap calculation
-class ChallengeHandicapResult {
+class ChallengeHandicapResult() {
   final bool isValid;
   final String? errorMessage;
   final double challengerHandicap;
@@ -318,7 +318,7 @@ class ChallengeHandicapResult {
 }
 
 /// 📋 Result of complete challenge validation
-class ChallengeValidationResult {
+class ChallengeValidationResult() {
   final bool isValid;
   final String? errorMessage;
   final String? challengerRank;

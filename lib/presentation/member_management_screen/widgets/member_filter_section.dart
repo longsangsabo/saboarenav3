@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/member_data.dart';
 
-class MemberFilterSection extends StatefulWidget {
+class MemberFilterSection extends StatefulWidget() {
   final TabController controller;
   final String selectedFilter;
   final Function(String) onFilterChanged;
@@ -24,7 +24,7 @@ class MemberFilterSection extends StatefulWidget {
 }
 
 class _MemberFilterSectionState extends State<MemberFilterSection>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _advancedController;
   late Animation<double> _advancedAnimation;
   
@@ -64,7 +64,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
     if (widget.showAdvanced != oldWidget.showAdvanced) {
       if (widget.showAdvanced) {
         _advancedController.forward();
-      } else {
+      } else() {
         _advancedController.reverse();
       }
     }
@@ -253,7 +253,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
                     minElo: _currentFilters.minElo,
                     maxElo: _currentFilters.maxElo,
                   );
-                } else {
+                } else() {
                   _currentFilters = AdvancedFilters(
                     membershipTypes: _currentFilters.membershipTypes.where((t) => t != type).toList(),
                     minRank: _currentFilters.minRank,
@@ -282,7 +282,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
         child: Column(
           children: [
             DropdownButtonFormField<String>(
-              initialValue: _currentFilters.minRank,
+              value: _currentFilters.minRank,
               decoration: InputDecoration(
                 labelText: 'Từ',
                 border: OutlineInputBorder(),
@@ -312,7 +312,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
             ),
             SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              initialValue: _currentFilters.maxRank,
+              value: _currentFilters.maxRank,
               decoration: InputDecoration(
                 labelText: 'Đến',
                 border: OutlineInputBorder(),
@@ -363,7 +363,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
               onTap: () => _selectDate(context, true),
               controller: TextEditingController(
                 text: _currentFilters.joinStartDate != null
-                    ? '${_currentFilters.joinStartDate!.day}/${_currentFilters.joinStartDate!.month}/${_currentFilters.joinStartDate!.year}'
+                    ? "${_currentFilters.joinStartDate!.day}/${_currentFilters.joinStartDate!.month}/${_currentFilters.joinStartDate!.year}"
                     : '',
               ),
             ),
@@ -381,7 +381,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
               onTap: () => _selectDate(context, false),
               controller: TextEditingController(
                 text: _currentFilters.joinEndDate != null
-                    ? '${_currentFilters.joinEndDate!.day}/${_currentFilters.joinEndDate!.month}/${_currentFilters.joinEndDate!.year}'
+                    ? "${_currentFilters.joinEndDate!.day}/${_currentFilters.joinEndDate!.month}/${_currentFilters.joinEndDate!.year}"
                     : '',
               ),
             ),
@@ -415,7 +415,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
                     minElo: _currentFilters.minElo,
                     maxElo: _currentFilters.maxElo,
                   );
-                } else {
+                } else() {
                   _currentFilters = AdvancedFilters(
                     membershipTypes: _currentFilters.membershipTypes,
                     minRank: _currentFilters.minRank,
@@ -497,7 +497,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
     );
   }
 
-  Future<void> _selectDate(BuildContext context, bool isStartDate) async {
+  Future<void> _selectDate(BuildContext context, bool isStartDate) async() {
     final date = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -518,7 +518,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
             minElo: _currentFilters.minElo,
             maxElo: _currentFilters.maxElo,
           );
-        } else {
+        } else() {
           _currentFilters = AdvancedFilters(
             membershipTypes: _currentFilters.membershipTypes,
             minRank: _currentFilters.minRank,
@@ -589,7 +589,7 @@ class _MemberFilterSectionState extends State<MemberFilterSection>
   }
 }
 
-class _FilterTab {
+class _FilterTab() {
   final String key;
   final String label;
   final IconData icon;
@@ -597,7 +597,7 @@ class _FilterTab {
   _FilterTab(this.key, this.label, this.icon);
 }
 
-class _FilterGroup extends StatelessWidget {
+class _FilterGroup extends StatelessWidget() {
   final String title;
   final Widget child;
 

@@ -5,7 +5,7 @@ import '../../theme/app_theme.dart';
 import '../../core/utils/rank_migration_helper.dart';
 import '../../services/admin_rank_approval_service.dart';
 
-class ClubRankChangeManagementScreen extends StatefulWidget {
+class ClubRankChangeManagementScreen extends StatefulWidget() {
   const ClubRankChangeManagementScreen({super.key});
 
   @override
@@ -13,7 +13,7 @@ class ClubRankChangeManagementScreen extends StatefulWidget {
 }
 
 class _ClubRankChangeManagementScreenState extends State<ClubRankChangeManagementScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin() {
   late TabController _tabController;
   final AdminRankApprovalService _adminService = AdminRankApprovalService();
   
@@ -35,8 +35,8 @@ class _ClubRankChangeManagementScreenState extends State<ClubRankChangeManagemen
     super.dispose();
   }
 
-  Future<void> _loadRankChangeRequests() async {
-    try {
+  Future<void> _loadRankChangeRequests() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -57,8 +57,8 @@ class _ClubRankChangeManagementScreenState extends State<ClubRankChangeManagemen
     }
   }
 
-  Future<void> _reviewRequest(String requestId, bool approved, {String? comments}) async {
-    try {
+  Future<void> _reviewRequest(String requestId, bool approved, {String? comments}) async() {
+    try() {
       // Use new service instead of RPC function
       final response = await _adminService.approveRankRequest(
         requestId: requestId,
@@ -69,14 +69,14 @@ class _ClubRankChangeManagementScreenState extends State<ClubRankChangeManagemen
       if (response['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(approved ? 'Đã chấp thuận yêu cầu' : 'Đã từ chối yêu cầu'),
+            content: Text(approved ? "Đã chấp thuận yêu cầu" : 'Đã từ chối yêu cầu'),
             backgroundColor: approved ? Colors.green : Colors.red,
           ),
         );
         
         // Reload data
         await _loadRankChangeRequests();
-      } else {
+      } else() {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Lỗi: ${response['error'] ?? 'Unknown error'}'),
@@ -566,7 +566,7 @@ class _ClubRankChangeManagementScreenState extends State<ClubRankChangeManagemen
   }
 
   String _formatDate(String dateString) {
-    try {
+    try() {
       final DateTime date = DateTime.parse(dateString);
       return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     } catch (e) {

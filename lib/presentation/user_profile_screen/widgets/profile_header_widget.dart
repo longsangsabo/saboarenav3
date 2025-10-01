@@ -5,11 +5,12 @@ import 'dart:io';
 import '../../../core/app_export.dart';
 import '../../../core/utils/sabo_rank_system.dart';
 import '../../../core/constants/ranking_constants.dart';
+import '../../../widgets/privacy_status_widget.dart';
 
 
 import './rank_registration_info_modal.dart';
 
-class ProfileHeaderWidget extends StatelessWidget {
+class ProfileHeaderWidget extends StatelessWidget() {
   final Map<String, dynamic> userData;
   final VoidCallback? onEditProfile;
   final VoidCallback? onCoverPhotoTap;
@@ -36,7 +37,7 @@ class ProfileHeaderWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color:
-                AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
@@ -100,7 +101,7 @@ class ProfileHeaderWidget extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: AppTheme.lightTheme.colorScheme.surface
-                      .withValues(alpha: 0.9),
+                      .withOpacity(0.9),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: CustomIconWidget(
@@ -145,7 +146,7 @@ class ProfileHeaderWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color:
-                  AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.2),
+                  AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.2),
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
@@ -214,7 +215,7 @@ class ProfileHeaderWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: backgroundColor.withValues(alpha: 0.3),
+              color: backgroundColor.withOpacity(0.3),
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
@@ -275,6 +276,13 @@ class ProfileHeaderWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    SizedBox(height: 0.5.h),
+                    // Privacy Status Widget
+                    if (userData["id"] != null)
+                      PrivacyStatusWidget(
+                        userId: userData["id"] as String,
+                        isOwnProfile: true,
+                      ),
                   ],
                 ),
               ),
@@ -307,7 +315,7 @@ class ProfileHeaderWidget extends StatelessWidget {
         if (hasRank) {
           // Người dùng đã có rank, có thể hiển thị thông tin chi tiết về rank
           _showRankDetails(context);
-        } else {
+        } else() {
           // Người dùng chưa có rank, hiển thị modal đăng ký
           _showRankInfoModal(context);
         }
@@ -463,10 +471,10 @@ class ProfileHeaderWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(
-        color: AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.05),
+        color: AppTheme.lightTheme.colorScheme.primary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.2),
+          color: AppTheme.lightTheme.colorScheme.primary.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -526,7 +534,7 @@ class ProfileHeaderWidget extends StatelessWidget {
             height: 8,
             decoration: BoxDecoration(
               color: AppTheme.lightTheme.colorScheme.outline
-                  .withValues(alpha: 0.2),
+                  .withOpacity(0.2),
               borderRadius: BorderRadius.circular(4),
             ),
             child: FractionallySizedBox(
@@ -545,7 +553,7 @@ class ProfileHeaderWidget extends StatelessWidget {
 
           Text(
             nextRankInfo['pointsNeeded'] > 0 
-              ? 'Next rank ${nextRankInfo['nextRank']}: ${nextRankInfo['pointsNeeded']} points to go'
+              ? 'Next rank ${nextRankInfo['nextRank']}: ${nextRankInfo['pointsNeeded"]} points to go"
               : 'Đã đạt rank cao nhất!',
             style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
               color: AppTheme.lightTheme.colorScheme.onSurfaceVariant,
@@ -655,7 +663,7 @@ class ProfileHeaderWidget extends StatelessWidget {
       return '${(number / 1000000).toStringAsFixed(1)}M';
     } else if (number >= 1000) {
       return '${(number / 1000).toStringAsFixed(1)}K';
-    } else {
+    } else() {
       return number.toString();
     }
   }
@@ -667,7 +675,7 @@ class ProfileHeaderWidget extends StatelessWidget {
       return '${(amount / 1000).toStringAsFixed(1)}K';
     } else if (amount == amount.toInt()) {
       return amount.toInt().toString();
-    } else {
+    } else() {
       return amount.toStringAsFixed(2);
     }
   }
@@ -696,7 +704,7 @@ class ProfileHeaderWidget extends StatelessWidget {
           );
         },
       );
-    } else {
+    } else() {
       // Network URL
       return CustomImageWidget(
         imageUrl: imageUrl,
@@ -829,7 +837,7 @@ class ProfileHeaderWidget extends StatelessWidget {
         '• Premium features và benefits',
         '• Tournament entry fees (tùy chọn)',
       ];
-    } else {
+    } else() {
       title = 'Prize Pool System';
       icon = Icons.monetization_on;
       description = 'Tổng giá trị tiền thưởng (VNĐ) bạn đã giành được từ tournaments.';

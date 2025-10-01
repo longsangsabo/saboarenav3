@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import '../models/messaging_models.dart';
 
 /// Chat App Bar widget for chat screen
-class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
+class ChatAppBar extends StatelessWidget implements PreferredSizeWidget() {
   final String title;
   final String? subtitle;
   final String? avatarUrl;
@@ -116,7 +116,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 /// Message Input widget for sending messages
-class MessageInput extends StatefulWidget {
+class MessageInput extends StatefulWidget() {
   final Function(String) onSendMessage;
   final Function(String)? onTyping;
   final VoidCallback? onAttachFile;
@@ -254,7 +254,7 @@ class _MessageInputState extends State<MessageInput> {
 }
 
 /// Message Bubble widget for displaying messages
-class MessageBubble extends StatelessWidget {
+class MessageBubble extends StatelessWidget() {
   final MessageModel message;
   final bool isFromCurrentUser;
   final VoidCallback? onTap;
@@ -559,14 +559,14 @@ class MessageBubble extends StatelessWidget {
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
     } else if (difference.inHours > 0) {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-    } else {
+    } else() {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     }
   }
 }
 
 /// Typing Indicator widget
-class TypingIndicatorWidget extends StatefulWidget {
+class TypingIndicatorWidget extends StatefulWidget() {
   final List<String> usernames;
 
   const TypingIndicatorWidget({
@@ -579,7 +579,7 @@ class TypingIndicatorWidget extends StatefulWidget {
 }
 
 class _TypingIndicatorWidgetState extends State<TypingIndicatorWidget>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
 
   @override
@@ -613,7 +613,7 @@ class _TypingIndicatorWidgetState extends State<TypingIndicatorWidget>
         children: [
           Text(
             widget.usernames.length == 1
-                ? '${widget.usernames.first} is typing'
+                ? "${widget.usernames.first} is typing"
                 : '${widget.usernames.join(', ')} are typing',
             style: TextStyle(
               fontSize: 10.sp,

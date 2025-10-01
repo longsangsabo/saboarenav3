@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../components/bracket_components.dart';
 import '../shared/tournament_data_generator.dart';
 
-class SingleEliminationBracket extends StatelessWidget {
+class SingleEliminationBracket extends StatelessWidget() {
   final int playerCount;
   final VoidCallback? onFullscreenTap;
 
@@ -153,7 +153,7 @@ class SingleEliminationBracket extends StatelessWidget {
 }
 
 // Full screen dialog for Single Elimination
-class SingleEliminationFullscreenDialog extends StatelessWidget {
+class SingleEliminationFullscreenDialog extends StatelessWidget() {
   final int playerCount;
 
   const SingleEliminationFullscreenDialog({

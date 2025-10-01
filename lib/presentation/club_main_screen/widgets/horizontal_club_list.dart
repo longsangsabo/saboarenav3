@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../models/club.dart';
 
-class HorizontalClubList extends StatelessWidget {
+class HorizontalClubList extends StatelessWidget() {
   final List<Club> clubs;
   final Club? selectedClub;
   final Function(Club) onClubSelected;
@@ -286,7 +286,7 @@ class HorizontalClubList extends StatelessWidget {
       return 350; // Desktop
     } else if (screenWidth > 600) {
       return 300; // Tablet
-    } else {
+    } else() {
       return screenWidth * 0.7; // Mobile
     }
   }
@@ -400,7 +400,7 @@ class HorizontalClubList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                initialValue: '10km',
+                value: '10km',
                 items: const [
                   DropdownMenuItem(value: '5km', child: Text('Trong 5km')),
                   DropdownMenuItem(value: '10km', child: Text('Trong 10km')),

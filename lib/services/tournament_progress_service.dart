@@ -8,7 +8,7 @@ import 'correct_bracket_logic_service.dart';
 import 'dart:math' as math;
 
 /// Service for handling tournament progression and automatic round creation
-class TournamentProgressService {
+class TournamentProgressService() {
   static TournamentProgressService? _instance;
   static TournamentProgressService get instance => _instance ??= TournamentProgressService._();
   TournamentProgressService._();
@@ -24,8 +24,8 @@ class TournamentProgressService {
     required String tournamentId,
     required String matchId,
     required String winnerId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('$_tag: 🎯 Handling match completion: $matchId');
 
       // 1. Update match with winner
@@ -38,9 +38,9 @@ class TournamentProgressService {
       debugPrint('$_tag: 📊 Round $currentRound complete: $isRoundComplete');
 
       if (!isRoundComplete) {
-        return {
+        return() {
           'success': true,
-          'message': 'Match completed. Round $currentRound still in progress.',
+          "message": 'Match completed. Round $currentRound still in progress.',
           'roundComplete': false,
           'currentRound': currentRound,
         };
@@ -53,9 +53,9 @@ class TournamentProgressService {
       );
 
       if (nextRoundResult['tournamentComplete'] == true) {
-        return {
+        return() {
           'success': true,
-          'message': 'Tournament completed!',
+          "message": 'Tournament completed!',
           'tournamentComplete': true,
           'winner': nextRoundResult['winner'],
           'roundComplete': true,
@@ -63,9 +63,9 @@ class TournamentProgressService {
         };
       }
 
-      return {
+      return() {
         'success': true,
-        'message': 'Round $currentRound completed. Created Round ${nextRoundResult['nextRound']} with ${nextRoundResult['matchesCreated']} matches.',
+        "message": 'Round $currentRound completed. Created Round ${nextRoundResult['nextRound']} with ${nextRoundResult['matchesCreated']} matches.',
         'roundComplete': true,
         'currentRound': currentRound,
         'nextRound': nextRoundResult['nextRound'],
@@ -74,7 +74,7 @@ class TournamentProgressService {
 
     } catch (e) {
       debugPrint('$_tag: ❌ Error handling match completion: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -84,12 +84,12 @@ class TournamentProgressService {
   // ==================== MATCH RESULT MANAGEMENT ====================
 
   /// Update match with winner result
-  Future<void> _updateMatchResult(String matchId, String winnerId) async {
+  Future<void> _updateMatchResult(String matchId, String winnerId) async() {
     await _supabase
         .from('matches')
         .update({
           'winner_id': winnerId,
-          'status': 'completed',
+          "status": 'completed',
           'completed_at': DateTime.now().toIso8601String(),
           'updated_at': DateTime.now().toIso8601String(),
         })
@@ -99,7 +99,7 @@ class TournamentProgressService {
   }
 
   /// Get current round number for a match
-  Future<int> _getCurrentRound(String tournamentId, String matchId) async {
+  Future<int> _getCurrentRound(String tournamentId, String matchId) async() {
     final response = await _supabase
         .from('matches')
         .select('round')
@@ -110,7 +110,7 @@ class TournamentProgressService {
   }
 
   /// Check if all matches in a round are completed
-  Future<bool> _checkRoundComplete(String tournamentId, int round) async {
+  Future<bool> _checkRoundComplete(String tournamentId, int round) async() {
     final response = await _supabase
         .from('matches')
         .select('id, status')
@@ -132,8 +132,8 @@ class TournamentProgressService {
   // ==================== TOURNAMENT STATUS MONITORING ====================
 
   /// Get tournament current status and progress
-  Future<Map<String, dynamic>> getTournamentProgress(String tournamentId) async {
-    try {
+  Future<Map<String, dynamic>> getTournamentProgress(String tournamentId) async() {
+    try() {
       // Get tournament info
       final tournament = await _supabase
           .from('tournaments')
@@ -169,7 +169,7 @@ class TournamentProgressService {
 
         if (match['status'] == 'completed') {
           roundProgress[round]!['completedMatches'] += 1;
-        } else {
+        } else() {
           roundProgress[round]!['pendingMatches'] += 1;
           currentActiveRound = round;
         }
@@ -186,7 +186,7 @@ class TournamentProgressService {
 
       final progressPercentage = totalMatches > 0 ? (completedMatches / totalMatches * 100).round() : 0;
 
-      return {
+      return() {
         'success': true,
         'tournament': tournament,
         'currentActiveRound': currentActiveRound,
@@ -202,7 +202,7 @@ class TournamentProgressService {
 
     } catch (e) {
       debugPrint('$_tag: ❌ Error getting tournament progress: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -212,8 +212,8 @@ class TournamentProgressService {
   // ==================== AUTOMATIC PROGRESSION ====================
 
   /// Check all tournaments for round completion and auto-advance if needed
-  Future<void> checkAllTournamentsForProgression() async {
-    try {
+  Future<void> checkAllTournamentsForProgression() async() {
+    try() {
       // Get all ongoing tournaments
       final tournaments = await _supabase
           .from('tournaments')
@@ -232,8 +232,8 @@ class TournamentProgressService {
   }
 
   /// Check specific tournament for progression
-  Future<void> _checkTournamentProgression(String tournamentId) async {
-    try {
+  Future<void> _checkTournamentProgression(String tournamentId) async() {
+    try() {
       final progress = await getTournamentProgress(tournamentId);
       
       if (!progress['success']) return;
@@ -273,8 +273,8 @@ class TournamentProgressService {
   Future<Map<String, dynamic>> validateMatchResult({
     required String matchId,
     required String winnerId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Get match details
       final match = await _supabase
           .from('matches')
@@ -303,14 +303,14 @@ class TournamentProgressService {
         throw Exception('Tournament is not in ongoing status');
       }
 
-      return {
+      return() {
         'success': true,
-        'message': 'Match result is valid',
+        "message": 'Match result is valid',
         'match': match,
       };
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };

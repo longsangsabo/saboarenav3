@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import '../../../services/tournament_completion_service.dart';
 import '../../../services/tournament_service.dart';
 
-class TournamentStatusPanel extends StatefulWidget {
+class TournamentStatusPanel extends StatefulWidget() {
   final String tournamentId;
   final String currentStatus;
   final bool canManage;
@@ -198,7 +198,7 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
                     )
                   : Icon(Icons.play_arrow, size: 16.sp),
               label: Text(
-                _isLoading ? 'Đang bắt đầu...' : 'Bắt đầu giải đấu',
+                _isLoading ? "Đang bắt đầu..." : 'Bắt đầu giải đấu',
                 style: TextStyle(fontSize: 14.sp),
               ),
               style: ElevatedButton.styleFrom(
@@ -229,7 +229,7 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
                     )
                   : Icon(Icons.emoji_events, size: 16.sp),
               label: Text(
-                _isLoading ? 'Đang hoàn thành...' : 'Hoàn thành giải đấu',
+                _isLoading ? "Đang hoàn thành..." : 'Hoàn thành giải đấu',
                 style: TextStyle(fontSize: 14.sp),
               ),
               style: ElevatedButton.styleFrom(
@@ -260,7 +260,7 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
                     )
                   : Icon(Icons.archive, size: 16.sp),
               label: Text(
-                _isLoading ? 'Đang lưu trữ...' : 'Lưu trữ giải đấu',
+                _isLoading ? "Đang lưu trữ..." : 'Lưu trữ giải đấu',
                 style: TextStyle(fontSize: 14.sp),
               ),
               style: ElevatedButton.styleFrom(
@@ -348,8 +348,8 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
     }
   }
 
-  Future<void> _startTournament() async {
-    try {
+  Future<void> _startTournament() async() {
+    try() {
       setState(() => _isLoading = true);
 
       // Show confirmation dialog
@@ -393,15 +393,15 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isLoading = false);
       }
     }
   }
 
-  Future<void> _completeTournament() async {
-    try {
+  Future<void> _completeTournament() async() {
+    try() {
       setState(() => _isLoading = true);
 
       // Show confirmation dialog
@@ -460,15 +460,15 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isLoading = false);
       }
     }
   }
 
-  Future<void> _archiveTournament() async {
-    try {
+  Future<void> _archiveTournament() async() {
+    try() {
       setState(() => _isLoading = true);
 
       // Show confirmation dialog
@@ -512,7 +512,7 @@ class _TournamentStatusPanelState extends State<TournamentStatusPanel> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isLoading = false);
       }

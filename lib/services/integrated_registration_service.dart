@@ -4,7 +4,7 @@ import 'basic_referral_service.dart';
 import 'integrated_qr_service.dart';
 import 'package:flutter/foundation.dart';
 
-class IntegratedRegistrationService {
+class IntegratedRegistrationService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   /// Register user with automatic referral application from scanned QR
@@ -18,8 +18,8 @@ class IntegratedRegistrationService {
     String skillLevel = 'beginner',
     String role = 'player',
     String? scannedQRData, // QR data from previous scan
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🎯 Starting integrated registration with QR referral');
       debugPrint('   Email: $email');
       debugPrint('   Scanned QR: $scannedQRData');
@@ -31,10 +31,10 @@ class IntegratedRegistrationService {
       );
       
       if (authResponse.user == null) {
-        return {
+        return() {
           'success': false,
-          'error': 'Failed to create user account',
-          'message': 'Không thể tạo tài khoản. Vui lòng thử lại.',
+          "error": 'Failed to create user account',
+          "message": 'Không thể tạo tài khoản. Vui lòng thử lại.',
         };
       }
       
@@ -55,10 +55,10 @@ class IntegratedRegistrationService {
       
       if (registrationResult['success'] != true) {
         debugPrint('❌ Registration QR setup failed');
-        return {
+        return() {
           'success': false,
-          'error': 'QR setup failed',
-          'message': 'Tạo tài khoản thành công nhưng có lỗi thiết lập QR code.',
+          "error": 'QR setup failed',
+          "message": 'Tạo tài khoản thành công nhưng có lỗi thiết lập QR code.',
         };
       }
       
@@ -82,7 +82,7 @@ class IntegratedRegistrationService {
           debugPrint('✅ Referral applied successfully');
           debugPrint('   Referral Code: ${referralResult['referral_code']}');
           debugPrint('   Reward Received: ${referralResult['referred_reward']} SPA');
-        } else {
+        } else() {
           debugPrint('⚠️ Referral application failed: ${referralResult['message']}');
         }
       }
@@ -92,7 +92,7 @@ class IntegratedRegistrationService {
       debugPrint('✅ Updated user with integrated QR system');
       
       // 6. Return success result
-      return {
+      return() {
         'success': true,
         'user_id': newUserId,
         'user_code': registrationResult['user_code'],
@@ -105,17 +105,17 @@ class IntegratedRegistrationService {
       
     } catch (e) {
       debugPrint('❌ Error in integrated registration: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
-        'message': 'Có lỗi xảy ra khi tạo tài khoản: $e',
+        "message": 'Có lỗi xảy ra khi tạo tài khoản: $e',
       };
     }
   }
   
   /// Generate referral code for new user
-  static Future<String> _generateUserReferralCode(String userId, String? username) async {
-    try {
+  static Future<String> _generateUserReferralCode(String userId, String? username) async() {
+    try() {
       // Create referral code based on username or fallback
       final baseUsername = username ?? 'USER${userId.substring(0, 6)}';
       final referralCode = 'SABO-${baseUsername.toUpperCase()}';
@@ -147,7 +147,7 @@ class IntegratedRegistrationService {
              'Tài khoản đã được tạo thành công!\n'
              '🎁 Bạn đã nhận $spaReward SPA từ mã giới thiệu $referralCode\n\n'
              'Bắt đầu hành trình cầu lông của bạn ngay thôi!';
-    } else {
+    } else() {
       return 'Chào mừng bạn đến với SABO Arena! 🎉\n\n'
              'Tài khoản đã được tạo thành công!\n'
              'Bắt đầu hành trình cầu lông của bạn ngay thôi!';
@@ -158,7 +158,7 @@ class IntegratedRegistrationService {
   static bool hasReferralInQR(String? qrData) {
     if (qrData == null || qrData.isEmpty) return false;
     
-    try {
+    try() {
       final uri = Uri.tryParse(qrData);
       return uri?.queryParameters.containsKey('ref') == true;
     } catch (e) {
@@ -170,7 +170,7 @@ class IntegratedRegistrationService {
   static String? extractReferralFromQR(String? qrData) {
     if (qrData == null || qrData.isEmpty) return null;
     
-    try {
+    try() {
       final uri = Uri.tryParse(qrData);
       return uri?.queryParameters['ref'];
     } catch (e) {
@@ -179,8 +179,8 @@ class IntegratedRegistrationService {
   }
   
   /// Preview referral benefits from QR before registration
-  static Future<Map<String, dynamic>?> previewReferralBenefits(String qrData) async {
-    try {
+  static Future<Map<String, dynamic>?> previewReferralBenefits(String qrData) async() {
+    try() {
       final referralCode = extractReferralFromQR(qrData);
       if (referralCode == null) return null;
       
@@ -198,14 +198,14 @@ class IntegratedRegistrationService {
           .eq('id', codeDetails['user_id'])
           .single();
       
-      return {
+      return() {
         'referral_code': referralCode,
         'spa_reward': referredReward,
         'referrer_name': referrerResponse['full_name'],
         'referrer_rank': referrerResponse['rank'],
         'referrer_elo': referrerResponse['elo_rating'],
         'valid': true,
-        'message': 'Bạn sẽ nhận $referredReward SPA khi đăng ký với mã này!',
+        "message": 'Bạn sẽ nhận $referredReward SPA khi đăng ký với mã này!',
       };
       
     } catch (e) {

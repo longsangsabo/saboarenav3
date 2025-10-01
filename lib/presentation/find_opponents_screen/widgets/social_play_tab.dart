@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/user_profile.dart';
+import '../../../helpers/privacy_helper.dart';
 import './map_view_widget.dart';
 import './player_card_widget.dart';
 import './create_social_challenge_modal.dart';
 
-class SocialPlayTab extends StatefulWidget {
+class SocialPlayTab extends StatefulWidget() {
   final bool isLoading;
   final String? errorMessage;
   final List<UserProfile> players;
@@ -220,7 +221,7 @@ class _SocialPlayTabState extends State<SocialPlayTab> {
 }
 
 // Enum to distinguish play types
-enum PlayType {
+enum PlayType() {
   social,     // Giao lưu thân thiện
   competitive // Thách đấu ranked
 }

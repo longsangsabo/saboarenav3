@@ -14,7 +14,7 @@ import 'widgets/member_analytics_card_simple.dart';
 import 'widgets/bulk_action_bar.dart';
 import 'widgets/add_member_dialog.dart';
 
-class MemberManagementScreen extends StatefulWidget {
+class MemberManagementScreen extends StatefulWidget() {
   final String clubId;
 
   const MemberManagementScreen({
@@ -27,7 +27,7 @@ class MemberManagementScreen extends StatefulWidget {
 }
 
 class _MemberManagementScreenState extends State<MemberManagementScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late TabController _filterTabController;
@@ -74,8 +74,8 @@ class _MemberManagementScreenState extends State<MemberManagementScreen>
     super.dispose();
   }
 
-  Future<void> _loadMemberData() async {
-    try {
+  Future<void> _loadMemberData() async() {
+    try() {
       print('🚀 Loading member data for club: ${widget.clubId}');
       // Fetch real member data from the service - get all members first
       final membersData = await MemberManagementService.getClubMembers(
@@ -360,7 +360,7 @@ class _MemberManagementScreenState extends State<MemberManagementScreen>
     setState(() {
       if (selected) {
         _selectedMembers.add(memberId);
-      } else {
+      } else() {
         _selectedMembers.remove(memberId);
       }
     });
@@ -400,7 +400,7 @@ class _MemberManagementScreenState extends State<MemberManagementScreen>
     }
   }
 
-  Future<void> _handleRefresh() async {
+  Future<void> _handleRefresh() async() {
     await _loadMemberData();
   }
 
@@ -439,7 +439,7 @@ class _MemberManagementScreenState extends State<MemberManagementScreen>
   }
 
   Map<String, int> _getFilterCounts() {
-    return {
+    return() {
       'all': _allMembers.length,
       'active': _allMembers.where((m) => m.membershipInfo.status == MemberStatus.active).length,
       'new': _allMembers.where((m) => _isNewMember(m)).length,

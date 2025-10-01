@@ -4,7 +4,7 @@ import 'package:sabo_arena/utils/size_extensions.dart';
 import '../../services/tournament_service.dart';
 import '../../core/constants/ranking_constants.dart';
 
-class TournamentCreationWizard extends StatefulWidget {
+class TournamentCreationWizard extends StatefulWidget() {
   final String? clubId;
 
   const TournamentCreationWizard({
@@ -17,8 +17,7 @@ class TournamentCreationWizard extends StatefulWidget {
 }
 
 class _TournamentCreationWizardState extends State<TournamentCreationWizard>
-    with TickerProviderStateMixin {
-  
+    with TickerProviderStateMixin() {
   late PageController _pageController;
   int _currentStep = 0;
   bool _isCreating = false;
@@ -47,10 +46,10 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
   // Tournament data with comprehensive fields
   final Map<String, dynamic> _tournamentData = {
     // Basic Info
-    'name': '',
-    'description': '',
-    'gameType': '8-ball', // 8-ball, 9-ball, 10-ball, straight-pool
-    'format': 'single_elimination', // single_elimination, double_elimination, round_robin, swiss
+    "name": '',
+    "description": '',
+    "gameType": '8-ball', // 8-ball, 9-ball, 10-ball, straight-pool
+    "format": 'single_elimination', // single_elimination, double_elimination, round_robin, swiss
     'maxParticipants': 16, // 4,6,8,12,16,24,32,64
     'hasThirdPlaceMatch': true,
     
@@ -59,23 +58,23 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     'registrationEndDate': null,
     'tournamentStartDate': null,
     'tournamentEndDate': null,
-    'venue': '', // Auto-fill from club or custom
+    "venue": '', // Auto-fill from club or custom
     
     // Financial & Requirements
     'entryFee': 0.0,
     'prizePool': 0.0,
-    'minRank': '', // K, J, I, H, G, F, E, D, C, B, A, E+
-    'maxRank': '', // Empty = no limit
+    "minRank": '', // K, J, I, H, G, F, E, D, C, B, A, E+
+    "maxRank": '', // Empty = no limit
     
     // Additional Info
-    'rules': '',
-    'contactInfo': '', // Auto-fill from club
-    'bannerUrl': '',
+    "rules": '',
+    "contactInfo": '', // Auto-fill from club
+    "bannerUrl": '',
     
     // System fields (auto-filled)
-    'clubId': '',
-    'creatorId': '',
-    'status': 'registration_open',
+    "clubId": '',
+    "creatorId": '',
+    "status": 'registration_open',
     'currentParticipants': 0,
     'isClubVerified': false,
   };
@@ -110,7 +109,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     _tournamentData['tournamentEndDate'] = now.add(Duration(days: 8));
   }
 
-  void _loadClubData() async {
+  void _loadClubData() async() {
     // TODO: Load club data from service
     // _tournamentData['venue'] = club.address;
     // _tournamentData['contactInfo'] = club.phone;
@@ -296,7 +295,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
                             ],
                           )
                         : Text(_currentStep < _stepTitles.length - 1
-                            ? 'Tiếp theo'
+                            ? "Tiếp theo"
                             : 'Tạo giải đấu'),
                   ),
                 ),
@@ -368,7 +367,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           SizedBox(height: 12.h),
           // Game Type
           DropdownButtonFormField<String>(
-            initialValue: _tournamentData['gameType'],
+            value: _tournamentData['gameType'],
             decoration: InputDecoration(
               labelText: 'Môn thi đấu *',
               border: OutlineInputBorder(),
@@ -389,7 +388,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           
           // Tournament Format
           DropdownButtonFormField<String>(
-            initialValue: _tournamentData['format'],
+            value: _tournamentData['format'],
             decoration: InputDecoration(
               labelText: 'Hình thức thi đấu *',
               border: OutlineInputBorder(),
@@ -522,7 +521,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           
           // Max Participants
           DropdownButtonFormField<int>(
-            initialValue: _tournamentData['maxParticipants'],
+            value: _tournamentData['maxParticipants'],
             decoration: InputDecoration(
               labelText: 'Số lượng tham gia *',
               border: OutlineInputBorder(),
@@ -699,7 +698,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           
           // Min Rank
           DropdownButtonFormField<String>(
-            initialValue: _tournamentData['minRank']?.isEmpty == true ? null : _tournamentData['minRank'],
+            value: _tournamentData['minRank']?.isEmpty == true ? null : _tournamentData['minRank'],
             decoration: InputDecoration(
               labelText: 'Hạng tối thiểu',
               border: OutlineInputBorder(),
@@ -715,7 +714,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           
           // Max Rank
           DropdownButtonFormField<String>(
-            initialValue: _tournamentData['maxRank']?.isEmpty == true ? null : _tournamentData['maxRank'],
+            value: _tournamentData['maxRank']?.isEmpty == true ? null : _tournamentData['maxRank'],
             decoration: InputDecoration(
               labelText: 'Hạng tối đa',
               border: OutlineInputBorder(),
@@ -842,7 +841,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     required Function(DateTime) onChanged,
   }) {
     return InkWell(
-      onTap: () async {
+      onTap: () async() {
         final date = await showDatePicker(
           context: context,
           initialDate: value ?? DateTime.now().add(Duration(days: 1)),
@@ -891,7 +890,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
                 SizedBox(height: 4.h),
                 Text(
                   value != null 
-                    ? '${value.day}/${value.month}/${value.year} ${value.hour.toString().padLeft(2, '0')}:${value.minute.toString().padLeft(2, '0')}'
+                    ? '${value.day}/${value.month}/${value.year} ${value.hour.toString().padLeft(2, '0')}:${value.minute.toString().padLeft(2, '0")}"
                     : 'Chọn thời gian',
                   style: TextStyle(fontSize: 16.fSize),
                 ),
@@ -961,7 +960,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     );
   }
 
-  void _validateAndPublish() async {
+  void _validateAndPublish() async() {
     debugPrint('🔍 Tournament creation validation started');
     
     // Validate all forms
@@ -1023,7 +1022,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     // Set loading state
     setState(() => _isCreating = true);
 
-    try {
+    try() {
       // Create tournament using service with proper parameters
       final tournament = await _tournamentService.createTournament(
         clubId: widget.clubId ?? '',
@@ -1058,7 +1057,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
+    } finally() {
       setState(() => _isCreating = false);
     }
   }

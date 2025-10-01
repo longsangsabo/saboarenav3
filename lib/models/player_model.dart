@@ -1,4 +1,4 @@
-class Player {
+class Player() {
   final String id;
   final String name;
   final String? avatarUrl;

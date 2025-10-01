@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import '../services/notification_preferences_service.dart';
 
 /// Notification Settings Screen để users tùy chỉnh notification preferences
-class NotificationSettingsScreen extends StatefulWidget {
+class NotificationSettingsScreen extends StatefulWidget() {
   const NotificationSettingsScreen({super.key});
 
   @override
@@ -24,8 +24,8 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     _loadPreferences();
   }
 
-  Future<void> _loadPreferences() async {
-    try {
+  Future<void> _loadPreferences() async() {
+    try() {
       final prefs = await _prefsService.loadPreferences();
       setState(() {
         _preferences = prefs;
@@ -39,12 +39,12 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     }
   }
 
-  Future<void> _updateGlobalSetting(bool enabled) async {
+  Future<void> _updateGlobalSetting(bool enabled) async() {
     if (_preferences == null) return;
     
     setState(() => _isSaving = true);
     
-    try {
+    try() {
       _preferences!.globalEnabled = enabled;
       await _prefsService.savePreferences(_preferences!);
       setState(() => _isSaving = false);
@@ -55,10 +55,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     }
   }
 
-  Future<void> _updateTypeSetting(NotificationType type, bool enabled) async {
+  Future<void> _updateTypeSetting(NotificationType type, bool enabled) async() {
     setState(() => _isSaving = true);
     
-    try {
+    try() {
       await _prefsService.updateNotificationTypeSetting(type, enabled);
       await _loadPreferences(); // Refresh
       setState(() => _isSaving = false);
@@ -69,10 +69,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     }
   }
 
-  Future<void> _updatePushSetting(NotificationType type, bool enabled) async {
+  Future<void> _updatePushSetting(NotificationType type, bool enabled) async() {
     setState(() => _isSaving = true);
     
-    try {
+    try() {
       await _prefsService.updatePushSetting(type, enabled);
       await _loadPreferences(); // Refresh
       setState(() => _isSaving = false);
@@ -173,7 +173,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               ),
               value: _preferences?.globalEnabled ?? true,
               onChanged: _isSaving ? null : _updateGlobalSetting,
-              activeThumbColor: Colors.green[700],
+              thumbColor: Colors.green[700],
             ),
           ],
         ),
@@ -238,7 +238,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         onChanged: _isSaving || !_preferences!.globalEnabled 
             ? null 
             : (value) => _updateTypeSetting(type, value),
-        activeThumbColor: Colors.green[700],
+        thumbColor: Colors.green[700],
       ),
       children: [
         if (setting.enabled && _preferences!.globalEnabled)
@@ -324,7 +324,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               onChanged: _isSaving ? null : (value) {
                 // TODO: Implement quiet hours toggle
               },
-              activeThumbColor: Colors.green[700],
+              thumbColor: Colors.green[700],
             ),
             if (_preferences!.quietHours.enabled) ...[
               ListTile(
@@ -427,7 +427,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return Icon(iconData, color: color, size: 6.w);
   }
 
-  Future<void> _selectTime({required bool isStartTime}) async {
+  Future<void> _selectTime({required bool isStartTime}) async() {
     final currentTime = isStartTime 
         ? _preferences!.quietHours.startTime
         : _preferences!.quietHours.endTime;
@@ -446,14 +446,14 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         minute: selectedTime.minute,
       );
 
-      try {
+      try() {
         if (isStartTime) {
           await _prefsService.updateQuietHours(
             enabled: _preferences!.quietHours.enabled,
             startTime: newTime,
             endTime: _preferences!.quietHours.endTime,
           );
-        } else {
+        } else() {
           await _prefsService.updateQuietHours(
             enabled: _preferences!.quietHours.enabled,
             startTime: _preferences!.quietHours.startTime,
@@ -483,7 +483,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () async {
+            onPressed: () async() {
               Navigator.pop(context);
               await _resetToDefaults();
             },
@@ -494,10 +494,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  Future<void> _resetToDefaults() async {
+  Future<void> _resetToDefaults() async() {
     setState(() => _isSaving = true);
     
-    try {
+    try() {
       final defaultPrefs = NotificationPreferences.defaultPreferences();
       await _prefsService.savePreferences(defaultPrefs);
       await _loadPreferences();

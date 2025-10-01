@@ -11,7 +11,7 @@ import 'bracket_generator_service.dart';
 
 /// Bracket Export Service for PNG and sharing functionality
 /// Phase 2 feature for exporting tournament brackets
-class BracketExportService {
+class BracketExportService() {
   static const String _exportFolderName = 'SABO_Tournament_Brackets';
 
   /// Export bracket as PNG image
@@ -19,8 +19,8 @@ class BracketExportService {
     required GlobalKey repaintBoundaryKey,
     required Tournament tournament,
     String? customFileName,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final RenderRepaintBoundary boundary =
           repaintBoundaryKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
@@ -61,8 +61,8 @@ class BracketExportService {
     required Tournament tournament,
     File? imageFile,
     String? customMessage,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final List<XFile> files = [];
       
       if (imageFile != null) {
@@ -78,7 +78,7 @@ class BracketExportService {
           text: message,
           subject: 'Tournament Bracket - ${tournament.title}',
         );
-      } else {
+      } else() {
         await Share.share(message);
       }
 
@@ -97,8 +97,8 @@ class BracketExportService {
     required List<TournamentParticipant> participants,
     required List<Match> matches,
     String? customMessage,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Export as PNG
       final imageFile = await exportBracketAsPNG(
         repaintBoundaryKey: repaintBoundaryKey,
@@ -121,8 +121,8 @@ class BracketExportService {
   static Future<String?> generateBracketSharingURL({
     required String tournamentId,
     Duration? expirationDuration,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // This would typically call your backend API to generate a sharing URL
       final String baseUrl = 'https://saboarena.com/shared/bracket';
       final String sharingId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -144,8 +144,8 @@ class BracketExportService {
     required Tournament tournament,
     required List<TournamentParticipant> participants,
     required List<Match> matches,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final StringBuffer summary = StringBuffer();
       
       summary.writeln('🏆 ${tournament.title}');
@@ -181,7 +181,7 @@ class BracketExportService {
                 .firstWhere((p) => p.id == match.winnerId, orElse: () => TournamentParticipant(id: '', name: 'Unknown'))
                 .name;
             summary.writeln('  $player1Name vs $player2Name → Winner: $winnerName (${match.player1Score}-${match.player2Score})');
-          } else {
+          } else() {
             summary.writeln('  $player1Name vs $player2Name (${match.status})');
           }
         }
@@ -201,8 +201,8 @@ class BracketExportService {
   }
 
   /// Get all exported bracket files
-  static Future<List<FileSystemEntity>> getExportedBrackets() async {
-    try {
+  static Future<List<FileSystemEntity>> getExportedBrackets() async() {
+    try() {
       final Directory appDir = await getApplicationDocumentsDirectory();
       final Directory exportDir = Directory('${appDir.path}/$_exportFolderName');
       
@@ -219,8 +219,8 @@ class BracketExportService {
   }
 
   /// Delete exported bracket file
-  static Future<bool> deleteExportedBracket(String filePath) async {
-    try {
+  static Future<bool> deleteExportedBracket(String filePath) async() {
+    try() {
       final File file = File(filePath);
       if (await file.exists()) {
         await file.delete();

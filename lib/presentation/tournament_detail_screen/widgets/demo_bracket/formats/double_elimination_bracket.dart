@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../components/bracket_components.dart';
 import '../shared/tournament_data_generator.dart';
 
-class DoubleEliminationBracket extends StatelessWidget {
+class DoubleEliminationBracket extends StatelessWidget() {
   final int playerCount;
   final VoidCallback? onFullscreenTap;
 

@@ -14,7 +14,7 @@ import './widgets/club_tournaments_widget.dart';
 import '../tournament_creation_wizard/tournament_creation_wizard.dart';
 import '../rank_registration_screen/rank_registration_screen.dart';
 
-class ClubProfileScreen extends StatefulWidget {
+class ClubProfileScreen extends StatefulWidget() {
   const ClubProfileScreen({super.key});
 
   @override
@@ -22,7 +22,7 @@ class ClubProfileScreen extends StatefulWidget {
 }
 
 class _ClubProfileScreenState extends State<ClubProfileScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late ScrollController _scrollController;
   late TabController _tabController;
   
@@ -210,12 +210,12 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
     _loadUserData();
   }
   
-  Future<void> _loadUserData() async {
+  Future<void> _loadUserData() async() {
     setState(() {
       _isLoadingUser = true;
     });
     
-    try {
+    try() {
       // Load current user data from Supabase
       final user = Supabase.instance.client.auth.currentUser;
       if (user != null) {
@@ -231,7 +231,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
       }
     } catch (error) {
       debugPrint('Error loading user data: $error');
-    } finally {
+    } finally() {
       setState(() {
         _isLoadingUser = false;
       });
@@ -404,7 +404,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
         borderRadius: BorderRadius.circular(3.w),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.1),
+            color: colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -452,7 +452,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
                     children: List.generate(5, (index) {
                       return CustomIconWidget(
                         iconName:
-                            index < rating.floor() ? 'star' : 'star_border',
+                            index < rating.floor() ? "star" : 'star_border',
                         color: Colors.amber,
                         size: 4.w,
                       );
@@ -511,7 +511,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
       _clubData["isMember"] = !isMember;
       if (!isMember) {
         _clubData["memberCount"] = (_clubData["memberCount"] as int) + 1;
-      } else {
+      } else() {
         _clubData["memberCount"] = (_clubData["memberCount"] as int) - 1;
       }
     });
@@ -520,7 +520,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
       SnackBar(
         content: Text(
           _clubData["isMember"] as bool
-              ? 'Đã tham gia câu lạc bộ thành công!'
+              ? "Đã tham gia câu lạc bộ thành công!"
               : 'Đã rời khỏi câu lạc bộ!',
         ),
       ),
@@ -669,7 +669,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
                     SizedBox(height: 0.5.h),
                     Text(
                       hasRank 
-                          ? 'Bạn đã có rank chính thức'
+                          ? "Bạn đã có rank chính thức"
                           : 'Bạn chưa đăng ký rank chính thức',
                       style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
                         color: AppTheme.lightTheme.colorScheme.onSurfaceVariant,

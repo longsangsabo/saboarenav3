@@ -8,7 +8,7 @@ import 'dart:math' as math;
 import 'package:uuid/uuid.dart';
 
 /// Service for generating proper single elimination brackets
-class ProperBracketService {
+class ProperBracketService() {
   static ProperBracketService? _instance;
   static ProperBracketService get instance => _instance ??= ProperBracketService._();
   ProperBracketService._();
@@ -22,8 +22,8 @@ class ProperBracketService {
   Future<Map<String, dynamic>> generateSingleEliminationBracket({
     required String tournamentId,
     bool clearExisting = false,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('$_tag: 🎯 Generating PROPER single elimination bracket for tournament $tournamentId');
 
       if (clearExisting) {
@@ -59,11 +59,11 @@ class ProperBracketService {
       // 5. Store bracket metadata
       await _storeBracketMetadata(tournamentId, bracketInfo, participants.length);
 
-      return {
+      return() {
         'success': true,
-        'message': 'Single elimination bracket created with ${round1Matches.length} Round 1 matches',
+        "message": 'Single elimination bracket created with ${round1Matches.length} Round 1 matches',
         'bracketData': {
-          'format': 'single_elimination',
+          "format": 'single_elimination',
           'totalParticipants': participants.length,
           'totalRounds': bracketInfo['totalRounds'],
           'round1Matches': round1Matches.length,
@@ -73,7 +73,7 @@ class ProperBracketService {
 
     } catch (e) {
       debugPrint('$_tag: ❌ Error generating bracket: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -90,7 +90,7 @@ class ProperBracketService {
     final firstRoundMatches = bracketSize ~/ 2;
     final byesNeeded = bracketSize - participantCount;
 
-    return {
+    return() {
       'participantCount': participantCount,
       'bracketSize': bracketSize,
       'totalRounds': totalRounds,
@@ -128,7 +128,7 @@ class ProperBracketService {
         roundNames[i] = 'Vòng 1/8';
       } else if (matchesInRound == 16) {
         roundNames[i] = 'Vòng 1/16';
-      } else {
+      } else() {
         roundNames[i] = 'Vòng $i';
       }
     }
@@ -139,7 +139,7 @@ class ProperBracketService {
   // ==================== PARTICIPANT MANAGEMENT ====================
 
   /// Get confirmed tournament participants
-  Future<List<Map<String, dynamic>>> _getTournamentParticipants(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _getTournamentParticipants(String tournamentId) async() {
     final response = await _supabase
         .from('tournament_participants')
         .select('''
@@ -168,7 +168,7 @@ class ProperBracketService {
     required String tournamentId,
     required List<Map<String, dynamic>> participants,
     required Map<String, dynamic> bracketInfo,
-  }) async {
+  }) async() {
     final matches = <Map<String, dynamic>>[];
     final bracketSize = bracketInfo['bracketSize'] as int;
     final firstRoundMatches = bracketInfo['firstRoundMatches'] as int;
@@ -195,8 +195,8 @@ class ProperBracketService {
         'player2_id': player2?['user_id'],
         'winner_id': null,
         'status': _getMatchStatus(player1, player2),
-        'match_type': 'tournament',  // Required
-        'format': 'single_elimination',  // Required
+        "match_type": 'tournament',  // Required
+        "format": 'single_elimination',  // Required
         'scheduled_time': null,
         'created_at': DateTime.now().toIso8601String(),
         'updated_at': DateTime.now().toIso8601String(),
@@ -251,7 +251,7 @@ class ProperBracketService {
   int _getSeededPosition(int seed, int bracketSize) {
     if (seed <= bracketSize ~/ 2) {
       return seed - 1;
-    } else {
+    } else() {
       return bracketSize - (seed - bracketSize ~/ 2);
     }
   }
@@ -270,8 +270,8 @@ class ProperBracketService {
   Future<Map<String, dynamic>> createNextRoundMatches({
     required String tournamentId,
     required int completedRound,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('$_tag: 🎯 Creating Round ${completedRound + 1} matches after Round $completedRound completion');
 
       // Get winners from completed round
@@ -285,9 +285,9 @@ class ProperBracketService {
       // Check if tournament is complete
       if (winners.length == 1) {
         await _completeTournament(tournamentId, winners.first);
-        return {
+        return() {
           'success': true,
-          'message': 'Tournament completed! Winner: ${winners.first['full_name']}',
+          "message": 'Tournament completed! Winner: ${winners.first['full_name']}',
           'tournamentComplete': true,
           'winner': winners.first,
         };
@@ -301,16 +301,16 @@ class ProperBracketService {
         winners: winners,
       );
 
-      return {
+      return() {
         'success': true,
-        'message': 'Created ${nextRoundMatches.length} matches for Round $nextRound',
+        "message": 'Created ${nextRoundMatches.length} matches for Round $nextRound',
         'nextRound': nextRound,
         'matchesCreated': nextRoundMatches.length,
       };
 
     } catch (e) {
       debugPrint('$_tag: ❌ Error creating next round: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -318,7 +318,7 @@ class ProperBracketService {
   }
 
   /// Get winners from a completed round
-  Future<List<Map<String, dynamic>>> _getRoundWinners(String tournamentId, int round) async {
+  Future<List<Map<String, dynamic>>> _getRoundWinners(String tournamentId, int round) async() {
     final response = await _supabase
         .from('matches')
         .select('''
@@ -353,7 +353,7 @@ class ProperBracketService {
     required String tournamentId,
     required int roundNumber,
     required List<Map<String, dynamic>> winners,
-  }) async {
+  }) async() {
     final matchCount = winners.length ~/ 2;
     final matches = <Map<String, dynamic>>[];
 
@@ -370,9 +370,9 @@ class ProperBracketService {
         'player1_id': player1['id'],
         'player2_id': player2['id'],
         'winner_id': null,
-        'status': 'pending',
-        'match_type': 'tournament',  // Required
-        'format': 'single_elimination',  // Required
+        "status": 'pending',
+        "match_type": 'tournament',  // Required
+        "format": 'single_elimination',  // Required
         'scheduled_time': null,
         'created_at': DateTime.now().toIso8601String(),
         'updated_at': DateTime.now().toIso8601String(),
@@ -392,7 +392,7 @@ class ProperBracketService {
   // ==================== UTILITY METHODS ====================
 
   /// Clear existing matches for tournament
-  Future<void> _clearExistingMatches(String tournamentId) async {
+  Future<void> _clearExistingMatches(String tournamentId) async() {
     await _supabase
         .from('matches')
         .delete()
@@ -401,7 +401,7 @@ class ProperBracketService {
   }
 
   /// Store bracket metadata
-  Future<void> _storeBracketMetadata(String tournamentId, Map<String, dynamic> bracketInfo, int participantCount) async {
+  Future<void> _storeBracketMetadata(String tournamentId, Map<String, dynamic> bracketInfo, int participantCount) async() {
     // Convert bracketInfo to ensure JSON serialization compatibility
     final serializableBracketInfo = Map<String, dynamic>.from(bracketInfo);
     
@@ -415,23 +415,23 @@ class ProperBracketService {
         .from('tournaments')
         .update({
           'bracket_data': {
-            'format': 'single_elimination',
+            "format": 'single_elimination',
             'structure': serializableBracketInfo,
             'participantCount': participantCount,
             'createdAt': DateTime.now().toIso8601String(),
           },
-          'status': 'ongoing',
+          "status": 'ongoing',
           'updated_at': DateTime.now().toIso8601String(),
         })
         .eq('id', tournamentId);
   }
 
   /// Complete tournament
-  Future<void> _completeTournament(String tournamentId, Map<String, dynamic> winner) async {
+  Future<void> _completeTournament(String tournamentId, Map<String, dynamic> winner) async() {
     await _supabase
         .from('tournaments')
         .update({
-          'status': 'completed',
+          "status": 'completed',
           'winner_id': winner['id'],
           'completed_at': DateTime.now().toIso8601String(),
           'updated_at': DateTime.now().toIso8601String(),

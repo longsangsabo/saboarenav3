@@ -1,4 +1,4 @@
-class Match {
+class Match() {
   final String id;
   final dynamic player1;
   final dynamic player2;

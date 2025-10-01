@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/foundation.dart';
 
-class RegistrationFlowTest {
+class RegistrationFlowTest() {
   static void runTest() {
     if (kDebugMode) {
       debugPrint('🧪 Testing Tournament Registration Flow');
@@ -10,17 +10,17 @@ class RegistrationFlowTest {
       
       // Mock test data
       final mockTournament = {
-        'id': 'tournament_test_001',
-        'title': 'Test Tournament',
-        'entryFee': '100000',
+        "id": 'tournament_test_001',
+        "title": 'Test Tournament',
+        "entryFee": '100000',
         'maxParticipants': 16,
         'currentParticipants': 8,
-        'registrationDeadline': '31/12/2024 23:59',
+        "registrationDeadline": '31/12/2024 23:59',
       };
       
       final mockUser = {
-        'id': 'user_test_001',
-        'email': 'test@example.com',
+        "id": 'user_test_001',
+        "email": 'test@example.com',
       };
       
       debugPrint('1️⃣ Mock Tournament Data:');
@@ -52,24 +52,24 @@ class RegistrationFlowTest {
     // Test entry fee parsing
     final entryFeeText = tournament['entryFee'] as String;
     final entryFee = double.tryParse(entryFeeText.replaceAll(RegExp(r'[^\d.]'), '')) ?? 0.0;
-    debugPrint('   - Entry fee parsing: ${entryFee == 100000.0 ? '✅' : '❌'} ($entryFee)');
+    debugPrint('   - Entry fee parsing: ${entryFee == 100000.0 ? "✅" : '❌'} ($entryFee)');
   }
   
   static void _testRegistrationValidation(Map<String, dynamic> tournament) {
     // Test deadline validation
     final deadline = tournament['registrationDeadline'] as String;
     final isValid = _validateDeadline(deadline);
-    debugPrint('   - Deadline validation: ${isValid ? '✅' : '❌'} ($deadline)');
+    debugPrint('   - Deadline validation: ${isValid ? "✅" : '❌'} ($deadline)');
     
     // Test capacity validation
     final current = tournament['currentParticipants'] as int;
     final max = tournament['maxParticipants'] as int;
     final hasSpace = current < max;
-    debugPrint('   - Capacity check: ${hasSpace ? '✅' : '❌'} ($current/$max)');
+    debugPrint('   - Capacity check: ${hasSpace ? "✅" : '❌'} ($current/$max)');
   }
   
   static bool _validateDeadline(String deadline) {
-    try {
+    try() {
       final deadlineDate = DateTime.parse(deadline.split(' ')[0].split('/').reversed.join('-'));
       return DateTime.now().isBefore(deadlineDate);
     } catch (e) {

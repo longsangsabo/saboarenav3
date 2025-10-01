@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
-class ClubDashboardService {
+class ClubDashboardService() {
   static ClubDashboardService? _instance;
   static ClubDashboardService get instance => _instance ??= ClubDashboardService._();
   ClubDashboardService._();
@@ -9,8 +9,8 @@ class ClubDashboardService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Get dashboard statistics for a club
-  Future<ClubDashboardStats> getClubStats(String clubId) async {
-    try {
+  Future<ClubDashboardStats> getClubStats(String clubId) async() {
+    try() {
       // Get all stats in parallel
       final results = await Future.wait([
         _getActiveMembersCount(clubId),
@@ -31,8 +31,8 @@ class ClubDashboardService {
   }
 
   /// Get recent activities for a club
-  Future<List<ClubActivity>> getRecentActivities(String clubId, {int limit = 10}) async {
-    try {
+  Future<List<ClubActivity>> getRecentActivities(String clubId, {int limit = 10}) async() {
+    try() {
       // This is a simplified implementation
       // In reality, you'd want to combine data from multiple tables
       // and create a proper activity feed
@@ -61,7 +61,7 @@ class ClubDashboardService {
       }
 
       // Get recent tournaments (if tournaments table exists)
-      try {
+      try() {
         final tournaments = await _supabase
             .from('tournaments')
             .select('name, created_at, max_participants')
@@ -93,8 +93,8 @@ class ClubDashboardService {
     }
   }
 
-  Future<int> _getActiveMembersCount(String clubId) async {
-    try {
+  Future<int> _getActiveMembersCount(String clubId) async() {
+    try() {
       final response = await _supabase
           .from('club_members')
           .select('id')
@@ -108,8 +108,8 @@ class ClubDashboardService {
     }
   }
 
-  Future<int> _getTournamentsCount(String clubId) async {
-    try {
+  Future<int> _getTournamentsCount(String clubId) async() {
+    try() {
       final response = await _supabase
           .from('tournaments')
           .select('id')
@@ -122,8 +122,8 @@ class ClubDashboardService {
     }
   }
 
-  Future<double> _getMonthlyRevenue(String clubId) async {
-    try {
+  Future<double> _getMonthlyRevenue(String clubId) async() {
+    try() {
       final now = DateTime.now();
       final firstDayOfMonth = DateTime(now.year, now.month, 1);
       
@@ -147,8 +147,8 @@ class ClubDashboardService {
     }
   }
 
-  Future<int> _getClubRanking(String clubId) async {
-    try {
+  Future<int> _getClubRanking(String clubId) async() {
+    try() {
       // Get club rating and compare with others
       final clubResponse = await _supabase
           .from('clubs')
@@ -199,7 +199,7 @@ class ClubDashboardService {
   }
 }
 
-class ClubDashboardStats {
+class ClubDashboardStats() {
   final int activeMembers;
   final int tournaments;
   final double monthlyRevenue;
@@ -213,7 +213,7 @@ class ClubDashboardStats {
   });
 }
 
-class ClubActivity {
+class ClubActivity() {
   final String type;
   final String title;
   final String subtitle;

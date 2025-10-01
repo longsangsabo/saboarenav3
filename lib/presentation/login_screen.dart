@@ -7,7 +7,7 @@ import '../../services/auth_service.dart';
 import '../../services/preferences_service.dart';
 
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget() {
   const LoginScreen({super.key});
 
   @override
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _loadSavedLoginInfo() async {
+  Future<void> _loadSavedLoginInfo() async() {
     final loginInfo = await PreferencesService.instance.getValidLoginInfo();
     if (mounted) {
       setState(() {
@@ -57,12 +57,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _signIn() async {
+  Future<void> _signIn() async() {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       await AuthService.instance.signInWithEmail(
         email: _emailController.text.trim(),
         password: _passwordController.text,
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final isAdmin = await AuthService.instance.isCurrentUserAdmin();
         if (isAdmin) {
           Navigator.of(context).pushReplacementNamed(AppRoutes.adminDashboardScreen);
-        } else {
+        } else() {
           Navigator.of(context).pushReplacementNamed(AppRoutes.userProfileScreen);
         }
       }
@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isLoading = false);
       }
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _phoneController.clear();
         _phonePasswordController.clear();
         _isPhonePasswordVisible = false;
-      } else {
+      } else() {
         _emailController.clear();
         _passwordController.clear();
         _isPasswordVisible = false;
@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return phone;
   }
 
-  Future<void> _signInWithPhone() async {
+  Future<void> _signInWithPhone() async() {
     if (!_phoneFormKey.currentState!.validate()) return;
 
     final normalizedPhone = _normalizePhoneNumber(_phoneController.text);
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isPhoneLoading = true);
 
-    try {
+    try() {
       await AuthService.instance.signInWithPhone(
         phone: normalizedPhone,
         password: _phonePasswordController.text,
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (!mounted) return;
         Navigator.of(context)
             .pushReplacementNamed(AppRoutes.adminDashboardScreen);
-      } else {
+      } else() {
         if (!mounted) return;
         Navigator.of(context)
             .pushReplacementNamed(AppRoutes.userProfileScreen);
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isPhoneLoading = false);
       }

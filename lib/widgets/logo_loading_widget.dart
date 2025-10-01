@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LogoLoadingWidget extends StatelessWidget {
+class LogoLoadingWidget extends StatelessWidget() {
   final double? size;
   final Color? backgroundColor;
   final bool showBackground;
@@ -50,7 +50,7 @@ class LogoLoadingWidget extends StatelessWidget {
 }
 
 // Small version for inline loading
-class SmallLogoLoadingWidget extends StatelessWidget {
+class SmallLogoLoadingWidget extends StatelessWidget() {
   const SmallLogoLoadingWidget({super.key});
 
   @override
@@ -63,7 +63,7 @@ class SmallLogoLoadingWidget extends StatelessWidget {
 }
 
 // Medium version for cards/modals
-class MediumLogoLoadingWidget extends StatelessWidget {
+class MediumLogoLoadingWidget extends StatelessWidget() {
   const MediumLogoLoadingWidget({super.key});
 
   @override
@@ -76,7 +76,7 @@ class MediumLogoLoadingWidget extends StatelessWidget {
 }
 
 // Large version for main loading screens
-class LargeLogoLoadingWidget extends StatelessWidget {
+class LargeLogoLoadingWidget extends StatelessWidget() {
   const LargeLogoLoadingWidget({super.key});
 
   @override

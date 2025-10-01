@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class MembershipPolicyScreen extends StatefulWidget {
+class MembershipPolicyScreen extends StatefulWidget() {
   final String clubId;
 
   const MembershipPolicyScreen({
@@ -368,7 +368,7 @@ class _MembershipPolicyScreenState extends State<MembershipPolicyScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: AppTheme.primaryLight,
+            thumbColor: WidgetStateProperty.all(AppTheme.primaryLight),
           ),
         ],
       ),

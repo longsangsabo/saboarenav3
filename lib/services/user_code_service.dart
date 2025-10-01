@@ -3,12 +3,12 @@ import 'package:sabo_arena/models/user_profile.dart';
 import 'package:sabo_arena/services/share_service.dart';
 import 'package:flutter/foundation.dart';
 
-class UserCodeService {
+class UserCodeService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   /// Generate unique user code when user registers
-  static Future<String> generateUniqueUserCode(String userId) async {
-    try {
+  static Future<String> generateUniqueUserCode(String userId) async() {
+    try() {
       // Generate base code from user ID
       String baseCode = ShareService.generateUserCode(userId);
       
@@ -35,8 +35,8 @@ class UserCodeService {
   }
   
   /// Create user code in database during registration
-  static Future<bool> createUserCodeOnRegistration(String userId) async {
-    try {
+  static Future<bool> createUserCodeOnRegistration(String userId) async() {
+    try() {
       // Generate unique code
       final userCode = await generateUniqueUserCode(userId);
       
@@ -76,8 +76,8 @@ class UserCodeService {
   }
   
   /// Get user code from database
-  static Future<String?> getUserCode(String userId) async {
-    try {
+  static Future<String?> getUserCode(String userId) async() {
+    try() {
       final result = await _supabase
           .from('users')
           .select('user_code')
@@ -92,8 +92,8 @@ class UserCodeService {
   }
   
   /// Update QR data when user profile changes
-  static Future<bool> updateUserQRData(UserProfile user) async {
-    try {
+  static Future<bool> updateUserQRData(UserProfile user) async() {
+    try() {
       final qrData = ShareService.generateUserQRData(user);
       
       await _supabase
@@ -112,8 +112,8 @@ class UserCodeService {
   }
   
   /// Find user by user code (for QR scanning)
-  static Future<UserProfile?> findUserByCode(String userCode) async {
-    try {
+  static Future<UserProfile?> findUserByCode(String userCode) async() {
+    try() {
       final result = await _supabase
           .from('users')
           .select('*')
@@ -128,8 +128,8 @@ class UserCodeService {
   }
   
   /// Regenerate user code (if user wants new code)
-  static Future<String?> regenerateUserCode(String userId) async {
-    try {
+  static Future<String?> regenerateUserCode(String userId) async() {
+    try() {
       final newCode = await generateUniqueUserCode(userId);
       
       await _supabase
@@ -148,8 +148,8 @@ class UserCodeService {
   }
   
   /// Check if user code is available
-  static Future<bool> isUserCodeAvailable(String userCode) async {
-    try {
+  static Future<bool> isUserCodeAvailable(String userCode) async() {
+    try() {
       final result = await _supabase
           .from('users')
           .select('id')

@@ -3,7 +3,7 @@ import 'package:sabo_arena/models/user_profile.dart';
 import 'package:sabo_arena/services/ranking_service.dart';
 import 'package:intl/intl.dart';
 
-class MemberOverviewTab extends StatefulWidget {
+class MemberOverviewTab extends StatefulWidget() {
   final UserProfile user;
 
   const MemberOverviewTab({
@@ -16,7 +16,7 @@ class MemberOverviewTab extends StatefulWidget {
 }
 
 class _MemberOverviewTabState extends State<MemberOverviewTab>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin() {
   final RankingService _rankingService = RankingService();
 
   @override
@@ -68,7 +68,7 @@ class _MemberOverviewTabState extends State<MemberOverviewTab>
         _buildInfoRow('Điểm ELO', '${user.eloRating}'),
         _buildInfoRow(
           'Trạng thái',
-          user.isActive ? 'Đang hoạt động' : 'Không hoạt động',
+          user.isActive ? "Đang hoạt động" : 'Không hoạt động',
           valueColor: user.isActive ? Colors.green : Colors.grey,
         ),
       ],

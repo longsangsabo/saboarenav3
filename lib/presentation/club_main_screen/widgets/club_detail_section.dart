@@ -6,7 +6,7 @@ import '../../../models/club_tournament.dart';
 import '../../../services/supabase_service.dart';
 import '../../../routes/app_routes.dart';
 
-class ClubDetailSection extends StatefulWidget {
+class ClubDetailSection extends StatefulWidget() {
   final Club club;
 
   const ClubDetailSection({
@@ -19,7 +19,7 @@ class ClubDetailSection extends StatefulWidget {
 }
 
 class _ClubDetailSectionState extends State<ClubDetailSection>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late TabController _tabController;
   bool _isJoined = false;
   bool _isLoading = false;
@@ -32,8 +32,8 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
     _loadCurrentUser();
   }
   
-  Future<void> _loadCurrentUser() async {
-    try {
+  Future<void> _loadCurrentUser() async() {
+    try() {
       final user = SupabaseService.instance.getCurrentUser();
       setState(() {
         _currentUserId = user?.id;
@@ -235,7 +235,7 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
                 ),
               )
             : Text(
-                _isJoined ? 'Rời khỏi' : 'Tham gia',
+                _isJoined ? "Rời khỏi" : 'Tham gia',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -245,14 +245,14 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
     );
   }
 
-  Future<void> _handleJoinLeave() async {
+  Future<void> _handleJoinLeave() async() {
     if (_isJoined) {
       // Show confirmation dialog for leaving
       final shouldLeave = await _showLeaveConfirmDialog();
       if (shouldLeave == true) {
         await _leaveClub();
       }
-    } else {
+    } else() {
       await _joinClub();
     }
   }
@@ -283,10 +283,10 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
     );
   }
 
-  Future<void> _joinClub() async {
+  Future<void> _joinClub() async() {
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
       
@@ -317,10 +317,10 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
     }
   }
 
-  Future<void> _leaveClub() async {
+  Future<void> _leaveClub() async() {
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
       
@@ -741,7 +741,7 @@ class _ClubDetailSectionState extends State<ClubDetailSection>
                           const SizedBox(width: 8),
                           Text(
                             tournament.prizeDescription != null 
-                                ? 'Giải thưởng: ${tournament.prizeDescription}' 
+                                ? "Giải thưởng: ${tournament.prizeDescription}" 
                                 : 'Không có giải thưởng',
                             style: TextStyle(
                               fontSize: 14,

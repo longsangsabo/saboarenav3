@@ -7,7 +7,7 @@ import 'package:sabo_arena/services/tournament_service.dart';
 import 'package:sabo_arena/services/bracket_service.dart';
 import 'package:sabo_arena/services/tournament_completion_service.dart';
 
-class TournamentSettingsTab extends StatefulWidget {
+class TournamentSettingsTab extends StatefulWidget() {
   final String tournamentId;
   final VoidCallback? onStatusChanged;
 
@@ -39,13 +39,13 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     _loadTournamentData();
   }
 
-  Future<void> _loadTournamentData() async {
+  Future<void> _loadTournamentData() async() {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try {
+    try() {
       // Load tournament matches and participants
       _matches = await _tournamentService.getTournamentMatches(widget.tournamentId);
       
@@ -79,15 +79,15 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     }
   }
 
-  bool get _canCompleteTournament {
+  bool get _canCompleteTournament() {
     if (_matches.isEmpty) return false;
     
     // Check if tournament is complete based on bracket logic
     return _bracketService.isTournamentComplete(_matches);
   }
 
-  Future<void> _debugDirectDatabaseQuery() async {
-    try {
+  Future<void> _debugDirectDatabaseQuery() async() {
+    try() {
       debugPrint('🔍 Direct DB Query: Checking tournament_participants table...');
       final response = await Supabase.instance.client
           .from('tournament_participants')
@@ -104,15 +104,15 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     }
   }
 
-  int get _completedMatches {
+  int get _completedMatches() {
     return _matches.where((m) => m['status'] == 'completed').length;
   }
 
-  int get _totalMatches {
+  int get _totalMatches() {
     return _matches.length;
   }
 
-  double get _completionProgress {
+  double get _completionProgress() {
     if (_totalMatches == 0) return 0.0;
     return _completedMatches / _totalMatches;
   }
@@ -491,7 +491,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : Icon(Icons.emoji_events),
-                      label: Text(_isCompleting ? 'Đang hoàn thành...' : 'Hoàn thành giải đấu'),
+                      label: Text(_isCompleting ? "Đang hoàn thành..." : 'Hoàn thành giải đấu'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.successLight,
                         padding: EdgeInsets.symmetric(vertical: 12.sp),
@@ -569,7 +569,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     );
   }
 
-  Future<void> _completeTournament() async {
+  Future<void> _completeTournament() async() {
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
@@ -600,7 +600,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
 
     setState(() => _isCompleting = true);
 
-    try {
+    try() {
       // Use the new TournamentCompletionService for complete workflow
       final result = await _completionService.completeTournament(
         tournamentId: widget.tournamentId,
@@ -633,7 +633,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
         // Show completion report dialog
         _showCompletionReport(result['completion_report']);
         
-      } else {
+      } else() {
         throw Exception(result['message'] ?? 'Unknown completion error');
       }
       
@@ -644,7 +644,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
           backgroundColor: AppTheme.errorLight,
         ),
       );
-    } finally {
+    } finally() {
       setState(() => _isCompleting = false);
     }
   }

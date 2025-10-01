@@ -4,7 +4,7 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class TournamentHeaderWidget extends StatelessWidget {
+class TournamentHeaderWidget extends StatelessWidget() {
   final Map<String, dynamic> tournament;
   final VoidCallback? onShareTap;
   final ScrollController scrollController;
@@ -122,7 +122,7 @@ class TournamentHeaderWidget extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withValues(alpha: 0.7),
+                    Colors.black.withOpacity(0.7),
                   ],
                 ),
               ),
@@ -168,7 +168,7 @@ class TournamentHeaderWidget extends StatelessWidget {
                     children: [
                       CustomIconWidget(
                         iconName: 'location_on',
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: Colors.white.withOpacity(0.8),
                         size: 16,
                       ),
                       const SizedBox(width: Gaps.sm),
@@ -177,7 +177,7 @@ class TournamentHeaderWidget extends StatelessWidget {
                           tournament["location"] as String,
                           style: AppTheme.lightTheme.textTheme.bodyMedium
                               ?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: Colors.white.withOpacity(0.8),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class QuickActionCard extends StatefulWidget {
+class QuickActionCard extends StatefulWidget() {
   final String title;
   final String subtitle;
   final IconData icon;
@@ -44,12 +44,12 @@ class _QuickActionCardState extends State<QuickActionCard> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(12.sp),
             border: Border.all(
-              color: widget.color.withValues(alpha: 0.2),
+              color: widget.color.withOpacity(0.2),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: Colors.black.withOpacity(0.05),
                 offset: const Offset(0, 2),
                 blurRadius: 8,
                 spreadRadius: -2,
@@ -64,7 +64,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
                   Container(
                     padding: EdgeInsets.all(8.sp),
                     decoration: BoxDecoration(
-                      color: widget.color.withValues(alpha: 0.1),
+                      color: widget.color.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8.sp),
                     ),
                     child: Icon(

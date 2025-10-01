@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class BasicInfoStep extends StatefulWidget {
+class BasicInfoStep extends StatefulWidget() {
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -16,7 +16,7 @@ class BasicInfoStep extends StatefulWidget {
 }
 
 class _BasicInfoStepState extends State<BasicInfoStep>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -916,7 +916,7 @@ class _BasicInfoStepState extends State<BasicInfoStep>
   }
 }
 
-class GameType {
+class GameType() {
   final String value;
   final String label;
   final String description;
@@ -932,7 +932,7 @@ class GameType {
   });
 }
 
-class TournamentType {
+class TournamentType() {
   final String value;
   final String label;
   final String description;

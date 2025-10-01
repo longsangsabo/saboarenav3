@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/member_analytics.dart';
 
-class MemberAnalyticsCardSimple extends StatelessWidget {
+class MemberAnalyticsCardSimple extends StatelessWidget() {
   final MemberAnalytics analytics;
   
   const MemberAnalyticsCardSimple({

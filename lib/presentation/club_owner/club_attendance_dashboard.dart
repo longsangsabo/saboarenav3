@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../services/attendance_service.dart';
 
-class ClubAttendanceDashboard extends StatefulWidget {
+class ClubAttendanceDashboard extends StatefulWidget() {
   final String clubId;
   final String clubName;
 
@@ -17,7 +17,7 @@ class ClubAttendanceDashboard extends StatefulWidget {
   State<ClubAttendanceDashboard> createState() => _ClubAttendanceDashboardState();
 }
 
-class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with TickerProviderStateMixin {
+class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with TickerProviderStateMixin() {
   late TabController _tabController;
   final AttendanceService _attendanceService = AttendanceService();
 
@@ -41,14 +41,14 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
     super.dispose();
   }
 
-  Future<void> _loadDashboardData() async {
+  Future<void> _loadDashboardData() async() {
     if (!mounted) return;
     setState(() {
       isLoading = true;
       errorMessage = null;
     });
 
-    try {
+    try() {
       await Future.wait([
         _loadTodayAttendance(),
         _loadWeeklyStats(),
@@ -68,57 +68,57 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
     }
   }
 
-  Future<void> _loadTodayAttendance() async {
+  Future<void> _loadTodayAttendance() async() {
     // Mock data - replace with actual API call
     todayAttendance = [
       {
-        'id': '1',
-        'staff_name': 'Nguyễn Văn A',
-        'check_in_time': '2025-09-30T08:00:00Z',
+        "id": '1',
+        "staff_name": 'Nguyễn Văn A',
+        "check_in_time": '2025-09-30T08:00:00Z',
         'check_out_time': null,
-        'status': 'working',
+        "status": 'working',
         'late_minutes': 0,
-        'shift_start': '08:00',
-        'shift_end': '17:00',
+        "shift_start": '08:00',
+        "shift_end": '17:00',
       },
       {
-        'id': '2',
-        'staff_name': 'Trần Thị B',
-        'check_in_time': '2025-09-30T08:15:00Z',
+        "id": '2',
+        "staff_name": 'Trần Thị B',
+        "check_in_time": '2025-09-30T08:15:00Z',
         'check_out_time': null,
-        'status': 'on_break',
+        "status": 'on_break',
         'late_minutes': 15,
-        'shift_start': '08:00',
-        'shift_end': '17:00',
+        "shift_start": '08:00',
+        "shift_end": '17:00',
       },
       {
-        'id': '3',
-        'staff_name': 'Lê Văn C',
-        'check_in_time': '2025-09-30T14:00:00Z',
-        'check_out_time': '2025-09-30T22:00:00Z',
-        'status': 'completed',
+        "id": '3',
+        "staff_name": 'Lê Văn C',
+        "check_in_time": '2025-09-30T14:00:00Z',
+        "check_out_time": '2025-09-30T22:00:00Z',
+        "status": 'completed',
         'late_minutes': 0,
         'total_hours': 8.0,
-        'shift_start': '14:00',
-        'shift_end': '22:00',
+        "shift_start": '14:00',
+        "shift_end": '22:00',
       },
     ];
   }
 
-  Future<void> _loadWeeklyStats() async {
+  Future<void> _loadWeeklyStats() async() {
     // Mock data - replace with actual API call
     weeklyStats = [
-      {'day': 'T2', 'present': 12, 'total': 15, 'late': 2},
-      {'day': 'T3', 'present': 14, 'total': 15, 'late': 1},
-      {'day': 'T4', 'present': 13, 'total': 15, 'late': 3},
-      {'day': 'T5', 'present': 15, 'total': 15, 'late': 0},
-      {'day': 'T6', 'present': 11, 'total': 15, 'late': 4},
-      {'day': 'T7', 'present': 8, 'total': 10, 'late': 1},
-      {'day': 'CN', 'present': 6, 'total': 8, 'late': 0},
+      {"day": 'T2', 'present': 12, 'total': 15, 'late': 2},
+      {"day": 'T3', 'present': 14, 'total': 15, 'late': 1},
+      {"day": 'T4', 'present': 13, 'total': 15, 'late': 3},
+      {"day": 'T5', 'present': 15, 'total': 15, 'late': 0},
+      {"day": 'T6', 'present': 11, 'total': 15, 'late': 4},
+      {"day": 'T7', 'present': 8, 'total': 10, 'late': 1},
+      {"day": 'CN', 'present': 6, 'total': 8, 'late': 0},
     ];
   }
 
-  Future<void> _loadSummaryStats() async {
+  Future<void> _loadSummaryStats() async() {
     // Mock data - replace with actual API call
     summaryStats = {
       'total_staff': 15,

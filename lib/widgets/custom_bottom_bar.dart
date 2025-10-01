@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../routes/app_routes.dart';
 
 /// Navigation item data for bottom bar
-class BottomNavItem {
+class BottomNavItem() {
   final IconData icon;
   final IconData? activeIcon;
   final String label;
@@ -20,7 +20,7 @@ class BottomNavItem {
 
 /// Custom bottom navigation bar for the Vietnamese billiards social networking app
 /// Provides consistent navigation across main app sections
-class CustomBottomBar extends StatelessWidget {
+class CustomBottomBar extends StatelessWidget() {
   /// Current active route
   final String currentRoute;
 
@@ -153,7 +153,7 @@ class CustomBottomBar extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     decoration: isActive
                         ? BoxDecoration(
-                            color: colorScheme.primary.withValues(alpha: 0.1),
+                            color: colorScheme.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           )
                         : null,
@@ -243,7 +243,7 @@ class CustomBottomBar extends StatelessWidget {
     if (currentRoute != route) {
       if (onTap != null) {
         onTap!(route);
-      } else {
+      } else() {
         Navigator.pushNamedAndRemoveUntil(
           context,
           route,

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /// Custom app bar variants for different screens
-enum CustomAppBarVariant {
+enum CustomAppBarVariant() {
   /// Standard app bar with title and back button
   standard,
 
@@ -22,7 +22,7 @@ enum CustomAppBarVariant {
 
 /// A customizable app bar widget that provides consistent navigation
 /// and branding across the Vietnamese billiards social networking app
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget() {
   /// The variant of the app bar to display
   final CustomAppBarVariant variant;
 
@@ -111,7 +111,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
           onPressed: onFavoriteTap,
-          tooltip: isFavorite ? 'Bỏ yêu thích' : 'Yêu thích',
+          tooltip: isFavorite ? "Bỏ yêu thích" : 'Yêu thích',
         ),
         IconButton(
           icon: const Icon(Icons.share),
@@ -274,7 +274,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.3),
+          color: colorScheme.outline.withOpacity(0.3),
           width: 1,
         ),
       ),

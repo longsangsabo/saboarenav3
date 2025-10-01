@@ -8,7 +8,7 @@ import './club_approval_screen.dart';
 import './admin_user_management_screen.dart';
 
 
-class AdminMainScreen extends StatefulWidget {
+class AdminMainScreen extends StatefulWidget() {
   final int initialIndex;
   
   const AdminMainScreen({
@@ -81,7 +81,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
 }
 
 // Individual tab widgets
-class _AdminDashboardTab extends StatefulWidget {
+class _AdminDashboardTab extends StatefulWidget() {
   @override
   State<_AdminDashboardTab> createState() => _AdminDashboardTabState();
 }
@@ -99,8 +99,8 @@ class _AdminDashboardTabState extends State<_AdminDashboardTab> {
     _loadDashboardData();
   }
 
-  Future<void> _loadDashboardData() async {
-    try {
+  Future<void> _loadDashboardData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -456,13 +456,13 @@ class _AdminDashboardTabState extends State<_AdminDashboardTab> {
   }
 
   String _formatTimeAgo(dynamic timestamp) {
-    try {
+    try() {
       DateTime dateTime;
       if (timestamp is String) {
         dateTime = DateTime.parse(timestamp);
       } else if (timestamp is DateTime) {
         dateTime = timestamp;
-      } else {
+      } else() {
         return 'Không xác định';
       }
 
@@ -477,7 +477,7 @@ class _AdminDashboardTabState extends State<_AdminDashboardTab> {
         return '${difference.inHours} giờ trước';
       } else if (difference.inDays < 7) {
         return '${difference.inDays} ngày trước';
-      } else {
+      } else() {
         return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
       }
     } catch (e) {
@@ -486,14 +486,14 @@ class _AdminDashboardTabState extends State<_AdminDashboardTab> {
   }
 }
 
-class _AdminClubApprovalTab extends StatelessWidget {
+class _AdminClubApprovalTab extends StatelessWidget() {
   @override
   Widget build(BuildContext context) {
     return const ClubApprovalScreen();
   }
 }
 
-class _AdminTournamentTab extends StatelessWidget {
+class _AdminTournamentTab extends StatelessWidget() {
   @override
   Widget build(BuildContext context) {
     return const AdminTournamentManagementScreen();
@@ -502,7 +502,7 @@ class _AdminTournamentTab extends StatelessWidget {
 
 
 
-class _AdminMoreTab extends StatelessWidget {
+class _AdminMoreTab extends StatelessWidget() {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -611,7 +611,7 @@ class _AdminMoreTab extends StatelessWidget {
   }
 }
 
-class _MoreOption {
+class _MoreOption() {
   final IconData icon;
   final String title;
   final String subtitle;

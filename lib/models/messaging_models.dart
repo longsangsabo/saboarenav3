@@ -5,7 +5,7 @@ library;
 import 'package:flutter/material.dart';
 
 /// Message model representing a single chat message
-class MessageModel {
+class MessageModel() {
   final String id;
   final String chatId;
   final String senderId;
@@ -83,7 +83,7 @@ class MessageModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'chat_id': chatId,
       'sender_id': senderId,
@@ -149,7 +149,7 @@ class MessageModel {
   }
 
   /// Get display content based on message type
-  String get displayContent {
+  String get displayContent() {
     switch (type) {
       case MessageType.text:
         return content;
@@ -200,7 +200,7 @@ class MessageModel {
 }
 
 /// Chat model representing a conversation
-class ChatModel {
+class ChatModel() {
   final String id;
   final String name;
   final String? description;
@@ -267,7 +267,7 @@ class ChatModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'name': name,
       'description': description,
@@ -370,7 +370,7 @@ class ChatModel {
   int get participantCount => participants.length;
 
   /// Get online participants
-  List<ChatParticipant> get onlineParticipants {
+  List<ChatParticipant> get onlineParticipants() {
     return participants
         .where((p) => p.user?.status == UserStatus.online)
         .toList();
@@ -378,7 +378,7 @@ class ChatModel {
 }
 
 /// Chat participant model
-class ChatParticipant {
+class ChatParticipant() {
   final String userId;
   final ChatRole role;
   final DateTime joinedAt;
@@ -419,7 +419,7 @@ class ChatParticipant {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'user_id': userId,
       'role': role.value,
       'joined_at': joinedAt.toIso8601String(),
@@ -432,7 +432,7 @@ class ChatParticipant {
 }
 
 /// User profile model for messaging
-class UserProfile {
+class UserProfile() {
   final String id;
   final String username;
   final String? avatarUrl;
@@ -463,7 +463,7 @@ class UserProfile {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'username': username,
       'avatar_url': avatarUrl,
@@ -475,7 +475,7 @@ class UserProfile {
 }
 
 /// Message reaction model
-class MessageReaction {
+class MessageReaction() {
   final String messageId;
   final String userId;
   final String emoji;
@@ -503,7 +503,7 @@ class MessageReaction {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'message_id': messageId,
       'user_id': userId,
       'emoji': emoji,
@@ -513,7 +513,7 @@ class MessageReaction {
 }
 
 /// Chat settings model
-class ChatSettings {
+class ChatSettings() {
   final bool allowMembersToAddOthers;
   final bool allowMembersToEditInfo;
   final bool onlyAdminsCanSendMessages;
@@ -550,7 +550,7 @@ class ChatSettings {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'allow_members_to_add_others': allowMembersToAddOthers,
       'allow_members_to_edit_info': allowMembersToEditInfo,
       'only_admins_can_send_messages': onlyAdminsCanSendMessages,
@@ -566,7 +566,7 @@ class ChatSettings {
 }
 
 /// Typing indicator model
-class TypingIndicator {
+class TypingIndicator() {
   final String chatId;
   final String userId;
   final bool isTyping;
@@ -594,7 +594,7 @@ class TypingIndicator {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'chat_id': chatId,
       'user_id': userId,
       'is_typing': isTyping,
@@ -605,7 +605,7 @@ class TypingIndicator {
 
 /// Enums
 
-enum MessageType {
+enum MessageType() {
   text('text'),
   image('image'),
   video('video'),
@@ -624,7 +624,7 @@ enum MessageType {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case MessageType.text:
         return 'Text';
@@ -643,7 +643,7 @@ enum MessageType {
     }
   }
 
-  IconData get icon {
+  IconData get icon() {
     switch (this) {
       case MessageType.text:
         return Icons.text_fields;
@@ -663,7 +663,7 @@ enum MessageType {
   }
 }
 
-enum MessageStatus {
+enum MessageStatus() {
   sending('sending'),
   sent('sent'),
   delivered('delivered'),
@@ -680,7 +680,7 @@ enum MessageStatus {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case MessageStatus.sending:
         return 'Sending';
@@ -695,7 +695,7 @@ enum MessageStatus {
     }
   }
 
-  IconData get icon {
+  IconData get icon() {
     switch (this) {
       case MessageStatus.sending:
         return Icons.access_time;
@@ -710,7 +710,7 @@ enum MessageStatus {
     }
   }
 
-  Color get color {
+  Color get color() {
     switch (this) {
       case MessageStatus.sending:
         return Colors.grey;
@@ -726,7 +726,7 @@ enum MessageStatus {
   }
 }
 
-enum ChatType {
+enum ChatType() {
   private('private'),
   group('group'),
   channel('channel');
@@ -741,7 +741,7 @@ enum ChatType {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case ChatType.private:
         return 'Private Chat';
@@ -752,7 +752,7 @@ enum ChatType {
     }
   }
 
-  IconData get icon {
+  IconData get icon() {
     switch (this) {
       case ChatType.private:
         return Icons.person;
@@ -764,7 +764,7 @@ enum ChatType {
   }
 }
 
-enum ChatRole {
+enum ChatRole() {
   member('member'),
   admin('admin'),
   owner('owner');
@@ -779,7 +779,7 @@ enum ChatRole {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case ChatRole.member:
         return 'Member';
@@ -791,7 +791,7 @@ enum ChatRole {
   }
 }
 
-enum UserStatus {
+enum UserStatus() {
   online('online'),
   away('away'),
   busy('busy'),
@@ -807,7 +807,7 @@ enum UserStatus {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case UserStatus.online:
         return 'Online';
@@ -820,7 +820,7 @@ enum UserStatus {
     }
   }
 
-  Color get color {
+  Color get color() {
     switch (this) {
       case UserStatus.online:
         return Colors.green;
@@ -835,7 +835,7 @@ enum UserStatus {
 }
 
 /// Message templates for common message types
-class MessageTemplates {
+class MessageTemplates() {
   static MessageModel createSystemMessage({
     required String chatId,
     required String content,
@@ -860,7 +860,7 @@ class MessageTemplates {
     return createSystemMessage(
       chatId: chatId,
       content: '$username joined the chat',
-      metadata: {'event_type': 'user_joined'},
+      metadata: {"event_type": 'user_joined'},
     );
   }
 
@@ -871,7 +871,7 @@ class MessageTemplates {
     return createSystemMessage(
       chatId: chatId,
       content: '$username left the chat',
-      metadata: {'event_type': 'user_left'},
+      metadata: {"event_type": 'user_left'},
     );
   }
 
@@ -882,7 +882,7 @@ class MessageTemplates {
     return createSystemMessage(
       chatId: chatId,
       content: '$creatorName created this chat',
-      metadata: {'event_type': 'chat_created'},
+      metadata: {"event_type": 'chat_created'},
     );
   }
 }

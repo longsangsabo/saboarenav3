@@ -6,7 +6,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 /// Tournament Formats với định nghĩa đầy đủ
-class TournamentFormats {
+class TournamentFormats() {
   /// Loại trực tiếp (Single Elimination)
   static const String singleElimination = 'single_elimination';
   
@@ -46,41 +46,41 @@ class TournamentFormats {
   /// Chi tiết format bao gồm tên hiển thị và mô tả
   static final Map<String, Map<String, dynamic>> formatDetails = {
     singleElimination: {
-      'name': 'Single Elimination',
-      'nameVi': 'Loại trực tiếp',
-      'description': 'Players are eliminated after losing one match',
-      'descriptionVi': 'Người chơi bị loại sau khi thua một trận',
+      "name": 'Single Elimination',
+      "nameVi": 'Loại trực tiếp',
+      "description": 'Players are eliminated after losing one match',
+      "descriptionVi": 'Người chơi bị loại sau khi thua một trận',
       'minPlayers': 4,
       'maxPlayers': 64,
-      'eliminationType': 'single',
-      'bracketType': 'standard',
-      'roundsFormula': 'log2(players)',
+      "eliminationType": 'single',
+      "bracketType": 'standard',
+      "roundsFormula": 'log2(players)',
       'icon': Icons.trending_down,
       'color': Colors.red,
     },
     doubleElimination: {
-      'name': 'Traditional Double Elimination', 
-      'nameVi': 'Loại kép truyền thống',
-      'description': 'Classic double elimination with Winners Final',
-      'descriptionVi': 'Loại kép truyền thống với chung kết Winners',
+      "name": 'Traditional Double Elimination', 
+      "nameVi": 'Loại kép truyền thống',
+      "description": 'Classic double elimination with Winners Final',
+      "descriptionVi": 'Loại kép truyền thống với chung kết Winners',
       'minPlayers': 4,
       'maxPlayers': 32,
-      'eliminationType': 'double',
-      'bracketType': 'double_bracket',
-      'roundsFormula': 'log2(players)+log2(players/2)',
+      "eliminationType": 'double',
+      "bracketType": 'double_bracket',
+      "roundsFormula": 'log2(players)+log2(players/2)',
       'icon': Icons.double_arrow,
       'color': Colors.orange,
     },
     saboDoubleElimination: {
-      'name': 'Sabo Double Elimination (DE16)', 
-      'nameVi': 'Loại kép Sabo (DE16)',
-      'description': 'SABO Arena DE16 with 2 Loser Branches + SABO Finals',
-      'descriptionVi': 'DE16 Sabo Arena với 2 nhánh thua + chung kết Sabo',
+      "name": 'Sabo Double Elimination (DE16)', 
+      "nameVi": 'Loại kép Sabo (DE16)',
+      "description": 'SABO Arena DE16 with 2 Loser Branches + SABO Finals',
+      "descriptionVi": 'DE16 Sabo Arena với 2 nhánh thua + chung kết Sabo',
       'minPlayers': 16,
       'maxPlayers': 16,
-      'eliminationType': 'sabo_double',
-      'bracketType': 'sabo_de16',
-      'roundsFormula': '27', // Fixed 27 matches for DE16
+      "eliminationType": 'sabo_double',
+      "bracketType": 'sabo_de16',
+      "roundsFormula": '27', // Fixed 27 matches for DE16
       'icon': Icons.star,
       'color': Colors.deepPurple,
       'totalMatches': 27,
@@ -90,15 +90,15 @@ class TournamentFormats {
       'finalsMatches': 3,   // 2 semifinals + 1 final
     },
     saboDoubleElimination32: {
-      'name': 'Sabo Double Elimination (DE32)', 
-      'nameVi': 'Loại kép Sabo (DE32)',
-      'description': 'SABO Arena DE32 with Two-Group System + Cross-Bracket Finals',
-      'descriptionVi': 'DE32 Sabo Arena với hệ thống 2 nhóm + chung kết chéo',
+      "name": 'Sabo Double Elimination (DE32)', 
+      "nameVi": 'Loại kép Sabo (DE32)',
+      "description": 'SABO Arena DE32 with Two-Group System + Cross-Bracket Finals',
+      "descriptionVi": 'DE32 Sabo Arena với hệ thống 2 nhóm + chung kết chéo',
       'minPlayers': 32,
       'maxPlayers': 32,
-      'eliminationType': 'sabo_double_32',
-      'bracketType': 'sabo_de32',
-      'roundsFormula': '55', // Fixed 55 matches for DE32
+      "eliminationType": 'sabo_double_32',
+      "bracketType": 'sabo_de32',
+      "roundsFormula": '55', // Fixed 55 matches for DE32
       'icon': Icons.workspaces,
       'color': Colors.indigo,
       'totalMatches': 55,
@@ -111,54 +111,54 @@ class TournamentFormats {
       'qualifiersPerGroup': 2,
     },
     roundRobin: {
-      'name': 'Round Robin',
-      'nameVi': 'Vòng tròn',
-      'description': 'Every player plays against every other player',
-      'descriptionVi': 'Mỗi người chơi đấu với tất cả các đối thủ khác',
+      "name": 'Round Robin',
+      "nameVi": 'Vòng tròn',
+      "description": 'Every player plays against every other player',
+      "descriptionVi": 'Mỗi người chơi đấu với tất cả các đối thủ khác',
       'minPlayers': 3,
       'maxPlayers': 12,
-      'eliminationType': 'none',
-      'bracketType': 'round_robin',
-      'roundsFormula': '(players-1)',
+      "eliminationType": 'none',
+      "bracketType": 'round_robin',
+      "roundsFormula": '(players-1)',
       'icon': Icons.refresh,
       'color': Colors.blue,
     },
     swiss: {
-      'name': 'Swiss System',
-      'nameVi': 'Hệ thống Swiss',
-      'description': 'Players paired based on performance, no elimination',
-      'descriptionVi': 'Ghép cặp dựa trên thành tích, không loại trực tiếp',
+      "name": 'Swiss System',
+      "nameVi": 'Hệ thống Swiss',
+      "description": 'Players paired based on performance, no elimination',
+      "descriptionVi": 'Ghép cặp dựa trên thành tích, không loại trực tiếp',
       'minPlayers': 6,
       'maxPlayers': 128,
-      'eliminationType': 'none',
-      'bracketType': 'swiss_pairing',
-      'roundsFormula': 'log2(players)+2',
+      "eliminationType": 'none',
+      "bracketType": 'swiss_pairing',
+      "roundsFormula": 'log2(players)+2',
       'icon': Icons.shuffle,
       'color': Colors.green,
     },
     parallelGroups: {
-      'name': 'Parallel Groups',
-      'nameVi': 'Bảng đấu song song',
-      'description': 'Multiple groups with top players advancing to finals',
-      'descriptionVi': 'Nhiều bảng đấu với những người đứng đầu vào vòng chung kết',
+      "name": 'Parallel Groups',
+      "nameVi": 'Bảng đấu song song',
+      "description": 'Multiple groups with top players advancing to finals',
+      "descriptionVi": 'Nhiều bảng đấu với những người đứng đầu vào vòng chung kết',
       'minPlayers': 8,
       'maxPlayers': 64,
-      'eliminationType': 'group_stage',
-      'bracketType': 'parallel_groups',
-      'roundsFormula': 'log2(players/2)+2',
+      "eliminationType": 'group_stage',
+      "bracketType": 'parallel_groups',
+      "roundsFormula": 'log2(players/2)+2',
       'icon': Icons.view_module,
       'color': Colors.purple,
     },
     winnerTakesAll: {
-      'name': 'Winner Takes All',
-      'nameVi': 'Người thắng nhận tất cả',
-      'description': 'Single winner tournament with all prizes',
-      'descriptionVi': 'Giải đấu một người thắng nhận tất cả giải thưởng',
+      "name": 'Winner Takes All',
+      "nameVi": 'Người thắng nhận tất cả',
+      "description": 'Single winner tournament with all prizes',
+      "descriptionVi": 'Giải đấu một người thắng nhận tất cả giải thưởng',
       'minPlayers': 4,
       'maxPlayers': 32,
-      'eliminationType': 'single',
-      'bracketType': 'winner_only',
-      'roundsFormula': 'log2(players)',
+      "eliminationType": 'single',
+      "bracketType": 'winner_only',
+      "roundsFormula": 'log2(players)',
       'icon': Icons.emoji_events,
       'color': Colors.amber,
     },
@@ -166,7 +166,7 @@ class TournamentFormats {
 }
 
 /// Tournament Status Constants
-class TournamentStatus {
+class TournamentStatus() {
   /// Chưa mở đăng ký
   static const String draft = 'draft';
   
@@ -200,66 +200,66 @@ class TournamentStatus {
 
   static final Map<String, Map<String, dynamic>> statusDetails = {
     draft: {
-      'name': 'Draft',
-      'nameVi': 'Nháp',
+      "name": 'Draft',
+      "nameVi": 'Nháp',
       'color': Colors.grey,
       'icon': Icons.edit,
-      'description': 'Tournament is being prepared',
-      'descriptionVi': 'Giải đấu đang được chuẩn bị',
+      "description": 'Tournament is being prepared',
+      "descriptionVi": 'Giải đấu đang được chuẩn bị',
     },
     registrationOpen: {
-      'name': 'Registration Open',
-      'nameVi': 'Đang mở ĐK',
+      "name": 'Registration Open',
+      "nameVi": 'Đang mở ĐK',
       'color': Colors.green,
       'icon': Icons.how_to_reg,
-      'description': 'Players can register for the tournament',
-      'descriptionVi': 'Người chơi có thể đăng ký tham gia',
+      "description": 'Players can register for the tournament',
+      "descriptionVi": 'Người chơi có thể đăng ký tham gia',
     },
     upcoming: {
-      'name': 'Upcoming',
-      'nameVi': 'Sắp diễn ra',
+      "name": 'Upcoming',
+      "nameVi": 'Sắp diễn ra',
       'color': Colors.blue,
       'icon': Icons.schedule,
-      'description': 'Tournament will start soon',
-      'descriptionVi': 'Giải đấu sẽ bắt đầu sớm',
+      "description": 'Tournament will start soon',
+      "descriptionVi": 'Giải đấu sẽ bắt đầu sớm',
     },
     live: {
-      'name': 'Live',
-      'nameVi': 'Đang diễn ra',
+      "name": 'Live',
+      "nameVi": 'Đang diễn ra',
       'color': Colors.red,
       'icon': Icons.live_tv,
-      'description': 'Tournament is currently running',
-      'descriptionVi': 'Giải đấu đang diễn ra',
+      "description": 'Tournament is currently running',
+      "descriptionVi": 'Giải đấu đang diễn ra',
     },
     paused: {
-      'name': 'Paused',
-      'nameVi': 'Tạm dừng',
+      "name": 'Paused',
+      "nameVi": 'Tạm dừng',
       'color': Colors.orange,
       'icon': Icons.pause,
-      'description': 'Tournament is temporarily paused',
-      'descriptionVi': 'Giải đấu tạm thời dừng lại',
+      "description": 'Tournament is temporarily paused',
+      "descriptionVi": 'Giải đấu tạm thời dừng lại',
     },
     completed: {
-      'name': 'Completed',
-      'nameVi': 'Đã hoàn thành',
+      "name": 'Completed',
+      "nameVi": 'Đã hoàn thành',
       'color': Colors.purple,
       'icon': Icons.emoji_events,
-      'description': 'Tournament has finished',
-      'descriptionVi': 'Giải đấu đã kết thúc',
+      "description": 'Tournament has finished',
+      "descriptionVi": 'Giải đấu đã kết thúc',
     },
     cancelled: {
-      'name': 'Cancelled',
-      'nameVi': 'Đã hủy',
+      "name": 'Cancelled',
+      "nameVi": 'Đã hủy',
       'color': Colors.red,
       'icon': Icons.cancel,
-      'description': 'Tournament was cancelled',
-      'descriptionVi': 'Giải đấu đã bị hủy',
+      "description": 'Tournament was cancelled',
+      "descriptionVi": 'Giải đấu đã bị hủy',
     },
   };
 }
 
 /// Game Types - Các loại hình bi-a
-class GameTypes {
+class GameTypes() {
   static const String eightBall = '8-ball';
   static const String nineBall = '9-ball';
   static const String tenBall = '10-ball';
@@ -280,70 +280,70 @@ class GameTypes {
 
   static final Map<String, Map<String, dynamic>> gameTypeDetails = {
     eightBall: {
-      'name': '8-Ball',
-      'nameVi': 'Bi lỗ 8',
-      'description': 'Classic pool game with solid and striped balls',
-      'descriptionVi': 'Trò chơi bi-a cổ điển với bi đặc và bi sọc',
+      "name": '8-Ball',
+      "nameVi": 'Bi lỗ 8',
+      "description": 'Classic pool game with solid and striped balls',
+      "descriptionVi": 'Trò chơi bi-a cổ điển với bi đặc và bi sọc',
       'ballCount': 15,
       'icon': Icons.sports_baseball,
       'color': Colors.black,
       'popularity': 10,
     },
     nineBall: {
-      'name': '9-Ball',
-      'nameVi': 'Bi lỗ 9',
-      'description': 'Fast-paced game with balls 1-9',
-      'descriptionVi': 'Trò chơi nhanh với bi từ 1-9',
+      "name": '9-Ball',
+      "nameVi": 'Bi lỗ 9',
+      "description": 'Fast-paced game with balls 1-9',
+      "descriptionVi": 'Trò chơi nhanh với bi từ 1-9',
       'ballCount': 9,
       'icon': Icons.filter_9,
       'color': Colors.yellow,
       'popularity': 9,
     },
     tenBall: {
-      'name': '10-Ball',
-      'nameVi': 'Bi lỗ 10',
-      'description': 'Professional game with strict call-shot rules',
-      'descriptionVi': 'Trò chơi chuyên nghiệp với luật gọi lỗ nghiêm ngặt',
+      "name": '10-Ball',
+      "nameVi": 'Bi lỗ 10',
+      "description": 'Professional game with strict call-shot rules',
+      "descriptionVi": 'Trò chơi chuyên nghiệp với luật gọi lỗ nghiêm ngặt',
       'ballCount': 10,
       'icon': Icons.sports_baseball,
       'color': Colors.blue,
       'popularity': 7,
     },
     straightPool: {
-      'name': 'Straight Pool',
-      'nameVi': 'Bi thẳng',
-      'description': 'First to reach target score wins',
-      'descriptionVi': 'Người đầu tiên đạt điểm mục tiêu thắng',
+      "name": 'Straight Pool',
+      "nameVi": 'Bi thẳng',
+      "description": 'First to reach target score wins',
+      "descriptionVi": 'Người đầu tiên đạt điểm mục tiêu thắng',
       'ballCount': 15,
       'icon': Icons.straighten,
       'color': Colors.green,
       'popularity': 5,
     },
     onePocket: {
-      'name': 'One Pocket',
-      'nameVi': 'Một lỗ',
-      'description': 'Strategic game with designated pocket',
-      'descriptionVi': 'Trò chơi chiến thuật với lỗ được chỉ định',
+      "name": 'One Pocket',
+      "nameVi": 'Một lỗ',
+      "description": 'Strategic game with designated pocket',
+      "descriptionVi": 'Trò chơi chiến thuật với lỗ được chỉ định',
       'ballCount': 15,
       'icon': Icons.lens,
       'color': Colors.indigo,
       'popularity': 4,
     },
     rotation: {
-      'name': 'Rotation',
-      'nameVi': 'Xoay vòng',
-      'description': 'Must hit lowest numbered ball first',
-      'descriptionVi': 'Phải đánh bi có số thấp nhất trước',
+      "name": 'Rotation',
+      "nameVi": 'Xoay vòng',
+      "description": 'Must hit lowest numbered ball first',
+      "descriptionVi": 'Phải đánh bi có số thấp nhất trước',
       'ballCount': 15,
       'icon': Icons.rotate_right,
       'color': Colors.teal,
       'popularity': 3,
     },
     carom: {
-      'name': 'Carom',
-      'nameVi': 'Carom (Libre)',
-      'description': 'Three-ball billiards without pockets',
-      'descriptionVi': 'Bi-a ba bi không có lỗ',
+      "name": 'Carom',
+      "nameVi": 'Carom (Libre)',
+      "description": 'Three-ball billiards without pockets',
+      "descriptionVi": 'Bi-a ba bi không có lỗ',
       'ballCount': 3,
       'icon': Icons.circle_outlined,
       'color': Colors.brown,
@@ -353,7 +353,7 @@ class GameTypes {
 }
 
 /// Prize Distribution Templates
-class PrizeDistribution {
+class PrizeDistribution() {
   /// Standard tournament distribution
   static const Map<String, List<double>> standardDistribution = {
     '4': [0.60, 0.40], // Top 2 get prizes
@@ -398,34 +398,34 @@ class PrizeDistribution {
 
   static const Map<String, Map<String, String>> distributionNames = {
     'standard': {
-      'name': 'Standard',
-      'nameVi': 'Tiêu chuẩn',
-      'description': 'Balanced prize distribution',
-      'descriptionVi': 'Phân chia giải thưởng cân bằng',
+      "name": 'Standard',
+      "nameVi": 'Tiêu chuẩn',
+      "description": 'Balanced prize distribution',
+      "descriptionVi": 'Phân chia giải thưởng cân bằng',
     },
     'winner_takes_all': {
-      'name': 'Winner Takes All',
-      'nameVi': 'Người thắng nhận tất cả',
-      'description': 'All prizes go to winner',
-      'descriptionVi': 'Tất cả giải thưởng cho người thắng',
+      "name": 'Winner Takes All',
+      "nameVi": 'Người thắng nhận tất cả',
+      "description": 'All prizes go to winner',
+      "descriptionVi": 'Tất cả giải thưởng cho người thắng',
     },
     'top_heavy': {
-      'name': 'Top Heavy',
-      'nameVi': 'Ưu tiên người thắng',
-      'description': 'Higher percentage to winner',
-      'descriptionVi': 'Tỷ lệ cao hơn cho người thắng',
+      "name": 'Top Heavy',
+      "nameVi": 'Ưu tiên người thắng',
+      "description": 'Higher percentage to winner',
+      "descriptionVi": 'Tỷ lệ cao hơn cho người thắng',
     },
     'flat': {
-      'name': 'Flat Distribution',
-      'nameVi': 'Phân chia đều',
-      'description': 'More equal prize distribution',
-      'descriptionVi': 'Phân chia giải thưởng đều hơn',
+      "name": 'Flat Distribution',
+      "nameVi": 'Phân chia đều',
+      "description": 'More equal prize distribution',
+      "descriptionVi": 'Phân chia giải thưởng đều hơn',
     },
   };
 }
 
 /// Prize Types
-class PrizeTypes {
+class PrizeTypes() {
   static const String cash = 'CASH';
   static const String spaPoints = 'SPA_POINTS';
   static const String trophy = 'TROPHY';
@@ -444,43 +444,43 @@ class PrizeTypes {
 
   static final Map<String, Map<String, dynamic>> prizeTypeDetails = {
     cash: {
-      'name': 'Cash',
-      'nameVi': 'Tiền mặt',
+      "name": 'Cash',
+      "nameVi": 'Tiền mặt',
       'icon': Icons.attach_money,
       'color': Colors.green,
       'canCombine': true,
     },
     spaPoints: {
-      'name': 'SPA Points',
-      'nameVi': 'Điểm SPA',
+      "name": 'SPA Points',
+      "nameVi": 'Điểm SPA',
       'icon': Icons.stars,
       'color': Colors.amber,
       'canCombine': true,
     },
     trophy: {
-      'name': 'Trophy',
-      'nameVi': 'Cúp',
+      "name": 'Trophy',
+      "nameVi": 'Cúp',
       'icon': Icons.emoji_events,
       'color': Colors.orange,
       'canCombine': false,
     },
     medal: {
-      'name': 'Medal',
-      'nameVi': 'Huy chương',
+      "name": 'Medal',
+      "nameVi": 'Huy chương',
       'icon': Icons.military_tech,
       'color': Colors.brown,
       'canCombine': false,
     },
     flag: {
-      'name': 'Flag',
-      'nameVi': 'Cờ',
+      "name": 'Flag',
+      "nameVi": 'Cờ',
       'icon': Icons.flag,
       'color': Colors.red,
       'canCombine': false,
     },
     certificate: {
-      'name': 'Certificate',
-      'nameVi': 'Giấy chứng nhận',
+      "name": 'Certificate',
+      "nameVi": 'Giấy chứng nhận',
       'icon': Icons.card_membership,
       'color': Colors.blue,
       'canCombine': false,
@@ -489,7 +489,7 @@ class PrizeTypes {
 }
 
 /// Seeding Methods
-class SeedingMethods {
+class SeedingMethods() {
   static const String random = 'random';
   static const String eloRating = 'elo_rating';
   static const String clubRanking = 'club_ranking';
@@ -506,40 +506,40 @@ class SeedingMethods {
 
   static const Map<String, Map<String, String>> seedingMethodDetails = {
     random: {
-      'name': 'Random Seeding',
-      'nameVi': 'Xếp hạng ngẫu nhiên',
-      'description': 'Completely random player placement',
-      'descriptionVi': 'Xếp người chơi hoàn toàn ngẫu nhiên',
+      "name": 'Random Seeding',
+      "nameVi": 'Xếp hạng ngẫu nhiên',
+      "description": 'Completely random player placement',
+      "descriptionVi": 'Xếp người chơi hoàn toàn ngẫu nhiên',
     },
     eloRating: {
-      'name': 'ELO Rating',
-      'nameVi': 'Điểm ELO',
-      'description': 'Based on current ELO rating',
-      'descriptionVi': 'Dựa trên điểm ELO hiện tại',
+      "name": 'ELO Rating',
+      "nameVi": 'Điểm ELO',
+      "description": 'Based on current ELO rating',
+      "descriptionVi": 'Dựa trên điểm ELO hiện tại',
     },
     clubRanking: {
-      'name': 'Club Ranking',
-      'nameVi': 'Xếp hạng CLB',
-      'description': 'Based on club internal ranking',
-      'descriptionVi': 'Dựa trên xếp hạng nội bộ CLB',
+      "name": 'Club Ranking',
+      "nameVi": 'Xếp hạng CLB',
+      "description": 'Based on club internal ranking',
+      "descriptionVi": 'Dựa trên xếp hạng nội bộ CLB',
     },
     previousTournaments: {
-      'name': 'Tournament History',
-      'nameVi': 'Lịch sử giải đấu',
-      'description': 'Based on previous tournament performance',
-      'descriptionVi': 'Dựa trên thành tích giải đấu trước',
+      "name": 'Tournament History',
+      "nameVi": 'Lịch sử giải đấu',
+      "description": 'Based on previous tournament performance',
+      "descriptionVi": 'Dựa trên thành tích giải đấu trước',
     },
     hybrid: {
-      'name': 'Hybrid Method',
-      'nameVi': 'Phương pháp kết hợp',
-      'description': 'Combination of multiple seeding criteria',
-      'descriptionVi': 'Kết hợp nhiều tiêu chí xếp hạng',
+      "name": 'Hybrid Method',
+      "nameVi": 'Phương pháp kết hợp',
+      "description": 'Combination of multiple seeding criteria',
+      "descriptionVi": 'Kết hợp nhiều tiêu chí xếp hạng',
     },
   };
 }
 
 /// Helper functions
-class TournamentHelper {
+class TournamentHelper() {
   /// Tính số vòng đấu dựa trên format và số người chơi
   static int calculateRounds(String format, int playerCount) {
     final details = TournamentFormats.formatDetails[format];

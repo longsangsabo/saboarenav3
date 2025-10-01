@@ -5,7 +5,7 @@ import '../../services/basic_referral_service.dart';
 
 /// Basic Referral Stats Widget
 /// Simple dashboard showing referral statistics and SPA earned
-class BasicReferralStatsWidget extends StatefulWidget {
+class BasicReferralStatsWidget extends StatefulWidget() {
   final String userId;
   final bool showTitle;
 
@@ -29,10 +29,10 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
     _loadStats();
   }
 
-  Future<void> _loadStats() async {
+  Future<void> _loadStats() async() {
     setState(() => _isLoading = true);
     
-    try {
+    try() {
       final stats = await BasicReferralService.getUserReferralStats(widget.userId);
       setState(() {
         _stats = stats;
@@ -44,7 +44,7 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
     }
   }
 
-  Future<void> _refreshStats() async {
+  Future<void> _refreshStats() async() {
     await _loadStats();
   }
 
@@ -239,7 +239,7 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
               ),
               SizedBox(width: 2.w),
               Text(
-                isActive ? 'Mã đang hoạt động' : 'Mã chưa kích hoạt',
+                isActive ? "Mã đang hoạt động" : 'Mã chưa kích hoạt',
                 style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
                   color: isActive ? Colors.green.shade700 : Colors.grey.shade700,
                   fontWeight: FontWeight.w500,
@@ -391,7 +391,7 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
 }
 
 /// Compact stats widget for inline display
-class CompactReferralStats extends StatelessWidget {
+class CompactReferralStats extends StatelessWidget() {
   final String userId;
 
   const CompactReferralStats({

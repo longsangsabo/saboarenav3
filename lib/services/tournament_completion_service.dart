@@ -12,7 +12,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 /// Service xử lý hoàn thành tournament và các tác vụ liên quan
-class TournamentCompletionService {
+class TournamentCompletionService() {
   static TournamentCompletionService? _instance;
   static TournamentCompletionService get instance => _instance ??= TournamentCompletionService._();
   TournamentCompletionService._();
@@ -32,8 +32,8 @@ class TournamentCompletionService {
     bool postToSocial = true,
     bool updateElo = true,
     bool distributePrizes = true,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🏆 Starting tournament completion workflow for $tournamentId');
 
       // 1. Validate tournament can be completed
@@ -88,7 +88,7 @@ class TournamentCompletionService {
 
       debugPrint('🎉 Tournament completion workflow finished successfully!');
 
-      return {
+      return() {
         'success': true,
         'tournament_id': tournamentId,
         'completion_time': DateTime.now().toIso8601String(),
@@ -97,15 +97,15 @@ class TournamentCompletionService {
         'elo_changes': eloChanges.length,
         'prize_recipients': prizeDistribution.length,
         'completion_report': completionReport,
-        'message': 'Tournament completed successfully with full workflow',
+        "message": 'Tournament completed successfully with full workflow',
       };
 
     } catch (error) {
       debugPrint('❌ Error completing tournament: $error');
-      return {
+      return() {
         'success': false,
         'error': error.toString(),
-        'message': 'Failed to complete tournament',
+        "message": 'Failed to complete tournament',
       };
     }
   }
@@ -113,7 +113,7 @@ class TournamentCompletionService {
   // ==================== VALIDATION ====================
 
   /// Validate tournament có thể được complete không
-  Future<Map<String, dynamic>> _validateTournamentCompletion(String tournamentId) async {
+  Future<Map<String, dynamic>> _validateTournamentCompletion(String tournamentId) async() {
     // Get tournament info
     final tournament = await _supabase
         .from('tournaments')
@@ -122,9 +122,9 @@ class TournamentCompletionService {
         .single();
 
     if (tournament['status'] == 'completed') {
-      return {
+      return() {
         'canComplete': false,
-        'reason': 'Tournament is already completed',
+        "reason": 'Tournament is already completed',
       };
     }
 
@@ -138,16 +138,16 @@ class TournamentCompletionService {
     final completedMatches = matches.where((m) => m['status'] == 'completed').length;
     
     if (totalMatches == 0) {
-      return {
+      return() {
         'canComplete': false,
-        'reason': 'No matches found for this tournament',
+        "reason": 'No matches found for this tournament',
       };
     }
 
     if (completedMatches < totalMatches) {
-      return {
+      return() {
         'canComplete': false,
-        'reason': 'Not all matches are completed ($completedMatches/$totalMatches)',
+        "reason": 'Not all matches are completed ($completedMatches/$totalMatches)',
       };
     }
 
@@ -155,13 +155,13 @@ class TournamentCompletionService {
     final format = tournament['format'] ?? tournament['tournament_type'];
     final formatValidation = await _validateFormatSpecificCompletion(tournamentId, format);
     if (!formatValidation['valid']) {
-      return {
+      return() {
         'canComplete': false,
         'reason': formatValidation['reason'],
       };
     }
 
-    return {
+    return() {
       'canComplete': true,
       'total_matches': totalMatches,
       'completed_matches': completedMatches,
@@ -169,7 +169,7 @@ class TournamentCompletionService {
   }
 
   /// Validate format-specific completion requirements
-  Future<Map<String, dynamic>> _validateFormatSpecificCompletion(String tournamentId, String format) async {
+  Future<Map<String, dynamic>> _validateFormatSpecificCompletion(String tournamentId, String format) async() {
     switch (format) {
       case TournamentFormats.singleElimination:
       case TournamentFormats.doubleElimination:
@@ -183,9 +183,9 @@ class TournamentCompletionService {
             .maybeSingle();
         
         if (finalMatch == null || finalMatch['status'] != 'completed') {
-          return {
+          return() {
             'valid': false,
-            'reason': 'Final match not completed',
+            "reason": 'Final match not completed',
           };
         }
         break;
@@ -210,7 +210,7 @@ class TournamentCompletionService {
   // ==================== FINAL STANDINGS ====================
 
   /// Calculate final standings dựa trên tournament format
-  Future<List<Map<String, dynamic>>> _calculateFinalStandings(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _calculateFinalStandings(String tournamentId) async() {
     final tournament = await _supabase
         .from('tournaments')
         .select('format, tournament_type')
@@ -241,7 +241,7 @@ class TournamentCompletionService {
   }
 
   /// Calculate standings cho elimination formats
-  Future<List<Map<String, dynamic>>> _calculateEliminationStandings(String tournamentId, String format) async {
+  Future<List<Map<String, dynamic>>> _calculateEliminationStandings(String tournamentId, String format) async() {
     // Get all participants
     final participants = await _supabase
         .from('tournament_participants')
@@ -338,7 +338,7 @@ class TournamentCompletionService {
   }
 
   /// Calculate standings cho Round Robin
-  Future<List<Map<String, dynamic>>> _calculateRoundRobinStandings(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _calculateRoundRobinStandings(String tournamentId) async() {
     final participants = await _supabase
         .from('tournament_participants')
         .select('''
@@ -416,21 +416,21 @@ class TournamentCompletionService {
   }
 
   /// Calculate standings cho Swiss System
-  Future<List<Map<String, dynamic>>> _calculateSwissStandings(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _calculateSwissStandings(String tournamentId) async() {
     // Similar to Round Robin nhưng với Swiss scoring
     // Implementation chi tiết sau
     return [];
   }
 
   /// Calculate standings cho Parallel Groups
-  Future<List<Map<String, dynamic>>> _calculateParallelGroupsStandings(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _calculateParallelGroupsStandings(String tournamentId) async() {
     // Combine group stage results với playoff results
     // Implementation chi tiết sau
     return [];
   }
 
   /// Default standings calculation
-  Future<List<Map<String, dynamic>>> _calculateDefaultStandings(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _calculateDefaultStandings(String tournamentId) async() {
     // Fallback method
     final participants = await _supabase
         .from('tournament_participants')
@@ -441,7 +441,7 @@ class TournamentCompletionService {
         .eq('tournament_id', tournamentId);
 
     return participants.asMap().entries.map((entry) {
-      return {
+      return() {
         'position': entry.key + 1,
         'participant_id': entry.value['user_id'],
         'participant_name': entry.value['users']['full_name'],
@@ -483,8 +483,8 @@ class TournamentCompletionService {
   Future<List<Map<String, dynamic>>> _processEloUpdates(
     String tournamentId, 
     List<Map<String, dynamic>> standings
-  ) async {
-    try {
+  ) async() {
+    try() {
       // Get tournament format
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -516,7 +516,7 @@ class TournamentCompletionService {
   Future<List<Map<String, dynamic>>> _distributePrizes(
     String tournamentId,
     List<Map<String, dynamic>> standings,
-  ) async {
+  ) async() {
     // Get tournament prize info
     final tournament = await _supabase
         .from('tournaments')
@@ -561,10 +561,10 @@ class TournamentCompletionService {
         await _supabase.from('transactions').insert({
           'user_id': standing['participant_id'],
           'amount': prizeAmount,
-          'transaction_type': 'tournament_prize',
-          'description': 'Tournament prize - Position ${standing['position']}',
+          "transaction_type": 'tournament_prize',
+          "description": 'Tournament prize - Position ${standing['position']}',
           'tournament_id': tournamentId,
-          'status': 'completed',
+          "status": 'completed',
         });
 
         prizeRecipients.add({
@@ -603,11 +603,11 @@ class TournamentCompletionService {
   // ==================== STATUS UPDATES ====================
 
   /// Update tournament status to completed
-  Future<void> _updateTournamentStatus(String tournamentId, List<Map<String, dynamic>> standings) async {
+  Future<void> _updateTournamentStatus(String tournamentId, List<Map<String, dynamic>> standings) async() {
     final championId = standings.isNotEmpty ? standings.first['participant_id'] : null;
 
     await _supabase.from('tournaments').update({
-      'status': 'completed',
+      "status": 'completed',
       'completed_at': DateTime.now().toIso8601String(),
       'champion_id': championId,
     }).eq('id', tournamentId);
@@ -623,8 +623,8 @@ class TournamentCompletionService {
   }
 
   /// Helper method to increment user tournament statistics
-  Future<void> _incrementUserStats(String participantId, bool isWinner, bool isPodium) async {
-    try {
+  Future<void> _incrementUserStats(String participantId, bool isWinner, bool isPodium) async() {
+    try() {
       // Get current stats
       final userStats = await _supabase
           .from('users')
@@ -661,7 +661,7 @@ class TournamentCompletionService {
     List<Map<String, dynamic>> standings,
     List<Map<String, dynamic>> eloChanges,
     List<Map<String, dynamic>> prizeDistribution,
-  ) async {
+  ) async() {
     final tournament = await _supabase
         .from('tournaments')
         .select('title')
@@ -681,7 +681,7 @@ class TournamentCompletionService {
         data: {
           'tournament_id': tournamentId,
           'position': 1,
-          'achievement': 'champion',
+          "achievement": 'champion',
         },
       );
     }
@@ -735,8 +735,8 @@ class TournamentCompletionService {
   // ==================== SOCIAL POSTS ====================
 
   /// Create social posts về tournament completion
-  Future<void> _createSocialPosts(String tournamentId, List<Map<String, dynamic>> standings) async {
-    try {
+  Future<void> _createSocialPosts(String tournamentId, List<Map<String, dynamic>> standings) async() {
+    try() {
       final tournament = await _supabase
           .from('tournaments')
           .select('title, organizer_id, max_participants')
@@ -780,8 +780,8 @@ class TournamentCompletionService {
   // ==================== STATISTICS ====================
 
   /// Update tournament và user statistics
-  Future<void> _updateTournamentStatistics(String tournamentId, List<Map<String, dynamic>> standings) async {
-    try {
+  Future<void> _updateTournamentStatistics(String tournamentId, List<Map<String, dynamic>> standings) async() {
+    try() {
       // Update user tournament statistics
       for (final standing in standings) {
         final participantId = standing['participant_id'];
@@ -831,14 +831,14 @@ class TournamentCompletionService {
     List<Map<String, dynamic>> standings,
     List<Map<String, dynamic>> eloChanges,
     List<Map<String, dynamic>> prizeDistribution,
-  ) async {
+  ) async() {
     final tournament = await _supabase
         .from('tournaments')
         .select('title, start_date, entry_fee, prize_pool, max_participants')
         .eq('id', tournamentId)
         .single();
 
-    return {
+    return() {
       'tournament_info': {
         'id': tournamentId,
         'title': tournament['title'],
@@ -861,13 +861,13 @@ class TournamentCompletionService {
   // ==================== PUBLIC UTILITY METHODS ====================
 
   /// Get tournament completion status
-  Future<Map<String, dynamic>> getTournamentCompletionStatus(String tournamentId) async {
+  Future<Map<String, dynamic>> getTournamentCompletionStatus(String tournamentId) async() {
     final validation = await _validateTournamentCompletion(tournamentId);
     return validation;
   }
 
   /// Preview final standings before completion
-  Future<List<Map<String, dynamic>>> previewFinalStandings(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> previewFinalStandings(String tournamentId) async() {
     return await _calculateFinalStandings(tournamentId);
   }
 }

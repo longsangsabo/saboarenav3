@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/shift_models.dart';
-import '../../services/mock_shift_reporting_service.dart';
+import '../../services/shift_reporting_service.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 
-class ShiftHistoryScreen extends StatefulWidget {
+class ShiftHistoryScreen extends StatefulWidget() {
   final String clubId;
 
   const ShiftHistoryScreen({
@@ -18,7 +18,7 @@ class ShiftHistoryScreen extends StatefulWidget {
 }
 
 class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
-  final MockShiftReportingService _shiftService = MockShiftReportingService();
+  final ShiftReportingService _shiftService = ShiftReportingService();
   
   bool _isLoading = true;
   String? _error;
@@ -32,8 +32,8 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
     _loadShiftHistory();
   }
 
-  Future<void> _loadShiftHistory() async {
-    try {
+  Future<void> _loadShiftHistory() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -58,7 +58,7 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
     }
   }
 
-  Future<void> _selectDateRange() async {
+  Future<void> _selectDateRange() async() {
     final range = await showDateRangePicker(
       context: context,
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
@@ -84,11 +84,11 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const LoadingWidget(message: 'Đang tải lịch sử ca...');
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (_error != null) {
-      return ErrorWidget(
+      return ErrorWidget(Exception('Error: ${state.message}'));
         message: _error!,
         onRetry: _loadShiftHistory,
       );
@@ -171,7 +171,7 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
                         const SizedBox(width: 8),
                         Text(
                           _selectedDateRange != null
-                              ? '${DateFormat('dd/MM').format(_selectedDateRange!.start)} - ${DateFormat('dd/MM').format(_selectedDateRange!.end)}'
+                              ? '${DateFormat('dd/MM').format(_selectedDateRange!.start)} - ${DateFormat('dd/MM").format(_selectedDateRange!.end)}"
                               : 'Chọn khoảng thời gian',
                           style: TextStyle(
                             color: _selectedDateRange != null ? Colors.black : Colors.grey,

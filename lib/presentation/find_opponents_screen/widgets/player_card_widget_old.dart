@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import '../../../models/user_profile.dart';
 import './challenge_modal_widget.dart';
 
-class PlayerCardWidget extends StatelessWidget {
+class PlayerCardWidget extends StatelessWidget() {
   final UserProfile player;
 
   const PlayerCardWidget({super.key, required this.player});

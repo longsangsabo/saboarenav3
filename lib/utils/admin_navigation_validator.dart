@@ -6,13 +6,12 @@ import '../services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 
 /// Class to validate admin navigation flow
-class AdminNavigationValidator {
-  
+class AdminNavigationValidator() {
   /// Test the complete admin navigation flow
-  static Future<Map<String, bool>> validateAdminFlow() async {
+  static Future<Map<String, bool>> validateAdminFlow() async() {
     Map<String, bool> results = {};
     
-    try {
+    try() {
       // 1. Check if admin routes exist in AppRoutes
       results['admin_routes_exist'] = _checkAdminRoutesExist();
       
@@ -45,7 +44,7 @@ class AdminNavigationValidator {
   }
   
   static bool _checkAdminRoutesExist() {
-    try {
+    try() {
       // Check if admin routes are defined
       return AppRoutes.adminDashboardScreen.isNotEmpty && 
              AppRoutes.clubApprovalScreen.isNotEmpty;
@@ -55,7 +54,7 @@ class AdminNavigationValidator {
   }
   
   static bool _checkAuthServiceMethods() {
-    try {
+    try() {
       // Check if AuthService has the required methods
       final authService = AuthService.instance;
       
@@ -67,8 +66,8 @@ class AdminNavigationValidator {
     }
   }
   
-  static Future<bool> _checkLoginRedirectLogic() async {
-    try {
+  static Future<bool> _checkLoginRedirectLogic() async() {
+    try() {
       // This would need to be tested with actual auth context
       // For now, just check if the method exists
       return true;
@@ -77,8 +76,8 @@ class AdminNavigationValidator {
     }
   }
   
-  static Future<bool> _checkSplashAdminRouting() async {
-    try {
+  static Future<bool> _checkSplashAdminRouting() async() {
+    try() {
       // This would need actual testing with splash screen
       return true;
     } catch (e) {
@@ -87,7 +86,7 @@ class AdminNavigationValidator {
   }
   
   static bool _checkAdminScreensImported() {
-    try {
+    try() {
       // Check if routes map contains admin screens
       final routes = AppRoutes.routes;
       return routes.containsKey(AppRoutes.adminDashboardScreen) &&
@@ -99,7 +98,7 @@ class AdminNavigationValidator {
 }
 
 /// Manual test checklist for admin flow
-class AdminFlowChecklist {
+class AdminFlowChecklist() {
   static void printChecklist() {
     debugPrint('''
 📋 MANUAL ADMIN FLOW TESTING CHECKLIST:

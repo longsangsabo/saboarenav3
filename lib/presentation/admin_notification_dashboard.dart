@@ -7,7 +7,7 @@ import '../models/notification_models.dart';
 
 /// Admin Dashboard for Notification Management
 /// Allows admins to send broadcasts, view analytics, manage templates
-class AdminNotificationDashboard extends StatefulWidget {
+class AdminNotificationDashboard extends StatefulWidget() {
   const AdminNotificationDashboard({super.key});
 
   @override
@@ -15,8 +15,7 @@ class AdminNotificationDashboard extends StatefulWidget {
 }
 
 class _AdminNotificationDashboardState extends State<AdminNotificationDashboard>
-    with SingleTickerProviderStateMixin {
-  
+    with SingleTickerProviderStateMixin() {
   late TabController _tabController;
   final NotificationAnalyticsService _analyticsService = 
       NotificationAnalyticsService.instance;
@@ -41,10 +40,10 @@ class _AdminNotificationDashboardState extends State<AdminNotificationDashboard>
     super.dispose();
   }
 
-  Future<void> _loadDashboardData() async {
+  Future<void> _loadDashboardData() async() {
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       final results = await Future.wait([
         _analyticsService.getGlobalAnalytics(),
         _analyticsService.getNotificationTypePerformance(),
@@ -800,7 +799,7 @@ class _AdminNotificationDashboardState extends State<AdminNotificationDashboard>
   // Action methods
   void _sendBroadcast({required bool sendImmediately}) {
     // TODO: Implement broadcast sending
-    _showSuccessSnackBar('Broadcast ${sendImmediately ? 'sent' : 'scheduled'}!');
+    _showSuccessSnackBar('Broadcast ${sendImmediately ? "sent" : 'scheduled'}!');
   }
 
   void _sendTestNotification() {

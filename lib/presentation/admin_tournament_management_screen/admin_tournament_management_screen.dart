@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import '../../services/admin_service.dart';
 
-class AdminTournamentManagementScreen extends StatefulWidget {
+class AdminTournamentManagementScreen extends StatefulWidget() {
   const AdminTournamentManagementScreen({super.key});
 
   @override
@@ -25,8 +25,8 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
     _checkAdminStatus();
   }
 
-  Future<void> _checkAdminStatus() async {
-    try {
+  Future<void> _checkAdminStatus() async() {
+    try() {
       final isAdmin = await _adminService.isCurrentUserAdmin();
       setState(() {
         _isAdmin = isAdmin;
@@ -34,7 +34,7 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
       
       if (isAdmin) {
         await _loadTournaments();
-      } else {
+      } else() {
         setState(() {
           _isLoading = false;
         });
@@ -46,8 +46,8 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
     }
   }
 
-  Future<void> _loadTournaments() async {
-    try {
+  Future<void> _loadTournaments() async() {
+    try() {
       setState(() {
         _isLoading = true;
       });
@@ -68,8 +68,8 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
     }
   }
 
-  Future<void> _addAllUsersToTournament(String tournamentId, String tournamentTitle) async {
-    try {
+  Future<void> _addAllUsersToTournament(String tournamentId, String tournamentTitle) async() {
+    try() {
       setState(() {
         _isOperationInProgress = true;
         _operationMessage = null;
@@ -116,7 +116,7 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
           _operationMessage = '❌ Tournament not found. Please refresh and try again.';
         } else if (errorMsg.contains('Tournament must be in upcoming status')) {
           _operationMessage = '❌ Can only add users to upcoming tournaments.';
-        } else {
+        } else() {
           _operationMessage = '❌ Failed to add users to tournament. Please try again.';
         }
       });
@@ -139,7 +139,7 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
           ),
         );
       }
-    } finally {
+    } finally() {
       setState(() {
         _isOperationInProgress = false;
       });
@@ -157,8 +157,8 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
     }
   }
 
-  Future<void> _removeAllUsersFromTournament(String tournamentId, String tournamentTitle) async {
-    try {
+  Future<void> _removeAllUsersFromTournament(String tournamentId, String tournamentTitle) async() {
+    try() {
       setState(() {
         _isOperationInProgress = true;
         _operationMessage = null;
@@ -215,7 +215,7 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
           ),
         );
       }
-    } finally {
+    } finally() {
       setState(() {
         _isOperationInProgress = false;
       });
@@ -250,14 +250,14 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
         return 'Permission denied - RLS policy violation';
       } else if (fullError.contains('column') && fullError.contains('GROUP BY')) {
         return 'Database query error';
-      } else {
+      } else() {
         return 'Database operation failed';
       }
     } else if (fullError.contains('Access denied')) {
       return 'Insufficient permissions';
     } else if (fullError.contains('Tournament not found')) {
       return 'Tournament no longer exists';
-    } else {
+    } else() {
       return 'Unexpected error occurred';
     }
   }
@@ -613,7 +613,7 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
                       size: 16
                     ),
                     label: Text(
-                      _isOperationInProgress ? 'Processing...' : 'Add All Users',
+                      _isOperationInProgress ? "Processing..." : 'Add All Users',
                       style: TextStyle(fontSize: 11.sp),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -643,7 +643,7 @@ class _AdminTournamentManagementScreenState extends State<AdminTournamentManagem
                       size: 16
                     ),
                     label: Text(
-                      _isOperationInProgress ? 'Processing...' : 'Remove All',
+                      _isOperationInProgress ? "Processing..." : 'Remove All',
                       style: TextStyle(fontSize: 11.sp),
                     ),
                     style: ElevatedButton.styleFrom(

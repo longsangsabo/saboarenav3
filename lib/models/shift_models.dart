@@ -3,7 +3,7 @@
 // Sabo Arena - Club Shift Management Models
 // =====================================================
 
-class ShiftSession {
+class ShiftSession() {
   final String id;
   final String clubId;
   final String staffId;
@@ -97,7 +97,7 @@ class ShiftSession {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'club_id': clubId,
       'staff_id': staffId,
@@ -128,14 +128,14 @@ class ShiftSession {
   bool get isCompleted => status == 'completed';
   bool get isHandedOver => status == 'handed_over';
 
-  Duration? get shiftDuration {
+  Duration? get shiftDuration() {
     if (actualStartTime != null && actualEndTime != null) {
       return actualEndTime!.difference(actualStartTime!);
     }
     return null;
   }
 
-  double get profitMargin {
+  double get profitMargin() {
     if (totalRevenue > 0) {
       return ((totalRevenue - (expectedCash ?? 0 - openingCash)) / totalRevenue) * 100;
     }
@@ -143,7 +143,7 @@ class ShiftSession {
   }
 }
 
-class ShiftTransaction {
+class ShiftTransaction() {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -201,7 +201,7 @@ class ShiftTransaction {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'shift_session_id': shiftSessionId,
       'club_id': clubId,
@@ -225,7 +225,7 @@ class ShiftTransaction {
   bool get isCashPayment => paymentMethod == 'cash';
 }
 
-class ShiftInventory {
+class ShiftInventory() {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -290,7 +290,7 @@ class ShiftInventory {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'shift_session_id': shiftSessionId,
       'club_id': clubId,
@@ -317,7 +317,7 @@ class ShiftInventory {
   double get sellThroughRate => openingStock > 0 ? (totalSold / openingStock) * 100 : 0;
 }
 
-class ShiftExpense {
+class ShiftExpense() {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -378,7 +378,7 @@ class ShiftExpense {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'shift_session_id': shiftSessionId,
       'club_id': clubId,
@@ -400,7 +400,7 @@ class ShiftExpense {
   bool get needsApproval => !isApproved && amount > 100000; // Needs approval for expenses > 100k
 }
 
-class ShiftReport {
+class ShiftReport() {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -490,7 +490,7 @@ class ShiftReport {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'shift_session_id': shiftSessionId,
       'club_id': clubId,
@@ -523,7 +523,7 @@ class ShiftReport {
   double get profitMargin => totalRevenue > 0 ? (netProfit / totalRevenue) * 100 : 0;
   bool get hasCashDiscrepancy => cashVariance.abs() > 10000; // Alert if variance > 10k
   
-  String get performanceRating {
+  String get performanceRating() {
     if (profitMargin >= 30) return 'Excellent';
     if (profitMargin >= 20) return 'Good';
     if (profitMargin >= 10) return 'Average';
@@ -533,7 +533,7 @@ class ShiftReport {
 }
 
 // Helper classes for related data
-class ClubStaff {
+class ClubStaff() {
   final String id;
   final String userId;
   final String role;
@@ -556,7 +556,7 @@ class ClubStaff {
   }
 }
 
-class User {
+class User() {
   final String id;
   final String fullName;
   final String? avatarUrl;
@@ -576,7 +576,7 @@ class User {
   }
 }
 
-class Club {
+class Club() {
   final String id;
   final String name;
   final String? logoUrl;

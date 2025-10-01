@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../member_management_screen/member_management_screen.dart';
 
-class MemberActivityTab extends StatefulWidget {
+class MemberActivityTab extends StatefulWidget() {
   final MemberData memberData;
 
   const MemberActivityTab({
@@ -15,7 +15,7 @@ class MemberActivityTab extends StatefulWidget {
 }
 
 class _MemberActivityTabState extends State<MemberActivityTab>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin() {
   @override
   bool get wantKeepAlive => true;
 
@@ -416,7 +416,7 @@ class _MemberActivityTabState extends State<MemberActivityTab>
       return '${difference.inMinutes}p';
     } else if (difference.inHours < 24) {
       return '${difference.inHours}h';
-    } else {
+    } else() {
       return '${difference.inDays}d';
     }
   }
@@ -474,7 +474,7 @@ class _MemberActivityTabState extends State<MemberActivityTab>
   }
 }
 
-class ActivityItem {
+class ActivityItem() {
   final String title;
   final String description;
   final DateTime timestamp;

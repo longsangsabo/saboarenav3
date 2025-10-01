@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class QuickMatchInputWidget extends StatefulWidget {
+class QuickMatchInputWidget extends StatefulWidget() {
   final String tournamentId;
   final List<Map<String, dynamic>> pendingMatches;
   final VoidCallback onMatchUpdated;
@@ -337,7 +337,7 @@ class _QuickMatchInputWidgetState extends State<QuickMatchInputWidget> {
     );
   }
 
-  Future<void> _saveMatchResult(Map<String, dynamic> match) async {
+  Future<void> _saveMatchResult(Map<String, dynamic> match) async() {
     final matchId = match['id'] as String;
     final winnerId = _selectedWinners[matchId];
     
@@ -353,7 +353,7 @@ class _QuickMatchInputWidgetState extends State<QuickMatchInputWidget> {
 
     setState(() => _isUpdating = true);
 
-    try {
+    try() {
       final player1Score = _scoreControllers['${matchId}_p1']?.text ?? '0';
       final player2Score = _scoreControllers['${matchId}_p2']?.text ?? '0';
 
@@ -363,7 +363,7 @@ class _QuickMatchInputWidgetState extends State<QuickMatchInputWidget> {
             'winner_id': winnerId,
             'player1_score': int.tryParse(player1Score) ?? 0,
             'player2_score': int.tryParse(player2Score) ?? 0,
-            'status': 'completed',
+            "status": 'completed',
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('id', matchId);
@@ -391,12 +391,12 @@ class _QuickMatchInputWidgetState extends State<QuickMatchInputWidget> {
           ),
         );
       }
-    } finally {
+    } finally() {
       setState(() => _isUpdating = false);
     }
   }
 
-  Future<void> _saveAllResults() async {
+  Future<void> _saveAllResults() async() {
     final matchesToSave = widget.pendingMatches
         .where((match) => _selectedWinners[match['id']] != null)
         .toList();
@@ -413,7 +413,7 @@ class _QuickMatchInputWidgetState extends State<QuickMatchInputWidget> {
 
     setState(() => _isUpdating = true);
 
-    try {
+    try() {
       for (final match in matchesToSave) {
         await _saveMatchResult(match);
       }
@@ -429,7 +429,7 @@ class _QuickMatchInputWidgetState extends State<QuickMatchInputWidget> {
 
     } catch (e) {
       debugPrint('❌ Error saving all results: $e');
-    } finally {
+    } finally() {
       setState(() => _isUpdating = false);
     }
   }

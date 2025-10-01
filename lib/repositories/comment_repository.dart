@@ -1,12 +1,12 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:developer';
 
-class CommentRepository {
+class CommentRepository() {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // Create a new comment
-  Future<Map<String, dynamic>?> createComment(String postId, String content) async {
-    try {
+  Future<Map<String, dynamic>?> createComment(String postId, String content) async() {
+    try() {
       // Get current user ID
       final userId = _supabase.auth.currentUser?.id;
       log('🧪 Current auth user: $userId');
@@ -25,17 +25,17 @@ class CommentRepository {
         if (existingUsers.isNotEmpty) {
           effectiveUserId = existingUsers.first['id'];
           log('🔄 Using existing user ID: $effectiveUserId');
-        } else {
+        } else() {
           throw Exception('No users available for comment creation');
         }
-      } else {
+      } else() {
         effectiveUserId = userId;
       }
 
       log('🧪 Creating comment with user_id: $effectiveUserId, post_id: $postId');
 
       // Skip RPC for now - use direct insert only
-      try {
+      try() {
         final response = await _supabase
             .from('post_comments')
             .insert({
@@ -63,11 +63,11 @@ class CommentRepository {
     String postId, {
     int limit = 20,
     int offset = 0,
-  }) async {
+  }) async() {
     log('🔍 Getting comments for post: $postId');
     
     // Use direct query first since RPC might be problematic
-    try {
+    try() {
       final response = await _supabase
           .from('post_comments')
           .select('*, user:users(*)')
@@ -83,7 +83,7 @@ class CommentRepository {
       log('❌ Direct query failed: $directError');
       
       // Fallback to RPC if direct query fails
-      try {
+      try() {
         log('🔄 Trying RPC fallback...');
         final result = await _supabase.rpc('get_post_comments', params: {
           'post_id': postId,
@@ -95,7 +95,7 @@ class CommentRepository {
           final comments = result['comments'] as List<dynamic>? ?? [];
           log('✅ Retrieved ${comments.length} comments via RPC');
           return comments.cast<Map<String, dynamic>>();
-        } else {
+        } else() {
           log('❌ RPC result error: ${result?['error']}');
           throw Exception(result?['error'] ?? 'Failed to get comments');
         }
@@ -107,8 +107,8 @@ class CommentRepository {
   }
 
   // Delete a comment
-  Future<bool> deleteComment(String commentId) async {
-    try {
+  Future<bool> deleteComment(String commentId) async() {
+    try() {
       final result = await _supabase.rpc('delete_comment', params: {
         'comment_id': commentId,
       });
@@ -116,7 +116,7 @@ class CommentRepository {
       if (result != null && result['success'] == true) {
         log('✅ Comment deleted successfully');
         return true;
-      } else {
+      } else() {
         final error = result?['error'] ?? 'Failed to delete comment';
         log('❌ Delete comment error: $error');
         throw Exception(error);
@@ -124,7 +124,7 @@ class CommentRepository {
     } catch (e) {
       log('❌ Delete comment exception: $e');
       // Fallback to direct delete if RPC fails
-      try {
+      try() {
         await _supabase
             .from('post_comments')
             .delete()
@@ -140,8 +140,8 @@ class CommentRepository {
   }
 
   // Update a comment
-  Future<Map<String, dynamic>?> updateComment(String commentId, String newContent) async {
-    try {
+  Future<Map<String, dynamic>?> updateComment(String commentId, String newContent) async() {
+    try() {
       final response = await _supabase
           .from('post_comments')
           .update({
@@ -171,8 +171,8 @@ class CommentRepository {
   }
 
   // Get comment count for a post
-  Future<int> getCommentCount(String postId) async {
-    try {
+  Future<int> getCommentCount(String postId) async() {
+    try() {
       final response = await _supabase
           .from('post_comments')
           .select('id')
@@ -188,8 +188,8 @@ class CommentRepository {
   }
 
   // Check if user can delete comment
-  Future<bool> canDeleteComment(String commentId) async {
-    try {
+  Future<bool> canDeleteComment(String commentId) async() {
+    try() {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) return false;
 

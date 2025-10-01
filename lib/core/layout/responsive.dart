@@ -21,7 +21,7 @@ double scaledFont(BuildContext context, double size) {
 }
 
 // Spacing tokens (in logical pixels) - keep consistent across app
-class Gaps {
+class Gaps() {
   static const double xs = 4;
   static const double sm = 8;
   static const double md = 12;

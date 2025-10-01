@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import '../../theme/app_theme.dart';
 import '../../services/admin_service.dart';
 
-class AdminUserManagementScreen extends StatefulWidget {
+class AdminUserManagementScreen extends StatefulWidget() {
   const AdminUserManagementScreen({super.key});
 
   @override
@@ -11,7 +11,7 @@ class AdminUserManagementScreen extends StatefulWidget {
 }
 
 class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin() {
   late TabController _tabController;
   final AdminService _adminService = AdminService.instance;
 
@@ -34,8 +34,8 @@ class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
     super.dispose();
   }
 
-  Future<void> _loadUsers() async {
-    try {
+  Future<void> _loadUsers() async() {
+    try() {
       setState(() {
         _isLoading = true;
       });
@@ -45,60 +45,60 @@ class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
       
       _users = [
         {
-          'id': '1',
-          'email': 'admin@saboarena.com',
-          'full_name': 'Admin User',
-          'rank': 'F+',
+          "id": '1',
+          "email": 'admin@saboarena.com',
+          "full_name": 'Admin User',
+          "rank": 'F+',
           'elo': 1982,
-          'status': 'active',
+          "status": 'active',
           'created_at': DateTime.now().subtract(Duration(days: 30)),
-          'role': 'admin',
+          "role": 'admin',
           'is_verified': true,
         },
         {
-          'id': '2',
-          'email': 'longsang063@gmail.com',
-          'full_name': 'Hồ Minh',
-          'rank': 'E+',
+          "id": '2',
+          "email": 'longsang063@gmail.com',
+          "full_name": 'Hồ Minh',
+          "rank": 'E+',
           'elo': 2156,
-          'status': 'active',
+          "status": 'active',
           'created_at': DateTime.now().subtract(Duration(days: 15)),
-          'role': 'user',
+          "role": 'user',
           'is_verified': true,
         },
         {
-          'id': '3',
-          'email': 'player1@example.com',
-          'full_name': 'Hoàng Trang',
-          'rank': 'H+',
+          "id": '3',
+          "email": 'player1@example.com',
+          "full_name": 'Hoàng Trang',
+          "rank": 'H+',
           'elo': 1594,
-          'status': 'active',
+          "status": 'active',
           'created_at': DateTime.now().subtract(Duration(days: 7)),
-          'role': 'user',
+          "role": 'user',
           'is_verified': true,
         },
         {
-          'id': '4',
-          'email': 'player2@example.com',
-          'full_name': 'Lý Hải',
-          'rank': 'G+',
+          "id": '4',
+          "email": 'player2@example.com',
+          "full_name": 'Lý Hải',
+          "rank": 'G+',
           'elo': 1729,
-          'status': 'blocked',
+          "status": 'blocked',
           'created_at': DateTime.now().subtract(Duration(days: 3)),
-          'role': 'user',
+          "role": 'user',
           'is_verified': false,
         },
         // Add more demo users...
         for (int i = 5; i <= 20; i++)
           {
-            'id': '$i',
-            'email': 'demo$i@saboarena.com',
-            'full_name': 'Demo User $i',
+            "id": '$i',
+            "email": 'demo$i@saboarena.com',
+            "full_name": 'Demo User $i',
             'rank': ['K', 'K+', 'I', 'I+', 'H', 'H+', 'G', 'G+', 'F', 'F+', 'E', 'E+'][(i - 5) % 12],
             'elo': 1200 + (i * 50),
             'status': ['active', 'inactive', 'blocked'][i % 3],
             'created_at': DateTime.now().subtract(Duration(days: i)),
-            'role': 'user',
+            "role": 'user',
             'is_verified': i % 2 == 0,
           }
       ];
@@ -659,8 +659,8 @@ class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
               _buildDetailRow('Rank:', user['rank']),
               _buildDetailRow('ELO:', user['elo'].toString()),
               _buildDetailRow('Trạng thái:', _getStatusText(user['status'])),
-              _buildDetailRow('Vai trò:', user['role'] == 'admin' ? 'Admin' : 'User'),
-              _buildDetailRow('Xác thực:', user['is_verified'] ? 'Đã xác thực' : 'Chưa xác thực'),
+              _buildDetailRow('Vai trò:', user['role'] == 'admin' ? "Admin" : 'User'),
+              _buildDetailRow('Xác thực:', user['is_verified'] ? "Đã xác thực" : 'Chưa xác thực'),
             ],
           ),
           actions: [

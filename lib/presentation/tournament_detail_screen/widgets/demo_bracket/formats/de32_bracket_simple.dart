@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 // 🎯 DE32 Tournament Bracket - Clean & Simple Version
-class DE32Bracket extends StatefulWidget {
+class DE32Bracket extends StatefulWidget() {
   const DE32Bracket({super.key});
 
   @override
   State<DE32Bracket> createState() => _DE32BracketState();
 }
 
-class _DE32BracketState extends State<DE32Bracket> with TickerProviderStateMixin {
+class _DE32BracketState extends State<DE32Bracket> with TickerProviderStateMixin() {
   late TabController _tabController;
   late PageController _pageController;
 
@@ -126,7 +126,7 @@ class _DE32BracketState extends State<DE32Bracket> with TickerProviderStateMixin
 }
 
 // 📋 Group Page - Simple group bracket display
-class DE32GroupPage extends StatelessWidget {
+class DE32GroupPage extends StatelessWidget() {
   final String groupName;
   final Color color;
 
@@ -312,7 +312,7 @@ class DE32GroupPage extends StatelessWidget {
 }
 
 // 🏅 Cross Bracket Page - Finals page
-class DE32CrossBracketPage extends StatelessWidget {
+class DE32CrossBracketPage extends StatelessWidget() {
   const DE32CrossBracketPage({super.key});
 
   @override

@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
-class ChatService {
+class ChatService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   // ====================================
@@ -9,8 +9,8 @@ class ChatService {
   // ====================================
   
   /// Get chat rooms for current user's clubs
-  static Future<List<Map<String, dynamic>>> getChatRooms({String? clubId}) async {
-    try {
+  static Future<List<Map<String, dynamic>>> getChatRooms({String? clubId}) async() {
+    try() {
       var query = _supabase.from('chat_rooms').select('''
         *,
         clubs!inner(name, id),
@@ -45,8 +45,8 @@ class ChatService {
     String? description,
     String type = 'general',
     bool isPrivate = false,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
       
@@ -63,7 +63,7 @@ class ChatService {
       await _supabase.from('chat_room_members').insert({
         'room_id': response['id'],
         'user_id': user.id,
-        'role': 'admin',
+        "role": 'admin',
       });
       
       return response;
@@ -73,15 +73,15 @@ class ChatService {
   }
   
   /// Join a chat room
-  static Future<void> joinChatRoom(String roomId) async {
-    try {
+  static Future<void> joinChatRoom(String roomId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
       
       await _supabase.from('chat_room_members').upsert({
         'room_id': roomId,
         'user_id': user.id,
-        'role': 'member',
+        "role": 'member',
       });
     } catch (e) {
       throw Exception('Failed to join chat room: $e');
@@ -97,8 +97,8 @@ class ChatService {
     required String roomId,
     int limit = 50,
     int offset = 0,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('chat_messages')
           .select('''
@@ -133,8 +133,8 @@ class ChatService {
     String messageType = 'text',
     String? replyTo,
     List<String>? attachments,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
       
@@ -177,8 +177,8 @@ class ChatService {
   }
   
   /// Update last read time for user in chat room
-  static Future<void> updateLastReadTime(String roomId) async {
-    try {
+  static Future<void> updateLastReadTime(String roomId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) return;
       
@@ -303,8 +303,8 @@ class ChatService {
   // ====================================
   
   /// Get unread message count for a room
-  static Future<int> getUnreadCount(String roomId) async {
-    try {
+  static Future<int> getUnreadCount(String roomId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) return 0;
       
@@ -340,8 +340,8 @@ class ChatService {
     required String roomId,
     required String query,
     int limit = 20,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('chat_messages')
           .select('''
@@ -365,8 +365,8 @@ class ChatService {
   }
   
   /// Delete message (soft delete)
-  static Future<void> deleteMessage(String messageId) async {
-    try {
+  static Future<void> deleteMessage(String messageId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
       
@@ -384,8 +384,8 @@ class ChatService {
   }
   
   /// Edit message
-  static Future<void> editMessage(String messageId, String newMessage) async {
-    try {
+  static Future<void> editMessage(String messageId, String newMessage) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
       

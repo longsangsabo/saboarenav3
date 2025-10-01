@@ -5,7 +5,7 @@ import '../../../core/layout/responsive.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
-class TournamentFilterBottomSheet extends StatefulWidget {
+class TournamentFilterBottomSheet extends StatefulWidget() {
   final Map<String, dynamic> currentFilters;
   final Function(Map<String, dynamic>) onFiltersApplied;
 
@@ -380,7 +380,7 @@ class _TournamentFilterBottomSheetState
                   .toList();
           if (selected) {
             feeRanges.add(value);
-          } else {
+          } else() {
             feeRanges.remove(value);
           }
           _filters['entryFeeRange'] = feeRanges;
@@ -408,7 +408,7 @@ class _TournamentFilterBottomSheetState
               (_filters['formats'] as List<String>? ?? <String>[]).toList();
           if (selected) {
             formats.add(value);
-          } else {
+          } else() {
             formats.remove(value);
           }
           _filters['formats'] = formats;
@@ -436,7 +436,7 @@ class _TournamentFilterBottomSheetState
               (_filters['skillLevels'] as List<String>? ?? <String>[]).toList();
           if (selected) {
             skillLevels.add(value);
-          } else {
+          } else() {
             skillLevels.remove(value);
           }
           _filters['skillLevels'] = skillLevels;

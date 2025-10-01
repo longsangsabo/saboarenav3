@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'app_theme.dart';
 
 // AppColors class for color constants
-class AppColors {
+class AppColors() {
   static const Color primaryColor = AppTheme.primaryLight;
   static const Color secondaryColor = AppTheme.secondaryLight;
   static const Color backgroundColor = AppTheme.backgroundLight;
@@ -26,7 +26,7 @@ class AppColors {
 }
 
 // CustomTextStyles class for text styling
-class CustomTextStyles {
+class CustomTextStyles() {
   static TextStyle get bodyMedium => TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,

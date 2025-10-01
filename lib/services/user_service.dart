@@ -3,15 +3,15 @@ import '../models/user_profile.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 
-class UserService {
+class UserService() {
   static UserService? _instance;
   static UserService get instance => _instance ??= UserService._();
   UserService._();
 
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  Future<UserProfile?> getCurrentUserProfile() async {
-    try {
+  Future<UserProfile?> getCurrentUserProfile() async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) return null;
 
@@ -24,8 +24,8 @@ class UserService {
     }
   }
 
-  Future<UserProfile> getUserProfileById(String userId) async {
-    try {
+  Future<UserProfile> getUserProfileById(String userId) async() {
+    try() {
       final response =
           await _supabase.from('users').select().eq('id', userId).single();
 
@@ -35,8 +35,8 @@ class UserService {
     }
   }
 
-  Future<List<UserProfile>> getTopRankedPlayers({int limit = 10}) async {
-    try {
+  Future<List<UserProfile>> getTopRankedPlayers({int limit = 10}) async() {
+    try() {
       final response = await _supabase
           .from('users')
           .select()
@@ -52,8 +52,8 @@ class UserService {
     }
   }
 
-  Future<List<UserProfile>> searchUsers(String query, {int limit = 20}) async {
-    try {
+  Future<List<UserProfile>> searchUsers(String query, {int limit = 20}) async() {
+    try() {
       final response = await _supabase
           .from('users')
           .select()
@@ -75,8 +75,8 @@ class UserService {
     required double longitude,
     double radiusKm = 10.0,
     int limit = 20,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // This is a simplified location search
       // In production, you'd want to use PostGIS functions for accurate distance calculation
       final response = await _supabase
@@ -105,8 +105,8 @@ class UserService {
     String? skillLevel,
     String? location,
     String? avatarUrl,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -124,7 +124,7 @@ class UserService {
       if (avatarUrl != null) {
         if (avatarUrl == 'REMOVE_AVATAR') {
           updateData['avatar_url'] = null;
-        } else {
+        } else() {
           updateData['avatar_url'] = avatarUrl;
         }
       }
@@ -145,8 +145,8 @@ class UserService {
   }
 
   // Generic image upload method for evidence/documents
-  Future<Map<String, dynamic>> uploadImage(File imageFile, String fileName) async {
-    try {
+  Future<Map<String, dynamic>> uploadImage(File imageFile, String fileName) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -159,21 +159,21 @@ class UserService {
 
       final publicUrl = _supabase.storage.from('user-images').getPublicUrl(filePath);
 
-      return {
+      return() {
         'success': true,
         'url': publicUrl,
         'path': filePath,
       };
     } catch (error) {
-      return {
+      return() {
         'success': false,
         'error': error.toString(),
       };
     }
   }
 
-  Future<String?> uploadAvatar(List<int> imageBytes, String fileName) async {
-    try {
+  Future<String?> uploadAvatar(List<int> imageBytes, String fileName) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -198,8 +198,8 @@ class UserService {
     }
   }
 
-  Future<String?> uploadCoverPhoto(List<int> imageBytes, String fileName) async {
-    try {
+  Future<String?> uploadCoverPhoto(List<int> imageBytes, String fileName) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -224,8 +224,8 @@ class UserService {
     }
   }
 
-  Future<Map<String, int>> getUserStats(String userId) async {
-    try {
+  Future<Map<String, int>> getUserStats(String userId) async() {
+    try() {
       final userProfile = await getUserProfileById(userId);
 
       // Get additional stats from matches
@@ -243,7 +243,7 @@ class UserService {
 
       final totalMatches = matchesAsPlayer1.length + matchesAsPlayer2.length;
 
-      return {
+      return() {
         'total_wins': userProfile.totalWins,
         'total_losses': userProfile.totalLosses,
         'total_tournaments': userProfile.totalTournaments,
@@ -255,8 +255,8 @@ class UserService {
     }
   }
 
-  Future<int> getUserRanking(String userId) async {
-    try {
+  Future<int> getUserRanking(String userId) async() {
+    try() {
       final response = await _supabase.rpc('get_user_ranking', params: {
         'user_id': userId,
       });
@@ -264,7 +264,7 @@ class UserService {
       return response ?? 0;
     } catch (error) {
       // Fallback: calculate ranking manually
-      try {
+      try() {
         final allUsers = await _supabase
             .from('users')
             .select('id, elo_rating')
@@ -284,8 +284,8 @@ class UserService {
   }
 
   Future<List<UserProfile>> getUserFollowers(String userId,
-      {int limit = 20}) async {
-    try {
+      {int limit = 20}) async() {
+    try() {
       final response = await _supabase.from('user_follows').select('''
             follower:users!user_follows_follower_id_fkey (*)
           ''').eq('following_id', userId).limit(limit);
@@ -299,8 +299,8 @@ class UserService {
   }
 
   Future<List<UserProfile>> getUserFollowing(String userId,
-      {int limit = 20}) async {
-    try {
+      {int limit = 20}) async() {
+    try() {
       final response = await _supabase.from('user_follows').select('''
             following:users!user_follows_following_id_fkey (*)
           ''').eq('follower_id', userId).limit(limit);
@@ -313,8 +313,8 @@ class UserService {
     }
   }
 
-  Future<Map<String, int>> getUserFollowCounts(String userId) async {
-    try {
+  Future<Map<String, int>> getUserFollowCounts(String userId) async() {
+    try() {
       final followersCount = await _supabase
           .from('user_follows')
           .select('*')
@@ -327,7 +327,7 @@ class UserService {
           .eq('follower_id', userId)
           .count(CountOption.exact);
 
-      return {
+      return() {
         'followers': followersCount.count,
         'following': followingCount.count,
       };
@@ -336,8 +336,8 @@ class UserService {
     }
   }
 
-  Future<bool> followUser(String targetUserId) async {
-    try {
+  Future<bool> followUser(String targetUserId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -356,8 +356,8 @@ class UserService {
     }
   }
 
-  Future<bool> unfollowUser(String targetUserId) async {
-    try {
+  Future<bool> unfollowUser(String targetUserId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -373,8 +373,8 @@ class UserService {
     }
   }
 
-  Future<bool> isFollowingUser(String targetUserId) async {
-    try {
+  Future<bool> isFollowingUser(String targetUserId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -395,10 +395,10 @@ class UserService {
     required double latitude,
     required double longitude,
     required double radiusInKm,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // First try using the get_nearby_players function if it exists
-      try {
+      try() {
         final response = await _supabase.rpc(
           'get_nearby_players',
           params: {
@@ -455,8 +455,8 @@ class UserService {
     required String clubId,
     String? notes,
     List<String>? evidenceUrls,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -481,7 +481,7 @@ class UserService {
       Map<String, dynamic> requestData = {
         'user_id': user.id,
         'club_id': clubId,
-        'status': 'pending',
+        "status": 'pending',
         'requested_at': DateTime.now().toIso8601String(),
       };
 
@@ -499,9 +499,9 @@ class UserService {
           .select()
           .single();
 
-      return {
+      return() {
         'success': true,
-        'message': 'Yêu cầu đăng ký rank đã được gửi thành công',
+        "message": 'Yêu cầu đăng ký rank đã được gửi thành công',
         'request_id': response['id'],
         'status': response['status'],
         'evidence_count': evidenceUrls?.length ?? 0,
@@ -513,8 +513,8 @@ class UserService {
   }
 
   /// Check if user has pending rank request for a specific club
-  Future<Map<String, dynamic>?> getPendingRankRequest(String clubId) async {
-    try {
+  Future<Map<String, dynamic>?> getPendingRankRequest(String clubId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -542,8 +542,8 @@ class UserService {
   }
 
   /// Get all rank requests for the current user
-  Future<List<Map<String, dynamic>>> getUserRankRequests() async {
-    try {
+  Future<List<Map<String, dynamic>>> getUserRankRequests() async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -569,8 +569,8 @@ class UserService {
   }
 
   /// Cancel a pending rank request
-  Future<bool> cancelRankRequest(String requestId) async {
-    try {
+  Future<bool> cancelRankRequest(String requestId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -589,8 +589,8 @@ class UserService {
   }
 
   /// Update user's SPA points
-  Future<bool> updateSpaPoints(String userId, int points) async {
-    try {
+  Future<bool> updateSpaPoints(String userId, int points) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -613,8 +613,8 @@ class UserService {
   }
 
   /// Add SPA points to user (increment)
-  Future<bool> addSpaPoints(String userId, int pointsToAdd) async {
-    try {
+  Future<bool> addSpaPoints(String userId, int pointsToAdd) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -641,8 +641,8 @@ class UserService {
   }
 
   /// Update user's total prize pool
-  Future<bool> updatePrizePool(String userId, double prizeAmount) async {
-    try {
+  Future<bool> updatePrizePool(String userId, double prizeAmount) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -665,8 +665,8 @@ class UserService {
   }
 
   /// Add prize money to user's total prize pool (increment)
-  Future<bool> addPrizePool(String userId, double prizeToAdd) async {
-    try {
+  Future<bool> addPrizePool(String userId, double prizeToAdd) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -693,8 +693,8 @@ class UserService {
   }
 
   /// Get leaderboard by SPA points
-  Future<List<UserProfile>> getTopSpaPointsPlayers({int limit = 10}) async {
-    try {
+  Future<List<UserProfile>> getTopSpaPointsPlayers({int limit = 10}) async() {
+    try() {
       final response = await _supabase
           .from('users')
           .select()
@@ -711,8 +711,8 @@ class UserService {
   }
 
   /// Get leaderboard by prize pool
-  Future<List<UserProfile>> getTopPrizePoolPlayers({int limit = 10}) async {
-    try {
+  Future<List<UserProfile>> getTopPrizePoolPlayers({int limit = 10}) async() {
+    try() {
       final response = await _supabase
           .from('users')
           .select()

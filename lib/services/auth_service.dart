@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import '../models/user_profile.dart';
 import 'preferences_service.dart';
 
-class AuthService {
+class AuthService() {
   static AuthService? _instance;
   static AuthService get instance => _instance ??= AuthService._();
   AuthService._();
@@ -19,8 +19,8 @@ class AuthService {
   Future<AuthResponse> signInWithEmail({
     required String email,
     required String password,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.auth.signInWithPassword(
         email: email,
         password: password,
@@ -34,8 +34,8 @@ class AuthService {
   Future<AuthResponse> signInWithPhone({
     required String phone,
     required String password,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.auth.signInWithPassword(
         phone: phone,
         password: password,
@@ -49,8 +49,8 @@ class AuthService {
   Future<void> sendPhoneOtp({
     required String phone,
     bool createUserIfNeeded = true,
-  }) async {
-    try {
+  }) async() {
+    try() {
       await _supabase.auth.signInWithOtp(
         phone: phone,
         shouldCreateUser: createUserIfNeeded,
@@ -63,8 +63,8 @@ class AuthService {
   Future<AuthResponse> verifyPhoneOtp({
     required String phone,
     required String token,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.auth.verifyOTP(
         phone: phone,
         token: token,
@@ -80,7 +80,7 @@ class AuthService {
     String? fullName,
     String? role,
     Map<String, dynamic>? extra,
-  }) async {
+  }) async() {
     final data = <String, dynamic>{};
     if (fullName != null) data['full_name'] = fullName;
     if (role != null) data['role'] = role;
@@ -88,7 +88,7 @@ class AuthService {
 
     if (data.isEmpty) return;
 
-    try {
+    try() {
       await _supabase.auth.updateUser(UserAttributes(data: data));
     } catch (error) {
       throw Exception('Cập nhật thông tin người dùng thất bại: $error');
@@ -96,8 +96,8 @@ class AuthService {
   }
 
   /// Check if current user is admin
-  Future<bool> isCurrentUserAdmin() async {
-    try {
+  Future<bool> isCurrentUserAdmin() async() {
+    try() {
       final user = currentUser;
       if (user == null) return false;
 
@@ -114,8 +114,8 @@ class AuthService {
   }
 
   /// Get current user role
-  Future<String?> getCurrentUserRole() async {
-    try {
+  Future<String?> getCurrentUserRole() async() {
+    try() {
       final user = currentUser;
       if (user == null) return null;
 
@@ -136,8 +136,8 @@ class AuthService {
     required String password,
     required String fullName,
     String role = 'player',
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.auth.signUp(
         email: email,
         password: password,
@@ -157,8 +157,8 @@ class AuthService {
     required String password,
     required String fullName,
     String role = 'player',
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.auth.signUp(
         phone: phone,
         password: password,
@@ -178,7 +178,7 @@ class AuthService {
     String? role,
     String? phone,
     String? email,
-  }) async {
+  }) async() {
     final user = currentUser;
     if (user == null) return;
 
@@ -194,7 +194,7 @@ class AuthService {
       payload['email'] = email ?? user.email;
     }
 
-    try {
+    try() {
       await _supabase
           .from('users')
           .upsert(payload, onConflict: 'id')
@@ -205,8 +205,8 @@ class AuthService {
     }
   }
 
-  Future<void> signOut() async {
-    try {
+  Future<void> signOut() async() {
+    try() {
       await _supabase.auth.signOut();
       // Clear remembered login info when signing out
       await PreferencesService.instance.clearLoginInfo();
@@ -215,8 +215,8 @@ class AuthService {
     }
   }
 
-  Future<AuthResponse> resetPassword(String email) async {
-    try {
+  Future<AuthResponse> resetPassword(String email) async() {
+    try() {
       await _supabase.auth.resetPasswordForEmail(email);
       // Return a proper AuthResponse since resetPasswordForEmail returns void
       return AuthResponse(session: null, user: null);
@@ -225,8 +225,8 @@ class AuthService {
     }
   }
 
-  Future<UserProfile?> getCurrentUserProfile() async {
-    try {
+  Future<UserProfile?> getCurrentUserProfile() async() {
+    try() {
       if (!isAuthenticated) return null;
 
       final response = await _supabase
@@ -249,8 +249,8 @@ class AuthService {
     DateTime? dateOfBirth,
     String? skillLevel,
     String? location,
-  }) async {
-    try {
+  }) async() {
+    try() {
       if (!isAuthenticated) throw Exception('User not authenticated');
 
       final updates = <String, dynamic>{};
@@ -278,8 +278,8 @@ class AuthService {
     }
   }
 
-  Future<String?> uploadAvatar(String filePath, List<int> fileBytes) async {
-    try {
+  Future<String?> uploadAvatar(String filePath, List<int> fileBytes) async() {
+    try() {
       if (!isAuthenticated) throw Exception('User not authenticated');
 
       final fileName =
@@ -308,8 +308,8 @@ class AuthService {
     }
   }
 
-  Future<bool> checkUsernameAvailable(String username) async {
-    try {
+  Future<bool> checkUsernameAvailable(String username) async() {
+    try() {
       final response = await _supabase
           .from('users')
           .select('id')

@@ -1,7 +1,7 @@
 import '../models/user_profile.dart';
 
 /// Mock service để cung cấp dữ liệu demo cho opponent cards
-class MockPlayerService {
+class MockPlayerService() {
   static List<UserProfile> getDemoPlayers() {
     return [
       UserProfile(

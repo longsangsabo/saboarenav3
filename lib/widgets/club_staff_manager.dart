@@ -3,7 +3,7 @@ import '../services/club_staff_service.dart';
 import '../services/commission_service.dart';
 
 /// Widget quản lý nhân viên club cho owner/manager
-class ClubStaffManager extends StatefulWidget {
+class ClubStaffManager extends StatefulWidget() {
   final String clubId;
   final String clubName;
 
@@ -18,7 +18,7 @@ class ClubStaffManager extends StatefulWidget {
 }
 
 class _ClubStaffManagerState extends State<ClubStaffManager>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late TabController _tabController;
   
   bool _isLoading = true;
@@ -38,7 +38,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     super.dispose();
   }
 
-  Future<void> _loadClubData() async {
+  Future<void> _loadClubData() async() {
     setState(() => _isLoading = true);
 
     final staffList = await ClubStaffService.getClubStaff(widget.clubId);
@@ -664,7 +664,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
         style: const TextStyle(fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
-        '${date.day}/${date.month}/${date.year} - ${isPaid ? 'Đã thanh toán' : 'Chờ thanh toán'}',
+        '${date.day}/${date.month}/${date.year} - ${isPaid ? "Đã thanh toán" : 'Chờ thanh toán'}',
         style: TextStyle(
           color: isPaid ? Colors.green : Colors.orange,
           fontWeight: FontWeight.w500,
@@ -787,7 +787,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     );
   }
 
-  Future<void> _confirmRemoveStaff(String staffId) async {
+  Future<void> _confirmRemoveStaff(String staffId) async() {
     Navigator.pop(context);
     
     final result = await ClubStaffService.removeStaff(
@@ -800,7 +800,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
         SnackBar(content: Text(result['message'])),
       );
       _loadClubData();
-    } else {
+    } else() {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Lỗi: ${result['message']}'),
@@ -829,7 +829,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
 // ADD STAFF DIALOG
 // =====================================================
 
-class _AddStaffDialog extends StatefulWidget {
+class _AddStaffDialog extends StatefulWidget() {
   final String clubId;
   final VoidCallback onStaffAdded;
 
@@ -898,7 +898,7 @@ class _AddStaffDialogState extends State<_AddStaffDialog> {
                   SizedBox(
                     width: 80,
                     child: TextFormField(
-                      initialValue: _commissionRate.toString(),
+                      value: _commissionRate.toString(),
                       decoration: const InputDecoration(suffixText: '%'),
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
@@ -952,7 +952,7 @@ class _AddStaffDialogState extends State<_AddStaffDialog> {
     );
   }
 
-  Future<void> _addStaff() async {
+  Future<void> _addStaff() async() {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);

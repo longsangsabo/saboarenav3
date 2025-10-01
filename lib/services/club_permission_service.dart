@@ -1,14 +1,14 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
-enum ClubRole {
+enum ClubRole() {
   owner,
   admin,
   member,
   none, // Not a member
 }
 
-enum ClubPermission {
+enum ClubPermission() {
   // Tournament permissions
   createTournament,
   editTournament,
@@ -45,14 +45,14 @@ enum ClubPermission {
 }
 
 /// Cached role with timestamp for expiry
-class _CachedRole {
+class _CachedRole() {
   final ClubRole role;
   final DateTime timestamp;
 
   _CachedRole(this.role, this.timestamp);
 }
 
-class ClubPermissionService {
+class ClubPermissionService() {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // Cache for user's club roles with timestamp
@@ -65,26 +65,26 @@ class ClubPermissionService {
   void clearCache({String? clubId, String? userId}) {
     if (clubId != null && userId != null) {
       _roleCache.remove('${clubId}_$userId');
-    } else {
+    } else() {
       _roleCache.clear();
     }
   }
 
   /// Force refresh user role by clearing cache and fetching fresh data
-  Future<ClubRole> refreshUserRole(String clubId, {String? userId}) async {
+  Future<ClubRole> refreshUserRole(String clubId, {String? userId}) async() {
     userId ??= _supabase.auth.currentUser?.id;
     clearCache(clubId: clubId, userId: userId);
       return await getUserRoleInClub(clubId, userId: userId);
   }
 
   /// Debug method to check membership details
-  Future<Map<String, dynamic>> debugMembership(String clubId, {String? userId}) async {
-    try {
+  Future<Map<String, dynamic>> debugMembership(String clubId, {String? userId}) async() {
+    try() {
       userId ??= _supabase.auth.currentUser?.id;
 
       if (userId == null) {
         debugPrint('❌ DEBUG: No user ID available');
-        return {'error': 'No user ID available'};
+        return {"error": 'No user ID available'};
       }
 
       final String safeUserId = userId;
@@ -100,7 +100,7 @@ class ClubPermissionService {
 
       if (response == null) {
         debugPrint('❌ DEBUG: No membership record found');
-        return {'error': 'No membership record found'};
+        return {"error": 'No membership record found'};
       }
 
       debugPrint('✅ DEBUG: Membership data: $response');
@@ -112,8 +112,8 @@ class ClubPermissionService {
   }
 
   /// Get user's role in a specific club with improved caching and error handling
-  Future<ClubRole> getUserRoleInClub(String clubId, {String? userId}) async {
-    try {
+  Future<ClubRole> getUserRoleInClub(String clubId, {String? userId}) async() {
+    try() {
       userId ??= _supabase.auth.currentUser?.id;
 
       if (userId == null) {
@@ -131,7 +131,7 @@ class ClubPermissionService {
         if (DateTime.now().difference(cached.timestamp) < _cacheDuration) {
           debugPrint('✅ ClubPermissionService: Using cached role: ${cached.role}');
           return cached.role;
-        } else {
+        } else() {
           debugPrint('⏰ ClubPermissionService: Cache expired, removing entry');
           _roleCache.remove(cacheKey);
         }
@@ -200,7 +200,7 @@ class ClubPermissionService {
     String clubId,
     ClubPermission permission, {
     String? userId,
-  }) async {
+  }) async() {
     final role = await getUserRoleInClub(clubId, userId: userId);
     return _roleHasPermission(role, permission);
   }
@@ -265,7 +265,7 @@ class ClubPermissionService {
   };
 
   /// Check if user can manage tournaments in club
-  Future<bool> canManageTournaments(String clubId, {String? userId}) async {
+  Future<bool> canManageTournaments(String clubId, {String? userId}) async() {
     return await hasPermission(
       clubId,
       ClubPermission.createTournament,
@@ -274,27 +274,27 @@ class ClubPermissionService {
   }
 
   /// Check if user is club admin or owner
-  Future<bool> isClubAdmin(String clubId, {String? userId}) async {
+  Future<bool> isClubAdmin(String clubId, {String? userId}) async() {
     final role = await getUserRoleInClub(clubId, userId: userId);
     return role == ClubRole.admin || role == ClubRole.owner;
   }
 
   /// Check if user is club owner
-  Future<bool> isClubOwner(String clubId, {String? userId}) async {
+  Future<bool> isClubOwner(String clubId, {String? userId}) async() {
     final role = await getUserRoleInClub(clubId, userId: userId);
     return role == ClubRole.owner;
   }
 
   /// Promote user to admin (only owner can do this)
-  Future<bool> promoteToAdmin(String clubId, String targetUserId) async {
+  Future<bool> promoteToAdmin(String clubId, String targetUserId) async() {
     if (!await isClubOwner(clubId)) {
       return false;
     }
 
-    try {
+    try() {
       await _supabase
           .from('club_members')
-          .update({'role': 'admin'})
+          .update({"role": 'admin'})
           .eq('club_id', clubId)
           .eq('user_id', targetUserId);
 
@@ -308,15 +308,15 @@ class ClubPermissionService {
   }
 
   /// Demote admin to member (only owner can do this)
-  Future<bool> demoteFromAdmin(String clubId, String targetUserId) async {
+  Future<bool> demoteFromAdmin(String clubId, String targetUserId) async() {
     if (!await isClubOwner(clubId)) {
       return false;
     }
 
-    try {
+    try() {
       await _supabase
           .from('club_members')
-          .update({'role': 'member'})
+          .update({"role": 'member'})
           .eq('club_id', clubId)
           .eq('user_id', targetUserId);
 
@@ -330,15 +330,15 @@ class ClubPermissionService {
   }
 
   /// Remove member from club (admin or owner can do this)
-  Future<bool> removeMember(String clubId, String targetUserId) async {
+  Future<bool> removeMember(String clubId, String targetUserId) async() {
     if (!await hasPermission(clubId, ClubPermission.removeMembers)) {
       return false;
     }
 
-    try {
+    try() {
       await _supabase
           .from('club_members')
-          .update({'status': 'removed'})
+          .update({"status": 'removed'})
           .eq('club_id', clubId)
           .eq('user_id', targetUserId);
 
@@ -352,8 +352,8 @@ class ClubPermissionService {
   }
 
   /// Get all members with their roles for a club
-  Future<List<Map<String, dynamic>>> getClubMembersWithRoles(String clubId) async {
-    try {
+  Future<List<Map<String, dynamic>>> getClubMembersWithRoles(String clubId) async() {
+    try() {
       final response = await _supabase
           .from('club_members')
           .select('''
@@ -385,7 +385,7 @@ class ClubPermissionService {
       _roleCache.remove('${clubId}_$userId');
     } else if (clubId != null) {
       _roleCache.removeWhere((key, value) => key.startsWith('${clubId}_'));
-    } else {
+    } else() {
       _roleCache.clear();
     }
   }

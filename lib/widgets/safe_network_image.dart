@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class SafeNetworkImage extends StatelessWidget {
+class SafeNetworkImage extends StatelessWidget() {
   final String? imageUrl;
   final Widget? placeholder;
   final Widget? errorWidget;

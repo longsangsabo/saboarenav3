@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/user_profile.dart';
 import '../../services/user_service.dart';
 import '../../services/location_service.dart';
+import '../../helpers/privacy_helper.dart';
 import '../../routes/app_routes.dart';
 
 import './widgets/filter_bottom_sheet.dart';
@@ -10,7 +11,7 @@ import './widgets/competitive_play_tab.dart';
 import './widgets/social_play_tab.dart';
 import '../../widgets/qr_scanner_widget.dart';
 
-class FindOpponentsScreen extends StatefulWidget {
+class FindOpponentsScreen extends StatefulWidget() {
   const FindOpponentsScreen({super.key});
 
   @override
@@ -18,11 +19,12 @@ class FindOpponentsScreen extends StatefulWidget {
 }
 
 class _FindOpponentsScreenState extends State<FindOpponentsScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   final UserService _userService = UserService.instance;
   final LocationService _locationService = LocationService.instance;
 
-  List<UserProfile> _players = [];
+  List<UserProfile> _socialPlayers = [];
+  List<UserProfile> _competitivePlayers = [];
   bool _isLoading = true;
   String? _errorMessage;
   bool _isMapView = false;
@@ -44,8 +46,8 @@ class _FindOpponentsScreenState extends State<FindOpponentsScreen>
     super.dispose();
   }
 
-  Future<void> _loadPlayers() async {
-    try {
+  Future<void> _loadPlayers() async() {
+    try() {
       if (mounted) {
         setState(() {
           _isLoading = true;
@@ -64,13 +66,38 @@ class _FindOpponentsScreenState extends State<FindOpponentsScreen>
       );
 
       // 3. Filter by skill level if selected
-      final filteredPlayers = _selectedSkillLevel == 'all'
+      final skillFilteredPlayers = _selectedSkillLevel == 'all'
           ? players
           : players.where((p) => p.skillLevel == _selectedSkillLevel).toList();
 
+      // 4. Apply privacy filters for both social and competitive
+      final playersJson = skillFilteredPlayers.map((p) => p.toJson()).toList();
+      
+      // Filter for social feed (tab "giao lưu")
+      final socialFilteredPlayers = await PrivacyHelper.filterUsersForPublicDisplay(
+        playersJson,
+        'social_feed',
+      );
+      
+      // Filter for challenge list (tab "thách đấu")
+      final challengeFilteredPlayers = await PrivacyHelper.filterUsersForPublicDisplay(
+        playersJson,
+        'challenge_list',
+      );
+
+      // 5. Convert back to UserProfile objects
+      final finalSocialPlayers = socialFilteredPlayers
+          .map((json) => UserProfile.fromJson(json))
+          .toList();
+          
+      final finalCompetitivePlayers = challengeFilteredPlayers
+          .map((json) => UserProfile.fromJson(json))
+          .toList();
+
       if (mounted) {
         setState(() {
-          _players = filteredPlayers;
+          _socialPlayers = finalSocialPlayers;
+          _competitivePlayers = finalCompetitivePlayers;
           _isLoading = false;
         });
       }
@@ -198,14 +225,14 @@ class _FindOpponentsScreenState extends State<FindOpponentsScreen>
           CompetitivePlayTab(
             isLoading: _isLoading,
             errorMessage: _errorMessage,
-            players: _players,
+            players: _competitivePlayers,
             isMapView: _isMapView,
             onRefresh: _loadPlayers,
           ),
           SocialPlayTab(
             isLoading: _isLoading,
             errorMessage: _errorMessage,
-            players: _players,
+            players: _socialPlayers,
             isMapView: _isMapView,
             onRefresh: _loadPlayers,
           ),

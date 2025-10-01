@@ -4,7 +4,7 @@ import 'package:sabo_arena/services/share_service.dart';
 import 'package:sabo_arena/services/user_code_service.dart';
 import 'package:flutter/foundation.dart';
 
-class RegistrationQRService {
+class RegistrationQRService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   /// Complete user registration with automatic QR code generation
@@ -18,8 +18,8 @@ class RegistrationQRService {
     DateTime? dateOfBirth,
     String skillLevel = 'beginner',
     String role = 'player',
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🎯 Starting registration with QR for user: $userId');
       
       // 1. Generate unique user code
@@ -83,28 +83,28 @@ class RegistrationQRService {
       debugPrint('✅ User profile created with QR system');
       
       // 5. Return success with user code and QR data
-      return {
+      return() {
         'success': true,
         'user_id': userId,
         'user_code': userCode,
         'qr_data': qrData,
-        'message': 'Đăng ký thành công! Mã QR của bạn đã được tạo.',
+        "message": 'Đăng ký thành công! Mã QR của bạn đã được tạo.',
         'profile': result,
       };
       
     } catch (e) {
       debugPrint('❌ Error in registration with QR: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
-        'message': 'Lỗi tạo tài khoản: $e',
+        "message": 'Lỗi tạo tài khoản: $e',
       };
     }
   }
   
   /// Get user's QR information
-  static Future<Map<String, dynamic>?> getUserQRInfo(String userId) async {
-    try {
+  static Future<Map<String, dynamic>?> getUserQRInfo(String userId) async() {
+    try() {
       final result = await _supabase
           .from('users')
           .select('user_code, qr_data, qr_generated_at, full_name, elo_rating, rank')
@@ -119,8 +119,8 @@ class RegistrationQRService {
   }
   
   /// Regenerate QR code for user (if needed)
-  static Future<Map<String, dynamic>> regenerateUserQR(String userId) async {
-    try {
+  static Future<Map<String, dynamic>> regenerateUserQR(String userId) async() {
+    try() {
       // Get current user data
       final userData = await _supabase
           .from('users')
@@ -144,26 +144,26 @@ class RegistrationQRService {
           })
           .eq('id', userId);
       
-      return {
+      return() {
         'success': true,
         'user_code': newUserCode,
         'qr_data': newQRData,
-        'message': 'Mã QR đã được tạo mới thành công!',
+        "message": 'Mã QR đã được tạo mới thành công!',
       };
       
     } catch (e) {
       debugPrint('Error regenerating QR: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
-        'message': 'Lỗi tạo mã QR mới: $e',
+        "message": 'Lỗi tạo mã QR mới: $e',
       };
     }
   }
   
   /// Validate QR code and get user info (for scanning)
-  static Future<Map<String, dynamic>> validateAndGetUserByQR(String qrData) async {
-    try {
+  static Future<Map<String, dynamic>> validateAndGetUserByQR(String qrData) async() {
+    try() {
       // Extract user ID from QR data
       final uri = Uri.parse(qrData);
       final pathSegments = uri.pathSegments;
@@ -177,37 +177,37 @@ class RegistrationQRService {
             .eq('id', userId)
             .single();
         
-        return {
+        return() {
           'success': true,
           'user': result,
-          'message': 'QR code hợp lệ',
+          "message": 'QR code hợp lệ',
         };
-      } else {
-        return {
+      } else() {
+        return() {
           'success': false,
-          'message': 'QR code không đúng định dạng',
+          "message": 'QR code không đúng định dạng',
         };
       }
       
     } catch (e) {
       debugPrint('Error validating QR: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
-        'message': 'QR code không hợp lệ hoặc user không tồn tại',
+        "message": 'QR code không hợp lệ hoặc user không tồn tại',
       };
     }
   }
   
   /// Get QR statistics (for future analytics)
-  static Future<Map<String, dynamic>> getQRStats() async {
-    try {
+  static Future<Map<String, dynamic>> getQRStats() async() {
+    try() {
       final stats = await _supabase
           .from('users')
           .select('user_code, qr_generated_at')
           .not('user_code', 'is', null);
       
-      return {
+      return() {
         'total_qr_codes': stats.length,
         'generated_today': stats.where((item) {
           final generated = DateTime.parse(item['qr_generated_at']);

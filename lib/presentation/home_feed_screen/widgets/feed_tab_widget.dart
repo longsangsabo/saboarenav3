@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
-class FeedTabWidget extends StatelessWidget {
+class FeedTabWidget extends StatelessWidget() {
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
 
@@ -25,7 +25,7 @@ class FeedTabWidget extends StatelessWidget {
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.2),
+          color: colorScheme.outline.withOpacity(0.2),
           width: 1,
         ),
       ),

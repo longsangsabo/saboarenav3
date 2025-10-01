@@ -4,7 +4,7 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget() {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class TestScreen extends StatelessWidget {
+class TestScreen extends StatelessWidget() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +40,7 @@ class TestScreen extends StatelessWidget {
   }
 }
 
-class PlayerWelcomeGuideSimple extends StatefulWidget {
+class PlayerWelcomeGuideSimple extends StatefulWidget() {
   const PlayerWelcomeGuideSimple({Key? key}) : super(key: key);
 
   @override
@@ -297,7 +297,7 @@ class _PlayerWelcomeGuideSimpleState extends State<PlayerWelcomeGuideSimple> {
   }
 }
 
-class GuideItem {
+class GuideItem() {
   final IconData icon;
   final String title;
   final String description;

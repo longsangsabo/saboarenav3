@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './widgets/admin_scaffold_wrapper.dart';
 import '../admin_tournament_management_screen/admin_tournament_management_screen.dart';
 
-class AdminTournamentMainScreen extends StatelessWidget {
+class AdminTournamentMainScreen extends StatelessWidget() {
   const AdminTournamentMainScreen({super.key});
 
   @override

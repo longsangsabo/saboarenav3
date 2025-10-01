@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './widgets/admin_scaffold_wrapper.dart';
 import './admin_user_management_screen.dart';
 
-class AdminUserManagementMainScreen extends StatelessWidget {
+class AdminUserManagementMainScreen extends StatelessWidget() {
   const AdminUserManagementMainScreen({super.key});
 
   @override

@@ -8,7 +8,7 @@ import 'dart:io';
 import '../../../models/user_profile.dart';
 import '../../../services/user_service.dart';
 
-class EditProfileModal extends StatefulWidget {
+class EditProfileModal extends StatefulWidget() {
   final UserProfile userProfile;
   final Function(UserProfile) onSave;
   final VoidCallback onCancel;
@@ -60,7 +60,7 @@ class _EditProfileModalState extends State<EditProfileModal> {
     super.dispose();
   }
 
-  void _handleSave() async {
+  void _handleSave() async() {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -69,7 +69,7 @@ class _EditProfileModalState extends State<EditProfileModal> {
 
     HapticFeedback.lightImpact();
 
-    try {
+    try() {
       String? avatarUrl = widget.userProfile.avatarUrl;
       
       // Xử lý upload ảnh nếu có ảnh mới được chọn
@@ -107,7 +107,7 @@ class _EditProfileModalState extends State<EditProfileModal> {
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -116,8 +116,8 @@ class _EditProfileModalState extends State<EditProfileModal> {
     }
   }
 
-  Future<String?> _uploadAvatar(List<int> bytes, String fileName) async {
-    try {
+  Future<String?> _uploadAvatar(List<int> bytes, String fileName) async() {
+    try() {
       // Import UserService để sử dụng upload method
       final userService = UserService.instance;
       return await userService.uploadAvatar(bytes, fileName);
@@ -227,10 +227,10 @@ class _EditProfileModalState extends State<EditProfileModal> {
     );
   }
 
-  Future<void> _pickImageFromCamera() async {
+  Future<void> _pickImageFromCamera() async() {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try {
+    try() {
       // Kiểm tra quyền camera
       final cameraStatus = await Permission.camera.status;
       if (cameraStatus.isDenied) {
@@ -259,10 +259,10 @@ class _EditProfileModalState extends State<EditProfileModal> {
     }
   }
 
-  Future<void> _pickImageFromGallery() async {
+  Future<void> _pickImageFromGallery() async() {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try {
+    try() {
       // Kiểm tra quyền truy cập thư viện ảnh
       final photoStatus = await Permission.photos.status;
       if (photoStatus.isDenied) {

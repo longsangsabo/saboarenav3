@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class PricingSettingsScreen extends StatefulWidget {
+class PricingSettingsScreen extends StatefulWidget() {
   final String clubId;
 
   const PricingSettingsScreen({
@@ -18,55 +18,55 @@ class PricingSettingsScreen extends StatefulWidget {
 class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
   List<Map<String, dynamic>> tableRates = [
     {
-      'id': '1',
-      'name': 'Bàn Pool thường',
+      "id": '1',
+      "name": 'Bàn Pool thường',
       'hourlyRate': 50000,
-      'description': 'Bàn pool tiêu chuẩn cho người chơi thông thường',
+      "description": 'Bàn pool tiêu chuẩn cho người chơi thông thường',
       'isActive': true,
     },
     {
-      'id': '2',
-      'name': 'Bàn Pool VIP',
+      "id": '2',
+      "name": 'Bàn Pool VIP',
       'hourlyRate': 80000,
-      'description': 'Bàn pool cao cấp với không gian riêng tư',
+      "description": 'Bàn pool cao cấp với không gian riêng tư',
       'isActive': true,
     },
   ];
 
   List<Map<String, dynamic>> membershipFees = [
     {
-      'id': '1',
-      'name': 'Thành viên thông thường',
+      "id": '1',
+      "name": 'Thành viên thông thường',
       'monthlyFee': 200000,
       'yearlyFee': 2000000,
-      'benefits': 'Giảm 10% giá bàn, ưu tiên đặt bàn',
+      "benefits": 'Giảm 10% giá bàn, ưu tiên đặt bàn',
       'isActive': true,
     },
     {
-      'id': '2',
-      'name': 'Thành viên VIP',
+      "id": '2',
+      "name": 'Thành viên VIP',
       'monthlyFee': 500000,
       'yearlyFee': 5000000,
-      'benefits': 'Giảm 20% giá bàn, ưu tiên cao, phòng chờ VIP',
+      "benefits": 'Giảm 20% giá bàn, ưu tiên cao, phòng chờ VIP',
       'isActive': true,
     },
   ];
 
   List<Map<String, dynamic>> additionalServices = [
     {
-      'id': '1',
-      'name': 'Bàn pool cao cấp với không gian riêng tư',
+      "id": '1',
+      "name": 'Bàn pool cao cấp với không gian riêng tư',
       'price': 80000,
-      'unit': 'giờ',
-      'description': 'Bàn pool cao cấp với không gian riêng tư',
+      "unit": 'giờ',
+      "description": 'Bàn pool cao cấp với không gian riêng tư',
       'isActive': true,
     },
     {
-      'id': '2',
-      'name': 'Đồ uống',
+      "id": '2',
+      "name": 'Đồ uống',
       'price': 25000,
-      'unit': 'ly',
-      'description': 'Nước uống các loại',
+      "unit": 'ly',
+      "description": 'Nước uống các loại',
       'isActive': true,
     },
   ];
@@ -399,7 +399,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                           item['isActive'] = value;
                         });
                       },
-                      activeThumbColor: AppTheme.primaryLight,
+                      thumbColor: WidgetStateProperty.all(AppTheme.primaryLight),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.more_vert, color: AppTheme.textSecondaryLight),
@@ -500,7 +500,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(item == null ? 'Thêm bàn mới' : 'Chỉnh sửa bàn'),
+        title: Text(item == null ? "Thêm bàn mới" : 'Chỉnh sửa bàn'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -551,7 +551,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                       'description': descController.text,
                       'isActive': true,
                     });
-                  } else {
+                  } else() {
                     tableRates[index!]['name'] = nameController.text;
                     tableRates[index]['hourlyRate'] = int.parse(rateController.text);
                     tableRates[index]['description'] = descController.text;
@@ -560,7 +560,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                 Navigator.pop(context);
               }
             },
-            child: Text(item == null ? 'Thêm' : 'Cập nhật'),
+            child: Text(item == null ? "Thêm" : 'Cập nhật'),
           ),
         ],
       ),
@@ -576,7 +576,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(item == null ? 'Thêm gói thành viên' : 'Chỉnh sửa gói thành viên'),
+        title: Text(item == null ? "Thêm gói thành viên" : 'Chỉnh sửa gói thành viên'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -638,7 +638,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                       'benefits': benefitsController.text,
                       'isActive': true,
                     });
-                  } else {
+                  } else() {
                     membershipFees[index!]['name'] = nameController.text;
                     membershipFees[index]['monthlyFee'] = int.parse(monthlyController.text);
                     membershipFees[index]['yearlyFee'] = int.parse(yearlyController.text.isEmpty ? '0' : yearlyController.text);
@@ -648,7 +648,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                 Navigator.pop(context);
               }
             },
-            child: Text(item == null ? 'Thêm' : 'Cập nhật'),
+            child: Text(item == null ? "Thêm" : 'Cập nhật'),
           ),
         ],
       ),
@@ -664,7 +664,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(item == null ? 'Thêm dịch vụ' : 'Chỉnh sửa dịch vụ'),
+        title: Text(item == null ? "Thêm dịch vụ" : 'Chỉnh sửa dịch vụ'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -724,7 +724,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                       'description': descController.text,
                       'isActive': true,
                     });
-                  } else {
+                  } else() {
                     additionalServices[index!]['name'] = nameController.text;
                     additionalServices[index]['price'] = int.parse(priceController.text);
                     additionalServices[index]['unit'] = unitController.text.isEmpty ? 'lần' : unitController.text;
@@ -734,7 +734,7 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                 Navigator.pop(context);
               }
             },
-            child: Text(item == null ? 'Thêm' : 'Cập nhật'),
+            child: Text(item == null ? "Thêm" : 'Cập nhật'),
           ),
         ],
       ),

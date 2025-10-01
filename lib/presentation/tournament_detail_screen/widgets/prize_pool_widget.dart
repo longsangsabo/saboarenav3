@@ -4,7 +4,7 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class PrizePoolWidget extends StatelessWidget {
+class PrizePoolWidget extends StatelessWidget() {
   final Map<String, dynamic> tournament;
 
   const PrizePoolWidget({
@@ -25,13 +25,13 @@ class PrizePoolWidget extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.1),
-            AppTheme.lightTheme.colorScheme.secondary.withValues(alpha: 0.1),
+            AppTheme.lightTheme.colorScheme.primary.withOpacity(0.1),
+            AppTheme.lightTheme.colorScheme.secondary.withOpacity(0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.3),
+          color: AppTheme.lightTheme.colorScheme.primary.withOpacity(0.3),
           width: 1,
         ),
       ),
@@ -98,21 +98,21 @@ class PrizePoolWidget extends StatelessWidget {
   List<Widget> _buildPrizeList(Map<String, dynamic> prizePool) {
     final prizes = [
       {
-        'position': 'Nhất',
+        "position": 'Nhất',
         'amount': prizePool["first"],
-        'icon': 'emoji_events',
+        "icon": 'emoji_events',
         'color': const Color(0xFFFFD700)
       },
       {
-        'position': 'Nhì',
+        "position": 'Nhì',
         'amount': prizePool["second"],
-        'icon': 'emoji_events',
+        "icon": 'emoji_events',
         'color': const Color(0xFFC0C0C0)
       },
       {
-        'position': 'Ba',
+        "position": 'Ba',
         'amount': prizePool["third"],
-        'icon': 'emoji_events',
+        "icon": 'emoji_events',
         'color': const Color(0xFFCD7F32)
       },
     ];
@@ -125,7 +125,7 @@ class PrizePoolWidget extends StatelessWidget {
                 color: AppTheme.lightTheme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: (prize['color'] as Color).withValues(alpha: 0.3),
+                  color: (prize['color'] as Color).withOpacity(0.3),
                   width: 1,
                 ),
               ),
@@ -134,7 +134,7 @@ class PrizePoolWidget extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(Gaps.md),
                     decoration: BoxDecoration(
-                      color: (prize['color'] as Color).withValues(alpha: 0.2),
+                      color: (prize['color'] as Color).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: CustomIconWidget(

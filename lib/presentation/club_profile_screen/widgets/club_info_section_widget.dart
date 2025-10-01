@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class ClubInfoSectionWidget extends StatelessWidget {
+class ClubInfoSectionWidget extends StatelessWidget() {
   final Map<String, dynamic> clubData;
 
   const ClubInfoSectionWidget({

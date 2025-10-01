@@ -4,14 +4,13 @@ import 'challenge_rules_service.dart';
 import 'package:flutter/foundation.dart';
 
 /// Enhanced Challenge Service methods for validation and handicap calculations
-extension ChallengeValidationExtension on ChallengeService {
-  
+extension ChallengeValidationExtension on ChallengeService() {
   SupabaseClient get _supabase => Supabase.instance.client;
   ChallengeRulesService get _rulesService => ChallengeRulesService.instance;
 
   /// 🔍 Check if two players can challenge each other
-  Future<bool> canPlayersChallenge(String challengerId, String challengedId) async {
-    try {
+  Future<bool> canPlayersChallenge(String challengerId, String challengedId) async() {
+    try() {
       final challengerData = await _supabase
           .from('users')
           .select('ranking, is_available_for_challenges')
@@ -49,8 +48,8 @@ extension ChallengeValidationExtension on ChallengeService {
     required String challengerId,
     required String challengedId,
     required int spaBetAmount,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final challengerData = await _supabase
           .from('users')
           .select('ranking')
@@ -91,7 +90,7 @@ extension ChallengeValidationExtension on ChallengeService {
     required String challengedId,
     required String challengeType,
     required int spaBetAmount,
-  }) async {
+  }) async() {
     final currentUser = _supabase.auth.currentUser;
     if (currentUser == null) {
       return ChallengeValidationResult(
@@ -110,7 +109,7 @@ extension ChallengeValidationExtension on ChallengeService {
     }
 
     // For friendly challenges, basic validation
-    try {
+    try() {
       final challengedData = await _supabase
           .from('users')
           .select('is_available_for_challenges')
@@ -140,7 +139,7 @@ extension ChallengeValidationExtension on ChallengeService {
     final canChallenge = _rulesService.canChallenge(challengerRank, challengedRank);
     final eligibleRanks = _rulesService.getEligibleRanks(challengerRank);
     
-    return {
+    return() {
       'canChallenge': canChallenge,
       'eligibleRanks': eligibleRanks,
       'challengerRankInfo': _rulesService.getRankDisplayInfo(challengerRank),

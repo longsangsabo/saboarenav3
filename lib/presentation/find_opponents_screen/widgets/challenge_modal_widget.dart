@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 // import '../../../services/challenge_service_extensions.dart';
 // import '../../../services/challenge_rules_service.dart';
 
-class ChallengeModalWidget extends StatefulWidget {
+class ChallengeModalWidget extends StatefulWidget() {
   final Map<String, dynamic> player;
   final String challengeType; // 'thach_dau' or 'giao_luu'
   final VoidCallback? onSendChallenge;
@@ -51,13 +51,13 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
   }
 
   /// Update handicap preview when SPA points change
-  Future<void> _updateHandicapPreview() async {
+  Future<void> _updateHandicapPreview() async() {
     if (_spaPoints == 0 || widget.challengeType != 'thach_dau') {
       _handicapPreview = null;
       return;
     }
 
-    try {
+    try() {
       final playerId = widget.player['user_id'] as String?;
       if (playerId == null) return;
 
@@ -93,7 +93,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
             width: 12.w,
             height: 0.5.h,
             decoration: BoxDecoration(
-              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+              color: colorScheme.onSurfaceVariant.withOpacity(0.4),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -108,7 +108,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
                   children: [
                     Text(
                       widget.challengeType == 'thach_dau'
-                          ? 'Thách đấu'
+                          ? "Thách đấu"
                           : 'Giao lưu',
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w600,
@@ -135,7 +135,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
             ),
           ),
 
-          Divider(height: 1, color: colorScheme.outline.withValues(alpha: 0.2)),
+          Divider(height: 1, color: colorScheme.outline.withOpacity(0.2)),
 
           // Content
           Flexible(
@@ -175,7 +175,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
                 ),
                 child: Text(
                   widget.challengeType == 'thach_dau'
-                      ? 'Gửi thách đấu'
+                      ? "Gửi thách đấu"
                       : 'Gửi lời mời giao lưu',
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: colorScheme.onPrimary,
@@ -262,7 +262,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
               Text(
                 'Chọn SPA để tính',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
             ],
@@ -274,13 +274,13 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+              border: Border.all(color: theme.colorScheme.outline.withOpacity(0.3)),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               _handicapPreview!.explanation,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                color: theme.colorScheme.onSurface.withOpacity(0.8),
               ),
             ),
           ),
@@ -296,7 +296,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
       return '+${_handicapPreview!.challengerHandicap} bàn';
     } else if (_handicapPreview!.challengedHandicap > 0) {
       return 'Đối thủ +${_handicapPreview!.challengedHandicap} bàn';
-    } else {
+    } else() {
       return 'Không handicap';
     }
   }
@@ -318,7 +318,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
             ),
             const Spacer(),
             Text(
-              _spaPoints == 0 ? 'Không cược' : '$_spaPoints điểm',
+              _spaPoints == 0 ? "Không cược" : '$_spaPoints điểm',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
@@ -353,7 +353,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
               return ChoiceChip(
                 label: Text('$points (R-$raceTo)'),
                 selected: isSelected,
-                onSelected: (selected) async {
+                onSelected: (selected) async() {
                   if (selected) {
                     setState(() {
                       _spaPoints = points;
@@ -433,7 +433,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
         ),
         SizedBox(height: 1.h),
         DropdownButtonFormField<String>(
-          initialValue: _selectedLocation,
+          value: _selectedLocation,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -487,7 +487,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
     );
   }
 
-  Future<void> _selectDate() async {
+  Future<void> _selectDate() async() {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
@@ -501,7 +501,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
     }
   }
 
-  Future<void> _selectTime() async {
+  Future<void> _selectTime() async() {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: _selectedTime,
@@ -513,8 +513,8 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
     }
   }
 
-  void _sendChallenge() async {
-    try {
+  void _sendChallenge() async() {
+    try() {
       final challengeService = ChallengeService.instance;
       final playerId = widget.player['id'] ?? widget.player['user_id'] ?? '';
       
@@ -572,7 +572,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
           SnackBar(
             content: Text(
               widget.challengeType == 'thach_dau'
-                  ? 'Đã gửi thách đấu đến ${widget.player["name"]} thành công! 🎯'
+                  ? "Đã gửi thách đấu đến ${widget.player["name"]} thành công! 🎯"
                   : 'Đã gửi lời mời giao lưu đến ${widget.player["name"]} thành công! 🎱',
             ),
             backgroundColor: AppTheme.successLight,

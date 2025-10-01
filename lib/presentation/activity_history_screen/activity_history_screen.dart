@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/services/club_permission_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ActivityHistoryScreen extends StatefulWidget {
+class ActivityHistoryScreen extends StatefulWidget() {
   final String clubId;
 
   const ActivityHistoryScreen({
@@ -34,10 +34,10 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
     _loadActivities();
   }
 
-  Future<void> _loadActivities() async {
+  Future<void> _loadActivities() async() {
     setState(() => _isLoading = true);
     
-    try {
+    try() {
       // Check if user has permission to view activity history
       final canView = await _permissionService.hasPermission(
         widget.clubId,
@@ -72,8 +72,8 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
     }
   }
 
-  Future<List<ClubActivityLog>> _fetchActivitiesFromDatabase() async {
-    try {
+  Future<List<ClubActivityLog>> _fetchActivitiesFromDatabase() async() {
+    try() {
       final supabase = Supabase.instance.client;
       
       // Query activity logs from database
@@ -137,7 +137,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
         actorName: 'Trần Thị B',
         actorAvatar: null,
         timestamp: DateTime.now().subtract(Duration(hours: 5)),
-        data: {'tournament_name': 'Giải mùa xuân 2024'},
+        data: {"tournament_name": 'Giải mùa xuân 2024'},
       ),
       ClubActivityLog(
         id: '3',
@@ -147,7 +147,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
         actorName: 'Lê Văn C',
         actorAvatar: null,
         timestamp: DateTime.now().subtract(Duration(days: 1)),
-        data: {'post_title': 'Thông báo lịch tập'},
+        data: {"post_title": 'Thông báo lịch tập'},
       ),
       ClubActivityLog(
         id: '4',
@@ -157,7 +157,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
         actorName: 'Nguyễn Văn A',
         actorAvatar: null,
         timestamp: DateTime.now().subtract(Duration(days: 2)),
-        data: {'promoted_user': 'Nguyễn Văn D', 'new_role': 'admin'},
+        data: {"promoted_user": 'Nguyễn Văn D', "new_role": 'admin'},
       ),
       ClubActivityLog(
         id: '5',
@@ -168,15 +168,15 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
         actorAvatar: null,
         timestamp: DateTime.now().subtract(Duration(days: 3)),
         data: {
-          'tournament_name': 'Giải tháng 12',
-          'winner': 'Võ Văn E',
+          "tournament_name": 'Giải tháng 12',
+          "winner": 'Võ Văn E',
           'prize_pool': 5000000
         },
       ),
     ];
   }
 
-  List<ClubActivityLog> get _filteredActivities {
+  List<ClubActivityLog> get _filteredActivities() {
     if (_selectedFilter == 'all') return _activities;
     
     return _activities.where((activity) {
@@ -297,7 +297,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
           SizedBox(height: 8),
           Text(
             _selectedFilter == 'all' 
-                ? 'Lịch sử hoạt động sẽ hiển thị ở đây'
+                ? "Lịch sử hoạt động sẽ hiển thị ở đây"
                 : 'Không có hoạt động nào cho bộ lọc này',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Colors.grey[500],
@@ -455,7 +455,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
       return '${difference.inHours} giờ trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
     }
   }
@@ -473,7 +473,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
   }
 }
 
-class ClubActivityLog {
+class ClubActivityLog() {
   final String id;
   final String activityType;
   final String description;

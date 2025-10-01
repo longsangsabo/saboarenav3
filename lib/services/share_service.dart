@@ -1,7 +1,7 @@
 import 'package:share_plus/share_plus.dart';
 import 'package:sabo_arena/models/user_profile.dart';
 
-class ShareService {
+class ShareService() {
   static const String _baseUrl = 'https://saboarena.com';
   
   /// Generate unique code for user
@@ -12,7 +12,7 @@ class ShareService {
   }
   
   /// Share user profile
-  static Future<void> shareUserProfile(UserProfile user) async {
+  static Future<void> shareUserProfile(UserProfile user) async() {
     final userCode = generateUserCode(user.id);
     final shareText = '''
 🏆 Hãy thách đấu với tôi trên SABO ARENA!
@@ -43,7 +43,7 @@ class ShareService {
     required String startDate,
     required int participants,
     required String prizePool,
-  }) async {
+  }) async() {
     final shareText = '''
 🏆 Tham gia giải đấu SABO ARENA!
 
@@ -72,7 +72,7 @@ class ShareService {
     required String winner,
     required String matchDate,
     String? matchId,
-  }) async {
+  }) async() {
     final shareText = '''
 🏸 Kết quả trận đấu SABO ARENA
 
@@ -81,7 +81,7 @@ class ShareService {
 🏆 Thắng: $winner
 📅 Ngày: $matchDate
 
-${matchId != null ? '🔗 Chi tiết: $_baseUrl/match/$matchId\n' : ''}📱 Tải app: $_baseUrl/download
+${matchId != null ? "🔗 Chi tiết: $_baseUrl/match/$matchId\n" : ''}📱 Tải app: $_baseUrl/download
 
 #SABOArena #MatchResult #Badminton
 ''';
@@ -99,13 +99,13 @@ ${matchId != null ? '🔗 Chi tiết: $_baseUrl/match/$matchId\n' : ''}📱 Tả
     required String location,
     required int memberCount,
     String? description,
-  }) async {
+  }) async() {
     final shareText = '''
 🏛️ Tham gia CLB $clubName!
 
 📍 Địa điểm: $location
 👥 Thành viên: $memberCount người
-${description != null ? '📝 $description\n' : ''}
+${description != null ? "📝 $description\n" : ''}
 🔗 Tham gia: $_baseUrl/club/$clubId
 📱 Tải app: $_baseUrl/download
 
@@ -119,7 +119,7 @@ ${description != null ? '📝 $description\n' : ''}
   }
   
   /// Share app download
-  static Future<void> shareApp() async {
+  static Future<void> shareApp() async() {
     const shareText = '''
 🏸 SABO ARENA - Ứng dụng cầu lông #1 Việt Nam!
 
@@ -146,7 +146,7 @@ ${description != null ? '📝 $description\n' : ''}
   static Future<void> shareCustom({
     required String text,
     String? subject,
-  }) async {
+  }) async() {
     await Share.share(text, subject: subject);
   }
   

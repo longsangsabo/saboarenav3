@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 
 
-class EmptyFeedWidget extends StatelessWidget {
+class EmptyFeedWidget extends StatelessWidget() {
   final bool isNearbyTab;
   final VoidCallback? onCreatePost;
   final VoidCallback? onFindFriends;
@@ -32,7 +32,7 @@ class EmptyFeedWidget extends StatelessWidget {
               width: 20.w,
               height: 20.w,
               decoration: BoxDecoration(
-                color: colorScheme.primary.withValues(alpha: 0.1),
+                color: colorScheme.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -47,7 +47,7 @@ class EmptyFeedWidget extends StatelessWidget {
             // Title
             Text(
               isNearbyTab
-                  ? 'Chưa có bài viết gần đây'
+                  ? "Chưa có bài viết gần đây"
                   : 'Chưa có bài viết từ bạn bè',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w600,
@@ -62,7 +62,7 @@ class EmptyFeedWidget extends StatelessWidget {
             // Description
             Text(
               isNearbyTab
-                  ? 'Hãy là người đầu tiên chia sẻ trải nghiệm billiards!'
+                  ? "Hãy là người đầu tiên chia sẻ trải nghiệm billiards!"
                   : 'Kết nối với những người chơi billiards khác.',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,

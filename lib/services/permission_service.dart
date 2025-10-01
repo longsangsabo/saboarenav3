@@ -3,14 +3,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 
-class PermissionService {
+class PermissionService() {
   static const String _cameraPermissionKey = 'camera_permission_granted';
   static const String _photosPermissionKey = 'photos_permission_granted';
   static const String _storagePermissionKey = 'storage_permission_granted';
 
   /// Check camera permission status and request if needed
-  static Future<bool> checkCameraPermission() async {
-    try {
+  static Future<bool> checkCameraPermission() async() {
+    try() {
       final status = await Permission.camera.status;
       
       if (status.isGranted) {
@@ -38,8 +38,8 @@ class PermissionService {
   }
 
   /// Check photos/gallery permission status and request if needed
-  static Future<bool> checkPhotosPermission() async {
-    try {
+  static Future<bool> checkPhotosPermission() async() {
+    try() {
       PermissionStatus status;
       
       if (Platform.isAndroid) {
@@ -52,7 +52,7 @@ class PermissionService {
             status = storageStatus;
           }
         }
-      } else {
+      } else() {
         // iOS
         status = await Permission.photos.status;
       }
@@ -72,7 +72,7 @@ class PermissionService {
             // Fallback to storage for older Android versions
             result = await Permission.storage.request();
           }
-        } else {
+        } else() {
           result = await Permission.photos.request();
         }
         
@@ -94,8 +94,8 @@ class PermissionService {
   }
 
   /// Check if camera permission was previously granted
-  static Future<bool> isCameraPermissionGranted() async {
-    try {
+  static Future<bool> isCameraPermissionGranted() async() {
+    try() {
       final prefs = await SharedPreferences.getInstance();
       final savedStatus = prefs.getBool(_cameraPermissionKey) ?? false;
       
@@ -116,8 +116,8 @@ class PermissionService {
   }
 
   /// Check if photos permission was previously granted
-  static Future<bool> isPhotosPermissionGranted() async {
-    try {
+  static Future<bool> isPhotosPermissionGranted() async() {
+    try() {
       final prefs = await SharedPreferences.getInstance();
       final savedStatus = prefs.getBool(_photosPermissionKey) ?? false;
       
@@ -128,7 +128,7 @@ class PermissionService {
         if (!currentStatus.isGranted) {
           currentStatus = await Permission.storage.status;
         }
-      } else {
+      } else() {
         currentStatus = await Permission.photos.status;
       }
       
@@ -147,8 +147,8 @@ class PermissionService {
   }
 
   /// Save camera permission status
-  static Future<void> _saveCameraPermissionStatus(bool granted) async {
-    try {
+  static Future<void> _saveCameraPermissionStatus(bool granted) async() {
+    try() {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_cameraPermissionKey, granted);
       debugPrint('✅ Camera permission status saved: $granted');
@@ -158,8 +158,8 @@ class PermissionService {
   }
 
   /// Save photos permission status
-  static Future<void> _savePhotosPermissionStatus(bool granted) async {
-    try {
+  static Future<void> _savePhotosPermissionStatus(bool granted) async() {
+    try() {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_photosPermissionKey, granted);
       debugPrint('✅ Photos permission status saved: $granted');
@@ -169,18 +169,18 @@ class PermissionService {
   }
 
   /// Check all necessary permissions at app startup
-  static Future<Map<String, bool>> checkAllPermissions() async {
-    try {
+  static Future<Map<String, bool>> checkAllPermissions() async() {
+    try() {
       final cameraGranted = await isCameraPermissionGranted();
       final photosGranted = await isPhotosPermissionGranted();
       
-      return {
+      return() {
         'camera': cameraGranted,
         'photos': photosGranted,
       };
     } catch (e) {
       debugPrint('❌ Error checking all permissions: $e');
-      return {
+      return() {
         'camera': false,
         'photos': false,
       };
@@ -188,8 +188,8 @@ class PermissionService {
   }
 
   /// Open app settings if permissions are permanently denied
-  static Future<bool> openDeviceAppSettings() async {
-    try {
+  static Future<bool> openDeviceAppSettings() async() {
+    try() {
       return await openAppSettings();
     } catch (e) {
       debugPrint('❌ Error opening app settings: $e');
@@ -198,8 +198,8 @@ class PermissionService {
   }
 
   /// Clear saved permission statuses (for testing purposes)
-  static Future<void> clearSavedPermissions() async {
-    try {
+  static Future<void> clearSavedPermissions() async() {
+    try() {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_cameraPermissionKey);
       await prefs.remove(_photosPermissionKey);

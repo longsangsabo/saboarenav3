@@ -3,7 +3,7 @@ enum MembershipType { regular, vip, premium }
 enum MemberStatus { active, inactive, suspended, pending }
 enum RankType { beginner, amateur, intermediate, advanced, professional }
 
-class AdvancedFilters {
+class AdvancedFilters() {
   final List<MembershipType> membershipTypes;
   final String? minRank;
   final String? maxRank;
@@ -25,7 +25,7 @@ class AdvancedFilters {
   });
 }
 
-class MemberData {
+class MemberData() {
   final String id;
   final UserInfo user;
   final MembershipInfo membershipInfo;
@@ -87,7 +87,7 @@ class MemberData {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'user': user.toJson(),
       'membership_info': membershipInfo.toJson(),
@@ -96,7 +96,7 @@ class MemberData {
   }
 }
 
-class UserInfo {
+class UserInfo() {
   final String id;
   final String name;
   final String username;
@@ -128,7 +128,7 @@ class UserInfo {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'name': name,
       'username': username,
@@ -140,7 +140,7 @@ class UserInfo {
   }
 }
 
-class MembershipInfo {
+class MembershipInfo() {
   final String membershipId;
   final DateTime joinDate;
   final String status; // 'active', 'inactive', 'banned'
@@ -168,7 +168,7 @@ class MembershipInfo {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'membership_id': membershipId,
       'join_date': joinDate.toIso8601String(),
       'status': status,
@@ -178,7 +178,7 @@ class MembershipInfo {
   }
 }
 
-class ActivityStats {
+class ActivityStats() {
   final int activityScore;
   final double winRate;
   final int totalMatches;
@@ -206,7 +206,7 @@ class ActivityStats {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'activity_score': activityScore,
       'win_rate': winRate,
       'total_matches': totalMatches,

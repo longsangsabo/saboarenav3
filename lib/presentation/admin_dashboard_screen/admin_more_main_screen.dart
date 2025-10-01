@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import './widgets/admin_scaffold_wrapper.dart';
 
-class AdminMoreMainScreen extends StatelessWidget {
+class AdminMoreMainScreen extends StatelessWidget() {
   const AdminMoreMainScreen({super.key});
 
   @override

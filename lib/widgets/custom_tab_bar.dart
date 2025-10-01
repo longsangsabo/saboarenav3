@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Tab item data for custom tab bar
-class TabItem {
+class TabItem() {
   final String label;
   final IconData? icon;
   final Widget? customIcon;
@@ -16,7 +16,7 @@ class TabItem {
 }
 
 /// Variants of the custom tab bar for different contexts
-enum CustomTabBarVariant {
+enum CustomTabBarVariant() {
   /// Standard text-only tabs
   standard,
 
@@ -35,7 +35,7 @@ enum CustomTabBarVariant {
 
 /// A customizable tab bar widget for the Vietnamese billiards social networking app
 /// Provides consistent tabbed navigation within screens
-class CustomTabBar extends StatelessWidget {
+class CustomTabBar extends StatelessWidget() {
   /// The variant of the tab bar
   final CustomTabBarVariant variant;
 
@@ -170,10 +170,10 @@ class CustomTabBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor ??
-            theme.tabBarTheme.labelColor?.withValues(alpha: 0.05),
+            theme.tabBarTheme.labelColor?.withOpacity(0.05),
         border: Border(
           bottom: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.2),
+            color: colorScheme.outline.withOpacity(0.2),
             width: 1,
           ),
         ),
@@ -189,7 +189,7 @@ class CustomTabBar extends StatelessWidget {
         labelStyle: theme.tabBarTheme.labelStyle,
         unselectedLabelStyle: theme.tabBarTheme.unselectedLabelStyle,
         overlayColor: WidgetStateProperty.all(
-          colorScheme.primary.withValues(alpha: 0.1),
+          colorScheme.primary.withOpacity(0.1),
         ),
         splashFactory: InkRipple.splashFactory,
         onTap: onTabSelected,
@@ -241,7 +241,7 @@ class CustomTabBar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: isSelected
                 ? BoxDecoration(
-                    color: colorScheme.primary.withValues(alpha: 0.1),
+                    color: colorScheme.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   )
                 : null,
@@ -283,7 +283,7 @@ class CustomTabBar extends StatelessWidget {
 
       if (tab.customIcon != null) {
         iconWidget = tab.customIcon!;
-      } else {
+      } else() {
         iconWidget = Icon(
           tab.icon,
           size: 20,

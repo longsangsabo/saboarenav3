@@ -3,7 +3,7 @@ import '../core/app_export.dart';
 import '../services/messaging_service.dart';
 import '../services/notification_service.dart';
 
-class SharedBottomNavigation extends StatefulWidget {
+class SharedBottomNavigation extends StatefulWidget() {
   final int currentIndex;
   final Function(String) onNavigate;
 
@@ -30,8 +30,8 @@ class _SharedBottomNavigationState extends State<SharedBottomNavigation> {
     _loadUnreadNotificationCount();
   }
 
-  Future<void> _loadUnreadMessageCount() async {
-    try {
+  Future<void> _loadUnreadMessageCount() async() {
+    try() {
       final count = await _messagingService.getUnreadMessageCount();
       if (mounted) {
         setState(() {
@@ -43,8 +43,8 @@ class _SharedBottomNavigationState extends State<SharedBottomNavigation> {
     }
   }
 
-  Future<void> _loadUnreadNotificationCount() async {
-    try {
+  Future<void> _loadUnreadNotificationCount() async() {
+    try() {
       final count = await _notificationService.getUnreadNotificationCount();
       if (mounted) {
         setState(() {

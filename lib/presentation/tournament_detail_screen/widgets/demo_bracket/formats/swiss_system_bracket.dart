@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../components/bracket_components.dart';
 import '../shared/tournament_data_generator.dart';
 
-class SwissSystemBracket extends StatelessWidget {
+class SwissSystemBracket extends StatelessWidget() {
   final int playerCount;
   final VoidCallback? onFullscreenTap;
 
@@ -329,7 +329,7 @@ class SwissSystemBracket extends StatelessWidget {
 }
 
 // Full screen dialog for Swiss System
-class SwissSystemFullscreenDialog extends StatelessWidget {
+class SwissSystemFullscreenDialog extends StatelessWidget() {
   final int playerCount;
 
   const SwissSystemFullscreenDialog({

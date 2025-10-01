@@ -7,41 +7,40 @@ import '../constants/ranking_constants.dart';
 /// 
 /// Utility class để hỗ trợ migration từ hệ thống rank cũ sang mới
 /// và đảm bảo compatibility giữa các phiên bản
-class RankMigrationHelper {
-  
+class RankMigrationHelper() {
   /// Mapping từ tên rank cũ sang mã rank (ELO-based system)
   /// Điều này đảm bảo backwards compatibility
   static const Map<String, String> oldNameToRankCode = {
-    'Tập Sự': 'K',
-    'Tập Sự+': 'K+',
-    'Sơ Cấp': 'I', 
-    'Sơ Cấp+': 'I+',
-    'Trung Cấp': 'H',
-    'Trung Cấp+': 'H+',
-    'Khá': 'G',
-    'Khá+': 'G+',
-    'Giỏi': 'F',
-    'Giỏi+': 'F+',
-    'Xuất Sắc': 'E',
-    'Chuyên Gia': 'E+',
+    "Tập Sự": 'K',
+    "Tập Sự+": 'K+',
+    "Sơ Cấp": 'I', 
+    "Sơ Cấp+": 'I+',
+    "Trung Cấp": 'H',
+    "Trung Cấp+": 'H+',
+    "Khá": 'G',
+    "Khá+": 'G+',
+    "Giỏi": 'F',
+    "Giỏi+": 'F+',
+    "Xuất Sắc": 'E',
+    "Chuyên Gia": 'E+',
     // Legacy rank codes that shouldn't exist
-    'B': 'I', // Map legacy "B" to appropriate rank "I" (Thợ 3)
+    "B": 'I', // Map legacy "B" to appropriate rank "I" (Thợ 3)
   };
 
   /// Mapping từ tên rank mới sang mã rank
   static const Map<String, String> newNameToRankCode = {
-    'Người mới': 'K',
-    'Học việc': 'K+',
-    'Thợ 3': 'I',
-    'Thợ 2': 'I+', 
-    'Thợ 1': 'H',
-    'Thợ chính': 'H+',
-    'Thợ giỏi': 'G',
-    'Cao thủ': 'G+',
-    'Chuyên gia': 'F',
-    'Đại cao thủ': 'F+',
-    'Huyền thoại': 'E',
-    'Vô địch': 'E+',
+    "Người mới": 'K',
+    "Học việc": 'K+',
+    "Thợ 3": 'I',
+    "Thợ 2": 'I+', 
+    "Thợ 1": 'H',
+    "Thợ chính": 'H+',
+    "Thợ giỏi": 'G',
+    "Cao thủ": 'G+',
+    "Chuyên gia": 'F',
+    "Đại cao thủ": 'F+',
+    "Huyền thoại": 'E',
+    "Vô địch": 'E+',
   };
 
   /// Chuyển đổi rank name (cũ hoặc mới) thành rank code

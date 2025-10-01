@@ -19,7 +19,7 @@ import '../../services/club_permission_service.dart';
 import '../../routes/app_routes.dart';
 
 // Temporary mock classes
-class ClubDashboardStats {
+class ClubDashboardStats() {
   final int totalMembers;
   final int activeMembers;
   final double monthlyRevenue;
@@ -37,7 +37,7 @@ class ClubDashboardStats {
   });
 }
 
-class ClubActivity {
+class ClubActivity() {
   final String title;
   final String subtitle;
   final String type;
@@ -51,7 +51,7 @@ class ClubActivity {
   });
 }
 
-class ClubDashboardScreenSimple extends StatefulWidget {
+class ClubDashboardScreenSimple extends StatefulWidget() {
   final String clubId;
 
   const ClubDashboardScreenSimple({
@@ -75,8 +75,8 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
   // Permission service
   final ClubPermissionService _permissionService = ClubPermissionService();
 
-  Future<ClubDashboardStats> _loadRealClubStats(String clubId) async {
-    try {
+  Future<ClubDashboardStats> _loadRealClubStats(String clubId) async() {
+    try() {
       // Get real member count
       final memberCount = await Supabase.instance.client
           .from('club_members')
@@ -87,7 +87,7 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
 
       // Get tournament count (if tournaments table exists)
       int tournamentCount = 0;
-      try {
+      try() {
         final tournamentResult = await Supabase.instance.client
             .from('tournaments')
             .select('id')
@@ -120,8 +120,8 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
     }
   }
 
-  Future<List<ClubActivity>> _loadRecentActivities(String clubId) async {
-    try {
+  Future<List<ClubActivity>> _loadRecentActivities(String clubId) async() {
+    try() {
       final activities = <ClubActivity>[];
       
       // Get recent member joins
@@ -158,8 +158,8 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
     _loadData();
   }
 
-  Future<void> _loadData() async {
-    try {
+  Future<void> _loadData() async() {
+    try() {
       final club = await ClubService.instance.getClubById(widget.clubId);
       final currentUserId = AuthService.instance.currentUser?.id;
       final isOwner = club.ownerId == currentUserId;
@@ -189,7 +189,7 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
           _recentActivities = results[1] as List<ClubActivity>;
           _isLoading = false;
         });
-      } else {
+      } else() {
         setState(() {
           _isLoading = false;
         });
@@ -207,8 +207,8 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
   }
 
   /// Ensure club owner has membership record
-  Future<void> _ensureOwnerMembership(String clubId, String userId) async {
-    try {
+  Future<void> _ensureOwnerMembership(String clubId, String userId) async() {
+    try() {
       final supabase = Supabase.instance.client;
       
       // Check if owner already has membership record
@@ -224,8 +224,8 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
         await supabase.from('club_members').insert({
           'club_id': clubId,
           'user_id': userId,
-          'role': 'owner',
-          'status': 'active',
+          "role": 'owner',
+          "status": 'active',
           'joined_at': DateTime.now().toIso8601String(),
         });
         
@@ -233,7 +233,7 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
         
         // Clear permission cache to force refresh
         _permissionService.clearCache(clubId: clubId, userId: userId);
-      } else {
+      } else() {
         debugPrint('✅ Owner membership record already exists');
       }
     } catch (e) {
@@ -518,49 +518,49 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
   Widget _buildModernQuickActions() {
     final actions = [
       {
-        'title': 'Thành viên',
+        "title": 'Thành viên',
         'icon': Icons.people_outline,
         'color': Colors.blue,
         'onTap': _navigateToMemberManagement,
       },
       {
-        'title': 'Nhân viên',
+        "title": 'Nhân viên',
         'icon': Icons.badge_outlined,
         'color': Colors.indigo,
         'onTap': _navigateToStaffManagement,
       },
       {
-        'title': 'Giải đấu',
+        "title": 'Giải đấu',
         'icon': Icons.add_circle_outline,
         'color': Colors.green,
         'onTap': _navigateToTournamentCreate,
       },
       {
-        'title': 'Thông báo',
+        "title": 'Thông báo',
         'icon': Icons.notifications_outlined,
         'color': Colors.orange,
         'onTap': _navigateToNotifications,
       },
       {
-        'title': 'Báo cáo',
+        "title": 'Báo cáo',
         'icon': Icons.bar_chart,
         'color': Colors.purple,
         'onTap': _showReports,
       },
       {
-        'title': 'Cài đặt',
+        "title": 'Cài đặt',
         'icon': Icons.settings_outlined,
         'color': Colors.grey,
         'onTap': _showSettings,
       },
       {
-        'title': 'Lịch sử',
+        "title": 'Lịch sử',
         'icon': Icons.history,
         'color': Colors.teal,
         'onTap': _navigateToActivityHistory,
       },
       {
-        'title': 'Quản lý hạng',
+        "title": 'Quản lý hạng',
         'icon': Icons.military_tech,
         'color': Colors.amber,
         'onTap': _navigateToRankManagement,
@@ -786,7 +786,7 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
       return '${difference.inMinutes}p';
     } else if (difference.inDays < 1) {
       return '${difference.inHours}h';
-    } else {
+    } else() {
       return '${difference.inDays}d';
     }
   }
@@ -823,8 +823,8 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
     );
   }
 
-  void _navigateToTournamentCreate() async {
-    try {
+  void _navigateToTournamentCreate() async() {
+    try() {
       // Show loading indicator
       showDialog(
         context: context,
@@ -1052,7 +1052,7 @@ class _ClubDashboardScreenSimpleState extends State<ClubDashboardScreenSimple> {
       return '${(revenue / 1000000).toStringAsFixed(1)}M';
     } else if (revenue >= 1000) {
       return '${(revenue / 1000).toStringAsFixed(1)}K';
-    } else {
+    } else() {
       return revenue.toStringAsFixed(0);
     }
   }

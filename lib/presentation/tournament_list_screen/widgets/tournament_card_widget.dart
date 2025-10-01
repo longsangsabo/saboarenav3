@@ -5,7 +5,7 @@ import '../../../core/app_export.dart';
 import '../../../models/tournament.dart';
 import '../../../routes/app_routes.dart';
 
-class TournamentCardWidget extends StatelessWidget {
+class TournamentCardWidget extends StatelessWidget() {
   final Tournament tournament;
 
   const TournamentCardWidget({
@@ -143,7 +143,7 @@ class TournamentCardWidget extends StatelessWidget {
                     child: _buildInfoItem(
                       Icons.monetization_on,
                       tournament.entryFee > 0
-                          ? '${tournament.entryFee.toStringAsFixed(0)}đ'
+                          ? "${tournament.entryFee.toStringAsFixed(0)}đ"
                           : 'Miễn phí',
                     ),
                   ),

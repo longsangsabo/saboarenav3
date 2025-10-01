@@ -1,7 +1,7 @@
 // Supabase Configuration
 // Using real Supabase credentials from env.json
 
-class SupabaseConfig {
+class SupabaseConfig() {
   // Real Supabase instance
   static const String url = 'https://mogjjvscxjwvhtpkrlqr.supabase.co';
   static const String anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vZ2pqdnNjeGp3dmh0cGtybHFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTk1ODAsImV4cCI6MjA3MzQ5NTU4MH0.u1urXd3uiT0fuqWlJ1Nhp7uJhgdiyOdLSdSWJWczHoQ';

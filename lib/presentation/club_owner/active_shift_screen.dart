@@ -6,7 +6,7 @@ import '../../services/mock_shift_reporting_service.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 
-class ActiveShiftScreen extends StatefulWidget {
+class ActiveShiftScreen extends StatefulWidget() {
   final ShiftSession shiftSession;
   final VoidCallback onShiftEnded;
 
@@ -21,8 +21,8 @@ class ActiveShiftScreen extends StatefulWidget {
 }
 
 class _ActiveShiftScreenState extends State<ActiveShiftScreen>
-    with TickerProviderStateMixin {
-  final MockShiftReportingService _shiftService = MockShiftReportingService();
+    with TickerProviderStateMixin() {
+  final ShiftReportingService _shiftService = ShiftReportingService();
   
   late TabController _tabController;
   bool _isLoading = false;
@@ -45,8 +45,8 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
     super.dispose();
   }
 
-  Future<void> _loadShiftData() async {
-    try {
+  Future<void> _loadShiftData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -72,8 +72,8 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
     }
   }
 
-  Future<void> _endShift() async {
-    try {
+  Future<void> _endShift() async() {
+    try() {
       final result = await showDialog<double>(
         context: context,
         builder: (context) => _EndShiftDialog(),
@@ -107,11 +107,11 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const LoadingWidget(message: 'Đang tải dữ liệu ca...');
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (_error != null) {
-      return ErrorWidget(
+      return ErrorWidget(Exception('Error: ${state.message}'));
         message: _error!,
         onRetry: _loadShiftData,
       );
@@ -747,7 +747,7 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
   }
 }
 
-class _EndShiftDialog extends StatefulWidget {
+class _EndShiftDialog extends StatefulWidget() {
   @override
   State<_EndShiftDialog> createState() => _EndShiftDialogState();
 }

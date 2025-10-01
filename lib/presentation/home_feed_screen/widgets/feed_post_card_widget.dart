@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_image_widget.dart';
 
-class FeedPostCardWidget extends StatefulWidget {
+class FeedPostCardWidget extends StatefulWidget() {
   final Map<String, dynamic> post;
   final VoidCallback? onLike;
   final VoidCallback? onComment;
@@ -25,7 +25,7 @@ class FeedPostCardWidget extends StatefulWidget {
 }
 
 class _FeedPostCardWidgetState extends State<FeedPostCardWidget>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -88,7 +88,7 @@ class _FeedPostCardWidgetState extends State<FeedPostCardWidget>
       return '${difference.inHours}h trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return '${timestamp.day}/${timestamp.month}';
     }
   }
@@ -105,13 +105,13 @@ class _FeedPostCardWidgetState extends State<FeedPostCardWidget>
         borderRadius: BorderRadius.circular(20), // More modern rounded corners
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08), // Softer shadow
+            color: Colors.black.withOpacity(0.08), // Softer shadow
             blurRadius: 20, // More blur for modern depth
             offset: const Offset(0, 4), // Slight vertical offset
             spreadRadius: -2, // Negative spread for crisp edges
           ),
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04), // Very subtle second shadow
+            color: Colors.black.withOpacity(0.04), // Very subtle second shadow
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -370,7 +370,7 @@ class _FeedPostCardWidgetState extends State<FeedPostCardWidget>
                 if (commentCount > 0 || shareCount > 0) ...[
                   Flexible(
                     child: Text(
-                      '${commentCount > 0 ? '$commentCount bình luận' : ''}${commentCount > 0 && shareCount > 0 ? ' • ' : ''}${shareCount > 0 ? '$shareCount lượt chia sẻ' : ''}',
+                      '${commentCount > 0 ? "$commentCount bình luận" : ''}${commentCount > 0 && shareCount > 0 ? " • " : ''}${shareCount > 0 ? "$shareCount lượt chia sẻ" : ''}',
                       style: TextStyle(
                         fontSize: 10.sp,
                         color: Colors.grey[600],

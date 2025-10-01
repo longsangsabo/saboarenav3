@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 
-class AttendanceService {
+class AttendanceService() {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // =============================================
@@ -10,8 +10,8 @@ class AttendanceService {
   // =============================================
 
   /// Verify attendance QR code and location
-  Future<Map<String, dynamic>> verifyAttendanceQR(String qrData) async {
-    try {
+  Future<Map<String, dynamic>> verifyAttendanceQR(String qrData) async() {
+    try() {
       // Parse QR data
       final qrContent = jsonDecode(qrData);
       
@@ -51,7 +51,7 @@ class AttendanceService {
         throw Exception('Bạn phải ở trong khu vực club để chấm công (khoảng cách: ${distance.toInt()}m)');
       }
 
-      return {
+      return() {
         'success': true,
         'club_id': clubId,
         'club_name': clubResponse['name'],
@@ -63,7 +63,7 @@ class AttendanceService {
       };
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -75,8 +75,8 @@ class AttendanceService {
   // =============================================
 
   /// Check in to work
-  Future<Map<String, dynamic>> checkIn(String clubId, Map<String, dynamic> locationData) async {
-    try {
+  Future<Map<String, dynamic>> checkIn(String clubId, Map<String, dynamic> locationData) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('Bạn cần đăng nhập để chấm công');
@@ -94,23 +94,21 @@ class AttendanceService {
       final staffId = staffResponse['id'];
 
       // Check if already checked in today
-      final isAlreadyCheckedIn = await _supabase.rpc('is_staff_checked_in', {
+      final isAlreadyCheckedIn = await _supabase.rpc('is_staff_checked_in', parameters: {
         'p_staff_id': staffId,
-      });
+      );
 
       if (isAlreadyCheckedIn == true) {
         throw Exception('Bạn đã chấm công hôm nay rồi');
-      }
-
+      })
       // Get today's shift
-      final todayShiftResponse = await _supabase.rpc('get_today_shift', {
+      final todayShiftResponse = await _supabase.rpc('get_today_shift', parameters: {
         'p_staff_id': staffId,
-      });
+      );
 
       if (todayShiftResponse == null || todayShiftResponse.isEmpty) {
         throw Exception('Bạn không có ca làm việc hôm nay');
-      }
-
+      })
       final todayShift = todayShiftResponse.first;
       final shiftId = todayShift['shift_id'];
 
@@ -122,8 +120,8 @@ class AttendanceService {
             'staff_id': staffId,
             'club_id': clubId,
             'check_in_time': DateTime.now().toIso8601String(),
-            'check_in_method': 'qr_code',
-            'check_in_location': 'POINT(${locationData['lng']} ${locationData['lat']})',
+            "check_in_method": 'qr_code',
+            "check_in_location": 'POINT(${locationData['lng']} ${locationData['lat']})',
             'check_in_device_info': await _getDeviceInfo(),
           })
           .select()
@@ -132,12 +130,12 @@ class AttendanceService {
       // Update shift status
       await _supabase
           .from('staff_shifts')
-          .update({'shift_status': 'in_progress'})
+          .update({"shift_status": 'in_progress'})
           .eq('id', shiftId);
 
-      return {
+      return() {
         'success': true,
-        'message': 'Chấm công thành công!',
+        "message": 'Chấm công thành công!',
         'attendance_id': checkInResponse['id'],
         'check_in_time': checkInResponse['check_in_time'],
         'late_minutes': checkInResponse['late_minutes'] ?? 0,
@@ -145,7 +143,7 @@ class AttendanceService {
       };
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -153,8 +151,8 @@ class AttendanceService {
   }
 
   /// Check out from work
-  Future<Map<String, dynamic>> checkOut(String attendanceId, Map<String, dynamic> locationData) async {
-    try {
+  Future<Map<String, dynamic>> checkOut(String attendanceId, Map<String, dynamic> locationData) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('Bạn cần đăng nhập để chấm công');
@@ -165,24 +163,24 @@ class AttendanceService {
           .from('staff_attendance')
           .update({
             'check_out_time': DateTime.now().toIso8601String(),
-            'check_out_method': 'qr_code',
-            'check_out_location': 'POINT(${locationData['lng']} ${locationData['lat']})',
+            "check_out_method": 'qr_code',
+            "check_out_location": 'POINT(${locationData['lng']} ${locationData['lat']})',
             'check_out_device_info': await _getDeviceInfo(),
           })
           .eq('id', attendanceId)
           .select()
           .single();
 
-      return {
+      return() {
         'success': true,
-        'message': 'Kết thúc ca làm việc thành công!',
+        "message": 'Kết thúc ca làm việc thành công!',
         'check_out_time': checkOutResponse['check_out_time'],
         'total_hours': checkOutResponse['total_hours_worked'],
         'early_departure_minutes': checkOutResponse['early_departure_minutes'] ?? 0,
       };
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -194,8 +192,8 @@ class AttendanceService {
   // =============================================
 
   /// Start break
-  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType, {String? reason}) async {
-    try {
+  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType, {String? reason}) async() {
+    try() {
       final breakResponse = await _supabase
           .from('staff_breaks')
           .insert({
@@ -207,15 +205,15 @@ class AttendanceService {
           .select()
           .single();
 
-      return {
+      return() {
         'success': true,
-        'message': 'Bắt đầu nghỉ giải lao',
+        "message": 'Bắt đầu nghỉ giải lao',
         'break_id': breakResponse['id'],
         'break_start': breakResponse['break_start'],
       };
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -223,8 +221,8 @@ class AttendanceService {
   }
 
   /// End break
-  Future<Map<String, dynamic>> endBreak(String breakId) async {
-    try {
+  Future<Map<String, dynamic>> endBreak(String breakId) async() {
+    try() {
       final breakResponse = await _supabase
           .from('staff_breaks')
           .update({
@@ -234,15 +232,15 @@ class AttendanceService {
           .select()
           .single();
 
-      return {
+      return() {
         'success': true,
-        'message': 'Kết thúc nghỉ giải lao',
+        "message": 'Kết thúc nghỉ giải lao',
         'break_end': breakResponse['break_end'],
         'break_duration': breakResponse['break_duration_minutes'],
       };
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -254,8 +252,8 @@ class AttendanceService {
   // =============================================
 
   /// Get current attendance status
-  Future<Map<String, dynamic>?> getCurrentAttendanceStatus() async {
-    try {
+  Future<Map<String, dynamic>?> getCurrentAttendanceStatus() async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return null;
 
@@ -288,8 +286,8 @@ class AttendanceService {
   }
 
   /// Get attendance history
-  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 30}) async {
-    try {
+  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 30}) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return [];
 
@@ -319,8 +317,8 @@ class AttendanceService {
   }
 
   /// Get today's shifts for staff member
-  Future<List<Map<String, dynamic>>> getTodayShifts() async {
-    try {
+  Future<List<Map<String, dynamic>>> getTodayShifts() async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return [];
 
@@ -350,7 +348,7 @@ class AttendanceService {
   // =============================================
 
   /// Get current GPS location
-  Future<Position> _getCurrentLocation() async {
+  Future<Position> _getCurrentLocation() async() {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw Exception('Dịch vụ định vị chưa được bật');
@@ -369,19 +367,20 @@ class AttendanceService {
     }
 
     return await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
+      desiredAccuracy: LocationAccuracy.high,
+      timeLimit: const Duration(seconds: 10),
         accuracy: LocationAccuracy.high,
       ),
     );
   }
 
   /// Get device information for security
-  Future<Map<String, dynamic>> _getDeviceInfo() async {
+  Future<Map<String, dynamic>> _getDeviceInfo() async() {
     // Simple device info for now
-    return {
-      'platform': 'flutter',
+    return() {
+      "platform": 'flutter',
       'timestamp': DateTime.now().toIso8601String(),
-      'user_agent': 'SABO Arena Mobile App',
+      "user_agent": 'SABO Arena Mobile App',
     };
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TournamentStatsView extends StatefulWidget {
+class TournamentStatsView extends StatefulWidget() {
   final String tournamentId;
   final String tournamentStatus;
 
@@ -24,7 +24,7 @@ class _TournamentStatsViewState extends State<TournamentStatsView> {
     _loadStats();
   }
 
-  Future<void> _loadStats() async {
+  Future<void> _loadStats() async() {
     await Future.delayed(Duration(seconds: 2));
     
     setState(() {
@@ -120,9 +120,9 @@ class _TournamentStatsViewState extends State<TournamentStatsView> {
 
   Widget _buildOverviewStats() {
     final stats = [
-      {'title': 'Người tham gia', 'value': '${_stats['participants']}', 'icon': Icons.people, 'color': Colors.blue},
-      {'title': 'Trận hoàn thành', 'value': '${_stats['completed_matches']}', 'icon': Icons.check_circle, 'color': Colors.green},
-      {'title': 'Trận đang chờ', 'value': '${_stats['pending_matches']}', 'icon': Icons.schedule, 'color': Colors.orange},
+      {"title": 'Người tham gia', "value": '${_stats['participants']}', 'icon': Icons.people, 'color': Colors.blue},
+      {"title": 'Trận hoàn thành', "value": '${_stats['completed_matches']}', 'icon': Icons.check_circle, 'color': Colors.green},
+      {"title": 'Trận đang chờ', "value": '${_stats['pending_matches']}', 'icon': Icons.schedule, 'color': Colors.orange},
     ];
 
     return Column(

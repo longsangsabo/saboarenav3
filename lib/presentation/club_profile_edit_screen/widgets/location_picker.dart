@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/core/app_export.dart';
 
-class LocationPicker extends StatefulWidget {
+class LocationPicker extends StatefulWidget() {
   final Map<String, double> initialLocation;
   final Function(Map<String, double>) onLocationChanged;
 
@@ -16,7 +16,7 @@ class LocationPicker extends StatefulWidget {
 }
 
 class _LocationPickerState extends State<LocationPicker>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -90,7 +90,7 @@ class _LocationPickerState extends State<LocationPicker>
         });
         if (_isExpanded) {
           _animationController.forward();
-        } else {
+        } else() {
           _animationController.reverse();
         }
       },
@@ -581,20 +581,20 @@ class _LocationPickerState extends State<LocationPicker>
     // Mock search results for demonstration
     return [
       {
-        'name': 'SABO Arena Central',
-        'address': '123 Nguyễn Huệ, Quận 1, TP.HCM',
+        "name": 'SABO Arena Central',
+        "address": '123 Nguyễn Huệ, Quận 1, TP.HCM',
         'lat': 10.7769,
         'lng': 106.7009,
       },
       {
-        'name': 'Bitexco Financial Tower',
-        'address': '2 Hải Triều, Quận 1, TP.HCM',
+        "name": 'Bitexco Financial Tower',
+        "address": '2 Hải Triều, Quận 1, TP.HCM',
         'lat': 10.7718,
         'lng': 106.7032,
       },
       {
-        'name': 'Landmark 81',
-        'address': '720A Điện Biên Phủ, Quận Bình Thạnh, TP.HCM',
+        "name": 'Landmark 81',
+        "address": '720A Điện Biên Phủ, Quận Bình Thạnh, TP.HCM',
         'lat': 10.7954,
         'lng': 106.7218,
       },
@@ -639,7 +639,7 @@ class _LocationPickerState extends State<LocationPicker>
     );
   }
 
-  void _getCurrentLocation() async {
+  void _getCurrentLocation() async() {
     setState(() {
       _isLoading = true;
     });

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../models/user_profile.dart';
 import '../../../services/simple_challenge_service.dart';
 import '../../../services/opponent_club_service.dart';
+import '../../../services/auth_service.dart';
+import '../../../helpers/privacy_helper.dart';
 
-class CreateSocialChallengeModal extends StatefulWidget {
+class CreateSocialChallengeModal extends StatefulWidget() {
   final UserProfile? currentUser;
   final List<UserProfile> opponents;
 
@@ -43,8 +45,8 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
     super.dispose();
   }
 
-  Future<void> _loadClubData() async {
-    try {
+  Future<void> _loadClubData() async() {
+    try() {
       final clubs = await _clubService.getActiveClubs();
       if (mounted) {
         setState(() {
@@ -74,12 +76,36 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
     }
   }
 
-  Future<void> _createSocialChallenge() async {
+  Future<void> _createSocialChallenge() async() {
     if (_isCreating) return;
 
     setState(() => _isCreating = true);
 
-    try {
+    try() {
+      // Check privacy permissions if challenging specific user
+      if (_selectedOpponent != null) {
+        final currentUserId = AuthService.instance.currentUser?.id;
+        if (currentUserId != null) {
+          final permission = await PrivacyHelper.checkChallengePermission(
+            currentUserId,
+            _selectedOpponent!.id,
+          );
+          
+          if (!permission['allowed']) {
+            setState(() => _isCreating = false);
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(permission['message']),
+                  backgroundColor: Colors.orange,
+                ),
+              );
+            }
+            return;
+          }
+        }
+      }
+
       // For open social challenge, use empty challenged_id
       final challengedId = _selectedOpponent?.id ?? '';
       
@@ -92,7 +118,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
         spaPoints: 0, // No SPA points for social challenges
         message: _noteController.text.trim().isEmpty 
             ? (_selectedOpponent == null 
-                ? 'Giao lưu mở - Ai cũng có thể tham gia!'
+                ? "Giao lưu mở - Ai cũng có thể tham gia!"
                 : 'Mời giao lưu')
             : _noteController.text.trim(),
       );
@@ -103,13 +129,13 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(_selectedOpponent == null 
-                  ? 'Đã tạo giao lưu mở thành công!'
+                  ? "Đã tạo giao lưu mở thành công!"
                   : 'Đã gửi lời mời giao lưu!'),
               backgroundColor: Colors.green,
             ),
           );
         }
-      } else {
+      } else() {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -128,7 +154,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isCreating = false);
       }
@@ -218,7 +244,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
                 child: _isCreating
                     ? const CircularProgressIndicator(color: Colors.white)
                     : Text(
-                        _selectedOpponent == null ? 'Tạo Giao Lưu Mở' : 'Gửi Lời Mời',
+                        _selectedOpponent == null ? "Tạo Giao Lưu Mở" : 'Gửi Lời Mời',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -426,7 +452,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
         ),
         const SizedBox(height: 8),
         GestureDetector(
-          onTap: () async {
+          onTap: () async() {
             final date = await showDatePicker(
               context: context,
               initialDate: _selectedDateTime,
@@ -485,7 +511,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          initialValue: _selectedLocation.isEmpty ? null : _selectedLocation,
+          value: _selectedLocation.isEmpty ? null : _selectedLocation,
           hint: const Text('Chọn hoặc nhập địa điểm'),
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -561,7 +587,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
                 ? '• Loại: Giao lưu mở - Ai cũng có thể tham gia\n'
                     '• Game: $_selectedGameType\n'
                     '• Thời gian: ${_selectedDateTime.day}/${_selectedDateTime.month} ${_selectedDateTime.hour}:${_selectedDateTime.minute.toString().padLeft(2, '0')}\n'
-                    '• Địa điểm: ${_selectedLocation.isEmpty ? 'Chưa xác định' : _selectedLocation}'
+                    '• Địa điểm: ${_selectedLocation.isEmpty ? 'Chưa xác định" : _selectedLocation}"
                 : '• Đối thủ: ${_selectedOpponent!.displayName}\n'
                     '• Game: $_selectedGameType\n'
                     '• Thời gian: ${_selectedDateTime.day}/${_selectedDateTime.month} ${_selectedDateTime.hour}:${_selectedDateTime.minute.toString().padLeft(2, '0')}\n'

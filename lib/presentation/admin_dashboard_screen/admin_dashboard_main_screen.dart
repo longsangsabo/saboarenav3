@@ -4,7 +4,7 @@ import '../../services/admin_service.dart';
 import '../../routes/app_routes.dart';
 import './widgets/admin_scaffold_wrapper.dart';
 
-class AdminDashboardScreen extends StatefulWidget {
+class AdminDashboardScreen extends StatefulWidget() {
   const AdminDashboardScreen({super.key});
 
   @override
@@ -24,8 +24,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     _loadDashboardData();
   }
 
-  Future<void> _loadDashboardData() async {
-    try {
+  Future<void> _loadDashboardData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;

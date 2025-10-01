@@ -8,7 +8,7 @@ import '../../../core/constants/tournament_constants.dart';
 import '../../../services/tournament_service.dart';
 import '../../../services/realtime_tournament_service.dart';
 
-class VisualTournamentBracketWidget extends StatefulWidget {
+class VisualTournamentBracketWidget extends StatefulWidget() {
   final String tournamentId;
   final String tournamentFormat;
   final bool isInteractive;
@@ -29,7 +29,7 @@ class VisualTournamentBracketWidget extends StatefulWidget {
 }
 
 class _VisualTournamentBracketWidgetState extends State<VisualTournamentBracketWidget>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   final TournamentService _tournamentService = TournamentService();
   final RealTimeTournamentService _realTimeService = RealTimeTournamentService.instance;
   
@@ -74,8 +74,8 @@ class _VisualTournamentBracketWidgetState extends State<VisualTournamentBracketW
     ));
   }
 
-  Future<void> _loadBracketData() async {
-    try {
+  Future<void> _loadBracketData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -498,7 +498,7 @@ class _VisualTournamentBracketWidgetState extends State<VisualTournamentBracketW
           groups[groupId] = [];
         }
         groups[groupId]!.add(match);
-      } else {
+      } else() {
         knockoutMatches.add(match);
       }
     }
@@ -959,7 +959,7 @@ class _VisualTournamentBracketWidgetState extends State<VisualTournamentBracketW
 
   String _formatMatchTime(String? timeString) {
     if (timeString == null) return '';
-    try {
+    try() {
       final time = DateTime.parse(timeString).toLocal();
       return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
     } catch (e) {

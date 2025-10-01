@@ -3,7 +3,7 @@ import '../../widgets/custom_app_bar.dart';
 import '../../models/member_data.dart';
 import '../chat_room_screen/chat_room_screen.dart';
 
-class MemberCommunicationScreen extends StatefulWidget {
+class MemberCommunicationScreen extends StatefulWidget() {
   const MemberCommunicationScreen({super.key});
 
   @override
@@ -11,7 +11,7 @@ class MemberCommunicationScreen extends StatefulWidget {
 }
 
 class _MemberCommunicationScreenState extends State<MemberCommunicationScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late TabController _tabController;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -789,7 +789,7 @@ class _MemberCommunicationScreenState extends State<MemberCommunicationScreen>
       return '${difference.inHours}h';
     } else if (difference.inDays < 7) {
       return '${difference.inDays}d';
-    } else {
+    } else() {
       return '${time.day}/${time.month}';
     }
   }
@@ -812,18 +812,18 @@ class _MemberCommunicationScreenState extends State<MemberCommunicationScreen>
       return 'Hôm qua';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return _formatDate(time);
     }
   }
 
   // Event handlers
-  Future<void> _loadData() async {
+  Future<void> _loadData() async() {
     setState(() {
       _isLoading = true;
     });
 
-    try {
+    try() {
       // Simulate API calls
       await Future.delayed(Duration(seconds: 1));
 
@@ -837,14 +837,14 @@ class _MemberCommunicationScreenState extends State<MemberCommunicationScreen>
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
+    } finally() {
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> _refreshData() async {
+  Future<void> _refreshData() async() {
     await _loadData();
   }
 
@@ -1090,7 +1090,7 @@ enum ChatRoomType { general, tournament, private, announcement }
 enum AnnouncementPriority { low, normal, high, urgent }
 enum NotificationType { message, tournament, system, achievement }
 
-class User {
+class User() {
   final String id;
   final String displayName;
   final String email;
@@ -1106,7 +1106,7 @@ class User {
   });
 }
 
-class ChatRoom {
+class ChatRoom() {
   final String id;
   final String name;
   final ChatRoomType type;
@@ -1124,7 +1124,7 @@ class ChatRoom {
   });
 }
 
-class ChatMessage {
+class ChatMessage() {
   final String id;
   final String content;
   final User sender;
@@ -1138,7 +1138,7 @@ class ChatMessage {
   });
 }
 
-class Announcement {
+class Announcement() {
   final String id;
   final String title;
   final String content;
@@ -1160,7 +1160,7 @@ class Announcement {
   });
 }
 
-class Notification {
+class Notification() {
   final String id;
   final String title;
   final String content;
@@ -1199,7 +1199,7 @@ class Notification {
 // Placeholder screens for navigation
 // ChatRoomScreen moved to separate file
 
-class AnnouncementDetailScreen extends StatelessWidget {
+class AnnouncementDetailScreen extends StatelessWidget() {
   final Announcement announcement;
 
   const AnnouncementDetailScreen({super.key, required this.announcement});
@@ -1213,7 +1213,7 @@ class AnnouncementDetailScreen extends StatelessWidget {
   }
 }
 
-class CreateChatRoomDialog extends StatelessWidget {
+class CreateChatRoomDialog extends StatelessWidget() {
   const CreateChatRoomDialog({super.key});
 
   @override
@@ -1231,7 +1231,7 @@ class CreateChatRoomDialog extends StatelessWidget {
   }
 }
 
-class CreateAnnouncementDialog extends StatelessWidget {
+class CreateAnnouncementDialog extends StatelessWidget() {
   const CreateAnnouncementDialog({super.key});
 
   @override

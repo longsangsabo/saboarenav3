@@ -4,7 +4,7 @@ import '../services/messaging_service.dart';
 import '../models/messaging_models.dart';
 import 'package:flutter/foundation.dart';
 
-class EnhancedMessagingService extends MessagingService {
+class EnhancedMessagingService extends MessagingService() {
   static final EnhancedMessagingService _instance = EnhancedMessagingService._internal();
   factory EnhancedMessagingService() => _instance;
   EnhancedMessagingService._internal();
@@ -15,8 +15,8 @@ class EnhancedMessagingService extends MessagingService {
   final AuthService _authService = AuthService.instance;
 
   /// Get typing indicators for a chat room
-  Future<List<TypingIndicator>> getTypingIndicators(String chatId) async {
-    try {
+  Future<List<TypingIndicator>> getTypingIndicators(String chatId) async() {
+    try() {
       final response = await _supabase
           .from('typing_indicators')
           .select('''
@@ -42,8 +42,8 @@ class EnhancedMessagingService extends MessagingService {
     required String chatId,
     required String userId,
     required bool isTyping,
-  }) async {
-    try {
+  }) async() {
+    try() {
       await _supabase.from('typing_indicators').upsert({
         'chat_id': chatId,
         'user_id': userId,
@@ -56,8 +56,8 @@ class EnhancedMessagingService extends MessagingService {
   }
 
   /// Get chat participants with extended info
-  Future<List<ChatParticipant>> getChatParticipants(String chatId) async {
-    try {
+  Future<List<ChatParticipant>> getChatParticipants(String chatId) async() {
+    try() {
       final response = await _supabase.rpc('get_chat_participants', params: {
         'chat_room_id': chatId,
       });
@@ -77,8 +77,8 @@ class EnhancedMessagingService extends MessagingService {
     String? fileUrl,
     String? replyToMessageId,
     Map<String, dynamic>? metadata,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -124,16 +124,16 @@ class EnhancedMessagingService extends MessagingService {
   }
 
   /// Delete message
-  Future<bool> deleteMessage(String messageId) async {
-    try {
+  Future<bool> deleteMessage(String messageId) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
       await _supabase
           .from('chat_messages')
           .update({
-            'content': 'Message deleted',
-            'message_type': 'deleted',
+            "content": 'Message deleted',
+            "message_type": 'deleted',
             'metadata': {'deleted_at': DateTime.now().toIso8601String()}
           })
           .eq('id', messageId)
@@ -147,8 +147,8 @@ class EnhancedMessagingService extends MessagingService {
   }
 
   /// Edit message
-  Future<bool> editMessage(String messageId, String newContent) async {
-    try {
+  Future<bool> editMessage(String messageId, String newContent) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -173,8 +173,8 @@ class EnhancedMessagingService extends MessagingService {
     required String roomId,
     required String query,
     int limit = 20,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.rpc('search_chat_messages', params: {
         'room_id_param': roomId,
         'search_query': query,
@@ -189,8 +189,8 @@ class EnhancedMessagingService extends MessagingService {
   }
 
   /// Get online status of users
-  Future<Map<String, bool>> getUsersOnlineStatus(List<String> userIds) async {
-    try {
+  Future<Map<String, bool>> getUsersOnlineStatus(List<String> userIds) async() {
+    try() {
       final response = await _supabase.rpc('get_users_online_status', params: {
         'user_ids': userIds,
       });
@@ -215,7 +215,7 @@ class EnhancedMessagingService extends MessagingService {
             column: 'chat_id',
             value: chatId,
           ),
-          callback: (payload) async {
+          callback: (payload) async() {
             final indicators = await getTypingIndicators(chatId);
             onTypingChanged(indicators);
           },
@@ -227,7 +227,7 @@ class EnhancedMessagingService extends MessagingService {
   RealtimeChannel subscribeToUserPresence(List<String> userIds, Function(Map<String, bool>) onPresenceChanged) {
     return _supabase
         .channel('presence_${userIds.join('_')}')
-        .onPresenceSync((syncs) async {
+        .onPresenceSync((syncs) async() {
           final status = await getUsersOnlineStatus(userIds);
           onPresenceChanged(status);
         })
@@ -235,8 +235,8 @@ class EnhancedMessagingService extends MessagingService {
   }
 
   /// Upload file for messaging
-  Future<String?> uploadMessageFile(String filePath, String fileName) async {
-    try {
+  Future<String?> uploadMessageFile(String filePath, String fileName) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -259,7 +259,7 @@ class EnhancedMessagingService extends MessagingService {
   }
 
   /// Helper method to read file bytes (implementation depends on platform)
-  Future<List<int>> _readFileBytes(String filePath) async {
+  Future<List<int>> _readFileBytes(String filePath) async() {
     // This is a placeholder - actual implementation would depend on platform
     // For mobile: use dart:io File
     // For web: use html FileReader

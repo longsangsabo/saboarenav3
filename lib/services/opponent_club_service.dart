@@ -3,7 +3,7 @@ import '../models/club.dart';
 import 'package:flutter/foundation.dart';
 
 /// Service để lấy dữ liệu CLB thật từ Supabase cho tab đối thủ
-class OpponentClubService {
+class OpponentClubService() {
   static OpponentClubService? _instance;
   static OpponentClubService get instance => _instance ??= OpponentClubService._();
   OpponentClubService._();
@@ -16,8 +16,8 @@ class OpponentClubService {
   static const Duration _cacheTimeout = Duration(minutes: 10);
 
   /// Lấy danh sách CLB từ Supabase
-  Future<List<Club>> getActiveClubs() async {
-    try {
+  Future<List<Club>> getActiveClubs() async() {
+    try() {
       // Check cache first
       if (_cachedClubs != null && 
           _lastFetch != null && 
@@ -73,8 +73,8 @@ class OpponentClubService {
   }
 
   /// Lấy CLB ngẫu nhiên để hiển thị cho player
-  Future<String> getRandomClubName() async {
-    try {
+  Future<String> getRandomClubName() async() {
+    try() {
       final clubs = await getActiveClubs();
       
       if (clubs.isEmpty) {
@@ -92,8 +92,8 @@ class OpponentClubService {
   }
 
   /// Lấy CLB theo ID cụ thể (nếu cần)
-  Future<Club?> getClubById(String clubId) async {
-    try {
+  Future<Club?> getClubById(String clubId) async() {
+    try() {
       final clubs = await getActiveClubs();
       return clubs.firstWhere(
         (club) => club.id == clubId,
@@ -173,11 +173,11 @@ class OpponentClubService {
   }
 
   /// Get club statistics for display
-  Future<Map<String, int>> getClubStats() async {
-    try {
+  Future<Map<String, int>> getClubStats() async() {
+    try() {
       final clubs = await getActiveClubs();
       
-      return {
+      return() {
         'total_clubs': clubs.length,
         'verified_clubs': clubs.where((c) => c.isVerified).length,
         'average_rating': clubs.isEmpty ? 0 : 
@@ -185,7 +185,7 @@ class OpponentClubService {
       };
     } catch (error) {
       debugPrint('❌ OpponentClubService: Error getting stats: $error');
-      return {
+      return() {
         'total_clubs': 0,
         'verified_clubs': 0,
         'average_rating': 0,

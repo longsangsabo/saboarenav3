@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import '../models/notification_models.dart';
 
 /// Simplified Notification Settings Screen
-class NotificationSettingsScreen extends StatefulWidget {
+class NotificationSettingsScreen extends StatefulWidget() {
   const NotificationSettingsScreen({super.key});
 
   @override

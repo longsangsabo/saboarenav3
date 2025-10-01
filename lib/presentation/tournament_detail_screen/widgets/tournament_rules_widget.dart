@@ -4,7 +4,7 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class TournamentRulesWidget extends StatelessWidget {
+class TournamentRulesWidget extends StatelessWidget() {
   final List<String> rules;
 
   const TournamentRulesWidget({
@@ -23,7 +23,7 @@ class TournamentRulesWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color:
-                AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

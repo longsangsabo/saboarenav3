@@ -1,11 +1,11 @@
 // Environment Configuration
 // Handles different environments (dev, staging, prod)
 
-class EnvironmentConfig {
+class EnvironmentConfig() {
   static const String environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'development');
   
   // Supabase Configuration per environment
-  static String get supabaseUrl {
+  static String get supabaseUrl() {
     switch (environment) {
       case 'production':
         return const String.fromEnvironment('SUPABASE_URL', 
@@ -19,7 +19,7 @@ class EnvironmentConfig {
     }
   }
   
-  static String get supabaseAnonKey {
+  static String get supabaseAnonKey() {
     switch (environment) {
       case 'production':
         return const String.fromEnvironment('SUPABASE_ANON_KEY', 
@@ -34,7 +34,7 @@ class EnvironmentConfig {
   }
   
   // Service Role Key for development (NEVER use in production)
-  static String get supabaseServiceKey {
+  static String get supabaseServiceKey() {
     if (environment == 'development') {
       return const String.fromEnvironment('SUPABASE_SERVICE_KEY', 
              defaultValue: 'demo-service-key-for-dev-only');
@@ -49,7 +49,7 @@ class EnvironmentConfig {
   static bool get enableHotReload => environment == 'development';
   
   // API Configuration
-  static String get apiBaseUrl {
+  static String get apiBaseUrl() {
     switch (environment) {
       case 'production':
         return 'https://api.sabo-arena.com';

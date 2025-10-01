@@ -1,4 +1,4 @@
-class PostModel {
+class PostModel() {
   final String id;
   final String title;
   final String content;
@@ -48,7 +48,7 @@ class PostModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'title': title,
       'content': content,

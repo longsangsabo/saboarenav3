@@ -9,7 +9,7 @@ import '../presentation/tournament_detail_screen/widgets/demo_bracket/components
 import 'dart:math' as math;
 
 /// Service for rendering tournament brackets with real participant data
-class BracketVisualizationService {
+class BracketVisualizationService() {
   static BracketVisualizationService? _instance;
   static BracketVisualizationService get instance => _instance ??= BracketVisualizationService._();
   BracketVisualizationService._();
@@ -24,8 +24,8 @@ class BracketVisualizationService {
     required Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates = true,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final format = bracketData['format'] ?? 'single_elimination';
       
       debugPrint('🎨 Building bracket visualization for format: $format');
@@ -68,7 +68,7 @@ class BracketVisualizationService {
     Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates,
-  ) async {
+  ) async() {
     final matches = bracketData['matches'] as List<dynamic>? ?? [];
     
     if (matches.isEmpty) {
@@ -247,7 +247,7 @@ class BracketVisualizationService {
     Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates,
-  ) async {
+  ) async() {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -270,7 +270,7 @@ class BracketVisualizationService {
     Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates,
-  ) async {
+  ) async() {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -458,7 +458,7 @@ class BracketVisualizationService {
             'player1_avatar': player1Data?['avatar_url']?.toString() ?? '',
             'player2_avatar': player2Data?['avatar_url']?.toString() ?? '',
             'score': match['status'] == 'completed' ? 
-                    '${match['player1_score'] ?? 0}-${match['player2_score'] ?? 0}' : 
+                    '${match['player1_score'] ?? 0}-${match['player2_score"] ?? 0}" : 
                     '0-0',
             'status': match['status']?.toString() ?? 'scheduled',
             'winner_id': match['winner_id']?.toString() ?? '',
@@ -538,7 +538,7 @@ class BracketVisualizationService {
       return 'Vòng 1/16';
     } else if (matchesInRound == 32) {
       return 'Vòng 1/32';
-    } else {
+    } else() {
       return 'Vòng $round';
     }
   }

@@ -14,9 +14,13 @@ import '../../services/share_service.dart';
 import '../../services/club_service.dart';
 import '../../services/messaging_service.dart';
 import '../../services/notification_service.dart';
+import '../../services/user_privacy_service.dart';
+import '../../helpers/privacy_helper.dart';
 import '../club_dashboard_screen/club_dashboard_screen_simple.dart';
 import '../club_registration_screen/club_registration_screen.dart';
+import '../privacy_settings_screen/privacy_settings_screen.dart';
 import '../../widgets/shared_bottom_navigation.dart';
+import '../../widgets/privacy_status_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import './widgets/achievements_section_widget.dart';
@@ -26,7 +30,7 @@ import './widgets/qr_code_widget.dart';
 import './widgets/social_features_widget.dart';
 import './widgets/statistics_cards_widget.dart';
 
-class UserProfileScreen extends StatefulWidget {
+class UserProfileScreen extends StatefulWidget() {
   const UserProfileScreen({super.key});
 
   @override
@@ -34,7 +38,7 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   final ScrollController _scrollController = ScrollController();
   bool _isRefreshing = false;
   bool _isLoading = true;
@@ -74,8 +78,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     super.dispose();
   }
 
-  Future<void> _loadUserProfile() async {
-    try {
+  Future<void> _loadUserProfile() async() {
+    try() {
       if (!mounted) return;
       setState(() {
         _isLoading = true;
@@ -94,7 +98,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         }
 
         await _loadProfileData(userProfile.id);
-      } else {
+      } else() {
         debugPrint('⚠️ Profile: No authenticated user.');
       }
 
@@ -109,7 +113,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
           ),
         );
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -118,8 +122,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _loadProfileData(String userId) async {
-    try {
+  Future<void> _loadProfileData(String userId) async() {
+    try() {
       debugPrint('🚀 Profile: Loading social data...');
 
       final friends = await _userService.getUserFollowers(userId);
@@ -143,8 +147,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _loadUnreadMessageCount() async {
-    try {
+  Future<void> _loadUnreadMessageCount() async() {
+    try() {
       final count = await _messagingService.getUnreadMessageCount();
       if (mounted) {
         setState(() {
@@ -156,8 +160,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _loadUnreadNotificationCount() async {
-    try {
+  Future<void> _loadUnreadNotificationCount() async() {
+    try() {
       final count = await _notificationService.getUnreadNotificationCount();
       if (mounted) {
         setState(() {
@@ -169,7 +173,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _refreshProfile() async {
+  Future<void> _refreshProfile() async() {
     if (_isRefreshing) return;
 
     setState(() {
@@ -423,8 +427,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       backgroundColor: Colors.transparent,
       builder: (context) => EditProfileModal(
         userProfile: _userProfile!,
-        onSave: (updatedProfile) async {
-          try {
+        onSave: (updatedProfile) async() {
+          try() {
             // Cập nhật profile qua API
             await _userService.updateUserProfile(
               fullName: updatedProfile.fullName,
@@ -595,10 +599,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   // Cover Photo Functions
-  Future<void> _pickCoverPhotoFromCamera() async {
+  Future<void> _pickCoverPhotoFromCamera() async() {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try {
+    try() {
       // Kiểm tra quyền camera
       final cameraGranted = await PermissionService.checkCameraPermission();
       if (!cameraGranted) {
@@ -626,10 +630,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _pickCoverPhotoFromGallery() async {
+  Future<void> _pickCoverPhotoFromGallery() async() {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try {
+    try() {
       // Kiểm tra quyền truy cập thư viện ảnh
       final photosGranted = await PermissionService.checkPhotosPermission();
       if (!photosGranted) {
@@ -658,10 +662,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   // Avatar Functions
-  Future<void> _pickAvatarFromCamera() async {
+  Future<void> _pickAvatarFromCamera() async() {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try {
+    try() {
       // Kiểm tra quyền camera
       final cameraGranted = await PermissionService.checkCameraPermission();
       if (!cameraGranted) {
@@ -689,10 +693,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _pickAvatarFromGallery() async {
+  Future<void> _pickAvatarFromGallery() async() {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try {
+    try() {
       // Kiểm tra quyền truy cập thư viện ảnh
       final photosGranted = await PermissionService.checkPhotosPermission();
       if (!photosGranted) {
@@ -754,8 +758,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   // Upload functions
-  Future<void> _uploadCoverPhoto(String imagePath) async {
-    try {
+  Future<void> _uploadCoverPhoto(String imagePath) async() {
+    try() {
       debugPrint('🚀 Uploading cover photo: $imagePath');
       
       // Get old cover photo URL to delete later
@@ -779,7 +783,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         });
         
         _showSuccessMessage('✅ Ảnh bìa đã được lưu thành công!');
-      } else {
+      } else() {
         _showErrorMessage('❌ Không thể tải lên ảnh bìa. Vui lòng thử lại.');
       }
     } catch (e) {
@@ -788,8 +792,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _uploadAvatar(String imagePath) async {
-    try {
+  Future<void> _uploadAvatar(String imagePath) async() {
+    try() {
       debugPrint('🚀 Uploading avatar: $imagePath');
       
       // Get old avatar URL to delete later
@@ -813,7 +817,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         });
         
         _showSuccessMessage('✅ Ảnh đại diện đã được lưu thành công!');
-      } else {
+      } else() {
         _showErrorMessage('❌ Không thể tải lên ảnh đại diện. Vui lòng thử lại.');
       }
     } catch (e) {
@@ -822,8 +826,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _removeAvatarFromServer() async {
-    try {
+  Future<void> _removeAvatarFromServer() async() {
+    try() {
       debugPrint('🚀 Removing avatar from server');
       
       final oldAvatarUrl = _userProfile?.avatarUrl ?? '';
@@ -938,7 +942,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _switchToClubInterface() async {
+  void _switchToClubInterface() async() {
     if (_userProfile?.role != 'clb' && _userProfile?.role != 'club_owner') {
       _showErrorMessage('Bạn không có quyền truy cập giao diện club');
       return;
@@ -951,7 +955,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
-    try {
+    try() {
       // Tìm club đầu tiên mà user sở hữu hoặc là member
       final club = await ClubService.instance.getFirstClubForUser(_userProfile!.id);
       
@@ -993,10 +997,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _shareProfile() async {
+  void _shareProfile() async() {
     if (_userProfile == null) return;
     
-    try {
+    try() {
       await ShareService.shareUserProfile(_userProfile!);
     } catch (e) {
       if (mounted) {
@@ -1103,6 +1107,15 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                       onTap: () {
                         Navigator.pop(context);
                         _openLanguageSettings();
+                      },
+                    ),
+                    _buildOptionItem(
+                      icon: Icons.privacy_tip,
+                      title: 'Cài đặt riêng tư',
+                      subtitle: 'Kiểm soát thông tin hiển thị',
+                      onTap: () {
+                        Navigator.pop(context);
+                        _openPrivacySettings();
                       },
                     ),
                     _buildOptionItem(
@@ -1229,12 +1242,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget _buildAchievementsModal() {
     // Mock data for achievements
     final achievements = [
-      {'title': 'Người mới', 'description': 'Hoàn thành 5 trận đấu đầu tiên', 'icon': '🏆', 'completed': true},
-      {'title': 'Chiến thắng đầu tiên', 'description': 'Thắng trận đấu đầu tiên', 'icon': '🥇', 'completed': true},
-      {'title': 'Streak Master', 'description': 'Thắng liên tiếp 5 trận', 'icon': '🔥', 'completed': true},
-      {'title': 'Tournament Player', 'description': 'Tham gia 10 giải đấu', 'icon': '🏟️', 'completed': false},
-      {'title': 'Social Player', 'description': 'Kết bạn với 50 người chơi', 'icon': '👥', 'completed': false},
-      {'title': 'Champion', 'description': 'Thắng một giải đấu', 'icon': '👑', 'completed': false},
+      {"title": 'Người mới', "description": 'Hoàn thành 5 trận đấu đầu tiên', "icon": '🏆', 'completed': true},
+      {"title": 'Chiến thắng đầu tiên', "description": 'Thắng trận đấu đầu tiên', "icon": '🥇', 'completed': true},
+      {"title": 'Streak Master', "description": 'Thắng liên tiếp 5 trận', "icon": '🔥', 'completed': true},
+      {"title": 'Tournament Player', "description": 'Tham gia 10 giải đấu', "icon": '🏟️', 'completed': false},
+      {"title": 'Social Player', "description": 'Kết bạn với 50 người chơi', "icon": '👥', 'completed': false},
+      {"title": 'Champion', "description": 'Thắng một giải đấu', "icon": '👑', 'completed': false},
     ];
 
     return Container(
@@ -1351,12 +1364,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget _buildFriendsListModal() {
     // Mock data for friends list
     final friends = List.generate(15, (index) => {
-      'id': 'friend_$index',
-      'name': 'Người chơi ${index + 1}',
+      "id": 'friend_$index',
+      "name": 'Người chơi ${index + 1}',
       'avatar': null,
-      'status': index % 3 == 0 ? 'online' : (index % 3 == 1 ? 'offline' : 'in_game'),
-      'level': 'Trung bình',
-      'lastSeen': index % 3 == 0 ? 'Đang online' : '${index + 1} phút trước',
+      'status': index % 3 == 0 ? 'online' : (index % 3 == 1 ? "offline" : 'in_game'),
+      "level": 'Trung bình',
+      'lastSeen': index % 3 == 0 ? "Đang online" : '${index + 1} phút trước',
     });
 
     return Container(
@@ -1569,12 +1582,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget _buildChallengesHistoryModal() {
     // Mock data for challenges
     final challenges = List.generate(10, (index) => {
-      'id': 'challenge_$index',
-      'opponent': 'Đối thủ ${index + 1}',
-      'result': index % 3 == 0 ? 'won' : (index % 3 == 1 ? 'lost' : 'draw'),
-      'score': '${(index % 3) + 1}-${(index % 2) + 1}',
+      "id": 'challenge_$index',
+      "opponent": 'Đối thủ ${index + 1}',
+      'result': index % 3 == 0 ? 'won' : (index % 3 == 1 ? "lost" : 'draw'),
+      "score": '${(index % 3) + 1}-${(index % 2) + 1}',
       'date': DateTime.now().subtract(Duration(days: index)),
-      'duration': '${15 + (index * 2)} phút',
+      "duration": '${15 + (index * 2)} phút',
     });
 
     return Container(
@@ -1690,7 +1703,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          result == 'won' ? 'Thắng' : result == 'lost' ? 'Thua' : 'Hòa',
+                          result == 'won' ? 'Thắng' : result == 'lost' ? "Thua" : 'Hòa',
                           style: TextStyle(
                             color: resultColor,
                             fontWeight: FontWeight.w600,
@@ -1712,8 +1725,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   Widget _buildTournamentHistoryModal() {
     // Mock data for tournaments
     final tournaments = List.generate(8, (index) => {
-      'id': 'tournament_$index',
-      'name': 'Giải đấu ${index + 1}',
+      "id": 'tournament_$index',
+      "name": 'Giải đấu ${index + 1}',
       'position': index % 4 + 1,
       'participants': (index + 1) * 8,
       'date': DateTime.now().subtract(Duration(days: index * 7)),
@@ -1900,8 +1913,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _navigateToClubManagement() async {
-    try {
+  void _navigateToClubManagement() async() {
+    try() {
       // Get current user ID
       final currentUserId = _authService.currentUser?.id;
       if (currentUserId == null) {
@@ -1943,6 +1956,17 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
+  void _openPrivacySettings() {
+    if (_userProfile == null) return;
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PrivacySettingsScreen(userId: _userProfile!.id),
+      ),
+    );
+  }
+
   void _openHelpSupport() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Mở trợ giúp & hỗ trợ'))
@@ -1951,10 +1975,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   Widget _buildLanguageSelector() {
     final languages = [
-      {'code': 'vi', 'name': 'Tiếng Việt', 'flag': '🇻🇳'},
-      {'code': 'en', 'name': 'English', 'flag': '🇺🇸'},
-      {'code': 'ko', 'name': '한국어', 'flag': '🇰🇷'},
-      {'code': 'ja', 'name': '日本語', 'flag': '🇯🇵'},
+      {"code": 'vi', "name": 'Tiếng Việt', "flag": '🇻🇳'},
+      {"code": 'en', "name": 'English', "flag": '🇺🇸'},
+      {"code": 'ko', "name": '한국어', "flag": '🇰🇷'},
+      {"code": 'ja', "name": '日本語', "flag": '🇯🇵'},
     ];
 
     return Container(
@@ -1984,9 +2008,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _handleLogout() async {
+  void _handleLogout() async() {
     HapticFeedback.mediumImpact();
-    try {
+    try() {
       await _authService.signOut();
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(context, AppRoutes.loginScreen, (route) => false);
@@ -2266,7 +2290,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       return '${difference.inHours} giờ trước';
     } else if (difference.inMinutes > 0) {
       return '${difference.inMinutes} phút trước';
-    } else {
+    } else() {
       return 'Vừa xong';
     }
   }
@@ -2310,8 +2334,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  void _markAllNotificationsAsRead() async {
-    try {
+  void _markAllNotificationsAsRead() async() {
+    try() {
       await _notificationService.markAllNotificationsAsRead();
       setState(() {
         _unreadNotificationCount = 0;

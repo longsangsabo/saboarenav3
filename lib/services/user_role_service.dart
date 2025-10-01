@@ -1,12 +1,12 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Service to check user roles and permissions in clubs
-class UserRoleService {
+class UserRoleService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Check if current user is staff in any club
-  static Future<Map<String, dynamic>?> getCurrentUserStaffInfo() async {
-    try {
+  static Future<Map<String, dynamic>?> getCurrentUserStaffInfo() async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return null;
 
@@ -38,8 +38,8 @@ class UserRoleService {
   }
 
   /// Check if current user is staff in specific club
-  static Future<Map<String, dynamic>?> getUserStaffInfoInClub(String clubId) async {
-    try {
+  static Future<Map<String, dynamic>?> getUserStaffInfoInClub(String clubId) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return null;
 
@@ -72,8 +72,8 @@ class UserRoleService {
   }
 
   /// Check if user is club owner
-  static Future<bool> isClubOwner(String clubId) async {
-    try {
+  static Future<bool> isClubOwner(String clubId) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return false;
 
@@ -92,8 +92,8 @@ class UserRoleService {
   }
 
   /// Get user role in club (owner, manager, staff, trainee, or null)
-  static Future<String?> getUserRoleInClub(String clubId) async {
-    try {
+  static Future<String?> getUserRoleInClub(String clubId) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return null;
 
@@ -111,8 +111,8 @@ class UserRoleService {
   }
 
   /// Check if user can access attendance system
-  static Future<bool> canAccessAttendance(String clubId) async {
-    try {
+  static Future<bool> canAccessAttendance(String clubId) async() {
+    try() {
       final role = await getUserRoleInClub(clubId);
       return role != null; // Any role in club can access attendance
     } catch (e) {

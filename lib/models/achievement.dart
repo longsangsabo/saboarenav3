@@ -1,4 +1,4 @@
-class Achievement {
+class Achievement() {
   final String id;
   final String name;
   final String description;
@@ -48,7 +48,7 @@ class Achievement {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'name': name,
       'description': description,
@@ -63,7 +63,7 @@ class Achievement {
     };
   }
 
-  String get categoryDisplay {
+  String get categoryDisplay() {
     switch (category.toLowerCase()) {
       case 'victory':
         return 'Chiến thắng';

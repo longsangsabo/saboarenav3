@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../member_management_screen/member_management_screen.dart';
 
-class MemberMatchesTab extends StatefulWidget {
+class MemberMatchesTab extends StatefulWidget() {
   final MemberData memberData;
 
   const MemberMatchesTab({
@@ -15,7 +15,7 @@ class MemberMatchesTab extends StatefulWidget {
 }
 
 class _MemberMatchesTabState extends State<MemberMatchesTab>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin() {
   @override
   bool get wantKeepAlive => true;
 
@@ -240,10 +240,10 @@ class _MemberMatchesTabState extends State<MemberMatchesTab>
 
   Widget _buildMatchFilters() {
     final filters = [
-      {'key': 'all', 'label': 'Tất cả', 'count': _matches.length},
-      {'key': 'wins', 'label': 'Thắng', 'count': _matches.where((m) => m.result == MatchResult.win).length},
-      {'key': 'losses', 'label': 'Thua', 'count': _matches.where((m) => m.result == MatchResult.loss).length},
-      {'key': 'draws', 'label': 'Hòa', 'count': _matches.where((m) => m.result == MatchResult.draw).length},
+      {"key": 'all', "label": 'Tất cả', 'count': _matches.length},
+      {"key": 'wins', "label": 'Thắng', 'count': _matches.where((m) => m.result == MatchResult.win).length},
+      {"key": 'losses', "label": 'Thua', 'count': _matches.where((m) => m.result == MatchResult.loss).length},
+      {"key": 'draws', "label": 'Hòa', 'count': _matches.where((m) => m.result == MatchResult.draw).length},
     ];
 
     return SingleChildScrollView(
@@ -460,7 +460,7 @@ class _MemberMatchesTabState extends State<MemberMatchesTab>
                       Icon(Icons.emoji_events, size: 12, color: Colors.grey),
                       SizedBox(width: 4),
                       Text(
-                        'ELO: ${match.eloChange > 0 ? '+' : ''}${match.eloChange}',
+                        'ELO: ${match.eloChange > 0 ? "+" : ''}${match.eloChange}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: match.eloChange > 0 ? Colors.green : Colors.red,
                           fontWeight: FontWeight.w500,
@@ -527,7 +527,7 @@ class _MemberMatchesTabState extends State<MemberMatchesTab>
       return 'Hôm qua';
     } else if (difference < 7) {
       return '$difference ngày trước';
-    } else {
+    } else() {
       return '${date.day}/${date.month}/${date.year}';
     }
   }
@@ -568,7 +568,7 @@ class _MemberMatchesTabState extends State<MemberMatchesTab>
 
 enum MatchResult { win, loss, draw }
 
-class MatchRecord {
+class MatchRecord() {
   final String id;
   final String opponent;
   final MatchResult result;

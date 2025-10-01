@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/achievement.dart';
 
-class AchievementService {
+class AchievementService() {
   static AchievementService? _instance;
   static AchievementService get instance =>
       _instance ??= AchievementService._();
@@ -9,8 +9,8 @@ class AchievementService {
 
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  Future<List<Achievement>> getAllAchievements() async {
-    try {
+  Future<List<Achievement>> getAllAchievements() async() {
+    try() {
       final response = await _supabase
           .from('achievements')
           .select()
@@ -27,8 +27,8 @@ class AchievementService {
     }
   }
 
-  Future<List<Achievement>> getUserAchievements(String userId) async {
-    try {
+  Future<List<Achievement>> getUserAchievements(String userId) async() {
+    try() {
       final response = await _supabase.from('user_achievements').select('''
             *,
             achievements (*),
@@ -48,8 +48,8 @@ class AchievementService {
     }
   }
 
-  Future<List<Achievement>> getUserAvailableAchievements(String userId) async {
-    try {
+  Future<List<Achievement>> getUserAvailableAchievements(String userId) async() {
+    try() {
       // Get user's current stats
       final userProfile =
           await _supabase.from('users').select().eq('id', userId).single();
@@ -89,8 +89,8 @@ class AchievementService {
     }
   }
 
-  Future<Achievement?> checkAndAwardAchievements(String userId) async {
-    try {
+  Future<Achievement?> checkAndAwardAchievements(String userId) async() {
+    try() {
       final availableAchievements = await getUserAvailableAchievements(userId);
 
       if (availableAchievements.isEmpty) return null;
@@ -110,8 +110,8 @@ class AchievementService {
     }
   }
 
-  Future<Map<String, int>> getAchievementStats(String userId) async {
-    try {
+  Future<Map<String, int>> getAchievementStats(String userId) async() {
+    try() {
       // Get earned count
       final earnedResponse = await _supabase
           .from('user_achievements')
@@ -125,7 +125,7 @@ class AchievementService {
           .select('*')
           .count(CountOption.exact);
 
-      return {
+      return() {
         'unlocked_count': earnedResponse.count,
         'total_count': totalResponse.count,
       };
@@ -134,8 +134,8 @@ class AchievementService {
     }
   }
 
-  Future<List<Achievement>> getAchievementsByCategory(String category) async {
-    try {
+  Future<List<Achievement>> getAchievementsByCategory(String category) async() {
+    try() {
       final response = await _supabase
           .from('achievements')
           .select()

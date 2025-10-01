@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 /// Mock Attendance Service for demonstration purposes
 /// This provides sample data without requiring backend integration
-class MockAttendanceService {
+class MockAttendanceService() {
   static final MockAttendanceService _instance = MockAttendanceService._internal();
   factory MockAttendanceService() => _instance;
   MockAttendanceService._internal();
@@ -14,13 +14,13 @@ class MockAttendanceService {
   final List<Map<String, dynamic>> _mockHistory = [];
 
   /// Get current attendance status
-  Future<Map<String, dynamic>?> getCurrentAttendance() async {
+  Future<Map<String, dynamic>?> getCurrentAttendance() async() {
     await Future.delayed(Duration(milliseconds: 500)); // Simulate network delay
     return _currentAttendance;
   }
 
   /// Get today's shifts
-  Future<List<Map<String, dynamic>>> getTodayShifts() async {
+  Future<List<Map<String, dynamic>>> getTodayShifts() async() {
     await Future.delayed(Duration(milliseconds: 300));
     
     if (_mockShifts.isEmpty) {
@@ -29,25 +29,25 @@ class MockAttendanceService {
       
       _mockShifts.addAll([
         {
-          'id': '1',
-          'start_time': '08:00',
-          'end_time': '16:00',
-          'club_name': 'Billiards Club Sài Gòn',
+          "id": '1',
+          "start_time": '08:00',
+          "end_time": '16:00',
+          "club_name": 'Billiards Club Sài Gòn',
           'status': currentHour >= 8 && currentHour < 16 && _currentAttendance != null 
               ? 'in_progress' 
-              : currentHour >= 16 ? 'completed' : 'scheduled',
-          'position': 'Nhân viên bàn',
+              : currentHour >= 16 ? "completed" : 'scheduled',
+          "position": 'Nhân viên bàn',
           'is_current': currentHour >= 8 && currentHour < 16,
         },
         {
-          'id': '2',
-          'start_time': '18:00',
-          'end_time': '22:00',
-          'club_name': 'Billiards Club Sài Gòn',
+          "id": '2',
+          "start_time": '18:00',
+          "end_time": '22:00',
+          "club_name": 'Billiards Club Sài Gòn',
           'status': currentHour >= 18 && currentHour < 22 && _currentAttendance != null 
               ? 'in_progress' 
-              : currentHour >= 22 ? 'completed' : 'scheduled',
-          'position': 'Nhân viên lễ tân',
+              : currentHour >= 22 ? "completed" : 'scheduled',
+          "position": 'Nhân viên lễ tân',
           'is_current': currentHour >= 18 && currentHour < 22,
         },
       ]);
@@ -57,42 +57,42 @@ class MockAttendanceService {
   }
 
   /// Get attendance history
-  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 7}) async {
+  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 7}) async() {
     await Future.delayed(Duration(milliseconds: 400));
     
     if (_mockHistory.isEmpty) {
       _mockHistory.addAll([
         {
-          'id': '1',
-          'date': '2025-09-29',
-          'club_name': 'Billiards Club Sài Gòn',
-          'check_in_time': '08:05:00',
-          'check_out_time': '16:10:00',
+          "id": '1',
+          "date": '2025-09-29',
+          "club_name": 'Billiards Club Sài Gòn',
+          "check_in_time": '08:05:00',
+          "check_out_time": '16:10:00',
           'total_hours': 8.08,
           'break_minutes': 60,
-          'status': 'completed',
+          "status": 'completed',
           'late_minutes': 5,
         },
         {
-          'id': '2', 
-          'date': '2025-09-28',
-          'club_name': 'Billiards Club Sài Gòn',
-          'check_in_time': '07:58:00',
-          'check_out_time': '16:05:00',
+          "id": '2', 
+          "date": '2025-09-28',
+          "club_name": 'Billiards Club Sài Gòn',
+          "check_in_time": '07:58:00',
+          "check_out_time": '16:05:00',
           'total_hours': 8.12,
           'break_minutes': 45,
-          'status': 'completed',
+          "status": 'completed',
           'late_minutes': 0,
         },
         {
-          'id': '3',
-          'date': '2025-09-27',
-          'club_name': 'Billiards Club Sài Gòn',
-          'check_in_time': '08:15:00',
-          'check_out_time': '16:20:00',
+          "id": '3',
+          "date": '2025-09-27',
+          "club_name": 'Billiards Club Sài Gòn',
+          "check_in_time": '08:15:00',
+          "check_out_time": '16:20:00',
           'total_hours': 8.08,
           'break_minutes': 55,
-          'status': 'completed',
+          "status": 'completed',
           'late_minutes': 15,
         },
       ]);
@@ -106,7 +106,7 @@ class MockAttendanceService {
     required String qrData,
     required double locationLat,
     required double locationLng,
-  }) async {
+  }) async() {
     await Future.delayed(Duration(seconds: 2)); // Simulate QR processing
     
     // Mock QR verification
@@ -117,24 +117,24 @@ class MockAttendanceService {
       const double distance = 25.0; // Mock distance in meters
       
       if (distance <= 50) {
-        return {
+        return() {
           'success': true,
-          'message': 'QR code và vị trí hợp lệ',
+          "message": 'QR code và vị trí hợp lệ',
           'qrData': qrData,
           'locationLat': locationLat,
           'locationLng': locationLng,
           'distance': distance,
         };
-      } else {
-        return {
+      } else() {
+        return() {
           'success': false,
-          'error': 'Bạn đang ở xa vị trí làm việc (${distance.toInt()}m). Vui lòng đến gần hơn (< 50m).',
+          "error": 'Bạn đang ở xa vị trí làm việc (${distance.toInt()}m). Vui lòng đến gần hơn (< 50m).',
         };
       }
-    } else {
-      return {
+    } else() {
+      return() {
         'success': false,
-        'error': 'Mã QR không hợp lệ hoặc không thuộc câu lạc bộ này.',
+        "error": 'Mã QR không hợp lệ hoặc không thuộc câu lạc bộ này.',
       };
     }
   }
@@ -144,47 +144,47 @@ class MockAttendanceService {
     required String qrData,
     required double locationLat,
     required double locationLng,
-  }) async {
+  }) async() {
     await Future.delayed(Duration(seconds: 1));
     
     if (_currentAttendance != null) {
-      return {
+      return() {
         'success': false,
-        'error': 'Bạn đã check-in rồi. Vui lòng check-out trước.',
+        "error": 'Bạn đã check-in rồi. Vui lòng check-out trước.',
       };
     }
 
     final now = DateTime.now();
     _currentAttendance = {
-      'id': 'att_${now.millisecondsSinceEpoch}',
+      "id": 'att_${now.millisecondsSinceEpoch}',
       'check_in_time': now.toIso8601String(),
-      'club_name': 'Billiards Club Sài Gòn',
-      'position': 'Nhân viên bàn',
+      "club_name": 'Billiards Club Sài Gòn',
+      "position": 'Nhân viên bàn',
       'late_minutes': now.hour >= 8 && now.minute > 0 ? now.minute : 0,
       'staff_shifts': {
         'club_staff': {
           'clubs': {
-            'name': 'Billiards Club Sài Gòn'
+            "name": 'Billiards Club Sài Gòn'
           }
         }
       }
     };
 
-    return {
+    return() {
       'success': true,
-      'message': 'Check-in thành công!',
+      "message": 'Check-in thành công!',
       'attendance_id': _currentAttendance!['id'],
     };
   }
 
   /// Check out
-  Future<Map<String, dynamic>> checkOut() async {
+  Future<Map<String, dynamic>> checkOut() async() {
     await Future.delayed(Duration(seconds: 1));
     
     if (_currentAttendance == null) {
-      return {
+      return() {
         'success': false,
-        'error': 'Bạn chưa check-in. Vui lòng check-in trước.',
+        "error": 'Bạn chưa check-in. Vui lòng check-in trước.',
       };
     }
 
@@ -194,42 +194,42 @@ class MockAttendanceService {
 
     // Add to history
     _mockHistory.insert(0, {
-      'id': 'hist_${now.millisecondsSinceEpoch}',
-      'date': '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}',
+      "id": 'hist_${now.millisecondsSinceEpoch}',
+      "date": '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}',
       'club_name': _currentAttendance!['club_name'],
-      'check_in_time': '${checkInTime.hour.toString().padLeft(2, '0')}:${checkInTime.minute.toString().padLeft(2, '0')}:00',
-      'check_out_time': '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:00',
+      "check_in_time": '${checkInTime.hour.toString().padLeft(2, '0')}:${checkInTime.minute.toString().padLeft(2, '0')}:00',
+      "check_out_time": '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:00',
       'total_hours': double.parse(workHours.toStringAsFixed(2)),
       'break_minutes': 0,
-      'status': 'completed',
+      "status": 'completed',
       'late_minutes': _currentAttendance!['late_minutes'] ?? 0,
     });
 
     _currentAttendance = null;
     _activeBreakId = null;
 
-    return {
+    return() {
       'success': true,
-      'message': 'Check-out thành công!',
+      "message": 'Check-out thành công!',
       'work_hours': workHours.toStringAsFixed(2),
     };
   }
 
   /// Start break
-  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType) async {
+  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType) async() {
     await Future.delayed(Duration(milliseconds: 800));
     
     if (_currentAttendance == null) {
-      return {
+      return() {
         'success': false,
-        'error': 'Bạn chưa check-in để bắt đầu nghỉ.',
+        "error": 'Bạn chưa check-in để bắt đầu nghỉ.',
       };
     }
 
     if (_activeBreakId != null) {
-      return {
+      return() {
         'success': false,
-        'error': 'Bạn đang trong thời gian nghỉ. Vui lòng kết thúc nghỉ trước.',
+        "error": 'Bạn đang trong thời gian nghỉ. Vui lòng kết thúc nghỉ trước.',
       };
     }
 
@@ -250,28 +250,28 @@ class MockAttendanceService {
         breakTypeText = 'nghỉ';
     }
 
-    return {
+    return() {
       'success': true,
-      'message': 'Đã bắt đầu $breakTypeText',
+      "message": 'Đã bắt đầu $breakTypeText',
       'break_id': _activeBreakId,
     };
   }
 
   /// End break
-  Future<Map<String, dynamic>> endBreak(String breakId) async {
+  Future<Map<String, dynamic>> endBreak(String breakId) async() {
     await Future.delayed(Duration(milliseconds: 800));
     
     if (_activeBreakId == null) {
-      return {
+      return() {
         'success': false,
-        'error': 'Bạn không trong thời gian nghỉ.',
+        "error": 'Bạn không trong thời gian nghỉ.',
       };
     }
 
     if (_activeBreakId != breakId) {
-      return {
+      return() {
         'success': false,
-        'error': 'Break ID không hợp lệ.',
+        "error": 'Break ID không hợp lệ.',
       };
     }
 
@@ -279,9 +279,9 @@ class MockAttendanceService {
     final breakMinutes = 15 + (DateTime.now().millisecond % 15);
     _activeBreakId = null;
 
-    return {
+    return() {
       'success': true,
-      'message': 'Đã kết thúc nghỉ',
+      "message": 'Đã kết thúc nghỉ',
       'break_duration': breakMinutes,
     };
   }

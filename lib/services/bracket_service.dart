@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
-class BracketService {
+class BracketService() {
   static final BracketService _instance = BracketService._internal();
   factory BracketService() => _instance;
   BracketService._internal();
@@ -74,13 +74,13 @@ class BracketService {
     // Add bye players if needed
     while (bracketPlayers.length < bracketSize) {
       bracketPlayers.add({
-        'user_id': 'bye_${bracketPlayers.length}',
+        "user_id": 'bye_${bracketPlayers.length}',
         'user': {
-          'id': 'bye_${bracketPlayers.length}',
-          'full_name': 'BYE',
+          "id": 'bye_${bracketPlayers.length}',
+          "full_name": 'BYE',
           'avatar_url': null,
           'elo_rating': 0,
-          'rank': 'BYE'
+          "rank": 'BYE'
         },
         'is_bye': true,
       });
@@ -95,7 +95,7 @@ class BracketService {
       final player2 = bracketPlayers[i + 1];
 
       Map<String, dynamic> match = {
-        'id': 'match_$matchNumber',
+        "id": 'match_$matchNumber',
         'tournament_id': tournamentId,
         'round_number': 1,
         'match_number': matchNumber,
@@ -106,7 +106,7 @@ class BracketService {
         'winner_id': null,
         'player1_score': 0,
         'player2_score': 0,
-        'status': 'pending',
+        "status": 'pending',
         'scheduled_time': null,
         'start_time': null,
         'end_time': null,
@@ -133,7 +133,7 @@ class BracketService {
       
       for (int i = 0; i < matchesInRound; i++) {
         matches.add({
-          'id': 'match_$matchNumber',
+          "id": 'match_$matchNumber',
           'tournament_id': tournamentId,
           'round_number': round,
           'match_number': matchNumber,
@@ -144,7 +144,7 @@ class BracketService {
           'winner_id': null,
           'player1_score': 0,
           'player2_score': 0,
-          'status': 'waiting',
+          "status": 'waiting',
           'scheduled_time': null,
           'start_time': null,
           'end_time': null,
@@ -153,8 +153,8 @@ class BracketService {
       }
     }
 
-    return {
-      'format': 'single_elimination',
+    return() {
+      "format": 'single_elimination',
       'total_rounds': totalRounds,
       'bracket_size': bracketSize,
       'confirmed_players': bracketPlayers.where((p) => p['is_bye'] != true).length,
@@ -181,13 +181,13 @@ class BracketService {
     // Add bye players if needed
     while (bracketPlayers.length < bracketSize) {
       bracketPlayers.add({
-        'user_id': 'bye_${bracketPlayers.length}',
+        "user_id": 'bye_${bracketPlayers.length}',
         'user': {
-          'id': 'bye_${bracketPlayers.length}',
-          'full_name': 'BYE',
+          "id": 'bye_${bracketPlayers.length}',
+          "full_name": 'BYE',
           'avatar_url': null,
           'elo_rating': 0,
-          'rank': 'BYE'
+          "rank": 'BYE'
         },
         'is_bye': true,
       });
@@ -206,7 +206,7 @@ class BracketService {
         'tournament_id': tournamentId,
         'round_number': 1,
         'match_number': matchNumber,
-        'bracket_type': 'winners',
+        "bracket_type": 'winners',
         'player1_id': player1['user_id'],
         'player2_id': player2['user_id'],
         'player1': player1,
@@ -214,7 +214,7 @@ class BracketService {
         'winner_id': null,
         'player1_score': 0,
         'player2_score': 0,
-        'status': 'pending',
+        "status": 'pending',
         'scheduled_time': null,
       });
       matchNumber++;
@@ -231,7 +231,7 @@ class BracketService {
           'tournament_id': tournamentId,
           'round_number': round,
           'match_number': matchNumber,
-          'bracket_type': 'winners',
+          "bracket_type": 'winners',
           'player1_id': null,
           'player2_id': null,
           'player1': null,
@@ -239,7 +239,7 @@ class BracketService {
           'winner_id': null,
           'player1_score': 0,
           'player2_score': 0,
-          'status': 'waiting',
+          "status": 'waiting',
           'scheduled_time': null,
         });
         matchNumber++;
@@ -249,8 +249,8 @@ class BracketService {
     // Generate losers bracket matches (more complex logic)
     _generateLosersBracketMatches(matches, bracketSize, matchNumber, tournamentId);
 
-    return {
-      'format': 'double_elimination',
+    return() {
+      "format": 'double_elimination',
       'bracket_size': bracketSize,
       'confirmed_players': bracketPlayers.where((p) => p['is_bye'] != true).length,
       'total_matches': matches.length,
@@ -288,15 +288,15 @@ class BracketService {
           'winner_id': null,
           'player1_score': 0,
           'player2_score': 0,
-          'status': 'pending',
+          "status": 'pending',
           'scheduled_time': null,
         });
         matchNumber++;
       }
     }
 
-    return {
-      'format': 'round_robin',
+    return() {
+      "format": 'round_robin',
       'confirmed_players': bracketPlayers.length,
       'total_matches': matches.length,
       'matches': matches,
@@ -334,7 +334,7 @@ class BracketService {
       if (round % 2 == 1) {
         // Odd rounds: players from winners bracket drop down
         matchesInRound = bracketSize ~/ pow(2, (round + 1) ~/ 2 + 1);
-      } else {
+      } else() {
         // Even rounds: advancement matches
         matchesInRound = bracketSize ~/ pow(2, round ~/ 2 + 2);
       }
@@ -345,7 +345,7 @@ class BracketService {
           'tournament_id': tournamentId,
           'round_number': round,
           'match_number': matchNumber,
-          'bracket_type': 'losers',
+          "bracket_type": 'losers',
           'player1_id': null,
           'player2_id': null,
           'player1': null,
@@ -353,7 +353,7 @@ class BracketService {
           'winner_id': null,
           'player1_score': 0,
           'player2_score': 0,
-          'status': 'waiting',
+          "status": 'waiting',
           'scheduled_time': null,
         });
         matchNumber++;
@@ -366,7 +366,7 @@ class BracketService {
       'tournament_id': tournamentId,
       'round_number': losersRounds + 1,
       'match_number': matchNumber,
-      'bracket_type': 'grand_final',
+      "bracket_type": 'grand_final',
       'player1_id': null,
       'player2_id': null,
       'player1': null,
@@ -374,7 +374,7 @@ class BracketService {
       'winner_id': null,
       'player1_score': 0,
       'player2_score': 0,
-      'status': 'waiting',
+      "status": 'waiting',
       'scheduled_time': null,
     });
   }
@@ -386,7 +386,7 @@ class BracketService {
     required int player1Score,
     required int player2Score,
     String? notes,
-  }) async {
+  }) async() {
     // This would update the match in database and calculate next matches
     // Implementation would involve:
     // 1. Update match result in database
@@ -394,9 +394,9 @@ class BracketService {
     // 3. Update next round matches with advanced players
     // 4. Check if tournament is complete
 
-    return {
+    return() {
       'success': true,
-      'message': 'Match result updated successfully',
+      "message": 'Match result updated successfully',
       'next_matches_updated': true,
     };
   }
@@ -473,13 +473,13 @@ class BracketService {
   }
 
   /// Save generated bracket to database
-  Future<bool> saveBracketToDatabase(Map<String, dynamic> bracketData) async {
-    try {
+  Future<bool> saveBracketToDatabase(Map<String, dynamic> bracketData) async() {
+    try() {
       final matches = bracketData['matches'] as List<Map<String, dynamic>>;
       
       // Prepare matches for database insertion
       List<Map<String, dynamic>> matchesToInsert = matches.map((match) {
-        return {
+        return() {
           'tournament_id': match['tournament_id'],
           'round_number': match['round_number'],
           'match_number': match['match_number'],
@@ -509,8 +509,8 @@ class BracketService {
   }
 
   /// Delete existing bracket from database (for regeneration)
-  Future<bool> deleteTournamentBracket(String tournamentId) async {
-    try {
+  Future<bool> deleteTournamentBracket(String tournamentId) async() {
+    try() {
       await _supabase
           .from('matches')
           .delete()
@@ -530,8 +530,8 @@ class BracketService {
     required String winnerId,
     required int player1Score,
     required int player2Score,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🎯 Updating match $matchId directly in matches table...');
       debugPrint('   Winner: $winnerId');
       debugPrint('   Scores: $player1Score - $player2Score');
@@ -543,7 +543,7 @@ class BracketService {
             'player1_score': player1Score,
             'player2_score': player2Score,
             'winner_id': winnerId,
-            'status': 'completed',
+            "status": 'completed',
             'updated_at': DateTime.now().toIso8601String(),
           })
           .eq('id', matchId)
@@ -555,7 +555,7 @@ class BracketService {
       if (result.isNotEmpty) {
         debugPrint('✅ Match result updated successfully');
         return true;
-      } else {
+      } else() {
         debugPrint('❌ Match update failed: No rows affected');
         throw Exception('Failed to update match: No rows affected');
       }
@@ -566,8 +566,8 @@ class BracketService {
   }
 
   /// Start a match using RPC function
-  Future<bool> startMatch(String matchId) async {
-    try {
+  Future<bool> startMatch(String matchId) async() {
+    try() {
       debugPrint('🎯 Starting match $matchId with RPC function...');
       
       // Use RPC function to start match
@@ -581,7 +581,7 @@ class BracketService {
       if (result != null && result['success'] == true) {
         debugPrint('✅ Match started successfully');
         return true;
-      } else {
+      } else() {
         debugPrint('❌ Match start failed: ${result?['message'] ?? 'Unknown error'}');
         throw Exception('Failed to start match: ${result?['message'] ?? 'Unknown error'}');
       }

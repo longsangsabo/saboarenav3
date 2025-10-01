@@ -9,7 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Safe debug print wrapper to avoid null debug service errors
 void _safeDebugPrint(String message) {
-  try {
+  try() {
     debugPrint(message);
   } catch (e) {
     // Ignore debug service errors in production
@@ -17,7 +17,7 @@ void _safeDebugPrint(String message) {
   }
 }
 
-class MatchManagementTab extends StatefulWidget {
+class MatchManagementTab extends StatefulWidget() {
   final String tournamentId;
   final VoidCallback? onMatchScoreUpdated;
 
@@ -87,13 +87,13 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
     _loadMatches();
   }
 
-  Future<void> _loadMatches() async {
+  Future<void> _loadMatches() async() {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try {
+    try() {
       debugPrint('🔄 MatchManagementTab: Loading matches for tournament ${widget.tournamentId}');
       
       // Load participants count for dynamic round calculation
@@ -103,7 +103,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
       
       // Try to load from cache first, fallback to tournament service
       List<Map<String, dynamic>> matches;
-      try {
+      try() {
         matches = await CachedTournamentService.loadMatches(widget.tournamentId);
         debugPrint('📋 Loaded ${matches.length} matches from cache/service');
       } catch (e) {
@@ -133,7 +133,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
     }
   }
 
-  List<Map<String, dynamic>> get _filteredMatches {
+  List<Map<String, dynamic>> get _filteredMatches() {
     switch (_selectedFilter) {
       case 'pending':
         return _matches.where((m) => m['status'] == 'pending').toList();
@@ -402,7 +402,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
       onTap: () {
         if (actualStatus == 'completed') {
           _editCompletedMatch(match);
-        } else {
+        } else() {
           _enterScore(match);
         }
       },
@@ -433,7 +433,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
                 Flexible(
                   child: Text(
                     roundNumber < 4 
-                      ? 'R${roundNumber}M${matchNumber} → R${roundNumber + 1}M${(matchNumber + 1) ~/ 2}'
+                      ? "R${roundNumber}M${matchNumber} → R${roundNumber + 1}M${(matchNumber + 1) ~/ 2}"
                       : 'R${roundNumber}M${matchNumber}',
                     style: TextStyle(
                       fontSize: 11.sp,
@@ -628,7 +628,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
     );
   }
 
-  void _enterScore(Map<String, dynamic> match) async {
+  void _enterScore(Map<String, dynamic> match) async() {
     debugPrint('🎯 Enter score clicked for match: ${match['matchId'] ?? match['id']}');
     
     // Get player names using same logic as _buildCompactPlayerRow
@@ -682,7 +682,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
               child: Text('Hủy'),
             ),
             ElevatedButton(
-              onPressed: () async {
+              onPressed: () async() {
                 final p1Score = int.tryParse(player1Controller.text) ?? 0;
                 final p2Score = int.tryParse(player2Controller.text) ?? 0;
                 
@@ -697,8 +697,8 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
     );
   }
 
-  Future<void> _updateMatchScore(Map<String, dynamic> match, int player1Score, int player2Score) async {
-    try {
+  Future<void> _updateMatchScore(Map<String, dynamic> match, int player1Score, int player2Score) async() {
+    try() {
       final matchId = match['id'] ?? match['matchId'];
       String winnerId = '';
       String status = 'completed';
@@ -710,7 +710,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
       } else if (player2Score > player1Score) {
         winnerId = match['player2_id'] ?? '';
         debugPrint('🏆 Player 2 wins: ${winnerId.length > 8 ? winnerId.substring(0, 8) : winnerId}');
-      } else {
+      } else() {
         debugPrint('🤝 Match tied - no winner');
       }
       
@@ -722,7 +722,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
       // Update in database (with silent caching)
       debugPrint('💾 Updating match: P1=$player1Score, P2=$player2Score, Winner=${winnerId.isEmpty ? 'None' : (winnerId.length > 8 ? winnerId.substring(0, 8) : winnerId)}, Status=$status');
       
-      try {
+      try() {
         // Try cached service update first
         await CachedTournamentService.updateMatchScore(
           widget.tournamentId,
@@ -764,7 +764,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
             } else if (winnerId == match['player2_id']) {
               _matches[matchIndex]['winner'] = 'player2';
             }
-          } else {
+          } else() {
             _matches[matchIndex]['winner'] = null;
           }
         }
@@ -796,8 +796,8 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
 
 
 
-  Future<void> _checkAndCreateNextRound(Map<String, dynamic> completedMatch) async {
-    try {
+  Future<void> _checkAndCreateNextRound(Map<String, dynamic> completedMatch) async() {
+    try() {
       final currentRound = completedMatch['round'] ?? completedMatch['round_number'] ?? 1;
       debugPrint('🎯 Checking if Round ${currentRound + 1} needs to be created');
       debugPrint('🔍 Completed match details: round=$currentRound, id=${completedMatch['id'] ?? completedMatch['matchId']}');
@@ -872,7 +872,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
             'match_number': matchNumber,
             'player1_id': availableWinners[i],
             'player2_id': availableWinners[i + 1],
-            'status': 'pending',
+            "status": 'pending',
             'player1_score': 0,
             'player2_score': 0,
             'winner_id': null,
@@ -882,7 +882,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
           final p1Short = availableWinners[i].length > 8 ? availableWinners[i].substring(0, 8) : availableWinners[i];
           final p2Short = availableWinners[i + 1].length > 8 ? availableWinners[i + 1].substring(0, 8) : availableWinners[i + 1];
           debugPrint('  R${currentRound + 1}M$matchNumber: $p1Short vs $p2Short');
-        } else {
+        } else() {
           // Odd number of winners - bye for the last player
           final playerShort = availableWinners[i].length > 8 ? availableWinners[i].substring(0, 8) : availableWinners[i];
           debugPrint('  Bye: $playerShort advances automatically');
@@ -890,7 +890,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
       }
       
       if (nextRoundMatches.isNotEmpty) {
-        try {
+        try() {
           await Supabase.instance.client
               .from('matches')
               .insert(nextRoundMatches);
@@ -905,7 +905,7 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
           debugPrint('❌ Error creating next round matches: $e');
           rethrow;
         }
-      } else {
+      } else() {
         debugPrint('⚠️ No matches created for next round');
       }
       
@@ -1005,8 +1005,8 @@ class _MatchManagementTabState extends State<MatchManagementTab> {
     debugPrint('🎯 Edit completed match clicked: ${match['matchId'] ?? match['id']}');
   }
 
-  Future<void> _autoUpdateMatchStatus(String matchId, String newStatus) async {
-    try {
+  Future<void> _autoUpdateMatchStatus(String matchId, String newStatus) async() {
+    try() {
       debugPrint('🔄 Auto updating match $matchId status to $newStatus');
       
       // Update in database

@@ -10,7 +10,7 @@ import '../club_owner/active_shift_screen.dart';
 import '../club_owner/shift_history_screen.dart';
 import '../club_owner/shift_analytics_screen.dart';
 
-class ShiftReportingDashboard extends StatefulWidget {
+class ShiftReportingDashboard extends StatefulWidget() {
   final String clubId;
 
   const ShiftReportingDashboard({
@@ -23,8 +23,8 @@ class ShiftReportingDashboard extends StatefulWidget {
 }
 
 class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
-    with SingleTickerProviderStateMixin {
-  final MockShiftReportingService _shiftService = MockShiftReportingService();
+    with SingleTickerProviderStateMixin() {
+  final ShiftReportingService _shiftService = ShiftReportingService();
   final UserRoleService _roleService = UserRoleService();
   
   late TabController _tabController;
@@ -50,8 +50,8 @@ class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
     super.dispose();
   }
 
-  Future<void> _loadDashboardData() async {
-    try {
+  Future<void> _loadDashboardData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -98,10 +98,10 @@ class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
     }
   }
 
-  Future<void> _startNewShift() async {
+  Future<void> _startNewShift() async() {
     if (_currentStaffId == null) return;
 
-    try {
+    try() {
       // Show start shift dialog
       final result = await showDialog<Map<String, dynamic>>(
         context: context,
@@ -404,7 +404,7 @@ class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
   }
 }
 
-class _StartShiftDialog extends StatefulWidget {
+class _StartShiftDialog extends StatefulWidget() {
   @override
   State<_StartShiftDialog> createState() => _StartShiftDialogState();
 }
@@ -440,7 +440,7 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
                 leading: const Icon(Icons.calendar_today),
                 title: const Text('Ngày làm việc'),
                 subtitle: Text(DateFormat('dd/MM/yyyy').format(_selectedDate)),
-                onTap: () async {
+                onTap: () async() {
                   final date = await showDatePicker(
                     context: context,
                     initialDate: _selectedDate,
@@ -458,7 +458,7 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
                 leading: const Icon(Icons.access_time),
                 title: const Text('Giờ bắt đầu'),
                 subtitle: Text(_startTime.format(context)),
-                onTap: () async {
+                onTap: () async() {
                   final time = await showTimePicker(
                     context: context,
                     initialTime: _startTime,
@@ -474,7 +474,7 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
                 leading: const Icon(Icons.access_time_filled),
                 title: const Text('Giờ kết thúc'),
                 subtitle: Text(_endTime.format(context)),
-                onTap: () async {
+                onTap: () async() {
                   final time = await showTimePicker(
                     context: context,
                     initialTime: _endTime,
@@ -533,8 +533,8 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
             if (_formKey.currentState?.validate() ?? false) {
               Navigator.pop(context, {
                 'date': _selectedDate,
-                'startTime': '${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}:00',
-                'endTime': '${_endTime.hour.toString().padLeft(2, '0')}:${_endTime.minute.toString().padLeft(2, '0')}:00',
+                "startTime": '${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}:00',
+                "endTime": '${_endTime.hour.toString().padLeft(2, '0')}:${_endTime.minute.toString().padLeft(2, '0')}:00',
                 'openingCash': double.parse(_openingCashController.text),
                 'notes': _notesController.text.isNotEmpty ? _notesController.text : null,
               });

@@ -5,7 +5,7 @@ import '../core/app_export.dart';
 
 // custom_error_widget.dart
 
-class CustomErrorWidget extends StatelessWidget {
+class CustomErrorWidget extends StatelessWidget() {
   final FlutterErrorDetails? errorDetails;
   final String? errorMessage;
 
@@ -58,7 +58,7 @@ class CustomErrorWidget extends StatelessWidget {
                   bool canBeBack = Navigator.canPop(context);
                   if (canBeBack) {
                     Navigator.of(context).pop();
-                  } else {
+                  } else() {
                     Navigator.pushNamed(context, AppRoutes.initial);
                   }
                 },

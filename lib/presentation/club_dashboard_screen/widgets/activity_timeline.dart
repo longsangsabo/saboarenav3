@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/core/app_export.dart';
 
-enum ActivityType {
+enum ActivityType() {
   memberJoined,
   memberLeft,
   tournamentCreated,
@@ -12,7 +12,7 @@ enum ActivityType {
   notificationSent,
 }
 
-class ActivityItem {
+class ActivityItem() {
   final String id;
   final ActivityType type;
   final String title;
@@ -36,7 +36,7 @@ class ActivityItem {
   });
 }
 
-class ActivityTimeline extends StatefulWidget {
+class ActivityTimeline extends StatefulWidget() {
   final List<ActivityItem> activities;
   final VoidCallback? onViewAll;
   final Function(ActivityItem)? onActivityTap;
@@ -59,7 +59,7 @@ class ActivityTimeline extends StatefulWidget {
 }
 
 class _ActivityTimelineState extends State<ActivityTimeline>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _controller;
   late List<AnimationController> _itemControllers;
   late List<Animation<double>> _slideAnimations;
@@ -250,7 +250,7 @@ class _ActivityTimelineState extends State<ActivityTimeline>
       key: Key(activity.id),
       direction: DismissDirection.endToStart,
       background: _buildSwipeBackground(),
-      confirmDismiss: (direction) async {
+      confirmDismiss: (direction) async() {
         if (widget.onSwipeAction != null) {
           widget.onSwipeAction!(activity, 'dismiss');
           return false; // Don't actually dismiss
@@ -609,7 +609,7 @@ class _ActivityTimelineState extends State<ActivityTimeline>
       return '${difference.inHours} giờ trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return '${(difference.inDays / 7).floor()} tuần trước';
     }
   }

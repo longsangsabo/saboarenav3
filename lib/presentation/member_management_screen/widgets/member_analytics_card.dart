@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/member_analytics.dart';
 
-class MemberAnalyticsCard extends StatefulWidget {
+class MemberAnalyticsCard extends StatefulWidget() {
   final MemberAnalytics analytics;
   
   const MemberAnalyticsCard({
@@ -14,7 +14,7 @@ class MemberAnalyticsCard extends StatefulWidget {
 }
 
 class _MemberAnalyticsCardState extends State<MemberAnalyticsCard>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _controller;
   late List<Animation<double>> _animations;
 
@@ -259,7 +259,7 @@ class _MemberAnalyticsCardState extends State<MemberAnalyticsCard>
   }
 }
 
-class _DetailedAnalyticsDialog extends StatelessWidget {
+class _DetailedAnalyticsDialog extends StatelessWidget() {
   final MemberAnalytics analytics;
 
   const _DetailedAnalyticsDialog({
@@ -312,7 +312,7 @@ class _DetailedAnalyticsDialog extends StatelessWidget {
                         _DetailItem('Tháng này', '${analytics.memberGrowth.thisMonth} thành viên'),
                         _DetailItem('Tháng trước', '${analytics.memberGrowth.lastMonth} thành viên'),
                         _DetailItem('Tỷ lệ tăng trưởng', '${analytics.memberGrowth.growthRate.toStringAsFixed(1)}%'),
-                        _DetailItem('Xu hướng', analytics.memberGrowth.growthRate > 0 ? 'Tích cực' : 'Tiêu cực'),
+                        _DetailItem('Xu hướng', analytics.memberGrowth.growthRate > 0 ? "Tích cực" : 'Tiêu cực'),
                       ],
                     ),
                     
@@ -326,7 +326,7 @@ class _DetailedAnalyticsDialog extends StatelessWidget {
                         _DetailItem('Thành viên hoạt động', '${analytics.activityRate.active} người'),
                         _DetailItem('Thành viên không hoạt động', '${analytics.activityRate.inactive} người'),
                         _DetailItem('Tỷ lệ hoạt động', '${analytics.activityRate.percentage.toStringAsFixed(1)}%'),
-                        _DetailItem('Đánh giá', analytics.activityRate.percentage > 70 ? 'Tốt' : 'Cần cải thiện'),
+                        _DetailItem('Đánh giá', analytics.activityRate.percentage > 70 ? "Tốt" : 'Cần cải thiện'),
                       ],
                     ),
                     
@@ -338,8 +338,8 @@ class _DetailedAnalyticsDialog extends StatelessWidget {
                       Icons.refresh,
                       [
                         _DetailItem('Tỷ lệ gia hạn', '${analytics.retentionRate.rate.toStringAsFixed(1)}%'),
-                        _DetailItem('Xu hướng', analytics.retentionRate.trend == 'up' ? 'Tăng' : 'Giảm'),
-                        _DetailItem('Đánh giá', analytics.retentionRate.rate > 80 ? 'Xuất sắc' : 'Cần cải thiện'),
+                        _DetailItem('Xu hướng', analytics.retentionRate.trend == 'up' ? "Tăng" : 'Giảm'),
+                        _DetailItem('Đánh giá', analytics.retentionRate.rate > 80 ? "Xuất sắc" : 'Cần cải thiện'),
                       ],
                     ),
                   ],
@@ -435,7 +435,7 @@ class _DetailedAnalyticsDialog extends StatelessWidget {
   }
 }
 
-class _DetailItem {
+class _DetailItem() {
   final String label;
   final String value;
 

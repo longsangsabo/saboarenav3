@@ -5,7 +5,7 @@ import '../../services/mock_attendance_service.dart';
 import '../../services/user_role_service.dart';
 import '../../widgets/qr_attendance_scanner.dart';
 
-class AttendanceScreen extends StatefulWidget {
+class AttendanceScreen extends StatefulWidget() {
   const AttendanceScreen({super.key});
 
   @override
@@ -35,8 +35,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     _loadAttendanceData();
   }
 
-  Future<void> _loadUserRole() async {
-    try {
+  Future<void> _loadUserRole() async() {
+    try() {
       staffInfo = await UserRoleService.getCurrentUserStaffInfo();
       if (staffInfo != null) {
         userRole = staffInfo!['staff_role'];
@@ -46,13 +46,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
   }
 
-  Future<void> _loadAttendanceData() async {
+  Future<void> _loadAttendanceData() async() {
     setState(() {
       isLoading = true;
       errorMessage = null;
     });
 
-    try {
+    try() {
       final results = await Future.wait([
         _attendanceService.getCurrentAttendance(),
         _attendanceService.getTodayShifts(),
@@ -84,7 +84,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     );
   }
 
-  Future<void> _handleQRScanResult(Map<String, dynamic> scanResult) async {
+  Future<void> _handleQRScanResult(Map<String, dynamic> scanResult) async() {
     if (!mounted) return;
     Navigator.of(context).pop(); // Close scanner
     
@@ -92,22 +92,22 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       if (currentAttendance == null) {
         // Check in
         await _performCheckIn(scanResult);
-      } else {
+      } else() {
         // Check out confirmation
         _showCheckOutConfirmation(scanResult);
       }
-    } else {
+    } else() {
       _showErrorDialog(scanResult['error']);
     }
   }
 
-  Future<void> _performCheckIn(Map<String, dynamic> scanResult) async {
+  Future<void> _performCheckIn(Map<String, dynamic> scanResult) async() {
     if (!mounted) return;
     setState(() {
       isLoading = true;
     });
 
-    try {
+    try() {
       final result = await _attendanceService.checkIn(
         qrData: scanResult['qrData'],
         locationLat: scanResult['locationLat'],
@@ -118,12 +118,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       if (result['success']) {
         await _loadAttendanceData();
         if (mounted) _showSuccessDialog('Đã check-in thành công!', result['message']);
-      } else {
+      } else() {
         if (mounted) _showErrorDialog(result['error']);
       }
     } catch (e) {
       if (mounted) _showErrorDialog('Lỗi check-in: $e');
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -153,7 +153,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             child: Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async {
+            onPressed: () async() {
               Navigator.of(context).pop();
               await _performCheckOut(scanResult);
             },
@@ -164,25 +164,25 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     );
   }
 
-  Future<void> _performCheckOut() async {
+  Future<void> _performCheckOut() async() {
     if (!mounted) return;
     setState(() {
       isLoading = true;
     });
 
-    try {
+    try() {
       final result = await _attendanceService.checkOut();
 
       if (!mounted) return;
       if (result['success']) {
         await _loadAttendanceData();
         if (mounted) _showSuccessDialog('Đã check-out thành công!', 'Tổng thời gian làm việc: ${result['work_hours']} giờ');
-      } else {
+      } else() {
         if (mounted) _showErrorDialog(result['error']);
       }
     } catch (e) {
       if (mounted) _showErrorDialog('Lỗi check-out: $e');
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -191,10 +191,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
   }
 
-  Future<void> _startBreak(String breakType) async {
+  Future<void> _startBreak(String breakType) async() {
     if (currentAttendance == null) return;
 
-    try {
+    try() {
       final result = await _attendanceService.startBreak(
         currentAttendance!['id'],
         breakType,
@@ -207,7 +207,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(result['message'])),
         );
-      } else {
+      } else() {
         _showErrorDialog(result['error']);
       }
     } catch (e) {
@@ -215,10 +215,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
   }
 
-  Future<void> _endBreak() async {
+  Future<void> _endBreak() async() {
     if (activeBreakId == null || !mounted) return;
 
-    try {
+    try() {
       final result = await _attendanceService.endBreak(activeBreakId!);
 
       if (!mounted) return;
@@ -229,7 +229,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${result['message']} (${result['break_duration']} phút)')),
         );
-      } else {
+      } else() {
         _showErrorDialog(result['error']);
       }
     } catch (e) {
@@ -284,7 +284,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(staffInfo != null 
-          ? 'Chấm công - ${staffInfo!['clubs']['name']}' 
+          ? 'Chấm công - ${staffInfo!['clubs']['name"]}" 
           : 'Chấm công'),
         backgroundColor: Colors.blue[600],
         foregroundColor: Colors.white,
@@ -335,7 +335,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showQRScanner,
         icon: Icon(Icons.qr_code_scanner),
-        label: Text(currentAttendance == null ? 'Chấm công' : 'Kết thúc ca'),
+        label: Text(currentAttendance == null ? "Chấm công" : 'Kết thúc ca'),
         backgroundColor: currentAttendance == null ? Colors.green : Colors.orange,
       ),
     );
@@ -546,7 +546,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   child: ElevatedButton.icon(
                     onPressed: _showQRScanner,
                     icon: Icon(Icons.qr_code_scanner),
-                    label: Text(currentAttendance == null ? 'Chấm công' : 'Kết thúc ca'),
+                    label: Text(currentAttendance == null ? "Chấm công" : 'Kết thúc ca'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: currentAttendance == null ? Colors.green : Colors.orange,
                       foregroundColor: Colors.white,

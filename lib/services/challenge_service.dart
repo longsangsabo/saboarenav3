@@ -3,7 +3,7 @@ import 'notification_service.dart';
 import 'challenge_rules_service.dart';
 import 'package:flutter/foundation.dart';
 
-class ChallengeService {
+class ChallengeService() {
   static ChallengeService? _instance;
   static ChallengeService get instance => _instance ??= ChallengeService._();
   ChallengeService._();
@@ -21,8 +21,8 @@ class ChallengeService {
     int handicap = 0,
     int spaPoints = 0,
     String? message,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('User not authenticated');
@@ -74,7 +74,7 @@ class ChallengeService {
         'handicap': handicap,
         'spa_points': spaPoints,
         'message': message ?? '',
-        'status': 'pending',
+        "status": 'pending',
         'expires_at': DateTime.now().add(const Duration(days: 7)).toIso8601String(),
         'created_at': DateTime.now().toIso8601String(),
       };
@@ -128,8 +128,8 @@ class ChallengeService {
     required DateTime scheduledDate,
     required String timeSlot,
     String? message,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('User not authenticated');
@@ -148,11 +148,11 @@ class ChallengeService {
           .insert({
             'challenger_id': currentUser.id,
             'challenged_id': targetUserId,
-            'challenge_type': 'schedule_request',
+            "challenge_type": 'schedule_request',
             'scheduled_time': scheduledDate.toIso8601String(),
             'time_slot': timeSlot,
             'message': message ?? 'Lời mời hẹn lịch chơi bida',
-            'status': 'pending',
+            "status": 'pending',
             'expires_at': DateTime.now().add(const Duration(days: 30)).toIso8601String(),
             'created_at': DateTime.now().toIso8601String(),
           })
@@ -177,12 +177,12 @@ class ChallengeService {
   }
 
   /// Accept a challenge
-  Future<void> acceptChallenge(String challengeId) async {
-    try {
+  Future<void> acceptChallenge(String challengeId) async() {
+    try() {
       await _supabase
           .from('challenges')
           .update({
-            'status': 'accepted',
+            "status": 'accepted',
             'accepted_at': DateTime.now().toIso8601String(),
           })
           .eq('id', challengeId);
@@ -208,12 +208,12 @@ class ChallengeService {
   }
 
   /// Decline a challenge
-  Future<void> declineChallenge(String challengeId, {String? reason}) async {
-    try {
+  Future<void> declineChallenge(String challengeId, {String? reason}) async() {
+    try() {
       await _supabase
           .from('challenges')
           .update({
-            'status': 'declined',
+            "status": 'declined',
             'declined_at': DateTime.now().toIso8601String(),
             'decline_reason': reason,
           })
@@ -243,8 +243,8 @@ class ChallengeService {
   Future<List<Map<String, dynamic>>> getUserChallenges({
     String? type, // 'sent', 'received', null for all
     String? status, // 'pending', 'accepted', 'declined', null for all
-  }) async {
-    try {
+  }) async() {
+    try() {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('User not authenticated');
@@ -262,7 +262,7 @@ class ChallengeService {
         query = query.eq('challenger_id', currentUser.id);
       } else if (type == 'received') {
         query = query.eq('challenged_id', currentUser.id);
-      } else {
+      } else() {
         query = query.or('challenger_id.eq.${currentUser.id},challenged_id.eq.${currentUser.id}');
       }
 
@@ -286,18 +286,18 @@ class ChallengeService {
     required DateTime scheduledTime,
     required String location,
     required int spaPoints,
-  }) async {
+  }) async() {
     final title = challengeType == 'thach_dau' 
-        ? '⚔️ Thách đấu mới!' 
+        ? "⚔️ Thách đấu mới!" 
         : '🎱 Lời mời giao lưu!';
     
     final message = '''
-$challengerName đã ${challengeType == 'thach_dau' ? 'thách đấu' : 'mời giao lưu'} bạn!
+$challengerName đã ${challengeType == 'thach_dau' ? "thách đấu" : 'mời giao lưu'} bạn!
 
 🎮 Loại game: $gameType
 📅 Thời gian: ${_formatDateTime(scheduledTime)}
 📍 Địa điểm: $location
-${spaPoints > 0 ? '💰 Điểm SPA: $spaPoints' : ''}
+${spaPoints > 0 ? "💰 Điểm SPA: $spaPoints" : ''}
 
 Hãy vào ứng dụng để chấp nhận hoặc từ chối!
     ''';
@@ -306,7 +306,7 @@ Hãy vào ứng dụng để chấp nhận hoặc từ chối!
       userId: challengedUserId,
       title: title,
       message: message,
-      type: challengeType == 'thach_dau' ? 'challenge_received' : 'friendly_match_invitation',
+      type: challengeType == 'thach_dau' ? "challenge_received" : 'friendly_match_invitation',
       data: {'challenge_id': challengeId},
     );
   }
@@ -319,7 +319,7 @@ Hãy vào ứng dụng để chấp nhận hoặc từ chối!
     required String targetUserId,
     required DateTime scheduledDate,
     required String timeSlot,
-  }) async {
+  }) async() {
     final message = '''
 📅 Lời mời hẹn lịch chơi bida!
 

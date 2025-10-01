@@ -4,7 +4,7 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class ParticipantsListWidget extends StatelessWidget {
+class ParticipantsListWidget extends StatelessWidget() {
   final List<Map<String, dynamic>> participants;
   final VoidCallback? onViewAllTap;
 
@@ -27,7 +27,7 @@ class ParticipantsListWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color:
-                AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -76,7 +76,7 @@ class ParticipantsListWidget extends StatelessWidget {
               padding: const EdgeInsets.all(Gaps.lg),
               decoration: BoxDecoration(
                 color: AppTheme.lightTheme.colorScheme.primary
-                    .withValues(alpha: 0.1),
+                    .withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -105,7 +105,7 @@ class ParticipantsListWidget extends StatelessWidget {
         color: AppTheme.lightTheme.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: AppTheme.lightTheme.colorScheme.outline.withValues(alpha: 0.2),
+          color: AppTheme.lightTheme.colorScheme.outline.withOpacity(0.2),
           width: 1,
         ),
       ),

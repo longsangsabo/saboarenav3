@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 /// Service quản lý club staff và commission system
-class ClubStaffService {
+class ClubStaffService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   // =====================================================
@@ -18,18 +18,18 @@ class ClubStaffService {
     bool canEnterScores = true,
     bool canManageTournaments = false,
     bool canViewReports = false,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Check if user is club owner or manager
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
-        return {'success': false, 'message': 'User not authenticated'};
+        return {'success': false, "message": 'User not authenticated'};
       }
 
       // Verify permission to assign staff
       final hasPermission = await _canManageStaff(currentUser.id, clubId);
       if (!hasPermission) {
-        return {'success': false, 'message': 'Không có quyền thêm nhân viên'};
+        return {'success': false, "message": 'Không có quyền thêm nhân viên'};
       }
 
       // Insert staff record
@@ -48,15 +48,15 @@ class ClubStaffService {
       await _createStaffReferralCode(response['id'], userId, clubId);
 
       debugPrint('✅ User assigned as staff: $userId for club: $clubId');
-      return {
+      return() {
         'success': true,
         'staff_id': response['id'],
-        'message': 'Đã thêm nhân viên thành công!'
+        "message": 'Đã thêm nhân viên thành công!'
       };
       
     } catch (e) {
       debugPrint('❌ Error assigning staff: $e');
-      return {'success': false, 'message': 'Lỗi: $e'};
+      return {'success': false, "message": 'Lỗi: $e'};
     }
   }
 
@@ -64,8 +64,8 @@ class ClubStaffService {
   static Future<Map<String, dynamic>> removeStaff({
     required String staffId,
     String? reason,
-  }) async {
-    try {
+  }) async() {
+    try() {
       await _supabase.from('club_staff').update({
         'is_active': false,
         'terminated_at': DateTime.now().toIso8601String(),
@@ -77,17 +77,17 @@ class ClubStaffService {
         'is_active': false,
       }).eq('staff_id', staffId);
 
-      return {'success': true, 'message': 'Đã xóa nhân viên'};
+      return {'success': true, "message": 'Đã xóa nhân viên'};
       
     } catch (e) {
       debugPrint('❌ Error removing staff: $e');
-      return {'success': false, 'message': 'Lỗi: $e'};
+      return {'success': false, "message": 'Lỗi: $e'};
     }
   }
 
   /// Get danh sách staff của club
-  static Future<List<Map<String, dynamic>>> getClubStaff(String clubId) async {
-    try {
+  static Future<List<Map<String, dynamic>>> getClubStaff(String clubId) async() {
+    try() {
       final response = await _supabase
           .from('club_staff')
           .select('''
@@ -115,8 +115,8 @@ class ClubStaffService {
     String staffId, 
     String userId, 
     String clubId
-  ) async {
-    try {
+  ) async() {
+    try() {
       // Get user info
       final userResponse = await _supabase
           .from('users')
@@ -133,7 +133,7 @@ class ClubStaffService {
         'staff_id': staffId,
         'club_id': clubId,
         'code': staffCode,
-        'referral_type': 'staff',
+        "referral_type": 'staff',
         'spa_reward_referrer': 150, // Staff gets more bonus
         'spa_reward_referred': 75,  // Customer gets more bonus
         'commission_rate': 5.0,     // Ongoing commission rate
@@ -153,8 +153,8 @@ class ClubStaffService {
   static Future<Map<String, dynamic>> applyStaffReferral({
     required String referralCode,
     required String newCustomerId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Get staff referral code details
       final codeResponse = await _supabase
           .from('referral_codes')
@@ -177,7 +177,7 @@ class ClubStaffService {
         'staff_id': staffId,
         'customer_id': newCustomerId,
         'club_id': clubId,
-        'referral_method': 'qr_code',
+        "referral_method": 'qr_code',
         'referral_code': referralCode,
         'initial_bonus_spa': codeResponse['spa_reward_referrer'],
         'commission_rate': commissionRate,
@@ -187,20 +187,20 @@ class ClubStaffService {
       // Apply basic referral logic (SPA rewards)
       final basicResult = await _applyBasicReferral(codeResponse, newCustomerId);
 
-      return {
+      return() {
         'success': true,
-        'referral_type': 'staff',
+        "referral_type": 'staff',
         'staff_name': codeResponse['users']['full_name'],
         'referrer_reward': basicResult['referrer_reward'],
         'referred_reward': basicResult['referred_reward'],
         'commission_rate': commissionRate,
-        'message': 'Bạn được giới thiệu bởi nhân viên ${codeResponse['users']['full_name']}!\n'
+        "message": 'Bạn được giới thiệu bởi nhân viên ${codeResponse['users']['full_name']}!\n'
                   'Nhận ngay ${basicResult['referred_reward']} SPA + hưởng ưu đãi đặc biệt tại club!',
       };
 
     } catch (e) {
       debugPrint('❌ Error applying staff referral: $e');
-      return {'success': false, 'message': 'Lỗi áp dụng mã giới thiệu: $e'};
+      return {'success': false, "message": 'Lỗi áp dụng mã giới thiệu: $e'};
     }
   }
 
@@ -218,8 +218,8 @@ class ClubStaffService {
     String? matchId,
     String? description,
     String? paymentMethod,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Check if customer was referred by staff
       final staffReferral = await _supabase
           .from('staff_referrals')
@@ -260,7 +260,7 @@ class ClubStaffService {
         debugPrint('   💰 Commission: ${response['commission_amount']} VND for staff');
       }
 
-      return {
+      return() {
         'success': true,
         'transaction_id': response['id'],
         'commission_amount': response['commission_amount'] ?? 0,
@@ -269,7 +269,7 @@ class ClubStaffService {
 
     } catch (e) {
       debugPrint('❌ Error recording transaction: $e');
-      return {'success': false, 'message': 'Lỗi ghi nhận giao dịch: $e'};
+      return {'success': false, "message": 'Lỗi ghi nhận giao dịch: $e'};
     }
   }
 
@@ -278,8 +278,8 @@ class ClubStaffService {
   // =====================================================
 
   /// Get staff earnings summary
-  static Future<Map<String, dynamic>> getStaffEarnings(String staffId) async {
-    try {
+  static Future<Map<String, dynamic>> getStaffEarnings(String staffId) async() {
+    try() {
       // Get total commissions
       final commissionsResponse = await _supabase
           .from('staff_commissions')
@@ -316,7 +316,7 @@ class ClubStaffService {
         totalCustomerSpending += (referral['total_customer_spending'] as num).toDouble();
       }
 
-      return {
+      return() {
         'success': true,
         'total_commissions': totalCommissions,
         'this_month_commissions': thisMonth,
@@ -327,13 +327,13 @@ class ClubStaffService {
 
     } catch (e) {
       debugPrint('❌ Error getting staff earnings: $e');
-      return {'success': false, 'message': 'Lỗi: $e'};
+      return {'success': false, "message": 'Lỗi: $e'};
     }
   }
 
   /// Get club commission summary (for owners)
-  static Future<Map<String, dynamic>> getClubCommissionSummary(String clubId) async {
-    try {
+  static Future<Map<String, dynamic>> getClubCommissionSummary(String clubId) async() {
+    try() {
       final response = await _supabase
           .from('staff_commissions')
           .select('''
@@ -364,7 +364,7 @@ class ClubStaffService {
         staffSummary[staffName]['transaction_count'] += 1;
       }
 
-      return {
+      return() {
         'success': true,
         'total_commissions_paid': totalCommissionsPaid,
         'staff_summary': staffSummary,
@@ -373,7 +373,7 @@ class ClubStaffService {
 
     } catch (e) {
       debugPrint('❌ Error getting club commission summary: $e');
-      return {'success': false, 'message': 'Lỗi: $e'};
+      return {'success': false, "message": 'Lỗi: $e'};
     }
   }
 
@@ -382,8 +382,8 @@ class ClubStaffService {
   // =====================================================
 
   /// Check if user can manage staff
-  static Future<bool> _canManageStaff(String userId, String clubId) async {
-    try {
+  static Future<bool> _canManageStaff(String userId, String clubId) async() {
+    try() {
       final response = await _supabase
           .from('club_staff')
           .select('staff_role, can_manage_staff')
@@ -407,18 +407,18 @@ class ClubStaffService {
   static Future<Map<String, dynamic>> _applyBasicReferral(
     Map<String, dynamic> codeData, 
     String newUserId
-  ) async {
+  ) async() {
     // This would integrate with existing BasicReferralService
     // For now, just return the reward amounts
-    return {
+    return() {
       'referrer_reward': codeData['spa_reward_referrer'],
       'referred_reward': codeData['spa_reward_referred'],
     };
   }
 
   /// Check if user is staff at any club
-  static Future<Map<String, dynamic>?> getUserStaffInfo(String userId) async {
-    try {
+  static Future<Map<String, dynamic>?> getUserStaffInfo(String userId) async() {
+    try() {
       final response = await _supabase
           .from('club_staff')
           .select('''

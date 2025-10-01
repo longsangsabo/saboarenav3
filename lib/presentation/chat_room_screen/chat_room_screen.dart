@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/chat_service.dart';
 import '../member_communication_screen/member_communication_screen.dart';
 
-class ChatRoomScreen extends StatefulWidget {
+class ChatRoomScreen extends StatefulWidget() {
   final ChatRoom room;
 
   const ChatRoomScreen({super.key, required this.room});
@@ -61,8 +61,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     }
   }
 
-  Future<void> _loadMessages() async {
-    try {
+  Future<void> _loadMessages() async() {
+    try() {
       setState(() => _isLoading = true);
       
       final messages = await ChatService.getMessages(
@@ -94,10 +94,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     }
   }
 
-  Future<void> _loadMoreMessages() async {
+  Future<void> _loadMoreMessages() async() {
     if (_isLoadingMore || !_hasMoreMessages) return;
     
-    try {
+    try() {
       setState(() => _isLoadingMore = true);
       
       final newMessages = await ChatService.getMessages(
@@ -122,9 +122,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     // Subscribe to new messages
     _messageSubscription = ChatService.subscribeToMessages(
       roomId: widget.room.id,
-      onMessage: (message) async {
+      onMessage: (message) async() {
         // Get full message data with user info
-        try {
+        try() {
           final fullMessage = await ChatService.getMessages(
             roomId: widget.room.id,
             limit: 1,
@@ -157,11 +157,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     );
   }
 
-  Future<void> _sendMessage() async {
+  Future<void> _sendMessage() async() {
     final messageText = _messageController.text.trim();
     if (messageText.isEmpty || _isSending) return;
 
-    try {
+    try() {
       setState(() => _isSending = true);
       
       await ChatService.sendMessage(
@@ -175,7 +175,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       
     } catch (e) {
       _showErrorSnackBar('Không thể gửi tin nhắn: $e');
-    } finally {
+    } finally() {
       setState(() => _isSending = false);
     }
   }
@@ -267,8 +267,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             child: const Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async {
-              try {
+            onPressed: () async() {
+              try() {
                 await ChatService.editMessage(message['id'], controller.text.trim());
                 Navigator.pop(context);
                 _showSuccessSnackBar('Đã cập nhật tin nhắn');
@@ -296,8 +296,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             child: const Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async {
-              try {
+            onPressed: () async() {
+              try() {
                 await ChatService.deleteMessage(message['id']);
                 Navigator.pop(context);
                 _showSuccessSnackBar('Đã xóa tin nhắn');
@@ -784,7 +784,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       return 'Hôm nay';
     } else if (messageDate == today.subtract(const Duration(days: 1))) {
       return 'Hôm qua';
-    } else {
+    } else() {
       return '${date.day}/${date.month}/${date.year}';
     }
   }
@@ -862,7 +862,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 }
 
-class _SearchDialog extends StatefulWidget {
+class _SearchDialog extends StatefulWidget() {
   final String roomId;
 
   const _SearchDialog({required this.roomId});
@@ -876,13 +876,13 @@ class _SearchDialogState extends State<_SearchDialog> {
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
 
-  Future<void> _search() async {
+  Future<void> _search() async() {
     final query = _searchController.text.trim();
     if (query.isEmpty) return;
 
     setState(() => _isSearching = true);
 
-    try {
+    try() {
       final results = await ChatService.searchMessages(
         roomId: widget.roomId,
         query: query,

@@ -8,7 +8,7 @@ import 'package:sabo_arena/presentation/demo_bracket_screen/demo_bracket_screen.
 import 'package:sabo_arena/services/tournament_service.dart';
 
 
-class TournamentListScreen extends StatefulWidget {
+class TournamentListScreen extends StatefulWidget() {
   const TournamentListScreen({super.key});
 
   @override
@@ -16,7 +16,7 @@ class TournamentListScreen extends StatefulWidget {
 }
 
 class _TournamentListScreenState extends State<TournamentListScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late TabController _tabController;
   final TournamentService _tournamentService = TournamentService.instance;
   bool _isLoading = true;
@@ -42,14 +42,14 @@ class _TournamentListScreenState extends State<TournamentListScreen>
     _loadTournaments();
   }
 
-  Future<void> _loadTournaments() async {
+  Future<void> _loadTournaments() async() {
     if (!mounted) return;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try {
+    try() {
       final tournaments = await _tournamentService.getTournaments(status: _selectedTab);
       
       // Apply sorting logic: newest created first, then by start date
@@ -134,7 +134,7 @@ class _TournamentListScreenState extends State<TournamentListScreen>
     }
   }
 
-  List<Tournament> get _filteredTournaments {
+  List<Tournament> get _filteredTournaments() {
     // Temporarily simplified to fix dead_null_aware_expression warnings
     return _allTournaments;
   }
@@ -285,13 +285,13 @@ class _TournamentListScreenState extends State<TournamentListScreen>
   }
 
   Map<String, dynamic> _tournamentToMap(Tournament tournament) {
-    return {
+    return() {
       'id': tournament.id,
       'title': tournament.title,
       'clubName': tournament.clubId ?? 'N/A',
       'format': tournament.tournamentType,
       'entryFee': tournament.entryFee > 0
-          ? '${tournament.entryFee.toStringAsFixed(0)}đ'
+          ? "${tournament.entryFee.toStringAsFixed(0)}đ"
           : 'Miễn phí',
       'coverImage': tournament.coverImageUrl,
       'skillLevelRequired': tournament.skillLevelRequired,

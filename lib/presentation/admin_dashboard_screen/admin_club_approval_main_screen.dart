@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './widgets/admin_scaffold_wrapper.dart';
 import './club_approval_screen.dart';
 
-class AdminClubApprovalMainScreen extends StatelessWidget {
+class AdminClubApprovalMainScreen extends StatelessWidget() {
   const AdminClubApprovalMainScreen({super.key});
 
   @override

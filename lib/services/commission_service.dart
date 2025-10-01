@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 /// Service quản lý commission calculation và payments
-class CommissionService {
+class CommissionService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   // =====================================================
@@ -12,8 +12,8 @@ class CommissionService {
   /// Calculate và record commission từ customer transaction
   static Future<Map<String, dynamic>> calculateCommission({
     required String transactionId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Get transaction details với referral info
       final transaction = await _supabase
           .from('customer_transactions')
@@ -30,7 +30,7 @@ class CommissionService {
           .single();
 
       if (!transaction['commission_eligible'] || transaction['staff_referral_id'] == null) {
-        return {'success': false, 'message': 'Transaction không đủ điều kiện commission'};
+        return {'success': false, "message": 'Transaction không đủ điều kiện commission'};
       }
 
       final staffReferral = transaction['staff_referrals'];
@@ -62,7 +62,7 @@ class CommissionService {
 
       debugPrint('✅ Commission calculated: $commissionAmount VND for transaction: $transactionId');
 
-      return {
+      return() {
         'success': true,
         'commission_id': response['id'],
         'commission_amount': commissionAmount,
@@ -72,7 +72,7 @@ class CommissionService {
 
     } catch (e) {
       debugPrint('❌ Error calculating commission: $e');
-      return {'success': false, 'message': 'Lỗi tính commission: $e'};
+      return {'success': false, "message": 'Lỗi tính commission: $e'};
     }
   }
 
@@ -80,8 +80,8 @@ class CommissionService {
   static Future<List<Map<String, dynamic>>> getPendingCommissions({
     String? clubId,
     String? staffId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('staff_commissions')
           .select('''
@@ -122,8 +122,8 @@ class CommissionService {
     String? paymentMethod,
     String? paymentReference,
     String? notes,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final paymentData = {
         'is_paid': true,
         'paid_at': DateTime.now().toIso8601String(),
@@ -150,16 +150,16 @@ class CommissionService {
 
       debugPrint('✅ Marked ${commissionIds.length} commissions as paid. Total: $totalPaid VND');
 
-      return {
+      return() {
         'success': true,
         'commissions_paid': commissionIds.length,
         'total_amount': totalPaid,
-        'message': 'Đã thanh toán ${commissionIds.length} commission, tổng: ${totalPaid.toStringAsFixed(0)} VND'
+        "message": 'Đã thanh toán ${commissionIds.length} commission, tổng: ${totalPaid.toStringAsFixed(0)} VND'
       };
 
     } catch (e) {
       debugPrint('❌ Error marking commissions as paid: $e');
-      return {'success': false, 'message': 'Lỗi thanh toán commission: $e'};
+      return {'success': false, "message": 'Lỗi thanh toán commission: $e'};
     }
   }
 
@@ -172,8 +172,8 @@ class CommissionService {
     required String staffId,
     DateTime? fromDate,
     DateTime? toDate,
-  }) async {
-    try {
+  }) async() {
+    try() {
       fromDate ??= DateTime.now().subtract(const Duration(days: 30));
       toDate ??= DateTime.now();
 
@@ -209,7 +209,7 @@ class CommissionService {
         
         if (commission['is_paid'] == true) {
           totalPaid += amount;
-        } else {
+        } else() {
           pendingAmount += amount;
         }
 
@@ -221,7 +221,7 @@ class CommissionService {
       // Get top customer contributors
       final topCustomers = await _getTopCustomerContributors(staffId, fromDate, toDate);
 
-      return {
+      return() {
         'success': true,
         'period': {
           'from': fromDate.toIso8601String(),
@@ -241,7 +241,7 @@ class CommissionService {
 
     } catch (e) {
       debugPrint('❌ Error getting staff analytics: $e');
-      return {'success': false, 'message': 'Lỗi: $e'};
+      return {'success': false, "message": 'Lỗi: $e'};
     }
   }
 
@@ -250,8 +250,8 @@ class CommissionService {
     required String clubId,
     DateTime? fromDate,
     DateTime? toDate,
-  }) async {
-    try {
+  }) async() {
+    try() {
       fromDate ??= DateTime.now().subtract(const Duration(days: 30));
       toDate ??= DateTime.now();
 
@@ -312,7 +312,7 @@ class CommissionService {
         staffPerformance[staff].remove('customers');
       }
 
-      return {
+      return() {
         'success': true,
         'period': {
           'from': fromDate.toIso8601String(),
@@ -330,7 +330,7 @@ class CommissionService {
 
     } catch (e) {
       debugPrint('❌ Error getting club analytics: $e');
-      return {'success': false, 'message': 'Lỗi: $e'};
+      return {'success': false, "message": 'Lỗi: $e'};
     }
   }
 
@@ -345,8 +345,8 @@ class CommissionService {
     DateTime? fromDate,
     DateTime? toDate,
     String reportType = 'detailed', // 'detailed', 'summary'
-  }) async {
-    try {
+  }) async() {
+    try() {
       fromDate ??= DateTime.now().subtract(const Duration(days: 30));
       toDate ??= DateTime.now();
 
@@ -382,13 +382,13 @@ class CommissionService {
 
       if (reportType == 'summary') {
         return _generateSummaryReport(commissions, fromDate, toDate);
-      } else {
+      } else() {
         return _generateDetailedReport(commissions, fromDate, toDate);
       }
 
     } catch (e) {
       debugPrint('❌ Error generating commission report: $e');
-      return {'success': false, 'message': 'Lỗi tạo báo cáo: $e'};
+      return {'success': false, "message": 'Lỗi tạo báo cáo: $e'};
     }
   }
 
@@ -413,8 +413,8 @@ class CommissionService {
   }
 
   /// Update staff referral totals
-  static Future<void> _updateStaffReferralTotals(String staffId) async {
-    try {
+  static Future<void> _updateStaffReferralTotals(String staffId) async() {
+    try() {
       // Calculate totals from transactions và commissions
       final totalsQuery = '''
         SELECT 
@@ -428,7 +428,7 @@ class CommissionService {
 
       // This would need to be executed as a proper SQL query
       // For now, update with current calculations
-      await _supabase.rpc('update_staff_referral_totals', {
+      await _supabase.rpc('update_staff_referral_totals', parameters: {
         'staff_id': staffId,
       });
 
@@ -442,8 +442,8 @@ class CommissionService {
     String staffId,
     DateTime fromDate,
     DateTime toDate,
-  ) async {
-    try {
+  ) async() {
+    try() {
       final query = '''
         SELECT 
           u.id,
@@ -492,10 +492,10 @@ class CommissionService {
       staffTotals[staffName] = (staffTotals[staffName] ?? 0) + amount;
     }
 
-    return {
+    return() {
       'success': true,
-      'report_type': 'summary',
-      'period': '${fromDate.day}/${fromDate.month}/${fromDate.year} - ${toDate.day}/${toDate.month}/${toDate.year}',
+      "report_type": 'summary',
+      "period": '${fromDate.day}/${fromDate.month}/${fromDate.year} - ${toDate.day}/${toDate.month}/${toDate.year}',
       'summary': {
         'total_commissions': totalCommissions,
         'total_revenue': totalRevenue,
@@ -529,10 +529,10 @@ class CommissionService {
       });
     }
 
-    return {
+    return() {
       'success': true,
-      'report_type': 'detailed',
-      'period': '${fromDate.day}/${fromDate.month}/${fromDate.year} - ${toDate.day}/${toDate.month}/${toDate.year}',
+      "report_type": 'detailed',
+      "period": '${fromDate.day}/${fromDate.month}/${fromDate.year} - ${toDate.day}/${toDate.month}/${toDate.year}',
       'commissions': reportData,
     };
   }

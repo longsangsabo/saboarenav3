@@ -6,7 +6,7 @@ import '../../services/admin_service.dart';
 import '../../models/club.dart';
 import '../../widgets/custom_app_bar.dart';
 
-class ClubApprovalScreen extends StatefulWidget {
+class ClubApprovalScreen extends StatefulWidget() {
   final String? initialFilter;
   
   const ClubApprovalScreen({
@@ -19,7 +19,7 @@ class ClubApprovalScreen extends StatefulWidget {
 }
 
 class _ClubApprovalScreenState extends State<ClubApprovalScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   final AdminService _adminService = AdminService.instance;
   
   late TabController _tabController;
@@ -60,8 +60,8 @@ class _ClubApprovalScreenState extends State<ClubApprovalScreen>
     super.dispose();
   }
 
-  Future<void> _loadClubs() async {
-    try {
+  Future<void> _loadClubs() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -74,7 +74,7 @@ class _ClubApprovalScreenState extends State<ClubApprovalScreen>
       List<Club> approvedClubs = [];
       List<Club> rejectedClubs = [];
       
-      try {
+      try() {
         debugPrint('ClubApprovalScreen: Loading pending clubs...');
         pendingClubs = await _adminService.getClubsForAdmin(status: 'pending');
         debugPrint('ClubApprovalScreen: Loaded ${pendingClubs.length} pending clubs');
@@ -83,7 +83,7 @@ class _ClubApprovalScreenState extends State<ClubApprovalScreen>
         throw Exception('Failed to load pending clubs: $e');
       }
       
-      try {
+      try() {
         debugPrint('ClubApprovalScreen: Loading approved clubs...');
         approvedClubs = await _adminService.getClubsForAdmin(status: 'approved');
         debugPrint('ClubApprovalScreen: Loaded ${approvedClubs.length} approved clubs');
@@ -92,7 +92,7 @@ class _ClubApprovalScreenState extends State<ClubApprovalScreen>
         throw Exception('Failed to load approved clubs: $e');
       }
       
-      try {
+      try() {
         debugPrint('ClubApprovalScreen: Loading rejected clubs...');
         rejectedClubs = await _adminService.getClubsForAdmin(status: 'rejected');
         debugPrint('ClubApprovalScreen: Loaded ${rejectedClubs.length} rejected clubs');
@@ -590,8 +590,8 @@ class _ClubApprovalScreenState extends State<ClubApprovalScreen>
     );
   }
 
-  Future<void> _approveClub(Club club) async {
-    try {
+  Future<void> _approveClub(Club club) async() {
+    try() {
       await _adminService.approveClub(club.id);
       
       ScaffoldMessenger.of(context).showSnackBar(
@@ -656,8 +656,8 @@ class _ClubApprovalScreenState extends State<ClubApprovalScreen>
     );
   }
 
-  Future<void> _rejectClub(Club club, String reason) async {
-    try {
+  Future<void> _rejectClub(Club club, String reason) async() {
+    try() {
       await _adminService.rejectClub(club.id, reason);
       
       ScaffoldMessenger.of(context).showSnackBar(

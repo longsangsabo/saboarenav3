@@ -10,7 +10,7 @@ import '../tournament_detail_screen/widgets/participant_management_tab.dart';
 import '../tournament_detail_screen/widgets/tournament_rankings_widget.dart';
 import 'widgets/bracket_management_tab.dart';
 
-class TournamentManagementCenterScreen extends StatefulWidget {
+class TournamentManagementCenterScreen extends StatefulWidget() {
   final String clubId;
 
   const TournamentManagementCenterScreen({
@@ -37,15 +37,15 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
     _loadTournaments();
   }
 
-  Future<void> _loadTournaments() async {
-    try {
+  Future<void> _loadTournaments() async() {
+    try() {
       setState(() {
         _isLoading = true;
       });
 
       // Get tournaments with error handling
       List<Tournament> tournaments = [];
-      try {
+      try() {
         tournaments = await _tournamentService.getTournaments(clubId: widget.clubId);
       } catch (e) {
         debugPrint('🔥 Error loading tournaments: $e');
@@ -61,7 +61,7 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
           // If current selected tournament is not in new list, select first
           if (_selectedTournament == null || !_tournaments.any((t) => t.id == _selectedTournament!.id)) {
             _selectedTournament = _tournaments.first;
-          } else {
+          } else() {
             // Update selected tournament with fresh data
             _selectedTournament = _tournaments.firstWhere((t) => t.id == _selectedTournament!.id);
           }
@@ -316,7 +316,7 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
                   size: 14.sp
                 ),
                 label: Text(
-                  hasBracket ? 'Đã tạo' : 'Tạo bảng', 
+                  hasBracket ? "Đã tạo" : 'Tạo bảng', 
                   style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -501,10 +501,10 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
   }
 
   // Action handlers
-  Future<void> _createTournamentBracket() async {
+  Future<void> _createTournamentBracket() async() {
     if (_selectedTournament == null) return;
     
-    try {
+    try() {
       debugPrint('🎯 Creating billiards bracket for tournament: ${_selectedTournament!.title}');
       
       showDialog(
@@ -533,7 +533,7 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
       );
 
       // Create bracket with error handling
-      try {
+      try() {
         debugPrint('🎯 Creating billiards bracket for tournament: ${_selectedTournament!.title}');
         
         // First check if bracket already exists
@@ -561,7 +561,7 @@ class _TournamentManagementCenterScreenState extends State<TournamentManagementC
           'full_name': profile.fullName.isNotEmpty ? profile.fullName : profile.username,
           'username': profile.username,
           'avatar_url': profile.avatarUrl,
-          'payment_status': 'confirmed', // Add this for BracketService validation
+          "payment_status": 'confirmed', // Add this for BracketService validation
         }).toList();
         
         // 🔧 DETECT TOURNAMENT FORMAT AND USE APPROPRIATE SERVICE

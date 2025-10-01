@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_app_bar.dart';
 
-class MembershipRequestScreen extends StatefulWidget {
+class MembershipRequestScreen extends StatefulWidget() {
   const MembershipRequestScreen({super.key});
 
   @override
@@ -10,7 +10,7 @@ class MembershipRequestScreen extends StatefulWidget {
 }
 
 class _MembershipRequestScreenState extends State<MembershipRequestScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late TabController _tabController;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -539,18 +539,18 @@ class _MembershipRequestScreenState extends State<MembershipRequestScreen>
       return 'Hôm qua';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return '${date.day}/${date.month}/${date.year}';
     }
   }
 
   // Event handlers
-  Future<void> _loadRequests() async {
+  Future<void> _loadRequests() async() {
     setState(() {
       _isLoading = true;
     });
 
-    try {
+    try() {
       // Simulate API call
       await Future.delayed(Duration(seconds: 1));
 
@@ -565,14 +565,14 @@ class _MembershipRequestScreenState extends State<MembershipRequestScreen>
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
+    } finally() {
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> _refreshRequests() async {
+  Future<void> _refreshRequests() async() {
     await _loadRequests();
   }
 
@@ -583,7 +583,7 @@ class _MembershipRequestScreenState extends State<MembershipRequestScreen>
     );
   }
 
-  Future<void> _approveRequest(MembershipRequest request) async {
+  Future<void> _approveRequest(MembershipRequest request) async() {
     final confirmed = await _showConfirmationDialog(
       title: 'Duyệt yêu cầu',
       content: 'Bạn có chắc muốn duyệt yêu cầu của ${request.applicant.displayName}?',
@@ -606,7 +606,7 @@ class _MembershipRequestScreenState extends State<MembershipRequestScreen>
     }
   }
 
-  Future<void> _rejectRequest(MembershipRequest request) async {
+  Future<void> _rejectRequest(MembershipRequest request) async() {
     final result = await showDialog<String>(
       context: context,
       builder: (context) => _RejectRequestDialog(),
@@ -732,7 +732,7 @@ class _MembershipRequestScreenState extends State<MembershipRequestScreen>
 enum RequestStatus { pending, approved, rejected }
 enum RequestFilter { all, pending, approved, rejected, recent }
 
-class MembershipRequest {
+class MembershipRequest() {
   final String id;
   final User applicant;
   final String message;
@@ -769,7 +769,7 @@ class MembershipRequest {
 }
 
 // Dialog widgets
-class _RequestDetailDialog extends StatelessWidget {
+class _RequestDetailDialog extends StatelessWidget() {
   final MembershipRequest request;
 
   const _RequestDetailDialog({required this.request});
@@ -796,7 +796,7 @@ class _RequestDetailDialog extends StatelessWidget {
   }
 }
 
-class _RejectRequestDialog extends StatelessWidget {
+class _RejectRequestDialog extends StatelessWidget() {
   final _reasonController = TextEditingController();
 
   @override
@@ -838,7 +838,7 @@ class _RejectRequestDialog extends StatelessWidget {
   }
 }
 
-class _InviteMemberDialog extends StatelessWidget {
+class _InviteMemberDialog extends StatelessWidget() {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../services/tournament_service.dart';
 
-class TournamentRankingsWidget extends StatefulWidget {
+class TournamentRankingsWidget extends StatefulWidget() {
   final String tournamentId;
   final String tournamentStatus;
 
@@ -29,8 +29,8 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
     _loadRankings();
   }
 
-  Future<void> _loadRankings() async {
-    try {
+  Future<void> _loadRankings() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -71,7 +71,7 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
             totalGames++;
             if (participant.id == winnerId) {
               wins++;
-            } else {
+            } else() {
               losses++;
             }
           }
@@ -84,7 +84,7 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
         int eloBonus = wins * 10; // Simple: 10 points per win
         int spaBonus = wins * 5;  // Simple: 5 points per win
         
-        return {
+        return() {
           'user_id': participant.id,
           'full_name': participant.fullName.isNotEmpty ? participant.fullName : participant.username,
           'username': participant.username,
@@ -261,7 +261,7 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
           SizedBox(height: 8.sp),
           Text(
             widget.tournamentStatus == 'completed' 
-                ? 'Bảng xếp hạng sẽ được tạo sau khi hoàn thành giải đấu'
+                ? "Bảng xếp hạng sẽ được tạo sau khi hoàn thành giải đấu"
                 : 'Bảng xếp hạng sẽ được cập nhật khi có kết quả trận đấu',
             style: TextStyle(color: Colors.grey[500]),
             textAlign: TextAlign.center,

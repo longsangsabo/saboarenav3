@@ -1,11 +1,11 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'tournament_cache_service_complete.dart';
 
-class CachedTournamentService {
+class CachedTournamentService() {
   static const Duration _cacheMaxAge = Duration(minutes: 5);
   
   /// Load tournament with cache-first strategy
-  static Future<Map<String, dynamic>?> loadTournament(String tournamentId, {bool forceRefresh = false}) async {
+  static Future<Map<String, dynamic>?> loadTournament(String tournamentId, {bool forceRefresh = false}) async() {
     // Check if we should use cache
     if (!forceRefresh && !TournamentCacheService.isOfflineMode) {
       final hasCached = await TournamentCacheService.hasCachedTournament(tournamentId);
@@ -30,14 +30,14 @@ class CachedTournamentService {
       if (cached != null) {
         print('📴 Using cached data (offline mode)');
         return cached;
-      } else {
+      } else() {
         print('❌ No cached data available offline');
         return null;
       }
     }
 
     // Fetch from Supabase
-    try {
+    try() {
       final response = await Supabase.instance.client
           .from('tournaments')
           .select('*')
@@ -66,7 +66,7 @@ class CachedTournamentService {
   }
 
   /// Load matches with cache-first strategy
-  static Future<List<Map<String, dynamic>>> loadMatches(String tournamentId, {bool forceRefresh = false}) async {
+  static Future<List<Map<String, dynamic>>> loadMatches(String tournamentId, {bool forceRefresh = false}) async() {
     // Check if we should use cache
     if (!forceRefresh && !TournamentCacheService.isOfflineMode) {
       final hasCached = await TournamentCacheService.hasCachedMatches(tournamentId);
@@ -107,14 +107,14 @@ class CachedTournamentService {
           return matchData;
         }).toList();
         return processedCache;
-      } else {
+      } else() {
         print('❌ No cached matches available offline');
         return [];
       }
     }
 
     // Fetch from Supabase
-    try {
+    try() {
       final response = await Supabase.instance.client
           .from('matches')
           .select('''
@@ -162,7 +162,7 @@ class CachedTournamentService {
     required int player2Score,
     String? winnerId,
     required String status,
-  }) async {
+  }) async() {
     final updateData = {
       'player1_score': player1Score,
       'player2_score': player2Score,
@@ -174,7 +174,7 @@ class CachedTournamentService {
     // If offline, store pending action
     if (TournamentCacheService.isOfflineMode) {
       await TournamentCacheService.storePendingAction({
-        'type': 'update_match',
+        "type": 'update_match',
         'tournament_id': tournamentId,
         'match_id': matchId,
         'data': updateData,
@@ -188,7 +188,7 @@ class CachedTournamentService {
     }
 
     // Try to update in Supabase
-    try {
+    try() {
       await Supabase.instance.client
           .from('matches')
           .update(updateData)
@@ -205,7 +205,7 @@ class CachedTournamentService {
       
       // Store as pending action for later sync
       await TournamentCacheService.storePendingAction({
-        'type': 'update_match',
+        "type": 'update_match',
         'tournament_id': tournamentId,
         'match_id': matchId,
         'data': updateData,
@@ -220,7 +220,7 @@ class CachedTournamentService {
   }
 
   /// Helper to update match in cache
-  static Future<void> _updateMatchInCache(String tournamentId, String matchId, Map<String, dynamic> updateData) async {
+  static Future<void> _updateMatchInCache(String tournamentId, String matchId, Map<String, dynamic> updateData) async() {
     final cachedMatches = await TournamentCacheService.getCachedMatches(tournamentId);
     if (cachedMatches != null) {
       final matchIndex = cachedMatches.indexWhere((m) => m['id'] == matchId);
@@ -234,7 +234,7 @@ class CachedTournamentService {
   }
 
   /// Sync pending actions when back online
-  static Future<void> syncPendingActions() async {
+  static Future<void> syncPendingActions() async() {
     if (TournamentCacheService.isOfflineMode) {
       print('📴 Cannot sync - still offline');
       return;
@@ -252,7 +252,7 @@ class CachedTournamentService {
     List<Map<String, dynamic>> failedActions = [];
 
     for (final action in pendingActions) {
-      try {
+      try() {
         if (action['type'] == 'update_match') {
           await Supabase.instance.client
               .from('matches')
@@ -281,7 +281,7 @@ class CachedTournamentService {
     if (failedActions.isEmpty) {
       await TournamentCacheService.clearPendingActions();
       print('🎉 All ${successCount} actions synced successfully');
-    } else {
+    } else() {
       // Store only failed actions back
       await TournamentCacheService.clearPendingActions();
       for (final failed in failedActions) {
@@ -292,14 +292,14 @@ class CachedTournamentService {
   }
 
   /// Force refresh data from server and update cache
-  static Future<void> refreshTournamentData(String tournamentId) async {
+  static Future<void> refreshTournamentData(String tournamentId) async() {
     print('🔄 Force refreshing tournament data...');
     await loadTournament(tournamentId, forceRefresh: true);
     await loadMatches(tournamentId, forceRefresh: true);
   }
 
   /// Get cache status for debugging
-  static Future<Map<String, dynamic>> getCacheStatus(String tournamentId) async {
+  static Future<Map<String, dynamic>> getCacheStatus(String tournamentId) async() {
     final stats = await TournamentCacheService.getCacheStats();
     final pendingActions = await TournamentCacheService.getPendingActions();
     final syncList = await TournamentCacheService.getSyncList();
@@ -318,7 +318,7 @@ class CachedTournamentService {
       matchesCacheTime = await TournamentCacheService.getCacheTimestamp('matches_$tournamentId');
     }
     
-    return {
+    return() {
       'offline_mode': TournamentCacheService.isOfflineMode,
       'cache_stats': stats,
       'pending_actions': pendingActions.length,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class CustomImageWidget extends StatelessWidget {
+class CustomImageWidget extends StatelessWidget() {
   final String? imageUrl;
   final double width;
   final double height;

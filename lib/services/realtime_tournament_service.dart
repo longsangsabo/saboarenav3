@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 /// Service quản lý real-time updates cho tournament system
-class RealTimeTournamentService {
+class RealTimeTournamentService() {
   static RealTimeTournamentService? _instance;
   static RealTimeTournamentService get instance => _instance ??= RealTimeTournamentService._();
   RealTimeTournamentService._();
@@ -39,8 +39,8 @@ class RealTimeTournamentService {
   // ==================== SUBSCRIPTION MANAGEMENT ====================
 
   /// Subscribe to real-time updates for a specific tournament
-  Future<void> subscribeTournament(String tournamentId) async {
-    try {
+  Future<void> subscribeTournament(String tournamentId) async() {
+    try() {
       // Unsubscribe if already subscribed
       await unsubscribeTournament(tournamentId);
 
@@ -116,8 +116,8 @@ class RealTimeTournamentService {
   }
 
   /// Unsubscribe from real-time updates for a specific tournament
-  Future<void> unsubscribeTournament(String tournamentId) async {
-    try {
+  Future<void> unsubscribeTournament(String tournamentId) async() {
+    try() {
       final tournamentKey = 'tournament_$tournamentId';
       final matchesKey = 'matches_$tournamentId';
       final participantsKey = 'participants_$tournamentId';
@@ -146,8 +146,8 @@ class RealTimeTournamentService {
   }
 
   /// Unsubscribe from all tournaments
-  Future<void> unsubscribeAll() async {
-    try {
+  Future<void> unsubscribeAll() async() {
+    try() {
       for (final channel in _activeSubscriptions.values) {
         await channel.unsubscribe();
       }
@@ -162,7 +162,7 @@ class RealTimeTournamentService {
 
   /// Handle tournament table updates (status changes, etc.)
   void _handleTournamentUpdate(PostgresChangePayload payload) {
-    try {
+    try() {
       final eventType = payload.eventType;
       final newRecord = payload.newRecord;
       final oldRecord = payload.oldRecord;
@@ -170,7 +170,7 @@ class RealTimeTournamentService {
       debugPrint('🔔 Tournament update received: $eventType');
 
       final updateData = {
-        'type': 'tournament_update',
+        "type": 'tournament_update',
         'event': eventType.name,
         'tournament_id': newRecord['id'] ?? oldRecord['id'],
         'new_data': newRecord,
@@ -201,7 +201,7 @@ class RealTimeTournamentService {
 
   /// Handle matches table updates (results, bracket progression)
   void _handleMatchUpdate(PostgresChangePayload payload) {
-    try {
+    try() {
       final eventType = payload.eventType;
       final newRecord = payload.newRecord;
       final oldRecord = payload.oldRecord;
@@ -209,7 +209,7 @@ class RealTimeTournamentService {
       debugPrint('🔔 Match update received: $eventType');
 
       final updateData = {
-        'type': 'match_update',
+        "type": 'match_update',
         'event': eventType.name,
         'match_id': newRecord['id'] ?? oldRecord['id'],
         'tournament_id': newRecord['tournament_id'] ?? oldRecord['tournament_id'],
@@ -253,7 +253,7 @@ class RealTimeTournamentService {
 
   /// Handle tournament participants updates (registration, withdrawal)
   void _handleParticipantUpdate(PostgresChangePayload payload) {
-    try {
+    try() {
       final eventType = payload.eventType;
       final newRecord = payload.newRecord;
       final oldRecord = payload.oldRecord;
@@ -261,7 +261,7 @@ class RealTimeTournamentService {
       debugPrint('🔔 Participant update received: $eventType');
 
       final updateData = {
-        'type': 'participant_update',
+        "type": 'participant_update',
         'event': eventType.name,
         'participant_id': newRecord['id'] ?? oldRecord['id'],
         'tournament_id': newRecord['tournament_id'] ?? oldRecord['tournament_id'],
@@ -334,8 +334,8 @@ class RealTimeTournamentService {
   // ==================== CLEANUP ====================
 
   /// Dispose of all streams and subscriptions
-  Future<void> dispose() async {
-    try {
+  Future<void> dispose() async() {
+    try() {
       await unsubscribeAll();
       
       await _tournamentUpdatesController.close();

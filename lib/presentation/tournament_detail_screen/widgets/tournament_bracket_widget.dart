@@ -7,7 +7,7 @@ import '../../../services/cached_tournament_service.dart';
 
 // Safe debug print wrapper to avoid null debug service errors
 void _safeDebugPrint(String message) {
-  try {
+  try() {
     debugPrint(message);
   } catch (e) {
     // Ignore debug service errors in production
@@ -15,7 +15,7 @@ void _safeDebugPrint(String message) {
   }
 }
 
-class TournamentBracketWidget extends StatefulWidget {
+class TournamentBracketWidget extends StatefulWidget() {
   final Map<String, dynamic> tournament;
   final List<Map<String, dynamic>> bracketData;
 
@@ -59,8 +59,8 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
     }
   }
 
-  Future<void> _loadMatches() async {
-    try {
+  Future<void> _loadMatches() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -70,7 +70,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
       
       // Use cached service for better performance instead of direct database calls
       List<Map<String, dynamic>> matches;
-      try {
+      try() {
         matches = await CachedTournamentService.loadMatches(widget.tournament['id']);
         _safeDebugPrint('📋 Loaded ${matches.length} matches from cache/service');
       } catch (e) {
@@ -94,9 +94,9 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
   }
 
   /// Force refresh data from server
-  Future<void> refreshData() async {
+  Future<void> refreshData() async() {
     _safeDebugPrint('🔄 Force refreshing bracket data from server...');
-    try {
+    try() {
       await CachedTournamentService.refreshTournamentData(widget.tournament['id']);
       await _loadMatches();
     } catch (e) {
@@ -117,7 +117,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
         boxShadow: [
           BoxShadow(
             color:
-                AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -159,7 +159,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
                 ),
                 decoration: BoxDecoration(
                   color: AppTheme.lightTheme.colorScheme.primary
-                      .withValues(alpha: 0.1),
+                      .withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -373,7 +373,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
           Container(
             height: 1,
             color: AppTheme.lightTheme.colorScheme.outline
-                .withValues(alpha: 0.3),
+                .withOpacity(0.3),
           ),
           if (player2Data != null)
             _buildPlayerRow(
@@ -389,7 +389,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
               padding: const EdgeInsets.symmetric(vertical: Gaps.sm),
               decoration: BoxDecoration(
                 color: AppTheme.lightTheme.colorScheme.error
-                    .withValues(alpha: 0.1),
+                    .withOpacity(0.1),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(6),
                   bottomRight: Radius.circular(6),
@@ -428,7 +428,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
       padding: const EdgeInsets.all(Gaps.lg),
       decoration: BoxDecoration(
         color: isWinner
-            ? AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.1)
+            ? AppTheme.lightTheme.colorScheme.primary.withOpacity(0.1)
             : Colors.transparent,
         borderRadius: isTop
             ? const BorderRadius.only(
@@ -451,7 +451,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
                 color: isWinner
                     ? AppTheme.lightTheme.colorScheme.primary
                     : AppTheme.lightTheme.colorScheme.outline
-                        .withValues(alpha: 0.3),
+                        .withOpacity(0.3),
                 width: 2,
               ),
             ),
@@ -524,7 +524,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
             height: 48,
             decoration: BoxDecoration(
               color: AppTheme.lightTheme.colorScheme.outline
-                  .withValues(alpha: 0.2),
+                  .withOpacity(0.2),
               borderRadius: BorderRadius.circular(24),
             ),
             child: CustomIconWidget(
@@ -586,9 +586,9 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
       case 'completed':
         return AppTheme.lightTheme.colorScheme.primary;
       case 'upcoming':
-        return AppTheme.lightTheme.colorScheme.outline.withValues(alpha: 0.3);
+        return AppTheme.lightTheme.colorScheme.outline.withOpacity(0.3);
       default:
-        return AppTheme.lightTheme.colorScheme.outline.withValues(alpha: 0.3);
+        return AppTheme.lightTheme.colorScheme.outline.withOpacity(0.3);
     }
   }
 }

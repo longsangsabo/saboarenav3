@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class ClubHeaderWidget extends StatelessWidget {
+class ClubHeaderWidget extends StatelessWidget() {
   final Map<String, dynamic> clubData;
   final bool isOwner;
   final VoidCallback onEditPressed;
@@ -157,7 +157,7 @@ class ClubHeaderWidget extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      isOwner ? 'Chỉnh sửa' : (clubData["isMember"] ? 'Rời khỏi' : 'Tham gia'),
+                      isOwner ? 'Chỉnh sửa' : (clubData["isMember"] ? "Rời khỏi" : 'Tham gia'),
                     ),
                   ),
                 ],

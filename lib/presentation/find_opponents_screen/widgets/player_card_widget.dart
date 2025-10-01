@@ -7,7 +7,7 @@ import '../../../routes/app_routes.dart';
 // import '../../../services/challenge_service.dart';
 import './simple_challenge_modal_widget.dart';
 
-class PlayerCardWidget extends StatelessWidget {
+class PlayerCardWidget extends StatelessWidget() {
   final UserProfile player;
   final String mode; // 'giao_luu' or 'thach_dau'
   final Map<String, dynamic>? challengeInfo;
@@ -471,7 +471,7 @@ class PlayerCardWidget extends StatelessWidget {
     );
   }
 
-  void _showChallengeModal(BuildContext context, String challengeType) async {
+  void _showChallengeModal(BuildContext context, String challengeType) async() {
     // Check if user has rank for competitive play
     if (challengeType == 'thach_dau') {
       final hasRank = await _checkUserRank(context);
@@ -503,7 +503,7 @@ class PlayerCardWidget extends StatelessWidget {
     );
   }
 
-  void _showScheduleModal(BuildContext context) async {
+  void _showScheduleModal(BuildContext context) async() {
     // Check if user has rank for competitive scheduling
     if (mode == 'thach_dau') {
       final hasRank = await _checkUserRank(context);
@@ -523,8 +523,8 @@ class PlayerCardWidget extends StatelessWidget {
     );
   }
 
-  Future<bool> _checkUserRank(BuildContext context) async {
-    try {
+  Future<bool> _checkUserRank(BuildContext context) async() {
+    try() {
       final userService = UserService.instance;
       final currentUser = await userService.getCurrentUserProfile();
       
@@ -683,7 +683,7 @@ class PlayerCardWidget extends StatelessWidget {
                     ),
                     const Divider(height: 1),
                     InkWell(
-                      onTap: () async {
+                      onTap: () async() {
                         final pickedDate = await showDatePicker(
                           context: context,
                           initialDate: selectedDate,
@@ -803,7 +803,7 @@ class PlayerCardWidget extends StatelessWidget {
                             // Start time
                             Expanded(
                               child: InkWell(
-                                onTap: () async {
+                                onTap: () async() {
                                   final time = await _showTimePicker(context);
                                   if (time != null) {
                                     setState(() => customStartTime = time);
@@ -845,7 +845,7 @@ class PlayerCardWidget extends StatelessWidget {
                             // End time
                             Expanded(
                               child: InkWell(
-                                onTap: () async {
+                                onTap: () async() {
                                   final time = await _showTimePicker(context);
                                   if (time != null) {
                                     setState(() => customEndTime = time);
@@ -966,8 +966,8 @@ class PlayerCardWidget extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: selectedTimeSlot != null ? () async {
-                        try {
+                      onPressed: selectedTimeSlot != null ? () async() {
+                        try() {
                           // TODO: Implement schedule request with simple service
                           // final challengeService = ChallengeService.instance;
                           // 
@@ -1181,7 +1181,7 @@ class PlayerCardWidget extends StatelessWidget {
     return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
   }
 
-  Future<String?> _showTimePicker(BuildContext context) async {
+  Future<String?> _showTimePicker(BuildContext context) async() {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),

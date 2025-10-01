@@ -4,7 +4,7 @@ import 'package:sabo_arena/repositories/comment_repository.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
-class CommentsModal extends StatefulWidget {
+class CommentsModal extends StatefulWidget() {
   final String postId;
   final String postTitle;
   final VoidCallback? onCommentAdded;
@@ -58,12 +58,12 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _refreshComments() async {
+  Future<void> _refreshComments() async() {
     await _loadComments();
   }
 
-  Future<void> _loadComments() async {
-    try {
+  Future<void> _loadComments() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _hasMore = true;
@@ -98,10 +98,10 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _loadMoreComments() async {
+  Future<void> _loadMoreComments() async() {
     if (_isLoading || !_hasMore) return;
 
-    try {
+    try() {
       setState(() => _isLoading = true);
       
       final moreComments = await _commentRepository.getPostComments(
@@ -131,7 +131,7 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _postComment() async {
+  Future<void> _postComment() async() {
     // Prevent double tapping
     if (_isPosting) {
       debugPrint('🚫 Already posting, ignoring tap');
@@ -162,7 +162,7 @@ class _CommentsModalState extends State<CommentsModal> {
       return;
     }
 
-    try {
+    try() {
       setState(() => _isPosting = true);
       
       // Clear input immediately for better UX
@@ -170,11 +170,11 @@ class _CommentsModalState extends State<CommentsModal> {
       
       // Create optimistic comment
       final optimisticComment = {
-        'id': 'temp_${DateTime.now().millisecondsSinceEpoch}',
+        "id": 'temp_${DateTime.now().millisecondsSinceEpoch}',
         'content': commentText,
         'created_at': DateTime.now().toIso8601String(),
         'user': {
-          'full_name': 'Bạn',
+          "full_name": 'Bạn',
           'avatar_url': null,
         },
         'is_temp': true, // Mark as temporary
@@ -218,7 +218,7 @@ class _CommentsModalState extends State<CommentsModal> {
 
         // Notify parent about new comment
         widget.onCommentAdded?.call();
-      } else {
+      } else() {
         // Remove optimistic comment if failed
         setState(() {
           _comments.removeWhere((c) => c['id'] == optimisticComment['id']);
@@ -243,14 +243,14 @@ class _CommentsModalState extends State<CommentsModal> {
       
       // Restore comment text if failed
       _commentController.text = commentText;
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() => _isPosting = false);
       }
     }
   }
 
-  Future<void> _editComment(Map<String, dynamic> comment, int index) async {
+  Future<void> _editComment(Map<String, dynamic> comment, int index) async() {
     final controller = TextEditingController(text: comment['content']);
     final result = await showDialog<String>(
       context: context,
@@ -279,7 +279,7 @@ class _CommentsModalState extends State<CommentsModal> {
     );
 
     if (result != null && result.isNotEmpty && result != comment['content']) {
-      try {
+      try() {
         final updatedComment = await _commentRepository.updateComment(comment['id'], result);
         if (updatedComment != null) {
           setState(() {
@@ -308,8 +308,8 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _deleteComment(String commentId, int index) async {
-    try {
+  Future<void> _deleteComment(String commentId, int index) async() {
+    try() {
       final canDelete = await _commentRepository.canDeleteComment(commentId);
       if (!canDelete) {
         if (mounted) {
@@ -745,7 +745,7 @@ class _CommentsModalState extends State<CommentsModal> {
       return '${difference.inHours} giờ trước';
     } else if (difference.inMinutes > 0) {
       return '${difference.inMinutes} phút trước';
-    } else {
+    } else() {
       return 'Vừa xong';
     }
   }

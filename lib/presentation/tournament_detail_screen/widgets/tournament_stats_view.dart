@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class TournamentStatsView extends StatefulWidget {
+class TournamentStatsView extends StatefulWidget() {
   final String tournamentId;
   final String tournamentStatus;
 
@@ -16,7 +16,7 @@ class TournamentStatsView extends StatefulWidget {
 }
 
 class _TournamentStatsViewState extends State<TournamentStatsView>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late List<Animation<double>> _cardAnimations;
   
@@ -55,7 +55,7 @@ class _TournamentStatsViewState extends State<TournamentStatsView>
     super.dispose();
   }
 
-  Future<void> _loadStats() async {
+  Future<void> _loadStats() async() {
     // Simulate loading
     await Future.delayed(Duration(milliseconds: 800));
     
@@ -164,23 +164,23 @@ class _TournamentStatsViewState extends State<TournamentStatsView>
   Widget _buildOverviewCards() {
     final overviewData = [
       {
-        'title': 'Tổng người chơi',
+        "title": 'Tổng người chơi',
         'value': _stats['total_participants']?.toString() ?? '0',
-        'subtitle': 'Đã đăng ký',
+        "subtitle": 'Đã đăng ký',
         'icon': Icons.people,
         'color': Colors.grey[600] ?? Colors.grey,
       },
       {
-        'title': 'Tỷ lệ hoàn thành',
-        'value': '${_stats['completion_rate'] ?? 0}%',
-        'subtitle': 'Trận đấu',
+        "title": 'Tỷ lệ hoàn thành',
+        "value": '${_stats['completion_rate'] ?? 0}%',
+        "subtitle": 'Trận đấu',
         'icon': Icons.pie_chart,
         'color': Colors.grey[600] ?? Colors.grey,
       },
       {
-        'title': 'Trận đấu',
-        'value': '${_stats['completed_matches']}/${_stats['total_matches']}',
-        'subtitle': 'Hoàn thành',
+        "title": 'Trận đấu',
+        "value": '${_stats['completed_matches']}/${_stats['total_matches']}',
+        "subtitle": 'Hoàn thành',
         'icon': Icons.sports_tennis,
         'color': Colors.grey[600] ?? Colors.grey,
       },
@@ -791,13 +791,13 @@ class _TournamentStatsViewState extends State<TournamentStatsView>
   }
 
   Map<String, dynamic> _generateMockStats() {
-    return {
+    return() {
       'total_participants': 18,
       'completion_rate': 65,
       'completed_matches': 11,
       'total_matches': 17,
       'avg_match_duration': 22,
-      'highest_score': '3-0',
+      "highest_score": '3-0',
       'close_matches': 4,
       'quick_wins': 2,
     };
@@ -806,36 +806,36 @@ class _TournamentStatsViewState extends State<TournamentStatsView>
   List<Map<String, dynamic>> _getProgressSteps() {
     return [
       {
-        'title': 'Mở đăng ký',
-        'subtitle': 'Bắt đầu nhận đăng ký từ người chơi',
+        "title": 'Mở đăng ký',
+        "subtitle": 'Bắt đầu nhận đăng ký từ người chơi',
         'completed': true,
         'current': false,
-        'date': '10/01',
+        "date": '10/01',
       },
       {
-        'title': 'Đóng đăng ký',
-        'subtitle': 'Hoàn thành việc tuyển chọn người chơi',
+        "title": 'Đóng đăng ký',
+        "subtitle": 'Hoàn thành việc tuyển chọn người chơi',
         'completed': true,
         'current': false,
-        'date': '15/01',
+        "date": '15/01',
       },
       {
-        'title': 'Vòng bảng',
-        'subtitle': 'Đang diễn ra các trận đấu vòng bảng',
+        "title": 'Vòng bảng',
+        "subtitle": 'Đang diễn ra các trận đấu vòng bảng',
         'completed': false,
         'current': true,
         'date': null,
       },
       {
-        'title': 'Vòng loại trực tiếp',
-        'subtitle': 'Tứ kết, bán kết và chung kết',
+        "title": 'Vòng loại trực tiếp',
+        "subtitle": 'Tứ kết, bán kết và chung kết',
         'completed': false,
         'current': false,
         'date': null,
       },
       {
-        'title': 'Trao giải',
-        'subtitle': 'Lễ trao giải và kết thúc giải đấu',
+        "title": 'Trao giải',
+        "subtitle": 'Lễ trao giải và kết thúc giải đấu',
         'completed': false,
         'current': false,
         'date': null,
@@ -845,41 +845,41 @@ class _TournamentStatsViewState extends State<TournamentStatsView>
 
   List<Map<String, dynamic>> _getRankDistribution() {
     return [
-      {'label': 'Dưới 1000', 'count': 3},
-      {'label': '1000-1500', 'count': 8},
-      {'label': '1500-2000', 'count': 5},
-      {'label': 'Trên 2000', 'count': 2},
+      {"label": 'Dưới 1000', 'count': 3},
+      {"label": '1000-1500', 'count': 8},
+      {"label": '1500-2000', 'count': 5},
+      {"label": 'Trên 2000', 'count': 2},
     ];
   }
 
   List<Map<String, dynamic>> _getClubDistribution() {
     return [
-      {'label': 'Saigon PP', 'count': 8},
-      {'label': 'Hanoi TT', 'count': 5},
-      {'label': 'Da Nang Sports', 'count': 3},
-      {'label': 'Cá nhân', 'count': 2},
+      {"label": 'Saigon PP', 'count': 8},
+      {"label": 'Hanoi TT', 'count': 5},
+      {"label": 'Da Nang Sports', 'count': 3},
+      {"label": 'Cá nhân', 'count': 2},
     ];
   }
 
   List<Map<String, dynamic>> _getTopPerformers() {
     return [
       {
-        'name': 'Player 1',
-        'achievement': 'Tỷ lệ thắng cao nhất',
-        'stat': '100%',
-        'avatar': 'https://images.unsplash.com/photo-1580000000001?w=100&h=100&fit=crop&crop=face',
+        "name": 'Player 1',
+        "achievement": 'Tỷ lệ thắng cao nhất',
+        "stat": '100%',
+        "avatar": 'https://images.unsplash.com/photo-1580000000001?w=100&h=100&fit=crop&crop=face',
       },
       {
-        'name': 'Lê Văn B',
-        'achievement': 'Nhiều trận thắng nhất',
-        'stat': '8 trận',
-        'avatar': 'https://images.unsplash.com/photo-1580000000002?w=100&h=100&fit=crop&crop=face',
+        "name": 'Lê Văn B',
+        "achievement": 'Nhiều trận thắng nhất',
+        "stat": '8 trận',
+        "avatar": 'https://images.unsplash.com/photo-1580000000002?w=100&h=100&fit=crop&crop=face',
       },
       {
-        'name': 'Trần Văn C',
-        'achievement': 'Trận đấu nhanh nhất',
-        'stat': '12 phút',
-        'avatar': 'https://images.unsplash.com/photo-1580000000003?w=100&h=100&fit=crop&crop=face',
+        "name": 'Trần Văn C',
+        "achievement": 'Trận đấu nhanh nhất',
+        "stat": '12 phút',
+        "avatar": 'https://images.unsplash.com/photo-1580000000003?w=100&h=100&fit=crop&crop=face',
       },
     ];
   }

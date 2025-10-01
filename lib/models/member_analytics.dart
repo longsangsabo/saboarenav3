@@ -1,4 +1,4 @@
-class MemberAnalytics {
+class MemberAnalytics() {
   final int totalMembers;
   final int activeMembers;
   final int newThisMonth;
@@ -21,7 +21,7 @@ class MemberAnalytics {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'total_members': totalMembers,
       'active_members': activeMembers,
       'new_this_month': newThisMonth,

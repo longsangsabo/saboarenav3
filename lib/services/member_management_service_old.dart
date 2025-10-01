@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/app_export.dart';
 
-class MemberManagementService {
+class MemberManagementService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   // ====================================
@@ -16,8 +16,8 @@ class MemberManagementService {
     String? membershipType,
     int? limit,
     int? offset,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('club_memberships')
           .select('*, users(*)');
@@ -53,8 +53,8 @@ class MemberManagementService {
     String status = 'active',
     bool autoRenewal = false,
     Map<String, dynamic>? permissions,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'club_id': clubId,
         'user_id': userId,
@@ -78,7 +78,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to add member: ${response.statusCode}');
       }
     } catch (e) {
@@ -94,8 +94,8 @@ class MemberManagementService {
     bool? autoRenewal,
     Map<String, dynamic>? permissions,
     String? adminNotes,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = <String, dynamic>{};
       
       if (membershipType != null) data['membership_type'] = membershipType;
@@ -112,7 +112,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to update member: ${response.statusCode}');
       }
     } catch (e) {
@@ -121,8 +121,8 @@ class MemberManagementService {
   }
 
   /// Remove member from club
-  static Future<void> removeClubMember(String membershipId) async {
-    try {
+  static Future<void> removeClubMember(String membershipId) async() {
+    try() {
       final response = await http.delete(
         Uri.parse('$_baseUrl/club_memberships?id=eq.$membershipId'),
         headers: _headers,
@@ -144,8 +144,8 @@ class MemberManagementService {
   static Future<List<Map<String, dynamic>>> getMembershipRequests({
     required String clubId,
     String? status,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/membership_requests?club_id=eq.$clubId';
       
       if (status != null) {
@@ -161,7 +161,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(json.decode(response.body));
-      } else {
+      } else() {
         throw Exception('Failed to load requests: ${response.statusCode}');
       }
     } catch (e) {
@@ -174,8 +174,8 @@ class MemberManagementService {
     required String clubId,
     required String userId,
     String? message,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'club_id': clubId,
         'user_id': userId,
@@ -190,7 +190,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to create request: ${response.statusCode}');
       }
     } catch (e) {
@@ -202,10 +202,10 @@ class MemberManagementService {
   static Future<Map<String, dynamic>> approveMembershipRequest({
     required String requestId,
     required String processedBy,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
-        'status': 'approved',
+        "status": 'approved',
         'processed_by': processedBy,
         'processed_at': DateTime.now().toIso8601String(),
       };
@@ -218,7 +218,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to approve request: ${response.statusCode}');
       }
     } catch (e) {
@@ -231,10 +231,10 @@ class MemberManagementService {
     required String requestId,
     required String processedBy,
     required String rejectReason,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
-        'status': 'rejected',
+        "status": 'rejected',
         'processed_by': processedBy,
         'processed_at': DateTime.now().toIso8601String(),
         'reject_reason': rejectReason,
@@ -248,7 +248,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to reject request: ${response.statusCode}');
       }
     } catch (e) {
@@ -264,8 +264,8 @@ class MemberManagementService {
   static Future<List<Map<String, dynamic>>> getChatRooms({
     required String clubId,
     bool? isActive,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/chat_rooms?club_id=eq.$clubId';
       
       if (isActive != null) {
@@ -281,7 +281,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(json.decode(response.body));
-      } else {
+      } else() {
         throw Exception('Failed to load chat rooms: ${response.statusCode}');
       }
     } catch (e) {
@@ -298,8 +298,8 @@ class MemberManagementService {
     String type = 'general',
     bool isPublic = true,
     int maxMembers = 100,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'club_id': clubId,
         'name': name,
@@ -318,7 +318,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to create chat room: ${response.statusCode}');
       }
     } catch (e) {
@@ -335,8 +335,8 @@ class MemberManagementService {
     required String roomId,
     int? limit,
     int? offset,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/chat_messages?room_id=eq.$roomId&is_deleted=eq.false';
       
       if (limit != null) {
@@ -356,7 +356,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(json.decode(response.body));
-      } else {
+      } else() {
         throw Exception('Failed to load messages: ${response.statusCode}');
       }
     } catch (e) {
@@ -371,8 +371,8 @@ class MemberManagementService {
     required String content,
     String messageType = 'text',
     String? replyTo,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'room_id': roomId,
         'sender_id': senderId,
@@ -389,7 +389,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to send message: ${response.statusCode}');
       }
     } catch (e) {
@@ -405,8 +405,8 @@ class MemberManagementService {
   static Future<List<Map<String, dynamic>>> getAnnouncements({
     required String clubId,
     bool? isPublished,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/announcements?club_id=eq.$clubId';
       
       if (isPublished != null) {
@@ -422,7 +422,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(json.decode(response.body));
-      } else {
+      } else() {
         throw Exception('Failed to load announcements: ${response.statusCode}');
       }
     } catch (e) {
@@ -439,8 +439,8 @@ class MemberManagementService {
     String priority = 'normal',
     List<String>? tags,
     bool isPublished = false,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'club_id': clubId,
         'author_id': authorId,
@@ -460,7 +460,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to create announcement: ${response.statusCode}');
       }
     } catch (e) {
@@ -477,8 +477,8 @@ class MemberManagementService {
     required String userId,
     bool? isRead,
     int? limit,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/notifications?user_id=eq.$userId';
       
       if (isRead != null) {
@@ -498,7 +498,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(json.decode(response.body));
-      } else {
+      } else() {
         throw Exception('Failed to load notifications: ${response.statusCode}');
       }
     } catch (e) {
@@ -513,8 +513,8 @@ class MemberManagementService {
     required String content,
     required String type,
     Map<String, dynamic>? actionData,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'user_id': userId,
         'title': title,
@@ -531,7 +531,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to create notification: ${response.statusCode}');
       }
     } catch (e) {
@@ -540,8 +540,8 @@ class MemberManagementService {
   }
 
   /// Mark notification as read
-  static Future<void> markNotificationAsRead(String notificationId) async {
-    try {
+  static Future<void> markNotificationAsRead(String notificationId) async() {
+    try() {
       final data = {
         'is_read': true,
         'read_at': DateTime.now().toIso8601String(),
@@ -571,8 +571,8 @@ class MemberManagementService {
     String? clubId,
     String? activityType,
     int? limit,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/member_activities?user_id=eq.$userId';
       
       if (clubId != null) {
@@ -596,7 +596,7 @@ class MemberManagementService {
 
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(json.decode(response.body));
-      } else {
+      } else() {
         throw Exception('Failed to load activities: ${response.statusCode}');
       }
     } catch (e) {
@@ -613,8 +613,8 @@ class MemberManagementService {
     String? description,
     Map<String, dynamic>? relatedData,
     int points = 0,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'user_id': userId,
         'club_id': clubId,
@@ -633,7 +633,7 @@ class MemberManagementService {
 
       if (response.statusCode == 201) {
         return json.decode(response.body)[0];
-      } else {
+      } else() {
         throw Exception('Failed to log activity: ${response.statusCode}');
       }
     } catch (e) {
@@ -649,8 +649,8 @@ class MemberManagementService {
   static Future<Map<String, dynamic>?> getMemberStatistics({
     required String userId,
     required String clubId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final query = '$_baseUrl/member_statistics?user_id=eq.$userId&club_id=eq.$clubId';
 
       final response = await http.get(
@@ -661,7 +661,7 @@ class MemberManagementService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return data.isNotEmpty ? data[0] : null;
-      } else {
+      } else() {
         throw Exception('Failed to load statistics: ${response.statusCode}');
       }
     } catch (e) {
@@ -674,8 +674,8 @@ class MemberManagementService {
     required String userId,
     required String clubId,
     Map<String, dynamic>? stats,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // First try to get existing stats
       final existing = await getMemberStatistics(userId: userId, clubId: clubId);
       
@@ -689,10 +689,10 @@ class MemberManagementService {
 
         if (response.statusCode == 200) {
           return json.decode(response.body)[0];
-        } else {
+        } else() {
           throw Exception('Failed to update statistics: ${response.statusCode}');
         }
-      } else {
+      } else() {
         // Create new record
         final data = {
           'user_id': userId,
@@ -708,7 +708,7 @@ class MemberManagementService {
 
         if (response.statusCode == 201) {
           return json.decode(response.body)[0];
-        } else {
+        } else() {
           throw Exception('Failed to create statistics: ${response.statusCode}');
         }
       }
@@ -729,8 +729,8 @@ class MemberManagementService {
     String? membershipType,
     int? limit,
     int? offset,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = '$_baseUrl/club_memberships?club_id=eq.$clubId';
       
       if (status != null) {
@@ -778,7 +778,7 @@ class MemberManagementService {
         }
         
         return data;
-      } else {
+      } else() {
         throw Exception('Failed to search members: ${response.statusCode}');
       }
     } catch (e) {
@@ -787,8 +787,8 @@ class MemberManagementService {
   }
 
   /// Get club member analytics
-  static Future<Map<String, dynamic>> getClubAnalytics(String clubId) async {
-    try {
+  static Future<Map<String, dynamic>> getClubAnalytics(String clubId) async() {
+    try() {
       final membersQuery = '$_baseUrl/club_memberships?club_id=eq.$clubId';
       final requestsQuery = '$_baseUrl/membership_requests?club_id=eq.$clubId';
       
@@ -817,7 +817,7 @@ class MemberManagementService {
           membershipTypes[type] = (membershipTypes[type] ?? 0) + 1;
         }
 
-        return {
+        return() {
           'total_members': totalMembers,
           'active_members': activeMembers,
           'inactive_members': totalMembers - activeMembers,
@@ -825,7 +825,7 @@ class MemberManagementService {
           'membership_types': membershipTypes,
           'growth_rate': 0.0, // Calculate based on historical data
         };
-      } else {
+      } else() {
         throw Exception('Failed to load analytics');
       }
     } catch (e) {

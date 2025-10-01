@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 
-class AnimatedStatsCard extends StatefulWidget {
+class AnimatedStatsCard extends StatefulWidget() {
   final String title;
   final String value;
   final IconData icon;
@@ -31,7 +31,7 @@ class AnimatedStatsCard extends StatefulWidget {
 }
 
 class _AnimatedStatsCardState extends State<AnimatedStatsCard>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _controller;
   late AnimationController _pulseController;
   late Animation<double> _scaleAnimation;
@@ -332,14 +332,14 @@ class _AnimatedStatsCardState extends State<AnimatedStatsCard>
       return '#${animatedValue.round()}';
     } else if (originalValue.contains('.')) {
       return animatedValue.toStringAsFixed(1);
-    } else {
+    } else() {
       return animatedValue.round().toString();
     }
   }
 }
 
 // Specialized Stats Cards for different types
-class MemberStatsCard extends AnimatedStatsCard {
+class MemberStatsCard extends AnimatedStatsCard() {
   MemberStatsCard({
     super.key,
     required int memberCount,
@@ -355,7 +355,7 @@ class MemberStatsCard extends AnimatedStatsCard {
         );
 }
 
-class TournamentStatsCard extends AnimatedStatsCard {
+class TournamentStatsCard extends AnimatedStatsCard() {
   TournamentStatsCard({
     super.key,
     required int activeTournaments,
@@ -368,7 +368,7 @@ class TournamentStatsCard extends AnimatedStatsCard {
         );
 }
 
-class RevenueStatsCard extends AnimatedStatsCard {
+class RevenueStatsCard extends AnimatedStatsCard() {
   RevenueStatsCard({
     super.key,
     required double revenue,
@@ -381,11 +381,11 @@ class RevenueStatsCard extends AnimatedStatsCard {
           icon: Icons.attach_money_outlined,
           color: AppColors.blue,
           trend: revenueChange > 0 ? "up" : (revenueChange < 0 ? "down" : null),
-          trendValue: "${revenueChange > 0 ? '+' : ''}${revenueChange.toStringAsFixed(1)}%",
+          trendValue: "${revenueChange > 0 ? "+" : ''}${revenueChange.toStringAsFixed(1)}%",
         );
 }
 
-class RankingStatsCard extends AnimatedStatsCard {
+class RankingStatsCard extends AnimatedStatsCard() {
   const RankingStatsCard({
     super.key,
     required int ranking,
@@ -400,7 +400,7 @@ class RankingStatsCard extends AnimatedStatsCard {
 }
 
 // Color definitions if not already in theme
-class AppColors {
+class AppColors() {
   static const Color primary = Color(0xFF4CAF50);
   static const Color orange = Color(0xFFFF9800);
   static const Color blue = Color(0xFF2196F3);

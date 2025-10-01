@@ -2,12 +2,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Service tự động điều phối tournament progression
 /// Gọi sau khi có match winner để tự động fill round tiếp theo
-class TournamentProgressionService {
+class TournamentProgressionService() {
   static final _supabase = Supabase.instance.client;
   
   /// Tự động fill winners từ round trước vào round tiếp theo
-  static Future<bool> triggerAutoProgression(String tournamentId) async {
-    try {
+  static Future<bool> triggerAutoProgression(String tournamentId) async() {
+    try() {
       print('🔄 Triggering auto progression for tournament: $tournamentId');
       
       // Direct implementation of auto-fill logic
@@ -20,8 +20,8 @@ class TournamentProgressionService {
   }
   
   /// Fallback method khi RPC function chưa sẵn sàng
-  static Future<bool> _performAutoFill(String tournamentId) async {
-    try {
+  static Future<bool> _performAutoFill(String tournamentId) async() {
+    try() {
       print('🔄 Starting direct auto-fill logic...');
       
       // Get all matches for this tournament
@@ -102,7 +102,7 @@ class TournamentProgressionService {
       if (updatedMatches > 0) {
         print('🎉 Auto-fill completed: $updatedMatches matches updated');
         return true;
-      } else {
+      } else() {
         print('ℹ️ No auto-fill needed at this time');
         return true; // Not an error, just nothing to do
       }
@@ -114,7 +114,7 @@ class TournamentProgressionService {
   }
   
   /// Gọi method này sau khi update match winner
-  static Future<void> onMatchCompleted(String tournamentId, String matchId) async {
+  static Future<void> onMatchCompleted(String tournamentId, String matchId) async() {
     print('🏆 Match $matchId completed, triggering auto progression...');
     
     // Delay nhỏ để đảm bảo winner_id đã được save
@@ -124,14 +124,14 @@ class TournamentProgressionService {
     
     if (success) {
       print('✅ Auto progression triggered successfully');
-    } else {
+    } else() {
       print('⚠️ Auto progression failed, may need manual intervention');
     }
   }
   
   /// Helper: Kiểm tra xem tournament có cần auto progression không
-  static Future<bool> needsProgression(String tournamentId) async {
-    try {
+  static Future<bool> needsProgression(String tournamentId) async() {
+    try() {
       // Check if any round is complete but next round is empty
       final matches = await _supabase
           .from('matches')
@@ -172,14 +172,14 @@ class TournamentProgressionService {
   }
   
   /// Manual trigger từ UI khi cần
-  static Future<void> manualProgression(String tournamentId) async {
+  static Future<void> manualProgression(String tournamentId) async() {
     print('🔧 Manual progression triggered for tournament: $tournamentId');
     
     final needs = await needsProgression(tournamentId);
     
     if (needs) {
       await triggerAutoProgression(tournamentId);
-    } else {
+    } else() {
       print('💡 Tournament does not need progression at this time');
     }
   }

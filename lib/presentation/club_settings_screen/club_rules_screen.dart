@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class ClubRulesScreen extends StatefulWidget {
+class ClubRulesScreen extends StatefulWidget() {
   final String clubId;
 
   const ClubRulesScreen({
@@ -17,21 +17,21 @@ class ClubRulesScreen extends StatefulWidget {
 class _ClubRulesScreenState extends State<ClubRulesScreen> {
   final List<Map<String, dynamic>> rules = [
     {
-      'id': '1',
-      'title': 'Quy định chung',
-      'content': 'Thành viên phải tuân thủ quy định chung của câu lạc bộ và tôn trọng các thành viên khác.',
+      "id": '1',
+      "title": 'Quy định chung',
+      "content": 'Thành viên phải tuân thủ quy định chung của câu lạc bộ và tôn trọng các thành viên khác.',
       'isActive': true,
     },
     {
-      'id': '2', 
-      'title': 'Giờ hoạt động',
-      'content': 'CLB hoạt động từ 8:00 - 22:00 hàng ngày. Thành viên cần tuân thủ giờ giấc và không gây ồn ào sau 21:30.',
+      "id": '2', 
+      "title": 'Giờ hoạt động',
+      "content": 'CLB hoạt động từ 8:00 - 22:00 hàng ngày. Thành viên cần tuân thủ giờ giấc và không gây ồn ào sau 21:30.',
       'isActive': true,
     },
     {
-      'id': '3',
-      'title': 'Thanh toán',
-      'content': 'Thành viên thanh toán trước khi chơi. Chấp nhận thanh toán tiền mặt, chuyển khoản và ví điện tử.',
+      "id": '3',
+      "title": 'Thanh toán',
+      "content": 'Thành viên thanh toán trước khi chơi. Chấp nhận thanh toán tiền mặt, chuyển khoản và ví điện tử.',
       'isActive': true,
     },
   ];
@@ -246,7 +246,7 @@ class _ClubRulesScreenState extends State<ClubRulesScreen> {
                   rule['isActive'] = value;
                 });
               },
-              activeThumbColor: AppTheme.primaryLight,
+              thumbColor: WidgetStateProperty.all(AppTheme.primaryLight),
             ),
             PopupMenuButton(
               icon: Icon(Icons.more_vert, color: AppTheme.textSecondaryLight),
@@ -307,20 +307,20 @@ class _ClubRulesScreenState extends State<ClubRulesScreen> {
   Widget _buildPresetRules() {
     final presetRules = [
       {
-        'title': 'Quy định về thời gian',
-        'content': 'CLB hoạt động từ [giờ mở] đến [giờ đóng]. Thành viên cần đến đúng giờ hẹn và thông báo nếu muốn hủy lịch.',
+        "title": 'Quy định về thời gian',
+        "content": 'CLB hoạt động từ [giờ mở] đến [giờ đóng]. Thành viên cần đến đúng giờ hẹn và thông báo nếu muốn hủy lịch.',
       },
       {
-        'title': 'Quy định về thanh toán',
-        'content': 'Thanh toán trước khi sử dụng dịch vụ. Chấp nhận tiền mặt, chuyển khoản ngân hàng và ví điện tử.',
+        "title": 'Quy định về thanh toán',
+        "content": 'Thanh toán trước khi sử dụng dịch vụ. Chấp nhận tiền mặt, chuyển khoản ngân hàng và ví điện tử.',
       },
       {
-        'title': 'Quy định về an toàn',
-        'content': 'Thành viên cần tuân thủ các quy định an toàn, không mang vũ khí hay chất cấm vào CLB.',
+        "title": 'Quy định về an toàn',
+        "content": 'Thành viên cần tuân thủ các quy định an toàn, không mang vũ khí hay chất cấm vào CLB.',
       },
       {
-        'title': 'Quy định về hành vi',
-        'content': 'Tôn trọng nhân viên và thành viên khác, không sử dụng ngôn từ thô tục hay có hành vi bạo lực.',
+        "title": 'Quy định về hành vi',
+        "content": 'Tôn trọng nhân viên và thành viên khác, không sử dụng ngôn từ thô tục hay có hành vi bạo lực.',
       },
     ];
 
@@ -476,7 +476,7 @@ class _ClubRulesScreenState extends State<ClubRulesScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(rule == null ? 'Thêm quy định mới' : 'Chỉnh sửa quy định'),
+        title: Text(rule == null ? "Thêm quy định mới" : 'Chỉnh sửa quy định'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -517,7 +517,7 @@ class _ClubRulesScreenState extends State<ClubRulesScreen> {
                       'content': contentController.text,
                       'isActive': true,
                     });
-                  } else {
+                  } else() {
                     // Edit existing rule
                     rules[index!]['title'] = titleController.text;
                     rules[index]['content'] = contentController.text;
@@ -526,13 +526,13 @@ class _ClubRulesScreenState extends State<ClubRulesScreen> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(rule == null ? '✅ Đã thêm quy định mới' : '✅ Đã cập nhật quy định'),
+                    content: Text(rule == null ? "✅ Đã thêm quy định mới" : '✅ Đã cập nhật quy định'),
                     backgroundColor: Colors.green,
                   ),
                 );
               }
             },
-            child: Text(rule == null ? 'Thêm' : 'Cập nhật'),
+            child: Text(rule == null ? "Thêm" : 'Cập nhật'),
           ),
         ],
       ),

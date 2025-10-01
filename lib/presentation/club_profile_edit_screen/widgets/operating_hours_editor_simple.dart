@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class OperatingHoursEditor extends StatefulWidget {
+class OperatingHoursEditor extends StatefulWidget() {
   final Map<String, Map<String, String>>? initialHours;
   final Function(Map<String, Map<String, String>>) onHoursChanged;
 
@@ -35,9 +35,9 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor> {
     if (_operatingHours.isEmpty) {
       for (String day in _daysOfWeek) {
         _operatingHours[day] = {
-          'open': '08:00',
-          'close': '22:00',
-          'isOpen': 'true',
+          "open": '08:00',
+          "close": '22:00',
+          "isOpen": 'true',
         };
       }
     }
@@ -73,9 +73,9 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor> {
 
   Widget _buildDayRow(String day) {
     final dayData = _operatingHours[day] ?? {
-      'open': '08:00',
-      'close': '22:00', 
-      'isOpen': 'true',
+      "open": '08:00',
+      "close": '22:00', 
+      "isOpen": 'true',
     };
     
     final isOpen = dayData['isOpen'] == 'true';

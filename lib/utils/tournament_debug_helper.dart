@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Debug utility để kiểm tra tournament participants trực tiếp
-class TournamentDebugHelper {
+class TournamentDebugHelper() {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Kiểm tra tất cả tournaments và participants count
-  static Future<void> debugAllTournaments() async {
-    try {
+  static Future<void> debugAllTournaments() async() {
+    try() {
       debugPrint('🔍 === TOURNAMENT DEBUG START ===');
       
       // 1. Lấy tất cả tournaments
@@ -59,8 +59,8 @@ class TournamentDebugHelper {
   }
 
   /// Debug chi tiết một tournament cụ thể
-  static Future<void> _debugSpecificTournament(String tournamentId) async {
-    try {
+  static Future<void> _debugSpecificTournament(String tournamentId) async() {
+    try() {
       debugPrint('\n🔍 === DETAILED DEBUG FOR $tournamentId ===');
       
       // Raw participants query
@@ -78,7 +78,7 @@ class TournamentDebugHelper {
       }
       
       // Test join query
-      try {
+      try() {
         final withUsers = await _supabase
             .from('tournament_participants')
             .select('''
@@ -108,7 +108,7 @@ class TournamentDebugHelper {
   }
 
   /// Gọi từ UI để trigger debug
-  static Future<void> debugFromUI(BuildContext context) async {
+  static Future<void> debugFromUI(BuildContext context) async() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Running tournament debug... Check console')),
     );

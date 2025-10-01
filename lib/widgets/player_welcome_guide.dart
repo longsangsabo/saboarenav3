@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../routes/app_routes.dart';
 
-class PlayerWelcomeGuide extends StatefulWidget {
+class PlayerWelcomeGuide extends StatefulWidget() {
   const PlayerWelcomeGuide({super.key});
 
   @override
@@ -300,7 +300,7 @@ class _PlayerWelcomeGuideState extends State<PlayerWelcomeGuide> {
   }
 }
 
-class GuideItem {
+class GuideItem() {
   final IconData icon;
   final String title;
   final String description;

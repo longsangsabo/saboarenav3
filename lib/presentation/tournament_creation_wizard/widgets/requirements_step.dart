@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:sabo_arena/core/app_export.dart';
 
 
-class RequirementsStep extends StatefulWidget {
+class RequirementsStep extends StatefulWidget() {
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -17,7 +17,7 @@ class RequirementsStep extends StatefulWidget {
 }
 
 class _RequirementsStepState extends State<RequirementsStep>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -52,12 +52,12 @@ class _RequirementsStepState extends State<RequirementsStep>
   ];
 
   final Map<String, String> _rankLabels = {
-    'beginner': 'Người mới',
-    'amateur': 'Nghiệp dư',
-    'intermediate': 'Trung bình',
-    'advanced': 'Khá',
-    'expert': 'Giỏi',
-    'pro': 'Chuyên nghiệp',
+    "beginner": 'Người mới',
+    "amateur": 'Nghiệp dư',
+    "intermediate": 'Trung bình',
+    "advanced": 'Khá',
+    "expert": 'Giỏi',
+    "pro": 'Chuyên nghiệp',
   };
 
   @override
@@ -281,7 +281,7 @@ class _RequirementsStepState extends State<RequirementsStep>
                   ),
                   SizedBox(height: 4),
                   DropdownButtonFormField<String>(
-                    initialValue: _minRank,
+                    value: _minRank,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -326,7 +326,7 @@ class _RequirementsStepState extends State<RequirementsStep>
                   ),
                   SizedBox(height: 4),
                   DropdownButtonFormField<String>(
-                    initialValue: _maxRank,
+                    value: _maxRank,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -888,7 +888,7 @@ class _RequirementsStepState extends State<RequirementsStep>
         Switch(
           value: value,
           onChanged: onChanged,
-          activeThumbColor: Colors.blue[600] ?? Colors.blue,
+          thumbColor: Colors.blue[600] ?? Colors.blue,
         ),
       ],
     );
@@ -952,7 +952,7 @@ class _RequirementsStepState extends State<RequirementsStep>
   }
 }
 
-class TournamentRule {
+class TournamentRule() {
   final String id;
   final String title;
   final String description;
@@ -980,7 +980,7 @@ class TournamentRule {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return() {
       'id': id,
       'title': title,
       'description': description,
@@ -998,7 +998,7 @@ class TournamentRule {
   }
 }
 
-class CustomRuleDialog extends StatefulWidget {
+class CustomRuleDialog extends StatefulWidget() {
   final TournamentRule? rule;
   final Function(TournamentRule) onSave;
 

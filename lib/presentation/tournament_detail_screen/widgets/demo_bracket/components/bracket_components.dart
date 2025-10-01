@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 
 /// Shared header component for all bracket types
-class BracketHeader extends StatelessWidget {
+class BracketHeader extends StatelessWidget() {
   final String title;
   final String? subtitle;
   final VoidCallback? onFullscreenTap;
@@ -128,7 +128,7 @@ class BracketHeader extends StatelessWidget {
 }
 
 /// Individual match card component
-class MatchCard extends StatelessWidget {
+class MatchCard extends StatelessWidget() {
   final Map<String, String> match;
 
   const MatchCard({
@@ -225,7 +225,7 @@ class MatchCard extends StatelessWidget {
 }
 
 /// Player row within a match card
-class PlayerRow extends StatelessWidget {
+class PlayerRow extends StatelessWidget() {
   final String playerName;
   final String? score;
   final String? avatarUrl;
@@ -299,7 +299,7 @@ class PlayerRow extends StatelessWidget {
 }
 
 /// Round column header
-class RoundColumn extends StatelessWidget {
+class RoundColumn extends StatelessWidget() {
   final String title;
   final List<Map<String, String>> matches;
   final int? roundIndex;
@@ -394,7 +394,7 @@ class RoundColumn extends StatelessWidget {
 }
 
 /// Container wrapper for bracket displays
-class BracketContainer extends StatelessWidget {
+class BracketContainer extends StatelessWidget() {
   final Widget child;
   final String? title;
   final String? subtitle;
@@ -447,7 +447,7 @@ class BracketContainer extends StatelessWidget {
 
 /// Tournament bracket connector widget
 /// Draws connecting lines between matches to show progression flow
-class BracketConnector extends StatelessWidget {
+class BracketConnector extends StatelessWidget() {
   final int fromMatchCount;
   final int toMatchCount;
   final bool isLastRound;
@@ -467,7 +467,7 @@ class BracketConnector extends StatelessWidget {
 }
 
 /// Custom painter for drawing bracket connectors
-class ConnectorPainter extends CustomPainter {
+class ConnectorPainter extends CustomPainter() {
   final int fromMatchCount;
   final int toMatchCount;
 

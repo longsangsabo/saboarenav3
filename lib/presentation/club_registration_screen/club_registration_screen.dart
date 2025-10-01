@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../services/club_service.dart';
 
-class ClubRegistrationScreen extends StatefulWidget {
+class ClubRegistrationScreen extends StatefulWidget() {
   const ClubRegistrationScreen({super.key});
 
   @override
@@ -27,8 +27,8 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
   String? _selectedDistrict;
   final List<String> _selectedAmenities = [];
   final Map<String, String> _operatingHours = {
-    'Thứ 2 - Thứ 6': '08:00 - 22:00',
-    'Thứ 7 - Chủ nhật': '07:00 - 23:00',
+    "Thứ 2 - Thứ 6": '08:00 - 22:00',
+    "Thứ 7 - Chủ nhật": '07:00 - 23:00',
   };
 
   // Mock data
@@ -461,7 +461,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
     String? Function(String?)? validator,
   }) {
     return DropdownButtonFormField<String>(
-      initialValue: value,
+      value: value,
       onChanged: onChanged,
       validator: validator,
       decoration: InputDecoration(
@@ -508,7 +508,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
             setState(() {
               if (selected) {
                 _selectedAmenities.add(amenity);
-              } else {
+              } else() {
                 _selectedAmenities.remove(amenity);
               }
             });
@@ -604,7 +604,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
     );
   }
 
-  void _submitForm() async {
+  void _submitForm() async() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -618,7 +618,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
       _isLoading = true;
     });
 
-    try {
+    try() {
       // Call ClubService to create club
       final clubService = ClubService.instance;
       
@@ -638,7 +638,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
       if (mounted) {
         _showErrorSnackBar('Có lỗi xảy ra: ${error.toString()}');
       }
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           _isLoading = false;

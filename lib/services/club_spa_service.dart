@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 /// Service to manage Club SPA balance and reward system
 /// Handles all SPA-related operations for clubs and users
-class ClubSpaService {
+class ClubSpaService() {
   static final ClubSpaService _instance = ClubSpaService._internal();
   factory ClubSpaService() => _instance;
   ClubSpaService._internal();
@@ -11,8 +11,8 @@ class ClubSpaService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Get SPA balance for a specific club
-  Future<Map<String, dynamic>?> getClubSpaBalance(String clubId) async {
-    try {
+  Future<Map<String, dynamic>?> getClubSpaBalance(String clubId) async() {
+    try() {
       debugPrint('🏦 ClubSpaService: Getting SPA balance for club $clubId');
       
       final response = await _supabase
@@ -35,8 +35,8 @@ class ClubSpaService {
   }
 
   /// Get user's SPA balance in a specific club
-  Future<Map<String, dynamic>?> getUserSpaBalance(String userId, String clubId) async {
-    try {
+  Future<Map<String, dynamic>?> getUserSpaBalance(String userId, String clubId) async() {
+    try() {
       debugPrint('👤 ClubSpaService: Getting user $userId SPA balance in club $clubId');
       
       final response = await _supabase
@@ -48,7 +48,7 @@ class ClubSpaService {
       
       if (response == null) {
         debugPrint('ℹ️ No SPA balance found, returning zero balance');
-        return {
+        return() {
           'user_id': userId,
           'club_id': clubId,
           'spa_balance': 0.0,
@@ -70,8 +70,8 @@ class ClubSpaService {
     String userId, 
     String clubId, {
     int limit = 50
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('📋 ClubSpaService: Getting SPA transactions for user $userId');
       
       final response = await _supabase
@@ -97,8 +97,8 @@ class ClubSpaService {
     double spaAmount, {
     String? matchId,
     String? description
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🎁 ClubSpaService: Awarding $spaAmount SPA to user $userId');
       
       // Call the database function to award SPA bonus
@@ -112,7 +112,7 @@ class ClubSpaService {
       if (response == true) {
         debugPrint('✅ SPA bonus awarded successfully!');
         return true;
-      } else {
+      } else() {
         debugPrint('❌ Failed to award SPA bonus');
         return false;
       }
@@ -123,8 +123,8 @@ class ClubSpaService {
   }
 
   /// Get all available rewards for a club
-  Future<List<Map<String, dynamic>>> getClubRewards(String clubId) async {
-    try {
+  Future<List<Map<String, dynamic>>> getClubRewards(String clubId) async() {
+    try() {
       debugPrint('🎁 ClubSpaService: Getting rewards for club $clubId');
       
       final response = await _supabase
@@ -152,8 +152,8 @@ class ClubSpaService {
     required String rewardValue,
     int? quantityAvailable,
     DateTime? validUntil,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('➕ ClubSpaService: Creating new reward: $rewardName');
       
       await _supabase
@@ -183,8 +183,8 @@ class ClubSpaService {
     String rewardId, 
     String userId, 
     String clubId
-  ) async {
-    try {
+  ) async() {
+    try() {
       debugPrint('🛒 ClubSpaService: Redeeming reward $rewardId for user $userId');
       
       // Get reward details first
@@ -196,21 +196,21 @@ class ClubSpaService {
       
       if (reward == null) {
         debugPrint('❌ Reward not found');
-        return {'error': 'Reward not found'};
+        return {"error": 'Reward not found'};
       }
       
       // Check user has enough SPA
       final userBalance = await getUserSpaBalance(userId, clubId);
       if (userBalance == null || userBalance['spa_balance'] < reward['spa_cost']) {
         debugPrint('❌ Insufficient SPA balance');
-        return {'error': 'Insufficient SPA balance'};
+        return {"error": 'Insufficient SPA balance'};
       }
       
       // Check quantity if limited
       if (reward['quantity_available'] != null && 
           reward['quantity_claimed'] >= reward['quantity_available']) {
         debugPrint('❌ Reward out of stock');
-        return {'error': 'Reward is out of stock'};
+        return {"error": 'Reward is out of stock'};
       }
       
       // Generate redemption code
@@ -225,7 +225,7 @@ class ClubSpaService {
             'club_id': clubId,
             'spa_cost': reward['spa_cost'],
             'redemption_code': redemptionCode,
-            'redemption_status': 'pending',
+            "redemption_status": 'pending',
           })
           .select()
           .single();
@@ -255,18 +255,18 @@ class ClubSpaService {
           .insert({
             'club_id': clubId,
             'user_id': userId,
-            'transaction_type': 'reward_redemption',
+            "transaction_type": 'reward_redemption',
             'spa_amount': -reward['spa_cost'],
             'balance_before': userBalance['spa_balance'],
             'balance_after': userBalance['spa_balance'] - reward['spa_cost'],
             'reference_id': redemption['id'],
-            'reference_type': 'reward',
-            'description': 'Redeemed reward: ${reward['reward_name']}',
+            "reference_type": 'reward',
+            "description": 'Redeemed reward: ${reward['reward_name']}',
             'created_by': userId,
           });
       
       debugPrint('✅ Reward redeemed successfully! Code: $redemptionCode');
-      return {
+      return() {
         'redemption': redemption,
         'redemption_code': redemptionCode,
         'success': true,
@@ -281,8 +281,8 @@ class ClubSpaService {
   Future<List<Map<String, dynamic>>> getUserRedemptions(
     String userId, 
     String clubId
-  ) async {
-    try {
+  ) async() {
+    try() {
       debugPrint('📋 ClubSpaService: Getting redemptions for user $userId');
       
       final response = await _supabase
@@ -312,8 +312,8 @@ class ClubSpaService {
     String clubId, 
     double spaAmount, 
     String description
-  ) async {
-    try {
+  ) async() {
+    try() {
       debugPrint('🏦 ClubSpaService: Adding $spaAmount SPA to club $clubId');
       
       final response = await _supabase.rpc('add_spa_to_club', params: {
@@ -325,7 +325,7 @@ class ClubSpaService {
       if (response == true) {
         debugPrint('✅ SPA added to club successfully!');
         return true;
-      } else {
+      } else() {
         debugPrint('❌ Failed to add SPA to club');
         return false;
       }
@@ -339,8 +339,8 @@ class ClubSpaService {
   Future<List<Map<String, dynamic>>> getClubSpaTransactions(
     String clubId, {
     int limit = 100
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('📋 ClubSpaService: Getting club SPA transactions');
       
       final response = await _supabase
@@ -364,8 +364,8 @@ class ClubSpaService {
   // ADMIN METHODS
 
   /// Get all clubs with their SPA balance information (admin only)
-  Future<List<Map<String, dynamic>>> getAllClubsWithSpaBalance() async {
-    try {
+  Future<List<Map<String, dynamic>>> getAllClubsWithSpaBalance() async() {
+    try() {
       final response = await _supabase
           .from('clubs')
           .select('''
@@ -413,8 +413,8 @@ class ClubSpaService {
   }
 
   /// Get all SPA transactions across the system (admin only)
-  Future<List<Map<String, dynamic>>> getAllSpaTransactions() async {
-    try {
+  Future<List<Map<String, dynamic>>> getAllSpaTransactions() async() {
+    try() {
       final response = await _supabase
           .from('spa_transactions')
           .select('''
@@ -440,8 +440,8 @@ class ClubSpaService {
   }
 
   /// Get system-wide SPA statistics (admin only)
-  Future<Map<String, dynamic>> getSystemSpaStats() async {
-    try {
+  Future<Map<String, dynamic>> getSystemSpaStats() async() {
+    try() {
       final results = await Future.wait([
         // Total allocated SPA
         _supabase
@@ -506,8 +506,8 @@ class ClubSpaService {
     required String clubId,
     required double spaAmount,
     String? description,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase.rpc('add_spa_to_club', params: {
         'p_club_id': clubId,
         'p_spa_amount': spaAmount,
@@ -517,7 +517,7 @@ class ClubSpaService {
       if (response == true) {
         debugPrint('✅ SPA allocated to club successfully!');
         return true;
-      } else {
+      } else() {
         debugPrint('❌ Failed to allocate SPA to club');
         return false;
       }

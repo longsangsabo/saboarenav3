@@ -7,7 +7,7 @@ import '../../widgets/rank_change_request_dialog.dart';
 import '../../../core/utils/rank_migration_helper.dart';
 import '../../../core/app_export.dart';
 
-class StatisticsCardsWidget extends StatefulWidget {
+class StatisticsCardsWidget extends StatefulWidget() {
   final String userId;
 
   const StatisticsCardsWidget({
@@ -31,8 +31,8 @@ class _StatisticsCardsWidgetState extends State<StatisticsCardsWidget> {
     _loadStatistics();
   }
 
-  Future<void> _loadStatistics() async {
-    try {
+  Future<void> _loadStatistics() async() {
+    try() {
       setState(() {
         _isLoading = true;
       });
@@ -181,13 +181,13 @@ class _StatisticsCardsWidgetState extends State<StatisticsCardsWidget> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: AppTheme.lightTheme.shadowColor.withValues(alpha: 0.1),
+                color: AppTheme.lightTheme.shadowColor.withOpacity(0.1),
                 blurRadius: 8,
                 offset: Offset(0, 2),
               ),
             ],
             border: Border.all(
-              color: Colors.orange.withValues(alpha: 0.3),
+              color: Colors.orange.withOpacity(0.3),
               width: 2,
             ),
           ),
@@ -260,7 +260,7 @@ class _StatisticsCardsWidgetState extends State<StatisticsCardsWidget> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.lightTheme.shadowColor.withValues(alpha: 0.1),
+              color: AppTheme.lightTheme.shadowColor.withOpacity(0.1),
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
@@ -383,9 +383,9 @@ class _StatisticsCardsWidgetState extends State<StatisticsCardsWidget> {
             Container(
               padding: EdgeInsets.all(3.w),
               decoration: BoxDecoration(
-                color: Colors.orange.withValues(alpha: 0.1),
+                color: Colors.orange.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                border: Border.all(color: Colors.orange.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
@@ -453,13 +453,13 @@ class _StatisticsCardsWidgetState extends State<StatisticsCardsWidget> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.lightTheme.shadowColor.withValues(alpha: 0.1),
+            color: AppTheme.lightTheme.shadowColor.withOpacity(0.1),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
         ],
         border: Border.all(
-          color: color.withValues(alpha: 0.2),
+          color: color.withOpacity(0.2),
           width: 1,
         ),
       ),

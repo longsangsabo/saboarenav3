@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/presentation/tournament_detail_screen/widgets/demo_bracket_tab.dart';
 
-class DemoBracketDialog extends StatelessWidget {
+class DemoBracketDialog extends StatelessWidget() {
   const DemoBracketDialog({super.key});
 
   static Future<void> show(BuildContext context) {

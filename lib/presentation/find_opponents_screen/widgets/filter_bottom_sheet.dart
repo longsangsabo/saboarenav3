@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class FilterBottomSheet extends StatefulWidget {
+class FilterBottomSheet extends StatefulWidget() {
   final Map<String, dynamic> currentFilters;
   final Function(Map<String, dynamic>) onFiltersChanged;
 
@@ -43,7 +43,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             width: 12.w,
             height: 0.5.h,
             decoration: BoxDecoration(
-              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+              color: colorScheme.onSurfaceVariant.withOpacity(0.4),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -71,7 +71,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
           ),
 
-          Divider(height: 1, color: colorScheme.outline.withValues(alpha: 0.2)),
+          Divider(height: 1, color: colorScheme.outline.withOpacity(0.2)),
 
           // Filter content
           Flexible(
@@ -146,13 +146,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 setState(() {
                   if (selected) {
                     selectedTypes.add(gameType);
-                  } else {
+                  } else() {
                     selectedTypes.remove(gameType);
                   }
                   _filters['gameTypes'] = selectedTypes;
                 });
               },
-              selectedColor: theme.colorScheme.primary.withValues(alpha: 0.2),
+              selectedColor: theme.colorScheme.primary.withOpacity(0.2),
               checkmarkColor: theme.colorScheme.primary,
             );
           }).toList(),
@@ -188,13 +188,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 setState(() {
                   if (selected) {
                     selectedLevels.add(level);
-                  } else {
+                  } else() {
                     selectedLevels.remove(level);
                   }
                   _filters['skillLevels'] = selectedLevels;
                 });
               },
-              selectedColor: theme.colorScheme.primary.withValues(alpha: 0.2),
+              selectedColor: theme.colorScheme.primary.withOpacity(0.2),
               checkmarkColor: theme.colorScheme.primary,
             );
           }).toList(),
@@ -247,9 +247,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Widget _buildAvailabilityFilter() {
     final theme = Theme.of(context);
     final availabilityOptions = [
-      {'key': 'online', 'label': 'Đang online'},
-      {'key': 'available', 'label': 'Sẵn sàng chơi'},
-      {'key': 'nearby', 'label': 'Gần đây'},
+      {"key": 'online', "label": 'Đang online'},
+      {"key": 'available', "label": 'Sẵn sàng chơi'},
+      {"key": 'nearby', "label": 'Gần đây'},
     ];
     final selectedAvailability =
         _filters['availability'] as List<String>? ?? [];
@@ -273,7 +273,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               setState(() {
                 if (selected == true) {
                   selectedAvailability.add(option['key'] as String);
-                } else {
+                } else() {
                   selectedAvailability.remove(option['key']);
                 }
                 _filters['availability'] = selectedAvailability;

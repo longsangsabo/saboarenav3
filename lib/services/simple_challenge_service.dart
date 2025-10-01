@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 /// Simple Challenge Service for basic challenge functionality
 /// This version doesn't depend on advanced challenge rules
-class SimpleChallengeService {
+class SimpleChallengeService() {
   static SimpleChallengeService? _instance;
   static SimpleChallengeService get instance => _instance ??= SimpleChallengeService._();
   SimpleChallengeService._();
@@ -22,8 +22,8 @@ class SimpleChallengeService {
     int handicap = 0,
     int spaPoints = 0,
     String? message,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🚀 SimpleChallengeService.sendChallenge called');
       debugPrint('📊 Parameters:');
       debugPrint('   challengedUserId: $challengedUserId');
@@ -38,7 +38,7 @@ class SimpleChallengeService {
       if (currentUser != null) {
         userId = currentUser.id;
         debugPrint('🔐 Using authenticated user: $userId');
-      } else {
+      } else() {
         // Try to use test user for development
         userId = TestUserService.instance.getCurrentUserId();
         if (userId == null) {
@@ -77,7 +77,7 @@ class SimpleChallengeService {
             .eq('id', challengedUserId)
             .single();
         debugPrint('✅ Challenged user: ${challengedUserResponse['display_name']}');
-      } else {
+      } else() {
         debugPrint('🌐 Open Challenge - Anyone can accept');
       }
 
@@ -88,7 +88,7 @@ class SimpleChallengeService {
         'challenged_id': isOpenChallenge ? null : challengedUserId,
         'challenge_type': challengeType,
         'message': message ?? '',
-        'stakes_type': spaPoints > 0 ? 'spa_points' : 'none', // Map spa betting
+        'stakes_type': spaPoints > 0 ? "spa_points" : 'none', // Map spa betting
         'stakes_amount': spaPoints, // Map spa_points to stakes_amount
         'match_conditions': { // Store additional data as JSON
           'game_type': gameType,
@@ -96,7 +96,7 @@ class SimpleChallengeService {
           'scheduled_time': scheduledTime.toIso8601String(),
           'handicap': handicap,
         },
-        'status': 'pending',
+        "status": 'pending',
         'handicap_challenger': 0.0,
         'handicap_challenged': handicap.toDouble(), // Map handicap
         'rank_difference': 0,
@@ -115,7 +115,7 @@ class SimpleChallengeService {
 
       // Send notification (skip for open challenge)
       if (!isOpenChallenge) {
-        try {
+        try() {
           await _sendChallengeNotification(
             challengeId: challengeResponse['id'],
             challengerName: userResponse['display_name'] ?? 'Người chơi',
@@ -131,7 +131,7 @@ class SimpleChallengeService {
           debugPrint('⚠️ Notification failed: $notificationError');
           // Don't fail the whole challenge if notification fails
         }
-      } else {
+      } else() {
         debugPrint('🌐 Open Challenge - No individual notification needed');
       }
 
@@ -152,10 +152,10 @@ class SimpleChallengeService {
     required DateTime scheduledTime,
     required String location,
     required int spaPoints,
-  }) async {
-    try {
-      final challengeTypeVi = challengeType == 'thach_dau' ? 'thách đấu' : 'giao lưu';
-      final spaInfo = spaPoints > 0 ? ' ($spaPoints SPA)' : '';
+  }) async() {
+    try() {
+      final challengeTypeVi = challengeType == 'thach_dau' ? "thách đấu" : 'giao lưu';
+      final spaInfo = spaPoints > 0 ? " ($spaPoints SPA)" : '';
       
       final message = '''
 🎱 Lời mời $challengeTypeVi!
@@ -190,18 +190,18 @@ Hãy vào ứng dụng để phản hồi!
   /// Get SPA betting options (simplified)
   List<Map<String, dynamic>> getSpaBettingOptions() {
     return [
-      {'amount': 100, 'raceTo': 8, 'description': 'Thách đấu sơ cấp'},
-      {'amount': 200, 'raceTo': 12, 'description': 'Thách đấu cơ bản'},
-      {'amount': 300, 'raceTo': 14, 'description': 'Thách đấu trung bình'},
-      {'amount': 400, 'raceTo': 16, 'description': 'Thách đấu trung cấp'},
-      {'amount': 500, 'raceTo': 18, 'description': 'Thách đấu trung cao'},
-      {'amount': 600, 'raceTo': 22, 'description': 'Thách đấu cao cấp'},
+      {'amount': 100, 'raceTo': 8, "description": 'Thách đấu sơ cấp'},
+      {'amount': 200, 'raceTo': 12, "description": 'Thách đấu cơ bản'},
+      {'amount': 300, 'raceTo': 14, "description": 'Thách đấu trung bình'},
+      {'amount': 400, 'raceTo': 16, "description": 'Thách đấu trung cấp'},
+      {'amount': 500, 'raceTo': 18, "description": 'Thách đấu trung cao'},
+      {'amount': 600, 'raceTo': 22, "description": 'Thách đấu cao cấp'},
     ];
   }
 
   /// Simple validation (always returns true for now)
-  Future<bool> canPlayersChallenge(String challengerId, String challengedId) async {
-    try {
+  Future<bool> canPlayersChallenge(String challengerId, String challengedId) async() {
+    try() {
       // Basic check - make sure both users exist
       await _supabase
           .from('users')

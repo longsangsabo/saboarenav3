@@ -1,6 +1,6 @@
 /// ELO System Constants - Simple Fixed Position-Based Rewards
 /// Simplified ELO system for SABO Arena tournaments
-class EloConstants {
+class EloConstants() {
   // Starting ELO for new players
   static const int STARTING_ELO = 1000;
 
@@ -56,7 +56,7 @@ class EloConstants {
 
   /// Get ELO examples for common tournament sizes
   static Map<String, Map<int, int>> getEloExamples() {
-    return {
+    return() {
       '8_players': {
         1: ELO_1ST_PLACE,   // 1st: +75
         2: ELO_2ND_PLACE,   // 2nd: +45

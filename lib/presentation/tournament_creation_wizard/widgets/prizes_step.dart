@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 import 'package:sabo_arena/utils/size_extensions.dart';
 
-class PrizesStep extends StatefulWidget {
+class PrizesStep extends StatefulWidget() {
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -17,7 +17,7 @@ class PrizesStep extends StatefulWidget {
 }
 
 class _PrizesStepState extends State<PrizesStep>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -40,17 +40,17 @@ class _PrizesStepState extends State<PrizesStep>
   String _sponsorshipBenefits = '';
 
   final Map<String, String> _prizeSourceLabels = {
-    'entry_fees': 'Từ phí tham gia',
-    'sponsor': 'Từ nhà tài trợ',
-    'hybrid': 'Kết hợp cả hai',
+    "entry_fees": 'Từ phí tham gia',
+    "sponsor": 'Từ nhà tài trợ',
+    "hybrid": 'Kết hợp cả hai',
   };
 
   final Map<String, String> _distributionTemplateLabels = {
-    'winner_takes_all': 'Người thắng nhận tất cả',
-    'top_3': 'Top 3 (50%-30%-20%)',
-    'top_5': 'Top 5 (40%-25%-20%-10%-5%)',
-    'equal_split': 'Chia đều cho Top 8',
-    'custom': 'Tùy chỉnh',
+    "winner_takes_all": 'Người thắng nhận tất cả',
+    "top_3": 'Top 3 (50%-30%-20%)',
+    "top_5": 'Top 5 (40%-25%-20%-10%-5%)',
+    "equal_split": 'Chia đều cho Top 8',
+    "custom": 'Tùy chỉnh',
   };
 
   final Map<String, List<double>> _distributionTemplates = {
@@ -939,7 +939,7 @@ class _PrizesStepState extends State<PrizesStep>
                   });
                   _updateData();
                 },
-                activeThumbColor: appTheme.blue600,
+                thumbColor: appTheme.blue600,
               ),
             ],
           ),
@@ -1140,7 +1140,7 @@ class _PrizesStepState extends State<PrizesStep>
 }
 
 // Supporting Classes
-class PrizeDistribution {
+class PrizeDistribution() {
   final int position;
   final double percentage;
 
@@ -1162,7 +1162,7 @@ class PrizeDistribution {
   }
 }
 
-class AdditionalPrize {
+class AdditionalPrize() {
   final String id;
   final String title;
   final String description;
@@ -1178,7 +1178,7 @@ class AdditionalPrize {
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    return() {
       'id': id,
       'title': title,
       'description': description,
@@ -1198,7 +1198,7 @@ class AdditionalPrize {
   }
 }
 
-class Sponsor {
+class Sponsor() {
   final String id;
   final String name;
   final double amount;
@@ -1215,7 +1215,7 @@ class Sponsor {
 }
 
 // Dialog Classes
-class AdditionalPrizeDialog extends StatefulWidget {
+class AdditionalPrizeDialog extends StatefulWidget() {
   final Function(AdditionalPrize) onSave;
 
   const AdditionalPrizeDialog({super.key, required this.onSave});
@@ -1249,7 +1249,7 @@ class _AdditionalPrizeDialogState extends State<AdditionalPrizeDialog> {
           ),
           SizedBox(height: 16.v),
           DropdownButtonFormField<String>(
-            initialValue: _type,
+            value: _type,
             decoration: InputDecoration(labelText: "Loại giải", border: OutlineInputBorder()),
             items: [
               DropdownMenuItem(value: 'trophy', child: Text("Cúp")),
@@ -1290,7 +1290,7 @@ class _AdditionalPrizeDialogState extends State<AdditionalPrizeDialog> {
   }
 }
 
-class SponsorDialog extends StatefulWidget {
+class SponsorDialog extends StatefulWidget() {
   final Function(Sponsor) onSave;
 
   const SponsorDialog({super.key, required this.onSave});

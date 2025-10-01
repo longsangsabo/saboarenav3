@@ -4,7 +4,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-class NotificationModel {
+class NotificationModel() {
   final String id;
   final String userId;
   final NotificationType type;
@@ -62,7 +62,7 @@ class NotificationModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'user_id': userId,
       'type': type.value,
@@ -133,7 +133,7 @@ class NotificationModel {
 }
 
 /// Notification types với display names và descriptions
-enum NotificationType {
+enum NotificationType() {
   tournamentInvitation('tournament_invitation'),
   tournamentRegistration('tournament_registration'),
   matchResult('match_result'),
@@ -154,7 +154,7 @@ enum NotificationType {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case NotificationType.tournamentInvitation:
         return 'Tournament Invitations';
@@ -177,7 +177,7 @@ enum NotificationType {
     }
   }
 
-  String get description {
+  String get description() {
     switch (this) {
       case NotificationType.tournamentInvitation:
         return 'Get notified when invited to tournaments';
@@ -202,7 +202,7 @@ enum NotificationType {
 }
 
 /// Notification priority levels
-enum NotificationPriority {
+enum NotificationPriority() {
   low('low'),
   normal('normal'),
   high('high'),
@@ -218,7 +218,7 @@ enum NotificationPriority {
     );
   }
 
-  String get displayName {
+  String get displayName() {
     switch (this) {
       case NotificationPriority.low:
         return 'Low';
@@ -231,7 +231,7 @@ enum NotificationPriority {
     }
   }
 
-  int get androidPriority {
+  int get androidPriority() {
     switch (this) {
       case NotificationPriority.low:
         return 0; // PRIORITY_MIN
@@ -246,7 +246,7 @@ enum NotificationPriority {
 }
 
 /// Local notification payload for action handling
-class LocalNotificationPayload {
+class LocalNotificationPayload() {
   final String notificationId;
   final NotificationType type;
   final String? actionUrl;
@@ -292,7 +292,7 @@ class LocalNotificationPayload {
 }
 
 /// Notification statistics for analytics
-class NotificationStats {
+class NotificationStats() {
   final int totalNotifications;
   final int unreadCount;
   final int readCount;
@@ -339,7 +339,7 @@ class NotificationStats {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'total_notifications': totalNotifications,
       'unread_count': unreadCount,
       'read_count': readCount,
@@ -353,7 +353,7 @@ class NotificationStats {
 }
 
 /// Notification action (for action buttons)
-class NotificationAction {
+class NotificationAction() {
   final String id;
   final String title;
   final String? actionUrl;
@@ -379,7 +379,7 @@ class NotificationAction {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'title': title,
       'action_url': actionUrl,
@@ -390,7 +390,7 @@ class NotificationAction {
 }
 
 /// Notification template for creating consistent notifications
-class NotificationTemplate {
+class NotificationTemplate() {
   final NotificationType type;
   final String titleTemplate;
   final String bodyTemplate;
@@ -447,7 +447,7 @@ class NotificationTemplate {
 }
 
 /// Built-in notification templates
-class NotificationTemplates {
+class NotificationTemplates() {
   static final Map<NotificationType, NotificationTemplate> templates = {
     NotificationType.tournamentInvitation: NotificationTemplate(
       type: NotificationType.tournamentInvitation,
@@ -515,7 +515,7 @@ class NotificationTemplates {
 }
 
 /// Notification preferences model for user settings
-class NotificationPreferences {
+class NotificationPreferences() {
   final String userId;
   final bool enablePushNotifications;
   final bool enableInAppNotifications;
@@ -573,7 +573,7 @@ class NotificationPreferences {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'user_id': userId,
       'enable_push_notifications': enablePushNotifications,
       'enable_in_app_notifications': enableInAppNotifications,
@@ -593,7 +593,7 @@ class NotificationPreferences {
 }
 
 /// Notification type specific settings
-class NotificationTypeSetting {
+class NotificationTypeSetting() {
   final NotificationType type;
   final bool enabled;
   final NotificationSound? customSound;
@@ -621,7 +621,7 @@ class NotificationTypeSetting {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'type': type.toString(),
       'enabled': enabled,
       'custom_sound': customSound?.toString(),
@@ -632,7 +632,7 @@ class NotificationTypeSetting {
 }
 
 /// Notification sound settings
-enum NotificationSound {
+enum NotificationSound() {
   defaultSound,
   none,
   chime,
@@ -679,7 +679,7 @@ enum NotificationSound {
 }
 
 /// Notification channel for Android
-class NotificationChannel {
+class NotificationChannel() {
   final String id;
   final String name;
   final String description;
@@ -699,7 +699,7 @@ class NotificationChannel {
   });
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'name': name,
       'description': description,
@@ -712,7 +712,7 @@ class NotificationChannel {
 }
 
 /// Extensions for TimeOfDay
-extension TimeOfDayExtension on TimeOfDay {
+extension TimeOfDayExtension on TimeOfDay() {
   String format24Hour() {
     final hour = this.hour.toString().padLeft(2, '0');
     final minute = this.minute.toString().padLeft(2, '0');

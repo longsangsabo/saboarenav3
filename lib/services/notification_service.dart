@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 
-class NotificationService {
+class NotificationService() {
   static NotificationService? _instance;
   static NotificationService get instance => _instance ??= NotificationService._();
   NotificationService._();
@@ -11,8 +11,8 @@ class NotificationService {
   final AuthService _authService = AuthService.instance;
 
   /// Get unread notification count for current user
-  Future<int> getUnreadNotificationCount() async {
-    try {
+  Future<int> getUnreadNotificationCount() async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return 0;
 
@@ -31,8 +31,8 @@ class NotificationService {
   }
 
   /// Get all notifications for current user
-  Future<List<Map<String, dynamic>>> getUserNotifications({int limit = 20}) async {
-    try {
+  Future<List<Map<String, dynamic>>> getUserNotifications({int limit = 20}) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return [];
 
@@ -51,8 +51,8 @@ class NotificationService {
   }
 
   /// Mark notification as read
-  Future<void> markNotificationAsRead(String notificationId) async {
-    try {
+  Future<void> markNotificationAsRead(String notificationId) async() {
+    try() {
       await _supabase
           .from('notifications')
           .update({'is_read': true, 'read_at': DateTime.now().toIso8601String()})
@@ -63,8 +63,8 @@ class NotificationService {
   }
 
   /// Mark all notifications as read for current user
-  Future<void> markAllNotificationsAsRead() async {
-    try {
+  Future<void> markAllNotificationsAsRead() async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return;
 
@@ -83,8 +83,8 @@ class NotificationService {
     required String tournamentId,
     required String userId,
     required String paymentMethod,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Get tournament details
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -119,7 +119,7 @@ class NotificationService {
 
 Giải đấu: ${tournamentResponse['title']}
 Người đăng ký: ${userResponse['display_name']}
-Phương thức thanh toán: ${paymentMethod == '0' ? 'Đóng tại quán' : 'Chuyển khoản QR'}
+Phương thức thanh toán: ${paymentMethod == '0' ? "Đóng tại quán" : 'Chuyển khoản QR'}
 Email: ${userResponse['email'] ?? 'Chưa cập nhật'}
 
 Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
@@ -128,9 +128,9 @@ Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
       // Insert notification to database
       await _supabase.from('notifications').insert({
         'user_id': clubAdminResponse['user_id'],
-        'title': 'Đăng ký giải đấu mới',
+        "title": 'Đăng ký giải đấu mới',
         'message': message,
-        'type': 'tournament_registration',
+        "type": 'tournament_registration',
         'data': {'tournament_id': tournamentId, 'user_id': userId},
         'created_at': DateTime.now().toIso8601String(),
         'is_read': false,
@@ -146,8 +146,8 @@ Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
   Future<List<Map<String, dynamic>>> getNotifications({
     bool? isRead,
     int limit = 20,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -169,8 +169,8 @@ Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
   }
 
   /// Mark notification as read
-  Future<void> markAsRead(String notificationId) async {
-    try {
+  Future<void> markAsRead(String notificationId) async() {
+    try() {
       await _supabase
           .from('notifications')
           .update({'is_read': true})
@@ -187,8 +187,8 @@ Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
     required String message,
     required String type,
     Map<String, dynamic>? data,
-  }) async {
-    try {
+  }) async() {
+    try() {
       await _supabase.from('notifications').insert({
         'user_id': userId,
         'title': title,

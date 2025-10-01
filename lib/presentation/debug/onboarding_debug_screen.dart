@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OnboardingDebugScreen extends StatelessWidget {
+class OnboardingDebugScreen extends StatelessWidget() {
   const OnboardingDebugScreen({super.key});
 
-  Future<void> _resetOnboarding(BuildContext context) async {
-    try {
+  Future<void> _resetOnboarding(BuildContext context) async() {
+    try() {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('has_seen_onboarding');
       

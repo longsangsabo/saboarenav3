@@ -4,7 +4,7 @@ import 'package:sabo_arena/services/user_code_service.dart';
 import 'basic_referral_service.dart';
 import 'package:flutter/foundation.dart';
 
-class IntegratedQRService {
+class IntegratedQRService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
   static const String _baseUrl = 'https://saboarena.com';
   
@@ -19,8 +19,8 @@ class IntegratedQRService {
   }
   
   /// Generate complete QR data with referral for a user
-  static Future<Map<String, dynamic>> generateQRDataWithReferral(UserProfile user) async {
-    try {
+  static Future<Map<String, dynamic>> generateQRDataWithReferral(UserProfile user) async() {
+    try() {
       // 1. Get or generate user code
       String userCode = await UserCodeService.getUserCode(user.id) ?? 
                        await UserCodeService.generateUniqueUserCode(user.id);
@@ -35,7 +35,7 @@ class IntegratedQRService {
         referralCode: referralCode,
       );
       
-      return {
+      return() {
         'user_code': userCode,
         'user_id': user.id,
         'referral_code': referralCode,
@@ -53,8 +53,8 @@ class IntegratedQRService {
   }
   
   /// Ensure user has a referral code, create if doesn't exist
-  static Future<String> _ensureUserHasReferralCode(UserProfile user) async {
-    try {
+  static Future<String> _ensureUserHasReferralCode(UserProfile user) async() {
+    try() {
       // Check if user already has a referral code
       final existingCode = await BasicReferralService.getUserReferralCode(user.id);
       if (existingCode != null) return existingCode;
@@ -80,8 +80,8 @@ class IntegratedQRService {
   }
   
   /// Update user's QR data in database with integrated format
-  static Future<bool> updateUserIntegratedQR(String userId) async {
-    try {
+  static Future<bool> updateUserIntegratedQR(String userId) async() {
+    try() {
       // Get user profile
       final userResponse = await _supabase
           .from('users')
@@ -118,8 +118,8 @@ class IntegratedQRService {
   }
   
   /// Scan integrated QR code and return profile + referral info
-  static Future<Map<String, dynamic>?> scanIntegratedQR(String qrData) async {
-    try {
+  static Future<Map<String, dynamic>?> scanIntegratedQR(String qrData) async() {
+    try() {
       debugPrint('🔍 Scanning integrated QR: $qrData');
       
       // Parse URL: https://saboarena.com/user/SABO123456?ref=SABO-USERNAME
@@ -136,8 +136,8 @@ class IntegratedQRService {
         final userProfile = await _findUserByCode(userCode);
         
         if (userProfile != null) {
-          return {
-            'type': 'integrated_profile',
+          return() {
+            "type": 'integrated_profile',
             'scan_success': true,
             'user_profile': userProfile,
             'user_code': userCode,
@@ -156,11 +156,11 @@ class IntegratedQRService {
               'user_code': userCode,
             }
           };
-        } else {
-          return {
-            'type': 'invalid_qr',
+        } else() {
+          return() {
+            "type": 'invalid_qr',
             'scan_success': false,
-            'message': 'User not found for code: $userCode',
+            "message": 'User not found for code: $userCode',
           };
         }
       }
@@ -170,8 +170,8 @@ class IntegratedQRService {
         final userProfile = await _findUserByCode(qrData);
         
         if (userProfile != null) {
-          return {
-            'type': 'user_code_only',
+          return() {
+            "type": 'user_code_only',
             'scan_success': true,
             'user_profile': userProfile,
             'user_code': qrData,
@@ -195,8 +195,8 @@ class IntegratedQRService {
   }
   
   /// Find user by user_code
-  static Future<Map<String, dynamic>?> _findUserByCode(String userCode) async {
-    try {
+  static Future<Map<String, dynamic>?> _findUserByCode(String userCode) async() {
+    try() {
       final response = await _supabase
           .from('users')
           .select('*')
@@ -211,8 +211,8 @@ class IntegratedQRService {
   }
   
   /// Get user's current integrated QR data
-  static Future<Map<String, dynamic>?> getUserIntegratedQR(String userId) async {
-    try {
+  static Future<Map<String, dynamic>?> getUserIntegratedQR(String userId) async() {
+    try() {
       final userResponse = await _supabase
           .from('users')
           .select('*')
@@ -232,16 +232,16 @@ class IntegratedQRService {
   static Future<Map<String, dynamic>> applyQRReferralDuringRegistration({
     required String newUserId,
     required String scannedQRData,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Parse referral code from QR data
       final uri = Uri.tryParse(scannedQRData);
       final referralCode = uri?.queryParameters['ref'];
       
       if (referralCode == null) {
-        return {
+        return() {
           'success': false,
-          'message': 'No referral code found in QR data',
+          "message": 'No referral code found in QR data',
         };
       }
       
@@ -252,15 +252,15 @@ class IntegratedQRService {
       );
       
       if (result?['success'] == true) {
-        return {
+        return() {
           'success': true,
           'referral_code': referralCode,
           'referrer_reward': result!['referrer_reward'],
           'referred_reward': result['referred_reward'],
-          'message': 'Referral code applied successfully! You received ${result['referred_reward']} SPA points!',
+          "message": 'Referral code applied successfully! You received ${result['referred_reward']} SPA points!',
         };
-      } else {
-        return {
+      } else() {
+        return() {
           'success': false,
           'message': result?['message'] ?? 'Failed to apply referral code',
         };
@@ -268,9 +268,9 @@ class IntegratedQRService {
       
     } catch (e) {
       debugPrint('❌ Error applying QR referral: $e');
-      return {
+      return() {
         'success': false,
-        'message': 'Error applying referral: $e',
+        "message": 'Error applying referral: $e',
       };
     }
   }

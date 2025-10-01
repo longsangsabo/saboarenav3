@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 import 'package:sabo_arena/utils/size_extensions.dart';
 
-class ScheduleStep extends StatefulWidget {
+class ScheduleStep extends StatefulWidget() {
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -17,7 +17,7 @@ class ScheduleStep extends StatefulWidget {
 }
 
 class _ScheduleStepState extends State<ScheduleStep>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -772,7 +772,7 @@ class _ScheduleStepState extends State<ScheduleStep>
                       });
                       _updateData();
                     },
-                    activeThumbColor: appTheme.blue600,
+                    thumbColor: appTheme.blue600,
                   ),
                   
                   SizedBox(width: 12.h),
@@ -842,7 +842,7 @@ class _ScheduleStepState extends State<ScheduleStep>
     Function(DateTime) onDateChanged,
     DateTime? minDate,
     DateTime? maxDate,
-  ) async {
+  ) async() {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: currentDate,
@@ -916,7 +916,7 @@ class _ScheduleStepState extends State<ScheduleStep>
   }
 }
 
-class TimeSlot {
+class TimeSlot() {
   final String id;
   final String start;
   final String end;
@@ -952,7 +952,7 @@ class TimeSlot {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return() {
       'id': id,
       'start': start,
       'end': end,
@@ -974,7 +974,7 @@ class TimeSlot {
   }
 }
 
-class TimeSlotDialog extends StatefulWidget {
+class TimeSlotDialog extends StatefulWidget() {
   final TimeSlot? timeSlot;
   final Function(TimeSlot) onSave;
 
@@ -991,7 +991,7 @@ class TimeSlotDialog extends StatefulWidget {
 class _TimeSlotDialogState extends State<TimeSlotDialog> {
   final TextEditingController _labelController = TextEditingController();
   String _startTime = '08:00';
-  String _endTime = '12:00';
+  String _endTime = '12:00";
   int _maxMatches = 2;
 
   @override
@@ -1093,9 +1093,9 @@ class _TimeSlotDialogState extends State<TimeSlotDialog> {
     );
   }
 
-  void _selectTime(bool isStart) async {
+  void _selectTime(bool isStart) async() {
     final currentTime = isStart ? _startTime : _endTime;
-    final timeParts = currentTime.split(':');
+    final timeParts = currentTime.split(":');
     
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -1110,7 +1110,7 @@ class _TimeSlotDialogState extends State<TimeSlotDialog> {
       setState(() {
         if (isStart) {
           _startTime = timeString;
-        } else {
+        } else() {
           _endTime = timeString;
         }
       });

@@ -9,7 +9,7 @@ import 'tournament_service.dart';
 import 'package:flutter/foundation.dart';
 
 /// Service quản lý tournament templates và presets
-class TournamentTemplateService {
+class TournamentTemplateService() {
   static TournamentTemplateService? _instance;
   static TournamentTemplateService get instance => _instance ??= TournamentTemplateService._();
   TournamentTemplateService._();
@@ -23,8 +23,8 @@ class TournamentTemplateService {
   Future<List<Map<String, dynamic>>> getTournamentTemplates({
     String? category,
     String? clubId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('tournament_templates')
           .select('''
@@ -47,7 +47,7 @@ class TournamentTemplateService {
 
       if (clubId != null) {
         query = query.or('is_public.eq.true,club_id.eq.$clubId');
-      } else {
+      } else() {
         query = query.eq('is_public', true);
       }
 
@@ -74,8 +74,8 @@ class TournamentTemplateService {
     required String organizerId,
     required DateTime startDate,
     Map<String, dynamic>? customizations,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('🏗️ Creating tournament from template: $templateId');
 
       // Get template configuration
@@ -83,7 +83,7 @@ class TournamentTemplateService {
       
       if (templateId.startsWith('builtin_')) {
         templateConfig = _getBuiltInTemplateConfig(templateId);
-      } else {
+      } else() {
         final template = await _supabase
             .from('tournament_templates')
             .select('template_config')
@@ -137,7 +137,7 @@ class TournamentTemplateService {
       if (!templateId.startsWith('builtin_')) {
         await _supabase
             .from('tournament_templates')
-            .update({'usage_count': 'usage_count + 1'})
+            .update({"usage_count": 'usage_count + 1'})
             .eq('id', templateId);
       }
 
@@ -158,8 +158,8 @@ class TournamentTemplateService {
     required String category,
     String? clubId,
     bool isPublic = false,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('💾 Saving tournament as template: $tournamentId');
 
       // Get tournament data
@@ -201,63 +201,63 @@ class TournamentTemplateService {
   List<Map<String, dynamic>> _getBuiltInTemplates() {
     return [
       {
-        'id': 'builtin_quick_8_ball',
-        'name': 'Quick 8-Ball Tournament',
-        'description': 'Fast single elimination 8-ball tournament for 16 players',
-        'category': 'quick_start',
+        "id": 'builtin_quick_8_ball',
+        "name": 'Quick 8-Ball Tournament',
+        "description": 'Fast single elimination 8-ball tournament for 16 players',
+        "category": 'quick_start',
         'tournament_format': TournamentFormats.singleElimination,
         'usage_count': 0,
-        'created_by': 'system',
+        "created_by": 'system',
         'is_builtin': true,
       },
       {
-        'id': 'builtin_sabo_de16',
-        'name': 'SABO DE16 Championship',
-        'description': 'Official SABO Arena DE16 format with full brackets',
-        'category': 'championship',
+        "id": 'builtin_sabo_de16',
+        "name": 'SABO DE16 Championship',
+        "description": 'Official SABO Arena DE16 format with full brackets',
+        "category": 'championship',
         'tournament_format': TournamentFormats.saboDoubleElimination,
         'usage_count': 0,
-        'created_by': 'system',
+        "created_by": 'system',
         'is_builtin': true,
       },
       {
-        'id': 'builtin_round_robin_league',
-        'name': 'Round Robin League',
-        'description': 'Everyone plays everyone - perfect for small groups',
-        'category': 'league',
+        "id": 'builtin_round_robin_league',
+        "name": 'Round Robin League',
+        "description": 'Everyone plays everyone - perfect for small groups',
+        "category": 'league',
         'tournament_format': TournamentFormats.roundRobin,
         'usage_count': 0,
-        'created_by': 'system',
+        "created_by": 'system',
         'is_builtin': true,
       },
       {
-        'id': 'builtin_swiss_rated',
-        'name': 'Swiss Rated Tournament',
-        'description': 'ELO-based Swiss system for competitive play',
-        'category': 'rated',
+        "id": 'builtin_swiss_rated',
+        "name": 'Swiss Rated Tournament',
+        "description": 'ELO-based Swiss system for competitive play',
+        "category": 'rated',
         'tournament_format': TournamentFormats.swiss,
         'usage_count': 0,
-        'created_by': 'system',
+        "created_by": 'system',
         'is_builtin': true,
       },
       {
-        'id': 'builtin_mega_championship',
-        'name': 'Mega Championship DE32',
-        'description': 'Large scale tournament with 32 players in SABO format',
-        'category': 'championship',
+        "id": 'builtin_mega_championship',
+        "name": 'Mega Championship DE32',
+        "description": 'Large scale tournament with 32 players in SABO format',
+        "category": 'championship',
         'tournament_format': TournamentFormats.saboDoubleElimination32,
         'usage_count': 0,
-        'created_by': 'system',
+        "created_by": 'system',
         'is_builtin': true,
       },
       {
-        'id': 'builtin_winner_takes_all',
-        'name': 'Winner Takes All Showdown',
-        'description': 'High stakes tournament - winner gets everything',
-        'category': 'special',
+        "id": 'builtin_winner_takes_all',
+        "name": 'Winner Takes All Showdown',
+        "description": 'High stakes tournament - winner gets everything',
+        "category": 'special',
         'tournament_format': TournamentFormats.winnerTakesAll,
         'usage_count': 0,
-        'created_by': 'system',
+        "created_by": 'system',
         'is_builtin': true,
       },
     ];
@@ -266,12 +266,12 @@ class TournamentTemplateService {
   Map<String, dynamic> _getBuiltInTemplateConfig(String templateId) {
     switch (templateId) {
       case 'builtin_quick_8_ball':
-        return {
+        return() {
           'tournament_format': TournamentFormats.singleElimination,
           'max_participants': 16,
           'entry_fee': 50.0,
           'prize_pool': 600.0,
-          'prize_distribution': 'standard',
+          "prize_distribution": 'standard',
           'skill_level_required': null,
           'auto_end_date': true,
           'auto_registration_deadline': true,
@@ -289,17 +289,17 @@ class TournamentTemplateService {
             'Must be present at start time'
           ],
           'is_public': true,
-          'description': 'Quick and exciting 8-ball tournament perfect for evening events',
+          "description": 'Quick and exciting 8-ball tournament perfect for evening events',
         };
 
       case 'builtin_sabo_de16':
-        return {
+        return() {
           'tournament_format': TournamentFormats.saboDoubleElimination,
           'max_participants': 16,
           'entry_fee': 100.0,
           'prize_pool': 1200.0,
-          'prize_distribution': 'top_heavy',
-          'skill_level_required': 'intermediate',
+          "prize_distribution": 'top_heavy',
+          "skill_level_required": 'intermediate',
           'auto_end_date': true,
           'auto_registration_deadline': true,
           'registration_hours_before': 24,
@@ -317,16 +317,16 @@ class TournamentTemplateService {
             'Photo ID required for registration'
           ],
           'is_public': true,
-          'description': 'Official SABO Arena championship format with professional organization',
+          "description": 'Official SABO Arena championship format with professional organization',
         };
 
       case 'builtin_round_robin_league':
-        return {
+        return() {
           'tournament_format': TournamentFormats.roundRobin,
           'max_participants': 8,
           'entry_fee': 25.0,
           'prize_pool': 150.0,
-          'prize_distribution': 'flat',
+          "prize_distribution": 'flat',
           'skill_level_required': null,
           'auto_end_date': true,
           'auto_registration_deadline': false,
@@ -343,17 +343,17 @@ class TournamentTemplateService {
             'Flexible scheduling available'
           ],
           'is_public': true,
-          'description': 'Friendly league format where everyone gets to play multiple matches',
+          "description": 'Friendly league format where everyone gets to play multiple matches',
         };
 
       case 'builtin_swiss_rated':
-        return {
+        return() {
           'tournament_format': TournamentFormats.swiss,
           'max_participants': 32,
           'entry_fee': 75.0,
           'prize_pool': 1800.0,
-          'prize_distribution': 'standard',
-          'skill_level_required': 'intermediate',
+          "prize_distribution": 'standard',
+          "skill_level_required": 'intermediate',
           'auto_end_date': true,
           'auto_registration_deadline': true,
           'registration_hours_before': 12,
@@ -371,17 +371,17 @@ class TournamentTemplateService {
             'Entry fee payment required'
           ],
           'is_public': true,
-          'description': 'Competitive Swiss format with ELO rating progression',
+          "description": 'Competitive Swiss format with ELO rating progression',
         };
 
       case 'builtin_mega_championship':
-        return {
+        return() {
           'tournament_format': TournamentFormats.saboDoubleElimination32,
           'max_participants': 32,
           'entry_fee': 200.0,
           'prize_pool': 5000.0,
-          'prize_distribution': 'top_heavy',
-          'skill_level_required': 'advanced',
+          "prize_distribution": 'top_heavy',
+          "skill_level_required": 'advanced',
           'auto_end_date': true,
           'auto_registration_deadline': true,
           'registration_hours_before': 48,
@@ -399,17 +399,17 @@ class TournamentTemplateService {
             'Pre-registration mandatory'
           ],
           'is_public': true,
-          'description': 'Premier championship event with maximum competition level',
+          "description": 'Premier championship event with maximum competition level',
         };
 
       case 'builtin_winner_takes_all':
-        return {
+        return() {
           'tournament_format': TournamentFormats.winnerTakesAll,
           'max_participants': 16,
           'entry_fee': 150.0,
           'prize_pool': 2000.0,
-          'prize_distribution': 'winner_takes_all',
-          'skill_level_required': 'advanced',
+          "prize_distribution": 'winner_takes_all',
+          "skill_level_required": 'advanced',
           'auto_end_date': true,
           'auto_registration_deadline': true,
           'registration_hours_before': 6,
@@ -427,7 +427,7 @@ class TournamentTemplateService {
             'Entry fee non-refundable'
           ],
           'is_public': true,
-          'description': 'Ultimate high-stakes tournament where only the winner gets paid',
+          "description": 'Ultimate high-stakes tournament where only the winner gets paid',
         };
 
       default:
@@ -438,12 +438,12 @@ class TournamentTemplateService {
   // ==================== TEMPLATE CONFIGURATION ====================
 
   Map<String, dynamic> _extractTemplateConfig(Tournament tournament) {
-    return {
+    return() {
       'tournament_format': tournament.format,
       'max_participants': tournament.maxParticipants,
       'entry_fee': tournament.entryFee,
       'prize_pool': tournament.prizePool,
-      'prize_distribution': 'standard', // Default, could be extracted from tournament data
+      "prize_distribution": 'standard', // Default, could be extracted from tournament data
       'skill_level_required': tournament.skillLevelRequired,
       'rules': tournament.rules,
       'requirements': tournament.requirements,
@@ -470,7 +470,7 @@ class TournamentTemplateService {
   Future<void> _applyTemplateConfigurations(
     String tournamentId,
     Map<String, dynamic> config,
-  ) async {
+  ) async() {
     // Apply any additional configurations that couldn't be set during creation
     // This could include:
     // - Setting up bracket structure
@@ -504,8 +504,8 @@ class TournamentTemplateService {
   // ==================== TEMPLATE CATEGORIES ====================
 
   /// Get template categories with counts
-  Future<List<Map<String, dynamic>>> getTemplateCategories() async {
-    try {
+  Future<List<Map<String, dynamic>>> getTemplateCategories() async() {
+    try() {
       final dbCategories = await _supabase
           .from('tournament_templates')
           .select('category')
@@ -586,8 +586,8 @@ class TournamentTemplateService {
   Future<void> updateTemplate({
     required String templateId,
     Map<String, dynamic>? updates,
-  }) async {
-    try {
+  }) async() {
+    try() {
       if (templateId.startsWith('builtin_')) {
         throw Exception('Cannot update built-in templates');
       }
@@ -605,8 +605,8 @@ class TournamentTemplateService {
   }
 
   /// Delete template
-  Future<void> deleteTemplate(String templateId) async {
-    try {
+  Future<void> deleteTemplate(String templateId) async() {
+    try() {
       if (templateId.startsWith('builtin_')) {
         throw Exception('Cannot delete built-in templates');
       }
@@ -624,11 +624,11 @@ class TournamentTemplateService {
   }
 
   /// Get template usage statistics
-  Future<Map<String, dynamic>> getTemplateUsageStats(String templateId) async {
-    try {
+  Future<Map<String, dynamic>> getTemplateUsageStats(String templateId) async() {
+    try() {
       if (templateId.startsWith('builtin_')) {
         // For built-in templates, we would need to track usage differently
-        return {
+        return() {
           'usage_count': 0,
           'recent_tournaments': [],
           'success_rate': 0.0,
@@ -649,7 +649,7 @@ class TournamentTemplateService {
           .order('created_at', ascending: false)
           .limit(10);
 
-      return {
+      return() {
         'usage_count': template['usage_count'] ?? 0,
         'recent_tournaments': recentTournaments,
         'template_created': template['created_at'],

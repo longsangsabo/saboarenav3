@@ -8,7 +8,7 @@ import './club_approval_screen.dart';
 import './widgets/admin_navigation_drawer.dart';
 import './widgets/admin_bottom_navigation.dart';
 
-class AdminDashboardScreen extends StatefulWidget {
+class AdminDashboardScreen extends StatefulWidget() {
   const AdminDashboardScreen({super.key});
 
   @override
@@ -30,8 +30,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     _loadDashboardData();
   }
 
-  Future<void> _loadDashboardData() async {
-    try {
+  Future<void> _loadDashboardData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -55,7 +55,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     }
   }
 
-  void _handleMenuAction(String action) async {
+  void _handleMenuAction(String action) async() {
     switch (action) {
       case 'switch_to_user':
         _switchToUserMode();
@@ -131,8 +131,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     Navigator.of(context).pushReplacementNamed(AppRoutes.userProfileScreen);
   }
 
-  void _handleLogout() async {
-    try {
+  void _handleLogout() async() {
+    try() {
       // Show loading dialog
       showDialog(
         context: context,
@@ -684,7 +684,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       return '${difference.inHours} giờ trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
     }
   }

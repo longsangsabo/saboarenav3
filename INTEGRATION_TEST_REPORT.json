@@ -1,0 +1,162 @@
+{
+  "timestamp": "2025-10-01T00:44:33.462292",
+  "summary": {
+    "total_tests": 25,
+    "passed": 16,
+    "failed": 8,
+    "warnings": 1,
+    "success_rate": 64.0
+  },
+  "results": [
+    {
+      "test": "Table task_templates exists",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:43:59.299790"
+    },
+    {
+      "test": "Table task_assignments exists",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:43:59.316814"
+    },
+    {
+      "test": "Table task_verifications exists",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:43:59.333392"
+    },
+    {
+      "test": "Table task_verification_photos exists",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:43:59.348104"
+    },
+    {
+      "test": "Table task_audit_logs exists",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:43:59.363766"
+    },
+    {
+      "test": "RPC function create_task_template exists",
+      "status": "PASS",
+      "details": "",
+      "timestamp": "2025-10-01T00:43:59.380025"
+    },
+    {
+      "test": "RPC function assign_task_to_staff exists",
+      "status": "PASS",
+      "details": "",
+      "timestamp": "2025-10-01T00:43:59.400048"
+    },
+    {
+      "test": "RPC function submit_task_verification exists",
+      "status": "PASS",
+      "details": "",
+      "timestamp": "2025-10-01T00:43:59.417385"
+    },
+    {
+      "test": "RPC function get_staff_tasks exists",
+      "status": "PASS",
+      "details": "Function exists (param error expected)",
+      "timestamp": "2025-10-01T00:43:59.435281"
+    },
+    {
+      "test": "RPC function update_task_status exists",
+      "status": "PASS",
+      "details": "",
+      "timestamp": "2025-10-01T00:43:59.457689"
+    },
+    {
+      "test": "RPC function calculate_verification_score exists",
+      "status": "PASS",
+      "details": "",
+      "timestamp": "2025-10-01T00:43:59.476697"
+    },
+    {
+      "test": "UI Component task_verification_main_screen.dart",
+      "status": "PASS",
+      "details": "Found at /workspaces/saboarenav3/lib/presentation/task_verification_screen/task_verification_main_screen.dart (21399 chars)",
+      "timestamp": "2025-10-01T00:43:59.477034"
+    },
+    {
+      "test": "UI Component live_photo_verification_screen.dart",
+      "status": "PASS",
+      "details": "Found at /workspaces/saboarenav3/lib/presentation/task_verification_screen/live_photo_verification_screen.dart (17359 chars)",
+      "timestamp": "2025-10-01T00:43:59.477214"
+    },
+    {
+      "test": "UI Component task_detail_screen.dart",
+      "status": "PASS",
+      "details": "Found at /workspaces/saboarenav3/lib/presentation/task_verification_screen/task_detail_screen.dart (26650 chars)",
+      "timestamp": "2025-10-01T00:43:59.477381"
+    },
+    {
+      "test": "UI Component admin_task_management_screen.dart",
+      "status": "PASS",
+      "details": "Found at /workspaces/saboarenav3/lib/presentation/task_verification_screen/admin_task_management_screen.dart (24829 chars)",
+      "timestamp": "2025-10-01T00:43:59.477495"
+    },
+    {
+      "test": "UI Component task_verification_demo.dart",
+      "status": "PASS",
+      "details": "Found at /workspaces/saboarenav3/lib/widgets/task_verification_demo.dart (16409 chars)",
+      "timestamp": "2025-10-01T00:43:59.477621"
+    },
+    {
+      "test": "Flutter analyze",
+      "status": "WARN",
+      "details": "Task verification files have issues",
+      "timestamp": "2025-10-01T00:44:33.349146"
+    },
+    {
+      "test": "Create task template",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:44:33.384800"
+    },
+    {
+      "test": "Get staff tasks",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:44:33.399759"
+    },
+    {
+      "test": "Verification score calculation",
+      "status": "FAIL",
+      "details": "{'message': 'JSON could not be generated', 'code': 401, 'hint': 'Refer to full message for details', 'details': 'b\\'{\"message\":\"Invalid API key\",\"hint\":\"Double check your Supabase `anon` or `service_role` API key.\"}\\''}",
+      "timestamp": "2025-10-01T00:44:33.415091"
+    },
+    {
+      "test": "Dashboard integration",
+      "status": "PASS",
+      "details": "Task verification demo integrated",
+      "timestamp": "2025-10-01T00:44:33.415750"
+    },
+    {
+      "test": "Import TaskVerificationService used",
+      "status": "PASS",
+      "details": "Found in 2 files",
+      "timestamp": "2025-10-01T00:44:33.432220"
+    },
+    {
+      "test": "Import LivePhotoService used",
+      "status": "PASS",
+      "details": "Found in 3 files",
+      "timestamp": "2025-10-01T00:44:33.446242"
+    },
+    {
+      "test": "Import task_models.dart used",
+      "status": "PASS",
+      "details": "Found in 3 files",
+      "timestamp": "2025-10-01T00:44:33.461570"
+    },
+    {
+      "test": "Cleanup test data",
+      "status": "PASS",
+      "details": "Test data cleaned up",
+      "timestamp": "2025-10-01T00:44:33.461649"
+    }
+  ]
+}

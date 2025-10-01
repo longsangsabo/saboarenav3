@@ -5,7 +5,7 @@ import '../../../core/app_export.dart';
 import '../../../core/utils/rank_migration_helper.dart';
 import '../../../services/cached_tournament_service.dart';
 
-class LiveTournamentBracketWidget extends StatefulWidget {
+class LiveTournamentBracketWidget extends StatefulWidget() {
   final String tournamentId;
 
   const LiveTournamentBracketWidget({
@@ -31,10 +31,10 @@ class _LiveTournamentBracketWidgetState extends State<LiveTournamentBracketWidge
     _loadMatches();
   }
 
-  Future<void> _loadMatches() async {
+  Future<void> _loadMatches() async() {
     setState(() => _isLoading = true);
     
-    try {
+    try() {
       print('🔄 LiveTournamentBracketWidget: Loading matches with cache...');
       
       // Load tournament info
@@ -42,7 +42,7 @@ class _LiveTournamentBracketWidgetState extends State<LiveTournamentBracketWidge
       
       // Load matches with cache
       List<Map<String, dynamic>> matches;
-      try {
+      try() {
         matches = await CachedTournamentService.loadMatches(widget.tournamentId);
         print('📋 Loaded ${matches.length} matches from cache/service');
       } catch (e) {
@@ -95,7 +95,7 @@ class _LiveTournamentBracketWidgetState extends State<LiveTournamentBracketWidge
     }
   }
 
-  Future<void> refreshData() async {
+  Future<void> refreshData() async() {
     print('🔄 LiveTournamentBracketWidget: Refreshing data...');
     await _loadMatches();
   }

@@ -6,7 +6,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CorrectBracketLogicService {
+class CorrectBracketLogicService() {
   static const String _tag = 'CorrectBracketLogic';
   final _supabase = Supabase.instance.client;
 
@@ -20,8 +20,8 @@ class CorrectBracketLogicService {
   Future<Map<String, dynamic>> generateSingleEliminationBracket({
     required String tournamentId,
     required List<Map<String, dynamic>> participants,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('$_tag: 🎯 Generating single elimination bracket for ${participants.length} participants');
       
       if (participants.isEmpty) {
@@ -37,16 +37,16 @@ class CorrectBracketLogicService {
       // Create Round 1 matches
       final round1Matches = await _createRound1Matches(tournamentId, participants);
       
-      return {
+      return() {
         'success': true,
-        'message': 'Single elimination bracket created with ${round1Matches.length} Round 1 matches',
+        "message": 'Single elimination bracket created with ${round1Matches.length} Round 1 matches',
         'round1Matches': round1Matches.length,
         'totalExpectedMatches': expectedMatches,
       };
 
     } catch (e) {
       debugPrint('$_tag: ❌ Bracket generation failed: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -57,7 +57,7 @@ class CorrectBracketLogicService {
   Future<List<Map<String, dynamic>>> _createRound1Matches(
     String tournamentId,
     List<Map<String, dynamic>> participants,
-  ) async {
+  ) async() {
     final matchCount = participants.length ~/ 2;
     final matches = <Map<String, dynamic>>[];
 
@@ -73,9 +73,9 @@ class CorrectBracketLogicService {
         'player1_id': player1['user_id'],
         'player2_id': player2['user_id'],
         'winner_id': null,
-        'status': 'pending',
-        'match_type': 'tournament',
-        'format': 'single_elimination',
+        "status": 'pending',
+        "match_type": 'tournament',
+        "format": 'single_elimination',
         'scheduled_time': null,
         'created_at': DateTime.now().toIso8601String(),
         'updated_at': DateTime.now().toIso8601String(),
@@ -100,8 +100,8 @@ class CorrectBracketLogicService {
   Future<Map<String, dynamic>> createNextRoundMatches({
     required String tournamentId,
     required int completedRound,
-  }) async {
-    try {
+  }) async() {
+    try() {
       debugPrint('$_tag: 🔧 FIXED: Creating Round ${completedRound + 1} matches after Round $completedRound completion');
 
       // Get winners from completed round
@@ -115,9 +115,9 @@ class CorrectBracketLogicService {
       // CRITICAL FIX: Check tournament completion logic
       if (winners.length == 1) {
         await _completeTournament(tournamentId, winners.first);
-        return {
+        return() {
           'success': true,
-          'message': 'Tournament completed! Winner: ${winners.first['full_name']}',
+          "message": 'Tournament completed! Winner: ${winners.first['full_name']}',
           'tournamentComplete': true,
           'winner': winners.first,
         };
@@ -140,9 +140,9 @@ class CorrectBracketLogicService {
 
       debugPrint('$_tag: ✅ FIXED: Created ${nextRoundMatches.length} matches for Round $nextRound (from ${winners.length} winners)');
 
-      return {
+      return() {
         'success': true,
-        'message': 'FIXED: Created ${nextRoundMatches.length} matches for Round $nextRound',
+        "message": 'FIXED: Created ${nextRoundMatches.length} matches for Round $nextRound',
         'nextRound': nextRound,
         'matchesCreated': nextRoundMatches.length,
         'winnersInput': winners.length,
@@ -150,7 +150,7 @@ class CorrectBracketLogicService {
 
     } catch (e) {
       debugPrint('$_tag: ❌ Error creating next round: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -162,7 +162,7 @@ class CorrectBracketLogicService {
     required String tournamentId,
     required int roundNumber,
     required List<Map<String, dynamic>> winners,
-  }) async {
+  }) async() {
     // FIXED: Single elimination logic - always winners.length / 2 matches
     final matchCount = winners.length ~/ 2;
     final matches = <Map<String, dynamic>>[];
@@ -182,9 +182,9 @@ class CorrectBracketLogicService {
         'player1_id': player1['id'],
         'player2_id': player2['id'],
         'winner_id': null,
-        'status': 'pending',
-        'match_type': 'tournament',
-        'format': 'single_elimination',
+        "status": 'pending',
+        "match_type": 'tournament',
+        "format": 'single_elimination',
         'scheduled_time': null,
         'created_at': DateTime.now().toIso8601String(),
         'updated_at': DateTime.now().toIso8601String(),
@@ -203,7 +203,7 @@ class CorrectBracketLogicService {
   }
 
   /// Get winners from completed round (same logic as original)
-  Future<List<Map<String, dynamic>>> _getRoundWinners(String tournamentId, int round) async {
+  Future<List<Map<String, dynamic>>> _getRoundWinners(String tournamentId, int round) async() {
     final response = await _supabase
         .from('matches')
         .select('''
@@ -229,11 +229,11 @@ class CorrectBracketLogicService {
   }
 
   /// Complete tournament (same logic as original)
-  Future<void> _completeTournament(String tournamentId, Map<String, dynamic> winner) async {
+  Future<void> _completeTournament(String tournamentId, Map<String, dynamic> winner) async() {
     await _supabase
         .from('tournaments')
         .update({
-          'status': 'completed',
+          "status": 'completed',
           'winner_id': winner['id'],
           'end_date': DateTime.now().toIso8601String(),
         })
@@ -250,8 +250,8 @@ class CorrectBracketLogicService {
   // ==================== BRACKET VALIDATION ====================
 
   /// Validate single elimination bracket structure
-  Future<Map<String, dynamic>> validateBracketStructure(String tournamentId) async {
-    try {
+  Future<Map<String, dynamic>> validateBracketStructure(String tournamentId) async() {
+    try() {
       // Get all matches grouped by round
       final response = await _supabase
           .from('matches')
@@ -310,7 +310,7 @@ class CorrectBracketLogicService {
       return validation;
 
     } catch (e) {
-      return {
+      return() {
         'error': e.toString(),
         'isValid': false,
       };
@@ -320,16 +320,16 @@ class CorrectBracketLogicService {
   // ==================== BRACKET REPAIR ====================
 
   /// Fix existing tournament with incorrect bracket structure
-  Future<Map<String, dynamic>> repairTournamentBracket(String tournamentId) async {
-    try {
+  Future<Map<String, dynamic>> repairTournamentBracket(String tournamentId) async() {
+    try() {
       debugPrint('$_tag: 🔧 Starting bracket repair for tournament $tournamentId');
 
       // First validate current structure
       final validation = await validateBracketStructure(tournamentId);
       if (validation['isValid'] == true) {
-        return {
+        return() {
           'success': true,
-          'message': 'Tournament bracket is already valid',
+          "message": 'Tournament bracket is already valid',
           'noRepairNeeded': true,
         };
       }
@@ -362,15 +362,15 @@ class CorrectBracketLogicService {
       // Progressively create correct rounds based on completed matches
       await _progressivelyCreateRounds(tournamentId);
 
-      return {
+      return() {
         'success': true,
-        'message': 'Tournament bracket repaired successfully',
+        "message": 'Tournament bracket repaired successfully',
         'round1Preserved': round1Matches.length,
       };
 
     } catch (e) {
       debugPrint('$_tag: ❌ Bracket repair failed: $e');
-      return {
+      return() {
         'success': false,
         'error': e.toString(),
       };
@@ -378,7 +378,7 @@ class CorrectBracketLogicService {
   }
 
   /// Progressively create rounds based on completed matches
-  Future<void> _progressivelyCreateRounds(String tournamentId) async {
+  Future<void> _progressivelyCreateRounds(String tournamentId) async() {
     int currentRound = 1;
     
     while (true) {
@@ -410,7 +410,7 @@ class CorrectBracketLogicService {
         
         debugPrint('$_tag: ✅ Created Round ${currentRound + 1} with ${result['matchesCreated']} matches');
         currentRound++;
-      } else {
+      } else() {
         debugPrint('$_tag: ⏸️ Round $currentRound not complete yet (${completedMatches.length}/${roundMatches.length})');
         break;
       }

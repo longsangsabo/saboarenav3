@@ -1,6 +1,6 @@
 ﻿import 'dart:convert';
 
-class Match {
+class Match() {
   final String id;
   final String? tournamentId;
   final String player1Id;
@@ -98,7 +98,7 @@ class Match {
     if (value == null) return null;
     if (value is Map<String, dynamic>) return value;
     if (value is String) {
-      try {
+      try() {
         return jsonDecode(value) as Map<String, dynamic>;
       } catch (e) {
         return null;
@@ -111,7 +111,7 @@ class Match {
     if (value == null) return null;
     if (value is Map<String, dynamic>) return value;
     if (value is String) {
-      try {
+      try() {
         return jsonDecode(value) as Map<String, dynamic>;
       } catch (e) {
         return null;
@@ -121,7 +121,7 @@ class Match {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'tournament_id': tournamentId,
       'player1_id': player1Id,
@@ -236,7 +236,7 @@ class Match {
   bool get isCancelled => status == 'cancelled';
   bool get isNoShow => status == 'no_show';
 
-  String get statusDisplay {
+  String get statusDisplay() {
     switch (status) {
       case 'scheduled':
         return 'Scheduled';
@@ -253,7 +253,7 @@ class Match {
     }
   }
 
-  String get matchTypeDisplay {
+  String get matchTypeDisplay() {
     switch (matchType) {
       case 'group_stage':
         return 'Group Stage';
@@ -272,14 +272,14 @@ class Match {
 
   String get roundDisplay => 'Round $round';
 
-  String get scoreDisplay {
+  String get scoreDisplay() {
     if (player1Score == null || player2Score == null) {
       return 'vs';
     }
     return '$player1Score - $player2Score';
   }
 
-  String get matchupDisplay {
+  String get matchupDisplay() {
     final p1 = player1Name ?? 'Player 1';
     final p2 = player2Name ?? 'Player 2';
     return '$p1 vs $p2';
@@ -287,14 +287,14 @@ class Match {
 
   bool get hasWinner => winnerId != null && winnerId!.isNotEmpty;
 
-  String? get winnerName {
+  String? get winnerName() {
     if (!hasWinner) return null;
     if (winnerId == player1Id) return player1Name ?? 'Player 1';
     if (winnerId == player2Id) return player2Name ?? 'Player 2';
     return null;
   }
 
-  String? get loserName {
+  String? get loserName() {
     if (!hasWinner) return null;
     if (winnerId == player1Id) return player2Name ?? 'Player 2';
     if (winnerId == player2Id) return player1Name ?? 'Player 1';
@@ -308,12 +308,12 @@ class Match {
   bool get hasActualStartTime => startedAt != null;
   bool get hasCompletionTime => completedAt != null;
 
-  Duration? get actualDuration {
+  Duration? get actualDuration() {
     if (startedAt == null || completedAt == null) return null;
     return completedAt!.difference(startedAt!);
   }
 
-  String get durationDisplay {
+  String get durationDisplay() {
     if (durationMinutes != null) {
       final hours = durationMinutes! ~/ 60;
       final minutes = durationMinutes! % 60;
@@ -342,7 +342,7 @@ class Match {
   bool get hasNotes => notes != null && notes!.isNotEmpty;
   bool get hasVideos => videoUrls != null && videoUrls!.isNotEmpty;
 
-  String get venueDisplay {
+  String get venueDisplay() {
     final parts = <String>[];
     if (hasVenue) parts.add(venue!);
     if (hasTable) parts.add('Table $table');
@@ -357,7 +357,7 @@ class Match {
   bool get canComplete => isInProgress;
   bool get canCancel => isScheduled || isInProgress;
 
-  String get timeUntilMatch {
+  String get timeUntilMatch() {
     if (scheduledAt == null) return 'No scheduled time';
     
     final now = DateTime.now();
@@ -369,7 +369,7 @@ class Match {
       return '${difference.inMinutes} minutes';
     } else if (difference.inHours < 24) {
       return '${difference.inHours} hours';
-    } else {
+    } else() {
       return '${difference.inDays} days';
     }
   }
@@ -378,7 +378,7 @@ class Match {
 
   bool get isHighScoringMatch => totalScore > 20; // Assuming ping pong scoring
 
-  String get competitiveLevel {
+  String get competitiveLevel() {
     if (matchType == 'final') return 'Championship';
     if (matchType == 'semi_final') return 'Semi-Final';
     if (matchType == 'quarter_final') return 'Quarter-Final';

@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends StatefulWidget() {
   const OnboardingScreen({super.key});
 
   @override
@@ -126,7 +126,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    } else {
+    } else() {
       _finishOnboarding();
     }
   }
@@ -140,8 +140,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  Future<void> _finishOnboarding() async {
-    try {
+  Future<void> _finishOnboarding() async() {
+    try() {
       // Mark onboarding as completed and save user role
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('has_seen_onboarding', true);
@@ -188,7 +188,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               right: -12.w,
               child: _DecorativeCircle(
                 diameter: 48.w,
-                color: AppTheme.primaryLight.withValues(alpha: 0.08),
+                color: AppTheme.primaryLight.withOpacity(0.08),
               ),
             ),
             Positioned(
@@ -196,7 +196,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               left: -20.w,
               child: _DecorativeCircle(
                 diameter: 62.w,
-                color: AppTheme.secondaryLight.withValues(alpha: 0.06),
+                color: AppTheme.secondaryLight.withOpacity(0.06),
               ),
             ),
             SafeArea(
@@ -211,12 +211,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         if (_currentPage > 0)
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: Colors.white.withOpacity(0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
                                   color: AppTheme.primaryLight
-                                      .withValues(alpha: 0.12),
+                                      .withOpacity(0.12),
                                   blurRadius: 12,
                                   offset: const Offset(0, 6),
                                 ),
@@ -238,7 +238,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
                             backgroundColor:
-                                Colors.white.withValues(alpha: 0.9),
+                                Colors.white.withOpacity(0.9),
                             foregroundColor: AppTheme.primaryLight,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 6.w, vertical: 1.6.h),
@@ -274,7 +274,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                         if (data.showRoleSelection) {
                           return _buildRoleSelectionPage(data);
-                        } else {
+                        } else() {
                           return _buildContentPage(data);
                         }
                       },
@@ -288,12 +288,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         if (_currentPage > 0)
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: Colors.white.withOpacity(0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
                                   color: AppTheme.primaryLight
-                                      .withValues(alpha: 0.12),
+                                      .withOpacity(0.12),
                                   blurRadius: 12,
                                   offset: const Offset(0, 6),
                                 ),
@@ -325,7 +325,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   color: _currentPage == index
                                       ? AppTheme.primaryLight
                                       : AppTheme.primaryLight
-                                          .withValues(alpha: 0.25),
+                                          .withOpacity(0.25),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                               ),
@@ -335,12 +335,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         if (_currentPage < _onboardingData.length - 1)
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: Colors.white.withOpacity(0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
                                   color: AppTheme.primaryLight
-                                      .withValues(alpha: 0.12),
+                                      .withOpacity(0.12),
                                   blurRadius: 12,
                                   offset: const Offset(0, 6),
                                 ),
@@ -404,13 +404,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.25),
+                            color: Colors.black.withOpacity(0.25),
                             blurRadius: 24,
                             offset: const Offset(0, 14),
                           ),
                         ],
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.12),
+                          color: Colors.white.withOpacity(0.12),
                           width: 1.4.w,
                         ),
                       ),
@@ -422,7 +422,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color:
-                                    AppTheme.accentLight.withValues(alpha: 0.6),
+                                    AppTheme.accentLight.withOpacity(0.6),
                                 width: 0.6.w,
                               ),
                             ),
@@ -461,7 +461,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               "Chọn vai trò để cá nhân hóa trải nghiệm của bạn trên SABO.",
               style: GoogleFonts.openSans(
                 fontSize: 11.5.sp,
-                color: AppTheme.textSecondaryLight.withValues(alpha: 0.9),
+                color: AppTheme.textSecondaryLight.withOpacity(0.9),
                 height: 1.5,
                 fontWeight: FontWeight.w500,
               ),
@@ -517,11 +517,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.5.h),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.92),
+                color: Colors.white.withOpacity(0.92),
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.primaryLight.withValues(alpha: 0.12),
+                    color: AppTheme.primaryLight.withOpacity(0.12),
                     blurRadius: 32,
                     offset: const Offset(0, 24),
                   ),
@@ -553,7 +553,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     data.description,
                     style: GoogleFonts.openSans(
                       fontSize: 12.5.sp,
-                      color: AppTheme.textSecondaryLight.withValues(alpha: 0.9),
+                      color: AppTheme.textSecondaryLight.withOpacity(0.9),
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
@@ -818,7 +818,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class _DecorativeCircle extends StatelessWidget {
+class _DecorativeCircle extends StatelessWidget() {
   final double diameter;
   final Color color;
 
@@ -840,7 +840,7 @@ class _DecorativeCircle extends StatelessWidget {
   }
 }
 
-class _RoleOptionCard extends StatelessWidget {
+class _RoleOptionCard extends StatelessWidget() {
   final IconData icon;
   final String title;
   final bool isSelected;
@@ -876,19 +876,19 @@ class _RoleOptionCard extends StatelessWidget {
                     end: Alignment.bottomRight,
                   )
                 : null,
-            color: isSelected ? null : Colors.white.withValues(alpha: 0.92),
+            color: isSelected ? null : Colors.white.withOpacity(0.92),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isSelected
                   ? Colors.transparent
-                  : AppTheme.primaryLight.withValues(alpha: 0.15),
+                  : AppTheme.primaryLight.withOpacity(0.15),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
                 color: isSelected
-                    ? AppTheme.primaryLight.withValues(alpha: 0.22)
-                    : Colors.black.withValues(alpha: 0.04),
+                    ? AppTheme.primaryLight.withOpacity(0.22)
+                    : Colors.black.withOpacity(0.04),
                 blurRadius: isSelected ? 30 : 16,
                 offset: const Offset(0, 18),
               ),
@@ -902,7 +902,7 @@ class _RoleOptionCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Colors.white
-                      : AppTheme.primaryLight.withValues(alpha: 0.12),
+                      : AppTheme.primaryLight.withOpacity(0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -925,13 +925,13 @@ class _RoleOptionCard extends StatelessWidget {
               ),
               SizedBox(height: 0.8.h),
               Text(
-                isSelected ? 'Đã chọn' : 'Khám phá trải nghiệm phù hợp',
+                isSelected ? "Đã chọn" : 'Khám phá trải nghiệm phù hợp',
                 style: GoogleFonts.openSans(
                   fontSize: 9.5.sp,
                   fontWeight: FontWeight.w500,
                   color: isSelected
-                      ? Colors.white.withValues(alpha: 0.85)
-                      : AppTheme.textSecondaryLight.withValues(alpha: 0.9),
+                      ? Colors.white.withOpacity(0.85)
+                      : AppTheme.textSecondaryLight.withOpacity(0.9),
                   height: 1.3,
                   letterSpacing: 0.2,
                 ),
@@ -945,7 +945,7 @@ class _RoleOptionCard extends StatelessWidget {
   }
 }
 
-class OnboardingData {
+class OnboardingData() {
   final String title;
   final String description;
   final String imagePath;

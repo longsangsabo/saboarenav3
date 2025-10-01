@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class AnimatedStatsCard extends StatefulWidget {
+class AnimatedStatsCard extends StatefulWidget() {
   final String title;
   final String value;
   final IconData icon;
@@ -26,7 +26,7 @@ class AnimatedStatsCard extends StatefulWidget {
 }
 
 class _AnimatedStatsCardState extends State<AnimatedStatsCard>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _slideAnimation;
@@ -79,7 +79,7 @@ class _AnimatedStatsCardState extends State<AnimatedStatsCard>
                   borderRadius: BorderRadius.circular(16.sp),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: Colors.black.withOpacity(0.05),
                       offset: const Offset(0, 2),
                       blurRadius: 8,
                       spreadRadius: -2,
@@ -95,7 +95,7 @@ class _AnimatedStatsCardState extends State<AnimatedStatsCard>
                         Container(
                           padding: EdgeInsets.all(8.sp),
                           decoration: BoxDecoration(
-                            color: widget.color.withValues(alpha: 0.1),
+                            color: widget.color.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8.sp),
                           ),
                           child: Icon(

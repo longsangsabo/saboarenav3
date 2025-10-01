@@ -6,7 +6,7 @@ import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/services/club_service.dart';
 import 'package:sabo_arena/models/club.dart';
 
-class ClubLogoSettingsScreen extends StatefulWidget {
+class ClubLogoSettingsScreen extends StatefulWidget() {
   final String clubId;
 
   const ClubLogoSettingsScreen({
@@ -32,8 +32,8 @@ class _ClubLogoSettingsScreenState extends State<ClubLogoSettingsScreen> {
     _loadClubData();
   }
 
-  Future<void> _loadClubData() async {
-    try {
+  Future<void> _loadClubData() async() {
+    try() {
       setState(() => _isLoading = true);
       final club = await _clubService.getClubById(widget.clubId);
       setState(() {
@@ -50,8 +50,8 @@ class _ClubLogoSettingsScreenState extends State<ClubLogoSettingsScreen> {
     }
   }
 
-  Future<void> _pickAndUploadLogo() async {
-    try {
+  Future<void> _pickAndUploadLogo() async() {
+    try() {
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
         maxWidth: 512,
@@ -99,7 +99,7 @@ class _ClubLogoSettingsScreenState extends State<ClubLogoSettingsScreen> {
     }
   }
 
-  Future<void> _removeLogo() async {
+  Future<void> _removeLogo() async() {
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
@@ -122,7 +122,7 @@ class _ClubLogoSettingsScreenState extends State<ClubLogoSettingsScreen> {
 
     if (confirmed != true) return;
 
-    try {
+    try() {
       setState(() => _isUploading = true);
 
       final updatedClub = await _clubService.removeClubLogo(widget.clubId);
@@ -235,7 +235,7 @@ class _ClubLogoSettingsScreenState extends State<ClubLogoSettingsScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            _club?.logoUrl != null ? 'Logo đã được thiết lập' : 'Chưa có logo',
+            _club?.logoUrl != null ? "Logo đã được thiết lập" : 'Chưa có logo',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppTheme.textSecondaryLight,
             ),

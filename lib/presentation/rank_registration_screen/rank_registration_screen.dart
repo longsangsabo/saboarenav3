@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-class RankRegistrationScreen extends StatefulWidget {
+class RankRegistrationScreen extends StatefulWidget() {
   final String clubId;
 
   const RankRegistrationScreen({
@@ -46,7 +46,7 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
 
   final List<String> _rankOptions = RankingConstants.RANK_ORDER;
   // Rank descriptions using official constants
-  Map<String, String> get _rankDescriptions {
+  Map<String, String> get _rankDescriptions() {
     final Map<String, String> descriptions = {};
     for (final rank in RankingConstants.RANK_ORDER) {
       final details = RankingConstants.RANK_DETAILS[rank];
@@ -77,10 +77,10 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
     super.dispose();
   }
 
-  Future<void> _loadData() async {
+  Future<void> _loadData() async() {
     setState(() => _isLoading = true);
     
-    try {
+    try() {
       final club = await _clubService.getClubById(widget.clubId);
       
       // Check if user has pending rank request for this club
@@ -109,8 +109,8 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
   }
 
   // Image picker methods for tournament evidence
-  Future<void> _pickImages() async {
-    try {
+  Future<void> _pickImages() async() {
+    try() {
       final List<XFile> pickedFiles = await _imagePicker.pickMultiImage(
         imageQuality: 70,
       );
@@ -351,7 +351,7 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
     return widgets;
   }
 
-  Future<void> _submitRankRequest() async {
+  Future<void> _submitRankRequest() async() {
     if (!_formKey.currentState!.validate()) return;
 
     // Additional validation for evidence method
@@ -367,14 +367,14 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
 
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       // Upload evidence images first if verification method is evidence and images are selected
       List<String> imageUrls = [];
       if (_verificationMethod == 'evidence' && _evidenceImages.isNotEmpty) {
         setState(() => _isUploadingImages = true);
         
         for (File image in _evidenceImages) {
-          try {
+          try() {
             final String fileName = 'rank_evidence_${DateTime.now().millisecondsSinceEpoch}_${path.basename(image.path)}';
             final result = await _userService.uploadImage(image, fileName);
             if (result['success'] == true && result['url'] != null) {
@@ -392,11 +392,11 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
       final notes = '''
 Rank mong muốn: $_selectedRank
 Lý do xin hạng: ${_reasonController.text}
-Phương thức xác nhận: ${_verificationMethod == 'evidence' ? 'Upload hình ảnh chứng minh' : 'Test hạng trực tiếp tại club'}
+Phương thức xác nhận: ${_verificationMethod == 'evidence' ? "Upload hình ảnh chứng minh" : 'Test hạng trực tiếp tại club'}
 Kinh nghiệm: ${_experienceController.text}
 Thành tích: ${_achievementsController.text}
 Ghi chú: ${_commentsController.text}
-${imageUrls.isNotEmpty ? '\nHình ảnh bằng chứng: ${imageUrls.length} ảnh đã tải lên' : ''}
+${imageUrls.isNotEmpty ? "\nHình ảnh bằng chứng: ${imageUrls.length} ảnh đã tải lên" : ''}
 '''.trim();
 
       final result = await _userService.requestRankRegistration(
@@ -412,7 +412,7 @@ ${imageUrls.isNotEmpty ? '\nHình ảnh bằng chứng: ${imageUrls.length} ản
         await _loadData();
         // Show success dialog
         _showSuccessDialog(result);
-      } else {
+      } else() {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(result['message'] ?? 'Có lỗi xảy ra'),
@@ -522,8 +522,8 @@ ${imageUrls.isNotEmpty ? '\nHình ảnh bằng chứng: ${imageUrls.length} ản
     );
   }
 
-  void _showRequestHistory() async {
-    try {
+  void _showRequestHistory() async() {
+    try() {
       final requests = await _userService.getUserRankRequests(); 
       
       showModalBottomSheet(
@@ -1222,7 +1222,7 @@ ${imageUrls.isNotEmpty ? '\nHình ảnh bằng chứng: ${imageUrls.length} ản
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : Text(
-                        _hasRankRequest ? 'Đã gửi yêu cầu' : 'Gửi yêu cầu đăng ký',
+                        _hasRankRequest ? "Đã gửi yêu cầu" : 'Gửi yêu cầu đăng ký',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

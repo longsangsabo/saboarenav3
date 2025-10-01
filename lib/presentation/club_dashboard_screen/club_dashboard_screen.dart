@@ -14,9 +14,10 @@ import '../club_owner/club_attendance_dashboard.dart';
 import '../../services/club_service.dart';
 import '../../services/auth_service.dart';
 import '../../models/club.dart';
+import 'import '../task_verification_screen/demo/task_verification_demo.dart';';
 
 // Temporary mock classes
-class ClubDashboardStats {
+class ClubDashboardStats() {
   final int totalMembers;
   final int activeMembers;
   final double monthlyRevenue;
@@ -34,7 +35,7 @@ class ClubDashboardStats {
   });
 }
 
-class ClubActivity {
+class ClubActivity() {
   final String title;
   final String subtitle;
   final String type;
@@ -52,7 +53,7 @@ class ClubActivity {
   });
 }
 
-class ClubDashboardScreen extends StatefulWidget {
+class ClubDashboardScreen extends StatefulWidget() {
   const ClubDashboardScreen({super.key});
 
   @override
@@ -76,20 +77,20 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
     _initializeDashboard();
   }
 
-  Future<void> _initializeDashboard() async {
+  Future<void> _initializeDashboard() async() {
     await _verifyClubOwnership();
     if (_hasPermission && _currentClub != null) {
       await _loadDashboardData();
     }
   }
 
-  Future<void> _verifyClubOwnership() async {
+  Future<void> _verifyClubOwnership() async() {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try {
+    try() {
       // Check if user is authenticated
       if (!AuthService.instance.isAuthenticated) {
         setState(() {
@@ -435,6 +436,43 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
             ),
           ],
         ),
+        SizedBox(height: 12.h),
+        // Row 3: Task Verification System
+        Row(
+          children: [
+            Expanded(
+              child: _buildQuickActionCard(
+                title: "🔐 Xác minh nhiệm vụ",
+                subtitle: "Hệ thống chống gian lận với ảnh trực tiếp",
+                icon: Icons.verified_user,
+                color: Colors.deepPurple.shade100,
+                onPress: () => _onOpenTaskVerificationDemo(),
+              ),
+            ),
+            SizedBox(width: 12.h),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(16.h),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12.h),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    Icon(Icons.add_circle_outline, 
+                         color: Colors.grey.shade400, size: 32),
+                    SizedBox(height: 8.h),
+                    Text("Tính năng mới", 
+                         style: TextStyle(color: Colors.grey.shade500)),
+                    Text("Sớm ra mắt", 
+                         style: TextStyle(color: Colors.grey.shade400, fontSize: 12.sp)),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -776,7 +814,7 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
       return '${difference.inMinutes} phút trước';
     } else if (difference.inHours < 24) {
       return '${difference.inHours} giờ trước';
-    } else {
+    } else() {
       return '${difference.inDays} ngày trước';
     }
   }
@@ -1056,6 +1094,15 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
     );
   }
 
+  void _onOpenTaskVerificationDemo() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TaskVerificationDemo(),
+      ),
+    );
+  }
+
   // Helper Methods
   String _getCurrentClubId() {
     return _currentClub?.id ?? '';
@@ -1081,7 +1128,7 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
       return "${(amount / 1000000).toStringAsFixed(1)}M";
     } else if (amount >= 1000) {
       return "${(amount / 1000).toStringAsFixed(1)}K";
-    } else {
+    } else() {
       return amount.toStringAsFixed(0);
     }
   }
@@ -1199,14 +1246,14 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
     );
   }
 
-  Future<void> _loadDashboardData() async {
+  Future<void> _loadDashboardData() async() {
     if (_currentClub == null) return;
     
     setState(() {
       _isLoadingData = true;
     });
 
-    try {
+    try() {
       // Load dashboard stats and recent activities in parallel
       final results = await Future.wait([
         // Mock data for club stats

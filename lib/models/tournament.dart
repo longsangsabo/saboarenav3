@@ -1,4 +1,4 @@
-class Tournament {
+class Tournament() {
   final String id;
   final String title;
   final String description;
@@ -83,7 +83,7 @@ class Tournament {
   String? get coverImage => coverImageUrl;
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'title': title,
       'description': description,
@@ -159,7 +159,7 @@ class Tournament {
   String get clubName => 'Unknown Club';
 
   // Format display name getter
-  String get formatDisplayName {
+  String get formatDisplayName() {
     switch (format) {
       case 'single_elimination':
         return 'Single Elimination';
@@ -178,7 +178,7 @@ class Tournament {
     }
   }
 
-  bool get isRegistrationOpen {
+  bool get isRegistrationOpen() {
     return DateTime.now().isBefore(registrationDeadline) &&
         status == 'upcoming' &&
         currentParticipants < maxParticipants;
@@ -186,7 +186,7 @@ class Tournament {
 
   bool get isFull => currentParticipants >= maxParticipants;
 
-  String get statusDisplay {
+  String get statusDisplay() {
     switch (status) {
       case 'upcoming':
         return 'Sắp diễn ra';
@@ -201,7 +201,7 @@ class Tournament {
     }
   }
 
-  String get skillLevelDisplay {
+  String get skillLevelDisplay() {
     switch (skillLevelRequired) {
       case 'beginner':
         return 'Người mới';
@@ -220,7 +220,7 @@ class Tournament {
   Duration get timeToRegistrationEnd =>
       registrationDeadline.difference(DateTime.now());
 
-  double get participationRate {
+  double get participationRate() {
     if (maxParticipants == 0) return 0.0;
     return (currentParticipants / maxParticipants) * 100;
   }

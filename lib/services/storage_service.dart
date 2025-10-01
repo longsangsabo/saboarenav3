@@ -4,19 +4,19 @@ import 'package:path/path.dart' as path;
 import 'test_user_service.dart';
 import 'package:flutter/foundation.dart';
 
-class StorageService {
+class StorageService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   /// Upload avatar image to Supabase Storage and update user profile
-  static Future<String?> uploadAvatar(File imageFile) async {
-    try {
+  static Future<String?> uploadAvatar(File imageFile) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       String? userId;
       
       if (user != null) {
         userId = user.id;
         debugPrint('🔐 Using authenticated user: $userId');
-      } else {
+      } else() {
         // Use test user for development
         userId = TestUserService.instance.getCurrentUserId();
         if (userId == null) {
@@ -69,7 +69,7 @@ class StorageService {
             .from('users')
             .update({'avatar_url': publicUrl, 'updated_at': DateTime.now().toIso8601String()})
             .eq('id', userId);
-      } else {
+      } else() {
         // Use TestUserService for unauthenticated users in development
         await TestUserService.instance.updateTestUserProfile(avatarUrl: publicUrl);
       }
@@ -84,15 +84,15 @@ class StorageService {
   }
 
   /// Upload cover photo to Supabase Storage and update user profile
-  static Future<String?> uploadCoverPhoto(File imageFile) async {
-    try {
+  static Future<String?> uploadCoverPhoto(File imageFile) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       String? userId;
       
       if (user != null) {
         userId = user.id;
         debugPrint('🔐 Using authenticated user: $userId');
-      } else {
+      } else() {
         // Use test user for development
         userId = TestUserService.instance.getCurrentUserId();
         if (userId == null) {
@@ -145,7 +145,7 @@ class StorageService {
             .from('users')
             .update({'cover_photo_url': publicUrl, 'updated_at': DateTime.now().toIso8601String()})
             .eq('id', userId);
-      } else {
+      } else() {
         // Use TestUserService for unauthenticated users in development
         await TestUserService.instance.updateTestUserProfile(coverPhotoUrl: publicUrl);
       }
@@ -160,8 +160,8 @@ class StorageService {
   }
 
   /// Delete old avatar from storage
-  static Future<void> deleteOldAvatar(String oldAvatarUrl) async {
-    try {
+  static Future<void> deleteOldAvatar(String oldAvatarUrl) async() {
+    try() {
       if (oldAvatarUrl.isEmpty) return;
       
       // Extract file path from URL
@@ -178,8 +178,8 @@ class StorageService {
   }
 
   /// Delete old cover photo from storage
-  static Future<void> deleteOldCoverPhoto(String oldCoverUrl) async {
-    try {
+  static Future<void> deleteOldCoverPhoto(String oldCoverUrl) async() {
+    try() {
       if (oldCoverUrl.isEmpty) return;
       
       // Extract file path from URL
@@ -211,8 +211,8 @@ class StorageService {
   }
 
   /// Check if Supabase Storage bucket exists and is accessible
-  static Future<bool> checkStorageConnection() async {
-    try {
+  static Future<bool> checkStorageConnection() async() {
+    try() {
       await _supabase.storage.listBuckets();
       debugPrint('✅ Storage connection successful');
       return true;

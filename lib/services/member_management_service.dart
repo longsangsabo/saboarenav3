@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class MemberManagementService {
+class MemberManagementService() {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   // ====================================
@@ -15,8 +15,8 @@ class MemberManagementService {
     String? membershipType,
     int? limit,
     int? offset,
-  }) async {
-    try {
+  }) async() {
+    try() {
       print('🔍 MemberManagementService: Getting members for club $clubId');
       print('🔍 Status filter: $status, Role filter: $membershipType');
       
@@ -62,8 +62,8 @@ class MemberManagementService {
     String status = 'active',
     bool autoRenewal = false,
     Map<String, dynamic>? permissions,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = {
         'club_id': clubId,
         'user_id': userId,
@@ -99,8 +99,8 @@ class MemberManagementService {
     String? status,
     bool? autoRenewal,
     Map<String, dynamic>? permissions,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final data = <String, dynamic>{};
       
       if (membershipType != null) data['membership_type'] = membershipType;
@@ -122,8 +122,8 @@ class MemberManagementService {
   }
 
   /// Remove a member from the club
-  static Future<void> removeClubMember(String membershipId) async {
-    try {
+  static Future<void> removeClubMember(String membershipId) async() {
+    try() {
       await _supabase
           .from('club_memberships')
           .delete()
@@ -139,8 +139,8 @@ class MemberManagementService {
     String? status,
     int? limit,
     int? offset,
-  }) async {
-    try {
+  }) async() {
+    try() {
       var query = _supabase
           .from('membership_requests')
           .select('*, users(*)')
@@ -173,8 +173,8 @@ class MemberManagementService {
   static Future<Map<String, dynamic>> approveMembershipRequest({
     required String requestId,
     String membershipType = 'regular',
-  }) async {
-    try {
+  }) async() {
+    try() {
       // First get the request details
       final request = await _supabase
           .from('membership_requests')
@@ -192,7 +192,7 @@ class MemberManagementService {
       // Update request status
       await _supabase
           .from('membership_requests')
-          .update({'status': 'approved', 'approved_at': DateTime.now().toIso8601String()})
+          .update({"status": 'approved', 'approved_at': DateTime.now().toIso8601String()})
           .eq('id', requestId);
 
       return membership;
@@ -202,11 +202,11 @@ class MemberManagementService {
   }
 
   /// Reject a membership request
-  static Future<void> rejectMembershipRequest(String requestId) async {
-    try {
+  static Future<void> rejectMembershipRequest(String requestId) async() {
+    try() {
       await _supabase
           .from('membership_requests')
-          .update({'status': 'rejected', 'rejected_at': DateTime.now().toIso8601String()})
+          .update({"status": 'rejected', 'rejected_at': DateTime.now().toIso8601String()})
           .eq('id', requestId);
     } catch (e) {
       throw Exception('Error rejecting membership request: $e');
@@ -214,8 +214,8 @@ class MemberManagementService {
   }
 
   /// Get member analytics for a club
-  static Future<Map<String, dynamic>> getMemberAnalytics(String clubId) async {
-    try {
+  static Future<Map<String, dynamic>> getMemberAnalytics(String clubId) async() {
+    try() {
       final members = await getClubMembers(clubId: clubId);
       
       final totalMembers = members.length;
@@ -229,7 +229,7 @@ class MemberManagementService {
         return joinedAt.isAfter(thisMonthStart);
       }).length;
 
-      return {
+      return() {
         'total_members': totalMembers,
         'active_members': activeMembers,
         'new_this_month': newThisMonth,
@@ -245,8 +245,8 @@ class MemberManagementService {
     required String clubId,
     required String searchQuery,
     int? limit,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('club_memberships')
           .select('*, users(*)')
@@ -264,8 +264,8 @@ class MemberManagementService {
   }
 
   /// Get member count by role/type
-  static Future<Map<String, int>> getMemberCountByType(String clubId) async {
-    try {
+  static Future<Map<String, int>> getMemberCountByType(String clubId) async() {
+    try() {
       final members = await getClubMembers(clubId: clubId);
       
       final counts = <String, int>{};

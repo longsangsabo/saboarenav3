@@ -6,7 +6,7 @@ import '../models/notification_models.dart';
 import 'package:flutter/foundation.dart';
 
 /// Notification List Screen hiển thị danh sách notifications với actions
-class NotificationListScreen extends StatefulWidget {
+class NotificationListScreen extends StatefulWidget() {
   const NotificationListScreen({super.key});
 
   @override
@@ -14,7 +14,7 @@ class NotificationListScreen extends StatefulWidget {
 }
 
 class _NotificationListScreenState extends State<NotificationListScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin() {
   final EnhancedNotificationService _notificationService = 
       EnhancedNotificationService.instance;
 
@@ -63,7 +63,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     });
   }
 
-  Future<void> _loadNotifications({bool refresh = false}) async {
+  Future<void> _loadNotifications({bool refresh = false}) async() {
     if (refresh) {
       setState(() {
         _currentPage = 1;
@@ -76,7 +76,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
       _isLoading = refresh || _notifications.isEmpty;
     });
 
-    try {
+    try() {
       final notifications = await _notificationService.getNotifications(
         page: _currentPage,
         limit: _pageSize,
@@ -86,7 +86,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
       setState(() {
         if (refresh || _currentPage == 1) {
           _notifications = notifications;
-        } else {
+        } else() {
           _notifications.addAll(notifications);
         }
         _hasMoreData = notifications.length == _pageSize;
@@ -102,7 +102,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     }
   }
 
-  Future<void> _loadMoreNotifications() async {
+  Future<void> _loadMoreNotifications() async() {
     if (_isLoadingMore || !_hasMoreData) return;
 
     setState(() {
@@ -113,8 +113,8 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     await _loadNotifications();
   }
 
-  Future<void> _markAsRead(String notificationId) async {
-    try {
+  Future<void> _markAsRead(String notificationId) async() {
+    try() {
       await _notificationService.markNotificationAsRead(notificationId);
       setState(() {
         final index = _notifications.indexWhere((n) => n.id == notificationId);
@@ -127,8 +127,8 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     }
   }
 
-  Future<void> _markAllAsRead() async {
-    try {
+  Future<void> _markAllAsRead() async() {
+    try() {
       final unreadIds = _notifications
           .where((n) => !n.isRead)
           .map((n) => n.id)
@@ -150,8 +150,8 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     }
   }
 
-  Future<void> _deleteNotification(String notificationId) async {
-    try {
+  Future<void> _deleteNotification(String notificationId) async() {
+    try() {
       await _notificationService.deleteNotification(notificationId);
       setState(() {
         _notifications.removeWhere((n) => n.id == notificationId);
@@ -375,14 +375,14 @@ class _NotificationListScreenState extends State<NotificationListScreen>
       direction: DismissDirection.horizontal,
       background: _buildDismissBackground(isLeft: true),
       secondaryBackground: _buildDismissBackground(isLeft: false),
-      confirmDismiss: (direction) async {
+      confirmDismiss: (direction) async() {
         if (direction == DismissDirection.startToEnd) {
           // Mark as read
           if (!notification.isRead) {
             await _markAsRead(notification.id);
           }
           return false;
-        } else {
+        } else() {
           // Delete
           return await _showDeleteConfirmation(notification.title);
         }
@@ -563,7 +563,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
           ),
           SizedBox(height: 0.5.h),
           Text(
-            isLeft ? 'Mark Read' : 'Delete',
+            isLeft ? "Mark Read" : 'Delete',
             style: TextStyle(
               color: Colors.white,
               fontSize: 11.sp,
@@ -587,12 +587,12 @@ class _NotificationListScreenState extends State<NotificationListScreen>
       return '${difference.inHours}h ago';
     } else if (difference.inDays < 7) {
       return '${difference.inDays}d ago';
-    } else {
+    } else() {
       return DateFormat('MMM dd').format(timestamp);
     }
   }
 
-  Future<void> _handleNotificationTap(NotificationModel notification) async {
+  Future<void> _handleNotificationTap(NotificationModel notification) async() {
     // Mark as read if not already read
     if (!notification.isRead) {
       await _markAsRead(notification.id);
@@ -602,7 +602,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     if (notification.actionUrl != null) {
       // TODO: Navigate to specific screen based on actionUrl
       debugPrint('Navigate to: ${notification.actionUrl}');
-    } else {
+    } else() {
       // Handle based on notification type and data
       switch (notification.type) {
         case NotificationType.tournamentInvitation:
@@ -651,7 +651,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     );
   }
 
-  Future<bool> _showDeleteConfirmation(String title) async {
+  Future<bool> _showDeleteConfirmation(String title) async() {
     return await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -696,8 +696,8 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     );
   }
 
-  Future<void> _clearAllNotifications() async {
-    try {
+  Future<void> _clearAllNotifications() async() {
+    try() {
       // TODO: Implement clear all notifications
       setState(() {
         _notifications.clear();

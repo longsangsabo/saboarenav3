@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Club {
+class Club() {
   final String id;
   final String ownerId;
   final String name;
@@ -34,7 +34,7 @@ class Club {
     if (value == null) return null;
     if (value is Map<String, dynamic>) return value;
     if (value is String) {
-      try {
+      try() {
         return jsonDecode(value) as Map<String, dynamic>;
       } catch (e) {
         // If parsing fails, return null or handle as needed
@@ -119,7 +119,7 @@ class Club {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'owner_id': ownerId,
       'name': name,
@@ -151,23 +151,23 @@ class Club {
     };
   }
 
-  String get ratingDisplay {
+  String get ratingDisplay() {
     if (totalReviews == 0) return 'Chưa có đánh giá';
     return '${rating.toStringAsFixed(1)} ($totalReviews đánh giá)';
   }
 
-  String get priceDisplay {
+  String get priceDisplay() {
     if (pricePerHour == null) return 'Liên hệ';
     return '${pricePerHour!.toInt().toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (match) => ',')}đ/giờ';
   }
 
-  String get tablesDisplay {
+  String get tablesDisplay() {
     return '$totalTables bàn';
   }
 
   bool get hasLocation => latitude != null && longitude != null;
 
-  String? get openingHoursDisplay {
+  String? get openingHoursDisplay() {
     if (openingHours == null) return null;
     // Simplified display - you can expand this based on your data structure
     return 'Xem chi tiết';

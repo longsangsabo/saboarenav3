@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class ClubReportsScreen extends StatefulWidget {
+class ClubReportsScreen extends StatefulWidget() {
   final String clubId;
 
   const ClubReportsScreen({
@@ -15,7 +15,7 @@ class ClubReportsScreen extends StatefulWidget {
 }
 
 class _ClubReportsScreenState extends State<ClubReportsScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   late TabController _tabController;
   String _selectedPeriod = 'month';
 
@@ -372,10 +372,10 @@ class _ClubReportsScreenState extends State<ClubReportsScreen>
     return _buildListCard(
       'Nguồn doanh thu',
       [
-        {'title': 'Phí thành viên', 'value': '45%', 'amount': '6.9M VND'},
-        {'title': 'Thuê sân', 'value': '35%', 'amount': '5.4M VND'},
-        {'title': 'Giải đấu', 'value': '15%', 'amount': '2.3M VND'},
-        {'title': 'Khác', 'value': '5%', 'amount': '0.9M VND'},
+        {"title": 'Phí thành viên', "value": '45%', "amount": '6.9M VND'},
+        {"title": 'Thuê sân', "value": '35%', "amount": '5.4M VND'},
+        {"title": 'Giải đấu', "value": '15%', "amount": '2.3M VND'},
+        {"title": 'Khác', "value": '5%', "amount": '0.9M VND'},
       ],
     );
   }
@@ -384,9 +384,9 @@ class _ClubReportsScreenState extends State<ClubReportsScreen>
     return _buildListCard(
       'Phương thức thanh toán',
       [
-        {'title': 'Chuyển khoản', 'value': '60%', 'amount': '9.3M VND'},
-        {'title': 'Tiền mặt', 'value': '25%', 'amount': '3.9M VND'},
-        {'title': 'Ví điện tử', 'value': '15%', 'amount': '2.3M VND'},
+        {"title": 'Chuyển khoản', "value": '60%', "amount": '9.3M VND'},
+        {"title": 'Tiền mặt', "value": '25%', "amount": '3.9M VND'},
+        {"title": 'Ví điện tử', "value": '15%', "amount": '2.3M VND'},
       ],
     );
   }
@@ -459,9 +459,9 @@ class _ClubReportsScreenState extends State<ClubReportsScreen>
     return _buildListCard(
       'Hoạt động thành viên',
       [
-        {'title': 'Thành viên tích cực', 'value': '78%', 'amount': '118 người'},
-        {'title': 'Thành viên bình thường', 'value': '15%', 'amount': '23 người'},
-        {'title': 'Thành viên ít hoạt động', 'value': '7%', 'amount': '9 người'},
+        {"title": 'Thành viên tích cực', "value": '78%', "amount": '118 người'},
+        {"title": 'Thành viên bình thường', "value": '15%', "amount": '23 người'},
+        {"title": 'Thành viên ít hoạt động', "value": '7%', "amount": '9 người'},
       ],
     );
   }
@@ -541,9 +541,9 @@ class _ClubReportsScreenState extends State<ClubReportsScreen>
     return _buildListCard(
       'Sử dụng thiết bị',
       [
-        {'title': 'Sân cầu lông', 'value': '85%', 'amount': '120 giờ'},
-        {'title': 'Vợt cho thuê', 'value': '60%', 'amount': '45 lượt'},
-        {'title': 'Shuttle cock', 'value': '95%', 'amount': '200 quả'},
+        {"title": 'Sân cầu lông', "value": '85%', "amount": '120 giờ'},
+        {"title": 'Vợt cho thuê', "value": '60%', "amount": '45 lượt'},
+        {"title": 'Shuttle cock', "value": '95%', "amount": '200 quả'},
       ],
     );
   }
@@ -552,9 +552,9 @@ class _ClubReportsScreenState extends State<ClubReportsScreen>
     return _buildListCard(
       'Thống kê sự kiện',
       [
-        {'title': 'Giải đấu tháng này', 'value': '3', 'amount': '45 người tham gia'},
-        {'title': 'Lớp học', 'value': '8', 'amount': '25 học viên'},
-        {'title': 'Sự kiện đặc biệt', 'value': '2', 'amount': '60 người tham gia'},
+        {"title": 'Giải đấu tháng này', "value": '3', "amount": '45 người tham gia'},
+        {"title": 'Lớp học', "value": '8', "amount": '25 học viên'},
+        {"title": 'Sự kiện đặc biệt', "value": '2', "amount": '60 người tham gia'},
       ],
     );
   }
@@ -563,9 +563,9 @@ class _ClubReportsScreenState extends State<ClubReportsScreen>
     return _buildListCard(
       'Top thành viên tích cực',
       [
-        {'title': 'Nguyễn Văn A', 'value': '45h', 'amount': 'Chơi nhiều nhất'},
-        {'title': 'Trần Thị B', 'value': '38h', 'amount': 'Tham gia giải đấu'},
-        {'title': 'Lê Văn C', 'value': '32h', 'amount': 'Thành viên VIP'},
+        {"title": 'Nguyễn Văn A', "value": '45h', "amount": 'Chơi nhiều nhất'},
+        {"title": 'Trần Thị B', "value": '38h', "amount": 'Tham gia giải đấu'},
+        {"title": 'Lê Văn C', "value": '32h', "amount": 'Thành viên VIP'},
       ],
     );
   }

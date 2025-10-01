@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class SocialFeaturesWidget extends StatelessWidget {
+class SocialFeaturesWidget extends StatelessWidget() {
   final Map<String, dynamic> socialData;
   final VoidCallback? onFriendsListTap;
   final VoidCallback? onRecentChallengesTap;
@@ -103,14 +103,14 @@ class SocialFeaturesWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: AppTheme.lightTheme.colorScheme.shadow
-                  .withValues(alpha: 0.08),
+                  .withOpacity(0.08),
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
           ],
           border: Border.all(
             color:
-                AppTheme.lightTheme.colorScheme.outline.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.outline.withOpacity(0.1),
             width: 1,
           ),
         ),
@@ -213,7 +213,7 @@ class SocialFeaturesWidget extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: AppTheme.lightTheme.colorScheme.primary
-                        .withValues(alpha: 0.3),
+                        .withOpacity(0.3),
                     width: 2,
                   ),
                 ),
@@ -332,13 +332,13 @@ class SocialFeaturesWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color:
-                AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.08),
+                AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.08),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
         ],
         border: Border.all(
-          color: AppTheme.lightTheme.colorScheme.outline.withValues(alpha: 0.1),
+          color: AppTheme.lightTheme.colorScheme.outline.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -351,7 +351,7 @@ class SocialFeaturesWidget extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: statusColor.withValues(alpha: 0.3),
+                color: statusColor.withOpacity(0.3),
                 width: 2,
               ),
             ),
@@ -397,7 +397,7 @@ class SocialFeaturesWidget extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
             decoration: BoxDecoration(
-              color: statusColor.withValues(alpha: 0.1),
+              color: statusColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

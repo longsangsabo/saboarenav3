@@ -4,7 +4,7 @@ import 'package:sabo_arena/core/app_export.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/services/tournament_service.dart';
 
-class TournamentOverviewTab extends StatefulWidget {
+class TournamentOverviewTab extends StatefulWidget() {
   final String tournamentId;
   final String tournamentStatus;
   final VoidCallback? onStatusChanged;
@@ -23,8 +23,8 @@ class TournamentOverviewTab extends StatefulWidget {
 class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
   final TournamentService _tournamentService = TournamentService.instance;
 
-  Future<Map<String, dynamic>> _loadTournamentStats() async {
-    try {
+  Future<Map<String, dynamic>> _loadTournamentStats() async() {
+    try() {
       // Get tournament participants
       final participants = await _tournamentService
           .getTournamentParticipantsWithPaymentStatus(widget.tournamentId);
@@ -44,17 +44,17 @@ class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
           ? ((completedMatches / totalMatches) * 100).round()
           : 0;
       
-      return {
-        'players': '$totalParticipants người',
-        'matches': '$completedMatches/$totalMatches',
-        'completion': '$completionPercentage%',
+      return() {
+        "players": '$totalParticipants người',
+        "matches": '$completedMatches/$totalMatches',
+        "completion": '$completionPercentage%',
       };
     } catch (e) {
       debugPrint('Error loading tournament stats: $e');
-      return {
-        'players': '0 người',
-        'matches': '0/0',
-        'completion': '0%',
+      return() {
+        "players": '0 người',
+        "matches": '0/0',
+        "completion": '0%',
       };
     }
   }
@@ -230,19 +230,19 @@ class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
       case 'registration_open':
         return [
           {
-            'label': 'Đóng đăng ký',
+            "label": 'Đóng đăng ký',
             'icon': Icons.close,
             'color': AppTheme.warningLight,
             'onTap': () {},
           },
           {
-            'label': 'Tạo bảng đấu',
+            "label": 'Tạo bảng đấu',
             'icon': Icons.grid_view,
             'color': AppTheme.primaryLight,
             'onTap': () {},
           },
           {
-            'label': 'Xem người chơi',
+            "label": 'Xem người chơi',
             'icon': Icons.people,
             'color': AppTheme.successLight,
             'onTap': () {},
@@ -252,19 +252,19 @@ class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
       case 'ongoing':
         return [
           {
-            'label': 'Nhập kết quả',
+            "label": 'Nhập kết quả',
             'icon': Icons.edit,
             'color': AppTheme.primaryLight,
             'onTap': () {},
           },
           {
-            'label': 'Xem bảng đấu',
+            "label": 'Xem bảng đấu',
             'icon': Icons.view_agenda,
             'color': AppTheme.successLight,
             'onTap': () {},
           },
           {
-            'label': 'Báo cáo',
+            "label": 'Báo cáo',
             'icon': Icons.analytics,
             'color': AppTheme.warningLight,
             'onTap': () {},
@@ -273,13 +273,13 @@ class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
       default:
         return [
           {
-            'label': 'Xem kết quả',
+            "label": 'Xem kết quả',
             'icon': Icons.emoji_events,
             'color': AppTheme.successLight,
             'onTap': () {},
           },
           {
-            'label': 'Xuất báo cáo',
+            "label": 'Xuất báo cáo',
             'icon': Icons.download,
             'color': AppTheme.primaryLight,
             'onTap': () {},
@@ -406,10 +406,10 @@ class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
           ),
           
           _buildMatchItem({
-            'player1': 'Nguyễn Văn A',
-            'player2': 'Trần Văn B',
-            'time': '14:30',
-            'table': 'Bàn 1',
+            "player1": 'Nguyễn Văn A',
+            "player2": 'Trần Văn B',
+            "time": '14:30',
+            "table": 'Bàn 1',
           }),
         ],
       ),

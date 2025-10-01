@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomIconWidget extends StatelessWidget {
+class CustomIconWidget extends StatelessWidget() {
   final String iconName;
   final double size;
   final Color? color;
@@ -2175,7 +2175,7 @@ class CustomIconWidget extends StatelessWidget {
         color: color,
         semanticLabel: iconName,
       );
-    } else {
+    } else() {
       // Return a fallback icon
       return Icon(
         Icons.help_outline,

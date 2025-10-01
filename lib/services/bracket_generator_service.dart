@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:math' as math;
 
 /// Tournament participant data
-class TournamentParticipant {
+class TournamentParticipant() {
   final String id;
   final String name;
   final String? rank;
@@ -35,7 +35,7 @@ class TournamentParticipant {
 }
 
 /// Tournament match representation
-class TournamentMatch {
+class TournamentMatch() {
   final String id;
   final String roundId;
   final int roundNumber;
@@ -84,7 +84,7 @@ class TournamentMatch {
 }
 
 /// Tournament round representation
-class TournamentRound {
+class TournamentRound() {
   final String id;
   final int roundNumber;
   final String name;
@@ -112,7 +112,7 @@ class TournamentRound {
 }
 
 /// Complete tournament bracket structure
-class TournamentBracket {
+class TournamentBracket() {
   final String tournamentId;
   final String format;
   final List<TournamentParticipant> participants;
@@ -140,7 +140,7 @@ class TournamentBracket {
 }
 
 /// Main bracket generator service
-class BracketGeneratorService {
+class BracketGeneratorService() {
   static const String _tag = 'BracketGeneratorService';
 
   /// Generate complete tournament bracket based on format
@@ -150,7 +150,7 @@ class BracketGeneratorService {
     required List<TournamentParticipant> participants,
     String seedingMethod = 'elo_based',
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating bracket for $format with ${participants.length} participants');
 
     // Validate format and participants
@@ -239,7 +239,7 @@ class BracketGeneratorService {
     List<TournamentParticipant> participants,
     String seedingMethod,
     Map<String, dynamic>? options,
-  ) async {
+  ) async() {
     debugPrint('$_tag: Seeding participants using $seedingMethod method');
 
     switch (seedingMethod) {
@@ -369,7 +369,7 @@ class BracketGeneratorService {
 
   /// Generate unique round ID
   static String _generateRoundId(String tournamentId, int round, [String? type]) {
-    final typePrefix = type != null ? '${type}_' : '';
+    final typePrefix = type != null ? "${type}_" : '';
     return '${tournamentId}_${typePrefix}R$round';
   }
 
@@ -380,7 +380,7 @@ class BracketGeneratorService {
     
     if (seed <= bracketSize ~/ 2) {
       return seed - 1;
-    } else {
+    } else() {
       return bracketSize - (seed - bracketSize ~/ 2);
     }
   }
@@ -391,7 +391,7 @@ class BracketGeneratorService {
       return 'pending';
     } else if (player1 == null || player2 == null) {
       return 'bye';
-    } else {
+    } else() {
       return 'pending';
     }
   }
@@ -432,7 +432,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating single elimination bracket');
     
     final bracketSize = _nearestPowerOfTwo(participants.length);
@@ -524,11 +524,11 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'single_elimination',
+        "type": 'single_elimination',
         'bracketSize': bracketSize,
         'totalRounds': totalRounds,
         'byeCount': byeCount,
-        'seedingMethod': 'standard',
+        "seedingMethod": 'standard',
       },
     );
   }
@@ -537,7 +537,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating double elimination bracket');
     
     final bracketSize = _nearestPowerOfTwo(participants.length);
@@ -594,7 +594,7 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'double_elimination',
+        "type": 'double_elimination',
         'bracketSize': bracketSize,
         'winnerRounds': winnerRounds,
         'loserRounds': loserRounds,
@@ -610,7 +610,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating Sabo Double Elimination DE16 bracket');
     
     // Sabo DE16 requires exactly 16 players
@@ -642,7 +642,7 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'sabo_de16',
+        "type": 'sabo_de16',
         'totalMatches': 27,
         'winnersMatches': 14,
         'losersAMatches': 7,
@@ -652,8 +652,8 @@ class BracketGeneratorService {
         'hasSaboFinals': true,
       },
       metadata: {
-        'format': 'Sabo Double Elimination DE16',
-        'description': 'SABO Arena special DE16 format',
+        "format": 'Sabo Double Elimination DE16',
+        "description": 'SABO Arena special DE16 format',
         'createdAt': DateTime.now().toIso8601String(),
         'rounds': {
           'winners': [1, 2, 3],
@@ -671,7 +671,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating Sabo Double Elimination DE32 bracket');
     
     // Sabo DE32 requires exactly 32 players
@@ -703,7 +703,7 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'sabo_de32',
+        "type": 'sabo_de32',
         'totalMatches': 55,
         'groupAMatches': 26,
         'groupBMatches': 26,
@@ -714,8 +714,8 @@ class BracketGeneratorService {
         'qualifiersPerGroup': 2,
       },
       metadata: {
-        'format': 'Sabo Double Elimination DE32',
-        'description': 'SABO Arena DE32 with Two-Group System',
+        "format": 'Sabo Double Elimination DE32',
+        "description": 'SABO Arena DE32 with Two-Group System',
         'createdAt': DateTime.now().toIso8601String(),
         'rounds': {
           'groupA': [1, 2, 3, 101, 102, 103, 201, 202, 250, 251],
@@ -736,7 +736,7 @@ class BracketGeneratorService {
     List<TournamentParticipant> participants,
     int bracketSize,
     int totalRounds,
-  ) async {
+  ) async() {
     final rounds = <TournamentRound>[];
     
     // Same logic as single elimination but with 'winner' type
@@ -772,11 +772,11 @@ class BracketGeneratorService {
             player2: player2,
             status: _getMatchStatus(player1, player2),
             winner: _getByeWinner(player1, player2),
-            metadata: {'bracketType': 'winner'},
+            metadata: {"bracketType": 'winner'},
           );
           roundMatches.add(match);
         }
-      } else {
+      } else() {
         // Subsequent rounds (empty matches)
         for (int i = 0; i < matchesInRound; i++) {
           final match = TournamentMatch(
@@ -785,7 +785,7 @@ class BracketGeneratorService {
             roundNumber: round,
             matchNumber: i + 1,
             status: 'pending',
-            metadata: {'bracketType': 'winner'},
+            metadata: {"bracketType": 'winner'},
           );
           roundMatches.add(match);
         }
@@ -797,7 +797,7 @@ class BracketGeneratorService {
         name: 'WB ${_getRoundName(round, totalRounds)}',
         type: 'winner',
         matches: roundMatches,
-        metadata: {'bracketType': 'winner'},
+        metadata: {"bracketType": 'winner'},
       ));
     }
     
@@ -810,7 +810,7 @@ class BracketGeneratorService {
     int bracketSize,
     int loserRounds,
     int winnerRounds,
-  ) async {
+  ) async() {
     final rounds = <TournamentRound>[];
     
     // Loser bracket has complex structure
@@ -826,7 +826,7 @@ class BracketGeneratorService {
       } else if (round % 2 == 0) {
         // Even rounds: winners from previous loser round vs new dropdowns
         matchesInRound = bracketSize ~/ (1 << ((round ~/ 2) + 2));
-      } else {
+      } else() {
         // Odd rounds: just advance loser bracket winners
         matchesInRound = bracketSize ~/ (1 << ((round + 1) ~/ 2 + 2));
       }
@@ -842,7 +842,7 @@ class BracketGeneratorService {
           matchNumber: i + 1,
           status: 'pending',
           metadata: {
-            'bracketType': 'loser',
+            "bracketType": 'loser',
             'loserRoundNumber': round,
           },
         );
@@ -856,7 +856,7 @@ class BracketGeneratorService {
         type: 'loser',
         matches: roundMatches,
         metadata: {
-          'bracketType': 'loser',
+          "bracketType": 'loser',
           'loserRoundNumber': round,
         },
       ));
@@ -869,7 +869,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating round robin bracket');
     
     final playerCount = participants.length;
@@ -903,7 +903,7 @@ class BracketGeneratorService {
             player1: pair[0],
             player2: pair[1],
             status: 'pending',
-            metadata: {'tournamentType': 'round_robin'},
+            metadata: {"tournamentType": 'round_robin'},
           );
           roundMatches.add(match);
         }
@@ -924,7 +924,7 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'round_robin',
+        "type": 'round_robin',
         'totalRounds': totalRounds,
         'matchesPerRound': matchesPerRound,
         'totalMatches': rounds.fold<int>(0, (sum, round) => sum + round.matches.length),
@@ -973,7 +973,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating Swiss system bracket');
     
     final playerCount = participants.length;
@@ -1009,8 +1009,8 @@ class BracketGeneratorService {
         player2: player2,
         status: 'pending',
         metadata: {
-          'tournamentType': 'swiss',
-          'pairingMethod': 'initial_seeding',
+          "tournamentType": 'swiss',
+          "pairingMethod": 'initial_seeding',
         },
       );
       firstRoundMatches.add(match);
@@ -1022,7 +1022,7 @@ class BracketGeneratorService {
       name: 'Swiss Vòng 1',
       type: 'swiss',
       matches: firstRoundMatches,
-      metadata: {'pairingMethod': 'initial_seeding'},
+      metadata: {"pairingMethod": 'initial_seeding'},
     ));
     
     // Generate subsequent rounds (empty, to be paired based on results)
@@ -1037,8 +1037,8 @@ class BracketGeneratorService {
           matchNumber: i + 1,
           status: 'pending',
           metadata: {
-            'tournamentType': 'swiss',
-            'pairingMethod': 'score_based',
+            "tournamentType": 'swiss',
+            "pairingMethod": 'score_based',
             'requiresPairing': true,
           },
         );
@@ -1052,7 +1052,7 @@ class BracketGeneratorService {
         type: 'swiss',
         matches: roundMatches,
         metadata: {
-          'pairingMethod': 'score_based',
+          "pairingMethod": 'score_based',
           'requiresPairing': true,
         },
       ));
@@ -1064,10 +1064,10 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'swiss',
+        "type": 'swiss',
         'totalRounds': totalRounds,
         'matchesPerRound': matchesPerRound,
-        'pairingSystem': 'score_based',
+        "pairingSystem": 'score_based',
         'allowRematch': false,
       },
     );
@@ -1077,7 +1077,7 @@ class BracketGeneratorService {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async {
+  }) async() {
     debugPrint('$_tag: Generating parallel groups bracket');
     
     final playerCount = participants.length;
@@ -1117,7 +1117,7 @@ class BracketGeneratorService {
             name: 'Bảng đấu - Vòng ${roundInGroup + 1}',
             type: 'group',
             matches: [],
-            metadata: {'phase': 'group_stage'},
+            metadata: {"phase": 'group_stage'},
           ),
         );
         
@@ -1135,10 +1135,10 @@ class BracketGeneratorService {
               player2: pair[1],
               status: 'pending',
               metadata: {
-                'tournamentType': 'parallel_groups',
+                "tournamentType": 'parallel_groups',
                 'groupIndex': groupIndex,
-                'groupName': 'Bảng ${String.fromCharCode(65 + groupIndex)}', // A, B, C...
-                'phase': 'group_stage',
+                "groupName": 'Bảng ${String.fromCharCode(65 + groupIndex)}', // A, B, C...
+                "phase": 'group_stage',
               },
             );
             existingRound.matches.add(match);
@@ -1172,7 +1172,7 @@ class BracketGeneratorService {
       participants: participants,
       rounds: rounds,
       structure: {
-        'type': 'parallel_groups',
+        "type": 'parallel_groups',
         'groupCount': groupCount,
         'groupSize': playersPerGroup,
         'qualifiersPerGroup': qualifiersPerGroup,
@@ -1206,8 +1206,8 @@ class BracketGeneratorService {
           matchNumber: i + 1,
           status: 'pending',
           metadata: {
-            'tournamentType': 'parallel_groups',
-            'phase': 'playoffs',
+            "tournamentType": 'parallel_groups',
+            "phase": 'playoffs',
           },
         );
         roundMatches.add(match);
@@ -1218,7 +1218,7 @@ class BracketGeneratorService {
           : playersRemaining == 4 
               ? 'Bán kết' 
               : playersRemaining == 8 
-                  ? 'Tứ kết'
+                  ? "Tứ kết"
                   : 'Playoff Vòng $currentRound';
       
       rounds.add(TournamentRound(
@@ -1227,7 +1227,7 @@ class BracketGeneratorService {
         name: roundName,
         type: 'playoff',
         matches: roundMatches,
-        metadata: {'phase': 'playoffs'},
+        metadata: {"phase": 'playoffs'},
       ));
       
       currentRound++;
@@ -1266,9 +1266,9 @@ class BracketGeneratorService {
         player2: participants[seed2],
         status: 'pending',
         metadata: {
-          'bracketType': 'winners',
-          'saboMatchId': 'WR1M${i + 1}',
-          'seedMatch': '${seedPairs[i][0]} vs ${seedPairs[i][1]}'
+          "bracketType": 'winners',
+          "saboMatchId": 'WR1M${i + 1}',
+          "seedMatch": '${seedPairs[i][0]} vs ${seedPairs[i][1]}'
         },
       );
       wr1matches.add(match);
@@ -1280,7 +1280,7 @@ class BracketGeneratorService {
       name: 'Winners Round 1',
       type: 'winners',
       matches: wr1matches,
-      metadata: {'matchCount': 8, 'advancement': '8 to WR2, 8 to LA'}
+      metadata: {'matchCount': 8, "advancement": '8 to WR2, 8 to LA'}
     ));
     
     // WR2: 4 matches (8 → 4)
@@ -1295,8 +1295,8 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'winners',
-          'saboMatchId': 'WR2M${i + 1}',
+          "bracketType": 'winners',
+          "saboMatchId": 'WR2M${i + 1}',
           'dependsOn': ['WR1M${i * 2 + 1}', 'WR1M${i * 2 + 2}']
         },
       );
@@ -1309,7 +1309,7 @@ class BracketGeneratorService {
       name: 'Winners Round 2',
       type: 'winners',
       matches: wr2matches,
-      metadata: {'matchCount': 4, 'advancement': '4 to WR3, 4 to LB'}
+      metadata: {'matchCount': 4, "advancement": '4 to WR3, 4 to LB'}
     ));
     
     // WR3: 2 matches (4 → 2) - SEMIFINALS - No Winners Final!
@@ -1324,8 +1324,8 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'winners',
-          'saboMatchId': 'WR3M${i + 1}',
+          "bracketType": 'winners',
+          "saboMatchId": 'WR3M${i + 1}',
           'isSemifinal': true,
           'dependsOn': ['WR2M${i * 2 + 1}', 'WR2M${i * 2 + 2}']
         },
@@ -1339,7 +1339,7 @@ class BracketGeneratorService {
       name: 'Winners Semifinals',
       type: 'winners',
       matches: wr3matches,
-      metadata: {'matchCount': 2, 'advancement': '2 to SABO Finals', 'isLast': true}
+      metadata: {'matchCount': 2, "advancement": '2 to SABO Finals', 'isLast': true}
     ));
     
     return rounds;
@@ -1361,9 +1361,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'losers_branch_a',
-          'saboMatchId': 'LAR101M${i + 1}',
-          'source': 'WR1_losers',
+          "bracketType": 'losers_branch_a',
+          "saboMatchId": 'LAR101M${i + 1}',
+          "source": 'WR1_losers',
           'dependsOn': ['WR1M${i * 2 + 1}', 'WR1M${i * 2 + 2}']
         },
       );
@@ -1376,7 +1376,7 @@ class BracketGeneratorService {
       name: 'Losers Branch A Round 1',
       type: 'losers_a',
       matches: lar101matches,
-      metadata: {'matchCount': 4, 'source': 'Winners Round 1 losers'}
+      metadata: {'matchCount': 4, "source": 'Winners Round 1 losers'}
     ));
     
     // LAR102: 2 matches (4 → 2)
@@ -1391,8 +1391,8 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'losers_branch_a',
-          'saboMatchId': 'LAR102M${i + 1}',
+          "bracketType": 'losers_branch_a',
+          "saboMatchId": 'LAR102M${i + 1}',
           'dependsOn': ['LAR101M${i * 2 + 1}', 'LAR101M${i * 2 + 2}']
         },
       );
@@ -1418,8 +1418,8 @@ class BracketGeneratorService {
       player2: null,
       status: 'pending',
       metadata: {
-        'bracketType': 'losers_branch_a',
-        'saboMatchId': 'LAR103M1',
+        "bracketType": 'losers_branch_a',
+        "saboMatchId": 'LAR103M1',
         'isBranchFinal': true,
         'dependsOn': ['LAR102M1', 'LAR102M2']
       },
@@ -1431,7 +1431,7 @@ class BracketGeneratorService {
       name: 'Losers Branch A Final',
       type: 'losers_a',
       matches: [lar103match],
-      metadata: {'matchCount': 1, 'advancement': '1 to SABO Finals'}
+      metadata: {'matchCount': 1, "advancement": '1 to SABO Finals'}
     ));
     
     return rounds;
@@ -1453,9 +1453,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'losers_branch_b',
-          'saboMatchId': 'LBR201M${i + 1}',
-          'source': 'WR2_losers',
+          "bracketType": 'losers_branch_b',
+          "saboMatchId": 'LBR201M${i + 1}',
+          "source": 'WR2_losers',
           'dependsOn': ['WR2M${i * 2 + 1}', 'WR2M${i * 2 + 2}']
         },
       );
@@ -1468,7 +1468,7 @@ class BracketGeneratorService {
       name: 'Losers Branch B Round 1',
       type: 'losers_b',
       matches: lbr201matches,
-      metadata: {'matchCount': 2, 'source': 'Winners Round 2 losers'}
+      metadata: {'matchCount': 2, "source": 'Winners Round 2 losers'}
     ));
     
     // LBR202: 1 match (2 → 1) - Branch B Final
@@ -1481,8 +1481,8 @@ class BracketGeneratorService {
       player2: null,
       status: 'pending',
       metadata: {
-        'bracketType': 'losers_branch_b',
-        'saboMatchId': 'LBR202M1',
+        "bracketType": 'losers_branch_b',
+        "saboMatchId": 'LBR202M1',
         'isBranchFinal': true,
         'dependsOn': ['LBR201M1', 'LBR201M2']
       },
@@ -1494,7 +1494,7 @@ class BracketGeneratorService {
       name: 'Losers Branch B Final',
       type: 'losers_b',
       matches: [lbr202match],
-      metadata: {'matchCount': 1, 'advancement': '1 to SABO Finals'}
+      metadata: {'matchCount': 1, "advancement": '1 to SABO Finals'}
     ));
     
     return rounds;
@@ -1517,10 +1517,10 @@ class BracketGeneratorService {
       player2: null, // From LAR103M1 winner
       status: 'pending',
       metadata: {
-        'bracketType': 'sabo_finals',
-        'saboMatchId': 'SEMI1',
+        "bracketType": 'sabo_finals',
+        "saboMatchId": 'SEMI1',
         'isSemifinal': true,
-        'matchup': 'WB_Winner_1 vs Branch_A_Winner',
+        "matchup": 'WB_Winner_1 vs Branch_A_Winner',
         'dependsOn': ['WR3M1', 'LAR103M1']
       },
     );
@@ -1535,10 +1535,10 @@ class BracketGeneratorService {
       player2: null, // From LBR202M1 winner
       status: 'pending',
       metadata: {
-        'bracketType': 'sabo_finals',
-        'saboMatchId': 'SEMI2',
+        "bracketType": 'sabo_finals',
+        "saboMatchId": 'SEMI2',
         'isSemifinal': true,
-        'matchup': 'WB_Winner_2 vs Branch_B_Winner',
+        "matchup": 'WB_Winner_2 vs Branch_B_Winner',
         'dependsOn': ['WR3M2', 'LBR202M1']
       },
     );
@@ -1551,7 +1551,7 @@ class BracketGeneratorService {
       name: 'SABO Semifinals',
       type: 'sabo_finals',
       matches: semifinalMatches,
-      metadata: {'matchCount': 2, 'phase': 'semifinals'}
+      metadata: {'matchCount': 2, "phase": 'semifinals'}
     ));
     
     // SABO Final: 1 match
@@ -1564,8 +1564,8 @@ class BracketGeneratorService {
       player2: null, // SEMI2 winner
       status: 'pending',
       metadata: {
-        'bracketType': 'sabo_finals',
-        'saboMatchId': 'FINAL1',
+        "bracketType": 'sabo_finals',
+        "saboMatchId": 'FINAL1',
         'isFinal': true,
         'isChampionship': true,
         'dependsOn': ['SEMI1', 'SEMI2']
@@ -1578,7 +1578,7 @@ class BracketGeneratorService {
       name: 'SABO Final',
       type: 'sabo_finals',
       matches: [saboFinal],
-      metadata: {'matchCount': 1, 'phase': 'final', 'isChampionship': true}
+      metadata: {'matchCount': 1, "phase": 'final', 'isChampionship': true}
     ));
     
     return rounds;
@@ -1634,10 +1634,10 @@ class BracketGeneratorService {
         player2: participants[seed2],
         status: 'pending',
         metadata: {
-          'bracketType': 'winners',
+          "bracketType": 'winners',
           'groupId': groupId,
-          'saboMatchId': '$groupId-WR1M${i + 1}',
-          'seedMatch': '${seedPairs[i][0]} vs ${seedPairs[i][1]}'
+          "saboMatchId": '$groupId-WR1M${i + 1}',
+          "seedMatch": '${seedPairs[i][0]} vs ${seedPairs[i][1]}'
         },
       );
       wr1matches.add(match);
@@ -1664,9 +1664,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'winners',
+          "bracketType": 'winners',
           'groupId': groupId,
-          'saboMatchId': '$groupId-WR2M${i + 1}',
+          "saboMatchId": '$groupId-WR2M${i + 1}',
           'dependsOn': ['$groupId-WR1M${i * 2 + 1}', '$groupId-WR1M${i * 2 + 2}']
         },
       );
@@ -1694,9 +1694,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'winners',
+          "bracketType": 'winners',
           'groupId': groupId,
-          'saboMatchId': '$groupId-WR3M${i + 1}',
+          "saboMatchId": '$groupId-WR3M${i + 1}',
           'isSemifinal': true,
           'dependsOn': ['$groupId-WR2M${i * 2 + 1}', '$groupId-WR2M${i * 2 + 2}']
         },
@@ -1723,11 +1723,11 @@ class BracketGeneratorService {
       player2: null,
       status: 'pending',
       metadata: {
-        'bracketType': 'winners',
+        "bracketType": 'winners',
         'groupId': groupId,
-        'saboMatchId': '$groupId-WF',
+        "saboMatchId": '$groupId-WF',
         'isGroupFinal': true,
-        'advancement': 'Group Winner (1st Qualifier)',
+        "advancement": 'Group Winner (1st Qualifier)',
         'dependsOn': ['$groupId-WR3M1', '$groupId-WR3M2']
       },
     );
@@ -1738,7 +1738,7 @@ class BracketGeneratorService {
       name: 'Group $groupId Winners Final',
       type: 'winners',
       matches: [wfMatch],
-      metadata: {'groupId': groupId, 'matchCount': 1, 'advancement': '1st Qualifier'}
+      metadata: {'groupId': groupId, 'matchCount': 1, "advancement": '1st Qualifier'}
     ));
     
     return rounds;
@@ -1760,9 +1760,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'losers',
+          "bracketType": 'losers',
           'groupId': groupId,
-          'saboMatchId': '$groupId-L${i + 1}',
+          "saboMatchId": '$groupId-L${i + 1}',
           'dependsOn': ['$groupId-WR1M${i * 2 + 1}', '$groupId-WR1M${i * 2 + 2}']
         },
       );
@@ -1790,9 +1790,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'losers',
+          "bracketType": 'losers',
           'groupId': groupId,
-          'saboMatchId': '$groupId-L${4 + i + 1}',
+          "saboMatchId": '$groupId-L${4 + i + 1}',
           'dependsOn': i < 2 ? ['$groupId-L${i + 1}', '$groupId-WR2M${i + 1}'] : ['$groupId-L${i + 1}', '$groupId-WR2M${i + 1}']
         },
       );
@@ -1820,9 +1820,9 @@ class BracketGeneratorService {
         player2: null,
         status: 'pending',
         metadata: {
-          'bracketType': 'losers',
+          "bracketType": 'losers',
           'groupId': groupId,
-          'saboMatchId': '$groupId-L${8 + i + 1}',
+          "saboMatchId": '$groupId-L${8 + i + 1}',
           'dependsOn': ['$groupId-L${4 + i * 2 + 1}', '$groupId-L${4 + i * 2 + 2}']
         },
       );
@@ -1848,11 +1848,11 @@ class BracketGeneratorService {
       player2: null,
       status: 'pending',
       metadata: {
-        'bracketType': 'losers',
+        "bracketType": 'losers',
         'groupId': groupId,
-        'saboMatchId': '$groupId-LF',
+        "saboMatchId": '$groupId-LF',
         'isGroupLosersFinal': true,
-        'advancement': '2nd Qualifier',
+        "advancement": '2nd Qualifier',
         'dependsOn': ['$groupId-L9', '$groupId-L10']
       },
     );
@@ -1863,7 +1863,7 @@ class BracketGeneratorService {
       name: 'Group $groupId Losers Final',
       type: 'losers',
       matches: [lfMatch],
-      metadata: {'groupId': groupId, 'matchCount': 1, 'advancement': '2nd Qualifier'}
+      metadata: {'groupId': groupId, 'matchCount': 1, "advancement": '2nd Qualifier'}
     ));
     
     return rounds;
@@ -1889,10 +1889,10 @@ class BracketGeneratorService {
       player2: null, // From B-FINAL1 winner
       status: 'pending',
       metadata: {
-        'bracketType': 'cross_bracket',
-        'saboMatchId': 'SF1',
+        "bracketType": 'cross_bracket',
+        "saboMatchId": 'SF1',
         'isSemifinal': true,
-        'matchup': 'Group_A_Winner_1 vs Group_B_Winner_1',
+        "matchup": 'Group_A_Winner_1 vs Group_B_Winner_1',
         'dependsOn': ['A-FINAL1', 'B-FINAL1']
       },
     );
@@ -1907,10 +1907,10 @@ class BracketGeneratorService {
       player2: null, // From B-FINAL2 winner
       status: 'pending',
       metadata: {
-        'bracketType': 'cross_bracket',
-        'saboMatchId': 'SF2',
+        "bracketType": 'cross_bracket',
+        "saboMatchId": 'SF2',
         'isSemifinal': true,
-        'matchup': 'Group_A_Winner_2 vs Group_B_Winner_2',
+        "matchup": 'Group_A_Winner_2 vs Group_B_Winner_2',
         'dependsOn': ['A-FINAL2', 'B-FINAL2']
       },
     );
@@ -1921,7 +1921,7 @@ class BracketGeneratorService {
       name: 'DE32 Semifinals',
       type: 'cross_bracket',
       matches: [semifinal1, semifinal2],
-      metadata: {'matchCount': 2, 'phase': 'semifinals'}
+      metadata: {'matchCount': 2, "phase": 'semifinals'}
     ));
     
     // DE32 Final
@@ -1934,8 +1934,8 @@ class BracketGeneratorService {
       player2: null, // SF2 winner
       status: 'pending',
       metadata: {
-        'bracketType': 'cross_bracket',
-        'saboMatchId': 'FINAL',
+        "bracketType": 'cross_bracket',
+        "saboMatchId": 'FINAL',
         'isFinal': true,
         'isChampionship': true,
         'dependsOn': ['SF1', 'SF2']
@@ -1948,7 +1948,7 @@ class BracketGeneratorService {
       name: 'DE32 Final',
       type: 'cross_bracket',
       matches: [de32Final],
-      metadata: {'matchCount': 1, 'phase': 'final', 'isChampionship': true}
+      metadata: {'matchCount': 1, "phase": 'final', 'isChampionship': true}
     ));
     
     return rounds;
@@ -1961,8 +1961,8 @@ class BracketGeneratorService {
     required List<TournamentParticipant> participants,
     required List<TournamentMatch> currentMatches,
     required String format,
-  }) async {
-    try {
+  }) async() {
+    try() {
       // Group matches by round
       final roundsMap = <int, List<TournamentMatch>>{};
       for (final match in currentMatches) {
@@ -1976,9 +1976,9 @@ class BracketGeneratorService {
       final sortedRounds = roundsMap.keys.toList()..sort();
       
       if (sortedRounds.isEmpty) {
-        return {
+        return() {
           'success': false,
-          'message': 'No matches found in tournament',
+          "message": 'No matches found in tournament',
           'newMatches': <TournamentMatch>[],
         };
       }
@@ -1997,9 +1997,9 @@ class BracketGeneratorService {
       }
 
       if (completedRound == null) {
-        return {
+        return() {
           'success': false,
-          'message': 'No completed rounds found. Wait for current matches to finish.',
+          "message": 'No completed rounds found. Wait for current matches to finish.',
           'newMatches': <TournamentMatch>[],
         };
       }
@@ -2007,9 +2007,9 @@ class BracketGeneratorService {
       // Check if next round already exists
       final nextRoundNum = completedRound + 1;
       if (roundsMap.containsKey(nextRoundNum)) {
-        return {
+        return() {
           'success': false,
-          'message': 'Next round already exists',
+          "message": 'Next round already exists',
           'newMatches': <TournamentMatch>[],
         };
       }
@@ -2025,9 +2025,9 @@ class BracketGeneratorService {
       );
 
     } catch (e) {
-      return {
+      return() {
         'success': false,
-        'message': 'Error advancing tournament: $e',
+        "message": 'Error advancing tournament: $e',
         'newMatches': <TournamentMatch>[],
       };
     }
@@ -2041,7 +2041,7 @@ class BracketGeneratorService {
     required List<TournamentMatch> completedMatches,
     required String format,
     required List<TournamentMatch> allMatches,
-  }) async {
+  }) async() {
     final nextRoundNum = completedRound + 1;
 
     // Extract winners from completed matches
@@ -2053,9 +2053,9 @@ class BracketGeneratorService {
     }
 
     if (winners.isEmpty) {
-      return {
+      return() {
         'success': false,
-        'message': 'No winners found in completed matches',
+        "message": 'No winners found in completed matches',
         'newMatches': <TournamentMatch>[],
       };
     }
@@ -2083,9 +2083,9 @@ class BracketGeneratorService {
 
       case 'round_robin':
       case 'round robin':
-        return {
+        return() {
           'success': false,
-          'message': 'Round Robin tournaments do not advance - all matches are scheduled at once',
+          "message": 'Round Robin tournaments do not advance - all matches are scheduled at once',
           'newMatches': <TournamentMatch>[],
         };
 
@@ -2109,9 +2109,9 @@ class BracketGeneratorService {
         );
 
       default:
-        return {
+        return() {
           'success': false,
-          'message': 'Unsupported tournament format: $format',
+          "message": 'Unsupported tournament format: $format',
           'newMatches': <TournamentMatch>[],
         };
     }
@@ -2125,17 +2125,17 @@ class BracketGeneratorService {
     required int completedRound,
   }) {
     if (winners.length < 2) {
-      return {
+      return() {
         'success': false,
-        'message': 'Need at least 2 winners to create next round',
+        "message": 'Need at least 2 winners to create next round',
         'newMatches': <TournamentMatch>[],
       };
     }
 
     if (winners.length == 1) {
-      return {
+      return() {
         'success': true,
-        'message': '🏆 Tournament completed! Winner: ${winners.first.name}',
+        "message": '🏆 Tournament completed! Winner: ${winners.first.name}',
         'newMatches': <TournamentMatch>[],
         'isCompleted': true,
         'winner': winners.first,
@@ -2165,7 +2165,7 @@ class BracketGeneratorService {
         status: 'pending',
         metadata: {
           'roundName': roundName,
-          'matchName': '$roundName - Match ${i + 1}',
+          "matchName": '$roundName - Match ${i + 1}',
           'totalMatches': matchCount,
         },
       );
@@ -2173,9 +2173,9 @@ class BracketGeneratorService {
       matches.add(match);
     }
 
-    return {
+    return() {
       'success': true,
-      'message': 'Created $roundName with $matchCount matches',
+      "message": 'Created $roundName with $matchCount matches',
       'newMatches': matches,
       'roundName': roundName,
       'roundNumber': roundNumber,
@@ -2192,9 +2192,9 @@ class BracketGeneratorService {
   }) {
     // This is a simplified implementation
     // Full double elimination requires tracking winners and losers brackets
-    return {
+    return() {
       'success': false,
-      'message': 'Double Elimination advancement requires more complex logic - implement based on specific needs',
+      "message": 'Double Elimination advancement requires more complex logic - implement based on specific needs',
       'newMatches': <TournamentMatch>[],
     };
   }
@@ -2207,9 +2207,9 @@ class BracketGeneratorService {
     required List<TournamentMatch> allMatches,
   }) {
     // Swiss system pairs players based on performance
-    return {
+    return() {
       'success': false,
-      'message': 'Swiss System advancement requires performance tracking - implement based on specific needs',
+      "message": 'Swiss System advancement requires performance tracking - implement based on specific needs',
       'newMatches': <TournamentMatch>[],
     };
   }
@@ -2223,9 +2223,9 @@ class BracketGeneratorService {
     required int completedRound,
   }) {
     // SABO formats follow specific progression rules
-    return {
+    return() {
       'success': false,
-      'message': 'SABO format advancement requires specific implementation - implement based on SABO rules',
+      "message": 'SABO format advancement requires specific implementation - implement based on SABO rules',
       'newMatches': <TournamentMatch>[],
     };
   }
@@ -2238,7 +2238,7 @@ class BracketGeneratorService {
       return 'Bán kết';
     } else if (playerCount == 8) {
       return 'Tứ kết';
-    } else {
+    } else() {
       // Calculate round number for early rounds
       int roundNum = 1;
       int originalPlayers = playerCount;

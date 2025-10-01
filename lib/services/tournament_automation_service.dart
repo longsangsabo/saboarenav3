@@ -15,7 +15,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 /// Service quản lý tự động tournament operations
-class TournamentAutomationService {
+class TournamentAutomationService() {
   static TournamentAutomationService? _instance;
   static TournamentAutomationService get instance => _instance ??= TournamentAutomationService._();
   TournamentAutomationService._();
@@ -33,8 +33,8 @@ class TournamentAutomationService {
   // ==================== AUTOMATION MANAGEMENT ====================
 
   /// Start automation for a tournament
-  Future<void> startTournamentAutomation(String tournamentId) async {
-    try {
+  Future<void> startTournamentAutomation(String tournamentId) async() {
+    try() {
       debugPrint('🤖 Starting automation for tournament: $tournamentId');
 
       final tournament = await _tournamentService.getTournamentById(tournamentId);
@@ -69,8 +69,8 @@ class TournamentAutomationService {
   }
 
   /// Stop automation for a tournament
-  Future<void> stopTournamentAutomation(String tournamentId) async {
-    try {
+  Future<void> stopTournamentAutomation(String tournamentId) async() {
+    try() {
       debugPrint('🛑 Stopping automation for tournament: $tournamentId');
 
       // Cancel timers
@@ -90,13 +90,13 @@ class TournamentAutomationService {
 
   // ==================== REGISTRATION AUTOMATION ====================
 
-  Future<void> _setupRegistrationAutomation(Tournament tournament) async {
+  Future<void> _setupRegistrationAutomation(Tournament tournament) async() {
     final now = DateTime.now();
     
     // Schedule registration opening
     if (tournament.registrationStart != null && tournament.registrationStart!.isAfter(now)) {
       final delay = tournament.registrationStart!.difference(now);
-      _activeTimers[tournament.id] = Timer(delay, () async {
+      _activeTimers[tournament.id] = Timer(delay, () async() {
         await _openRegistration(tournament.id);
       });
       
@@ -107,7 +107,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _setupRegistrationReminders(Tournament tournament) async {
+  Future<void> _setupRegistrationReminders(Tournament tournament) async() {
     // Setup multiple reminder timers
     final reminderIntervals = [
       Duration(hours: 24), // 24 hours before deadline
@@ -120,7 +120,7 @@ class TournamentAutomationService {
       final reminderTime = tournament.registrationDeadline.subtract(interval);
       
       if (reminderTime.isAfter(DateTime.now())) {
-        Timer(reminderTime.difference(DateTime.now()), () async {
+        Timer(reminderTime.difference(DateTime.now()), () async() {
           await _sendRegistrationReminder(tournament.id, interval);
         });
       }
@@ -129,7 +129,7 @@ class TournamentAutomationService {
     // Schedule registration closure
     final closureDelay = tournament.registrationDeadline.difference(DateTime.now());
     if (closureDelay.isPositive) {
-      Timer(closureDelay, () async {
+      Timer(closureDelay, () async() {
         await _closeRegistration(tournament.id);
       });
       
@@ -137,8 +137,8 @@ class TournamentAutomationService {
     }
     }
 
-  Future<void> _openRegistration(String tournamentId) async {
-    try {
+  Future<void> _openRegistration(String tournamentId) async() {
+    try() {
       debugPrint('🚀 Auto-opening registration for tournament: $tournamentId');
 
       await _supabase
@@ -159,7 +159,7 @@ class TournamentAutomationService {
 
       // Update real-time listeners
       await _realtimeService.broadcastTournamentUpdate(tournamentId, {
-        'type': 'registration_opened',
+        "type": 'registration_opened',
         'tournament_id': tournamentId,
       });
 
@@ -170,8 +170,8 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _closeRegistration(String tournamentId) async {
-    try {
+  Future<void> _closeRegistration(String tournamentId) async() {
+    try() {
       debugPrint('🚪 Auto-closing registration for tournament: $tournamentId');
 
       final participants = await _supabase
@@ -214,11 +214,11 @@ class TournamentAutomationService {
 
   // ==================== TOURNAMENT START AUTOMATION ====================
 
-  Future<void> _setupStartAutomation(Tournament tournament) async {
+  Future<void> _setupStartAutomation(Tournament tournament) async() {
     final delay = tournament.startDate.difference(DateTime.now());
     
     if (delay.isPositive) {
-      _activeTimers[tournament.id] = Timer(delay, () async {
+      _activeTimers[tournament.id] = Timer(delay, () async() {
         await _startTournament(tournament.id);
       });
       
@@ -231,19 +231,19 @@ class TournamentAutomationService {
         final notificationTime = tournament.startDate.subtract(interval);
         
         if (notificationTime.isAfter(DateTime.now())) {
-          Timer(notificationTime.difference(DateTime.now()), () async {
+          Timer(notificationTime.difference(DateTime.now()), () async() {
             await _sendPreStartNotification(tournament.id, interval);
           });
         }
       }
-    } else {
+    } else() {
       // Start immediately if past due
       await _startTournament(tournament.id);
     }
     }
 
-  Future<void> _startTournament(String tournamentId) async {
-    try {
+  Future<void> _startTournament(String tournamentId) async() {
+    try() {
       debugPrint('🏁 Auto-starting tournament: $tournamentId');
 
       await _supabase
@@ -278,13 +278,12 @@ class TournamentAutomationService {
 
   // ==================== PROGRESS AUTOMATION ====================
 
-  Future<void> _setupProgressAutomation(Tournament tournament) async {
+  Future<void> _setupProgressAutomation(Tournament tournament) async() {
     // Subscribe to match completion events
     _activeSubscriptions[tournament.id] = _realtimeService
         .subscribeTo('matches')
         .where((event) => event.table == 'matches')
-        .listen((event) async {
-      
+        .listen((event) async() {
       if (event.eventType == 'UPDATE' && event.newRecord != null) {
         final match = event.newRecord!;
         
@@ -301,8 +300,8 @@ class TournamentAutomationService {
     debugPrint('⚙️ Progress automation setup complete');
   }
 
-  Future<void> _handleMatchCompletion(String tournamentId, String matchId) async {
-    try {
+  Future<void> _handleMatchCompletion(String tournamentId, String matchId) async() {
+    try() {
       debugPrint('🎯 Handling match completion: $matchId');
 
       // Update bracket progression
@@ -329,7 +328,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _updateBracketProgression(String tournamentId, String matchId) async {
+  Future<void> _updateBracketProgression(String tournamentId, String matchId) async() {
     // Get match details
     final match = await _matchService.getMatchById(matchId);
     
@@ -359,7 +358,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _progressSingleElimination(Match match) async {
+  Future<void> _progressSingleElimination(Match match) async() {
     // Find next match where winner should advance
     final nextMatch = await _supabase
         .from('matches')
@@ -370,7 +369,7 @@ class TournamentAutomationService {
 
     if (nextMatch != null) {
       // Determine which position (player1 or player2) the winner takes
-      final position = nextMatch['player1_id'] == null ? 'player1_id' : 'player2_id';
+      final position = nextMatch['player1_id'] == null ? "player1_id" : 'player2_id';
       
       await _supabase
           .from('matches')
@@ -381,7 +380,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _progressDoubleElimination(Match match) async {
+  Future<void> _progressDoubleElimination(Match match) async() {
     final bracketPosition = match.bracketPosition;
     
     if (bracketPosition?.contains('winner') == true) {
@@ -398,12 +397,12 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _progressWinnersBracket(Match match) async {
+  Future<void> _progressWinnersBracket(Match match) async() {
     // Similar logic to single elimination for winner advancement
     await _progressSingleElimination(match);
   }
 
-  Future<void> _progressLosersBracket(Match match) async {
+  Future<void> _progressLosersBracket(Match match) async() {
     // Find next loser's bracket match
     final nextMatch = await _supabase
         .from('matches')
@@ -414,7 +413,7 @@ class TournamentAutomationService {
         .maybeSingle();
 
     if (nextMatch != null) {
-      final position = nextMatch['player1_id'] == null ? 'player1_id' : 'player2_id';
+      final position = nextMatch['player1_id'] == null ? "player1_id" : 'player2_id';
       
       await _supabase
           .from('matches')
@@ -423,7 +422,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _dropToLosersBracket(Match match) async {
+  Future<void> _dropToLosersBracket(Match match) async() {
     // Find appropriate loser's bracket match for the loser
     final losersBracketMatch = await _supabase
         .from('matches')
@@ -436,7 +435,7 @@ class TournamentAutomationService {
         .maybeSingle();
 
     if (losersBracketMatch != null) {
-      final position = losersBracketMatch['player1_id'] == null ? 'player1_id' : 'player2_id';
+      final position = losersBracketMatch['player1_id'] == null ? "player1_id" : 'player2_id';
       
       await _supabase
           .from('matches')
@@ -447,13 +446,13 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _updateRoundRobinStandings(Match match) async {
+  Future<void> _updateRoundRobinStandings(Match match) async() {
     // Update points for round robin format
     await _supabase
         .from('tournament_participants')
         .update({
-          'wins': 'wins + 1',
-          'points': 'points + 3',
+          "wins": 'wins + 1',
+          "points": 'points + 3',
         })
         .eq('tournament_id', match.tournamentId)
         .eq('user_id', match.winnerId);
@@ -462,14 +461,14 @@ class TournamentAutomationService {
       await _supabase
           .from('tournament_participants')
           .update({
-            'losses': 'losses + 1',
+            "losses": 'losses + 1',
           })
           .eq('tournament_id', match.tournamentId)
           .eq('user_id', match.loserId);
     }
   }
 
-  Future<void> _updateSwissStandings(Match match) async {
+  Future<void> _updateSwissStandings(Match match) async() {
     // Update Swiss system standings with more complex scoring
     final winnerPoints = _calculateSwissPoints(true, match);
     final loserPoints = _calculateSwissPoints(false, match);
@@ -477,9 +476,9 @@ class TournamentAutomationService {
     await _supabase
         .from('tournament_participants')
         .update({
-          'wins': 'wins + 1',
-          'points': 'points + $winnerPoints',
-          'tiebreak_score': 'tiebreak_score + ${_calculateTiebreakPoints(match, true)}',
+          "wins": 'wins + 1',
+          "points": 'points + $winnerPoints',
+          "tiebreak_score": 'tiebreak_score + ${_calculateTiebreakPoints(match, true)}',
         })
         .eq('tournament_id', match.tournamentId)
         .eq('user_id', match.winnerId);
@@ -488,9 +487,9 @@ class TournamentAutomationService {
       await _supabase
           .from('tournament_participants')
           .update({
-            'losses': 'losses + 1',
-            'points': 'points + $loserPoints',
-            'tiebreak_score': 'tiebreak_score + ${_calculateTiebreakPoints(match, false)}',
+            "losses": 'losses + 1',
+            "points": 'points + $loserPoints',
+            "tiebreak_score": 'tiebreak_score + ${_calculateTiebreakPoints(match, false)}',
           })
           .eq('tournament_id', match.tournamentId)
           .eq('user_id', match.loserId);
@@ -511,7 +510,7 @@ class TournamentAutomationService {
     return 0.0;
   }
 
-  Future<void> _updateLadderRankings(Match match) async {
+  Future<void> _updateLadderRankings(Match match) async() {
     // Update ladder rankings based on match result
     final winner = await _supabase
         .from('tournament_participants')
@@ -542,7 +541,7 @@ class TournamentAutomationService {
     String loserId,
     int winnerPos,
     int loserPos,
-  ) async {
+  ) async() {
     await _supabase
         .from('tournament_participants')
         .update({'ladder_position': loserPos})
@@ -560,7 +559,7 @@ class TournamentAutomationService {
 
   // ==================== ROUND MANAGEMENT ====================
 
-  Future<bool> _checkRoundCompletion(String tournamentId) async {
+  Future<bool> _checkRoundCompletion(String tournamentId) async() {
     final currentRound = await _getCurrentRound(tournamentId);
     
     final incompleteMatches = await _supabase
@@ -573,7 +572,7 @@ class TournamentAutomationService {
     return incompleteMatches.isEmpty;
   }
 
-  Future<int> _getCurrentRound(String tournamentId) async {
+  Future<int> _getCurrentRound(String tournamentId) async() {
     final maxRound = await _supabase
         .from('matches')
         .select('round')
@@ -585,7 +584,7 @@ class TournamentAutomationService {
     return maxRound['round'] ?? 1;
   }
 
-  Future<void> _processRoundCompletion(String tournamentId) async {
+  Future<void> _processRoundCompletion(String tournamentId) async() {
     debugPrint('🏆 Round completed for tournament: $tournamentId');
 
     await _notificationService.sendTournamentNotification(
@@ -599,7 +598,7 @@ class TournamentAutomationService {
     await _generateNextRound(tournamentId);
   }
 
-  Future<void> _generateNextRound(String tournamentId) async {
+  Future<void> _generateNextRound(String tournamentId) async() {
     final tournament = await _tournamentService.getTournamentById(tournamentId);
     
     switch (tournament.format) {
@@ -615,7 +614,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _generateSwissRound(String tournamentId) async {
+  Future<void> _generateSwissRound(String tournamentId) async() {
     // Get current standings
     final standings = await _supabase
         .from('tournament_participants')
@@ -652,7 +651,7 @@ class TournamentAutomationService {
     return pairings;
   }
 
-  Future<void> _generateRoundRobinRound(String tournamentId) async {
+  Future<void> _generateRoundRobinRound(String tournamentId) async() {
     // Check if all matches have been generated for round robin
     final participants = await _supabase
         .from('tournament_participants')
@@ -677,7 +676,7 @@ class TournamentAutomationService {
 
   // ==================== UTILITY FUNCTIONS ====================
 
-  Future<void> _generateTournamentBrackets(String tournamentId) async {
+  Future<void> _generateTournamentBrackets(String tournamentId) async() {
     final tournament = await _tournamentService.getTournamentById(tournamentId);
     
     // Generate initial bracket structure based on format
@@ -702,14 +701,14 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _sendRegistrationReminder(String tournamentId, Duration timeLeft) async {
+  Future<void> _sendRegistrationReminder(String tournamentId, Duration timeLeft) async() {
     String message;
     
     if (timeLeft.inDays > 0) {
       message = 'Registration closes in ${timeLeft.inDays} day(s)!';
     } else if (timeLeft.inHours > 0) {
       message = 'Registration closes in ${timeLeft.inHours} hour(s)!';
-    } else {
+    } else() {
       message = 'Registration closes in ${timeLeft.inMinutes} minute(s)! Hurry up!';
     }
 
@@ -721,7 +720,7 @@ class TournamentAutomationService {
     );
   }
 
-  Future<void> _sendPreStartNotification(String tournamentId, Duration timeLeft) async {
+  Future<void> _sendPreStartNotification(String tournamentId, Duration timeLeft) async() {
     await _notificationService.sendTournamentNotification(
       tournamentId: tournamentId,
       title: 'Tournament Starting Soon! 🚀',
@@ -730,12 +729,12 @@ class TournamentAutomationService {
     );
   }
 
-  Future<void> _cancelTournamentForInsufficientParticipants(String tournamentId) async {
+  Future<void> _cancelTournamentForInsufficientParticipants(String tournamentId) async() {
     await _supabase
         .from('tournaments')
         .update({
           'status': TournamentStatus.cancelled,
-          'cancellation_reason': 'Insufficient participants',
+          "cancellation_reason": 'Insufficient participants',
           'updated_at': DateTime.now().toIso8601String(),
         })
         .eq('id', tournamentId);
@@ -750,7 +749,7 @@ class TournamentAutomationService {
     debugPrint('⚠️ Tournament cancelled due to insufficient participants');
   }
 
-  Future<void> _startFirstRoundMatches(String tournamentId) async {
+  Future<void> _startFirstRoundMatches(String tournamentId) async() {
     // Set first round matches to ready status
     await _supabase
         .from('matches')
@@ -761,7 +760,7 @@ class TournamentAutomationService {
     debugPrint('✅ First round matches are now ready');
   }
 
-  Future<bool> _checkTournamentCompletion(String tournamentId) async {
+  Future<bool> _checkTournamentCompletion(String tournamentId) async() {
     // Check if there's a final winner or if all matches are complete
     final incompleteMatches = await _supabase
         .from('matches')
@@ -772,7 +771,7 @@ class TournamentAutomationService {
     return incompleteMatches.isEmpty;
   }
 
-  Future<void> _completeTournament(String tournamentId) async {
+  Future<void> _completeTournament(String tournamentId) async() {
     debugPrint('🏆 Tournament completed: $tournamentId');
 
     // Determine final rankings
@@ -802,7 +801,7 @@ class TournamentAutomationService {
     debugPrint('✅ Tournament completion processed');
   }
 
-  Future<void> _calculateFinalRankings(String tournamentId) async {
+  Future<void> _calculateFinalRankings(String tournamentId) async() {
     final tournament = await _tournamentService.getTournamentById(tournamentId);
     
     // Calculate rankings based on tournament format
@@ -818,7 +817,7 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _calculateRoundRobinRankings(String tournamentId) async {
+  Future<void> _calculateRoundRobinRankings(String tournamentId) async() {
     final participants = await _supabase
         .from('tournament_participants')
         .select('user_id, points, wins, losses')
@@ -835,12 +834,12 @@ class TournamentAutomationService {
     }
   }
 
-  Future<void> _calculateSwissRankings(String tournamentId) async {
+  Future<void> _calculateSwissRankings(String tournamentId) async() {
     // Similar to round robin but with Swiss-specific tiebreakers
     await _calculateRoundRobinRankings(tournamentId);
   }
 
-  Future<void> _calculateEliminationRankings(String tournamentId) async {
+  Future<void> _calculateEliminationRankings(String tournamentId) async() {
     // For elimination formats, rankings are determined by elimination order
     // Winner is rank 1, runner-up is rank 2, etc.
     
@@ -883,35 +882,35 @@ class TournamentAutomationService {
   }
 
   // Implement missing methods for complete bracket generation
-  Future<void> _generateSingleEliminationBracket(String tournamentId) async {
+  Future<void> _generateSingleEliminationBracket(String tournamentId) async() {
     // Implementation for single elimination bracket generation
   }
 
-  Future<void> _generateDoubleEliminationBracket(String tournamentId) async {
+  Future<void> _generateDoubleEliminationBracket(String tournamentId) async() {
     // Implementation for double elimination bracket generation
   }
 
-  Future<void> _generateRoundRobinMatches(String tournamentId) async {
+  Future<void> _generateRoundRobinMatches(String tournamentId) async() {
     // Implementation for round robin match generation
   }
 
-  Future<void> _generateSwissFirstRound(String tournamentId) async {
+  Future<void> _generateSwissFirstRound(String tournamentId) async() {
     // Implementation for Swiss first round generation
   }
 
-  Future<void> _initializeLadderRankings(String tournamentId) async {
+  Future<void> _initializeLadderRankings(String tournamentId) async() {
     // Implementation for ladder initialization
   }
 
-  Future<void> _generateRemainingRoundRobinMatches(String tournamentId, List<Map<String, dynamic>> participants) async {
+  Future<void> _generateRemainingRoundRobinMatches(String tournamentId, List<Map<String, dynamic>> participants) async() {
     // Implementation for generating remaining round robin matches
   }
 
-  Future<void> _createMatchesFromPairings(String tournamentId, List<List<String>> pairings) async {
+  Future<void> _createMatchesFromPairings(String tournamentId, List<List<String>> pairings) async() {
     // Implementation for creating matches from pairings
   }
 
-  Future<void> _checkForNextRoundPairing(String tournamentId) async {
+  Future<void> _checkForNextRoundPairing(String tournamentId) async() {
     // Implementation for checking if next round pairing is needed
   }
 }

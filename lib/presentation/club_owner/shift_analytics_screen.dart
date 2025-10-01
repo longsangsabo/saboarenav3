@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../../widgets/loading_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class ShiftAnalyticsScreen extends StatefulWidget {
+class ShiftAnalyticsScreen extends StatefulWidget() {
   final String clubId;
   final Map<String, dynamic>? analytics;
 
@@ -23,7 +23,7 @@ class _ShiftAnalyticsScreenState extends State<ShiftAnalyticsScreen> {
   @override
   Widget build(BuildContext context) {
     if (widget.analytics == null) {
-      return const LoadingWidget(message: 'Đang tải thống kê...');
+      return const Center(child: CircularProgressIndicator());
     }
 
     return SingleChildScrollView(
@@ -419,7 +419,7 @@ class _ShiftAnalyticsScreenState extends State<ShiftAnalyticsScreen> {
               NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
                   .format(widget.analytics!['average_profit_per_shift']),
               widget.analytics!['average_profit_per_shift'] >= 0 ? Colors.green : Colors.red,
-              'Xu hướng ${widget.analytics!['average_profit_per_shift'] >= 0 ? 'tăng' : 'giảm'}',
+              'Xu hướng ${widget.analytics!['average_profit_per_shift'] >= 0 ? "tăng" : 'giảm'}',
             ),
           ],
         ),

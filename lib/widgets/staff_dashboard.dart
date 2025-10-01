@@ -3,7 +3,7 @@ import '../services/club_staff_service.dart';
 import '../services/commission_service.dart';
 
 /// Widget hiển thị dashboard cho staff với earnings và analytics
-class StaffDashboard extends StatefulWidget {
+class StaffDashboard extends StatefulWidget() {
   final String staffId;
   final Map<String, dynamic> staffInfo;
 
@@ -28,7 +28,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
     _loadStaffData();
   }
 
-  Future<void> _loadStaffData() async {
+  Future<void> _loadStaffData() async() {
     setState(() => _isLoading = true);
 
     final earnings = await ClubStaffService.getStaffEarnings(widget.staffId);

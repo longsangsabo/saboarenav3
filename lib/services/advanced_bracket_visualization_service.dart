@@ -5,7 +5,7 @@ import 'bracket_generator_service.dart';
 
 /// Advanced Bracket Visualization Service with animations and interactive features
 /// Phase 2 enhancement of the basic bracket system
-class AdvancedBracketVisualizationService {
+class AdvancedBracketVisualizationService() {
   static const Duration _animationDuration = Duration(milliseconds: 300);
   static const Curve _animationCurve = Curves.easeInOut;
 
@@ -223,7 +223,7 @@ class AdvancedBracketVisualizationService {
     required bool enableInteractions,
   }) {
     final isSABO32 = tournament.format == 'sabo_de32';
-    final title = isSABO32 ? 'SABO DE32 Bracket' : 'SABO DE16 Bracket';
+    final title = isSABO32 ? "SABO DE32 Bracket" : 'SABO DE16 Bracket';
     
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

@@ -27,7 +27,7 @@ import '../presentation/shift_reporting/shift_reporting_dashboard.dart';
 import '../presentation/demo_qr_screen/demo_qr_screen.dart';
 // import '../presentation/club_staff_screen/club_staff_management_screen.dart';
 
-class AppRoutes {
+class AppRoutes() {
   static const String splashScreen = '/splash';
   static const String onboardingScreen = '/onboarding';
   static const String homeFeedScreen = '/home_feed_screen';

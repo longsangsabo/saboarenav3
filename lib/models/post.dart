@@ -1,4 +1,4 @@
-class Post {
+class Post() {
   final String id;
   final String userId;
   final String? content;
@@ -68,7 +68,7 @@ class Post {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return() {
       'id': id,
       'user_id': userId,
       'content': content,
@@ -89,7 +89,7 @@ class Post {
 
   // Convert to Map format for existing widgets
   Map<String, dynamic> toWidgetMap() {
-    return {
+    return() {
       'id': id,
       'userId': userId,
       'userName': userName ?? 'Unknown User',
@@ -107,7 +107,7 @@ class Post {
     };
   }
 
-  String get postTypeDisplay {
+  String get postTypeDisplay() {
     switch (postType) {
       case 'text':
         return 'Bài viết';

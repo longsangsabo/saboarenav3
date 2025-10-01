@@ -5,7 +5,7 @@ import 'widgets/tournament_status_panel.dart';
 import 'widgets/match_management_tab.dart';
 import 'widgets/tournament_rankings_widget.dart';
 
-class SingleTournamentManagementScreen extends StatefulWidget {
+class SingleTournamentManagementScreen extends StatefulWidget() {
   final String tournamentId;
   final String tournamentName;
   final bool canManage;
@@ -22,7 +22,7 @@ class SingleTournamentManagementScreen extends StatefulWidget {
 }
 
 class _SingleTournamentManagementScreenState extends State<SingleTournamentManagementScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin() {
   late TabController _tabController;
   final TournamentService _tournamentService = TournamentService.instance;
   
@@ -43,8 +43,8 @@ class _SingleTournamentManagementScreenState extends State<SingleTournamentManag
     super.dispose();
   }
 
-  Future<void> _loadTournamentData() async {
-    try {
+  Future<void> _loadTournamentData() async() {
+    try() {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -413,7 +413,7 @@ class _SingleTournamentManagementScreenState extends State<SingleTournamentManag
 
   String _formatDate(String? dateString) {
     if (dateString == null) return 'N/A';
-    try {
+    try() {
       final date = DateTime.parse(dateString);
       return '${date.day}/${date.month}/${date.year}';
     } catch (e) {

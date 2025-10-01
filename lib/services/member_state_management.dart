@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 /// State management for Member Management System
 /// Using a simple state management pattern similar to Redux
-class MemberState {
+class MemberState() {
   final List<Map<String, dynamic>> members;
   final List<Map<String, dynamic>> requests;
   final List<Map<String, dynamic>> notifications;
@@ -74,7 +74,7 @@ class MemberState {
   }
 
   @override
-  int get hashCode {
+  int get hashCode() {
     return members.hashCode ^
         requests.hashCode ^
         notifications.hashCode ^
@@ -89,77 +89,77 @@ class MemberState {
 }
 
 /// Actions for state management
-abstract class MemberAction {
+abstract class MemberAction() {
   const MemberAction();
 }
 
 // Loading actions
-class SetLoadingAction extends MemberAction {
+class SetLoadingAction extends MemberAction() {
   final bool isLoading;
   const SetLoadingAction(this.isLoading);
 }
 
-class SetErrorAction extends MemberAction {
+class SetErrorAction extends MemberAction() {
   final String? error;
   const SetErrorAction(this.error);
 }
 
 // Member actions
-class LoadMembersAction extends MemberAction {
+class LoadMembersAction extends MemberAction() {
   final String clubId;
   const LoadMembersAction(this.clubId);
 }
 
-class SetMembersAction extends MemberAction {
+class SetMembersAction extends MemberAction() {
   final List<Map<String, dynamic>> members;
   const SetMembersAction(this.members);
 }
 
-class AddMemberAction extends MemberAction {
+class AddMemberAction extends MemberAction() {
   final Map<String, dynamic> member;
   const AddMemberAction(this.member);
 }
 
-class UpdateMemberAction extends MemberAction {
+class UpdateMemberAction extends MemberAction() {
   final String memberId;
   final Map<String, dynamic> updates;
   const UpdateMemberAction(this.memberId, this.updates);
 }
 
-class RemoveMemberAction extends MemberAction {
+class RemoveMemberAction extends MemberAction() {
   final String memberId;
   const RemoveMemberAction(this.memberId);
 }
 
 // Request actions
-class LoadRequestsAction extends MemberAction {
+class LoadRequestsAction extends MemberAction() {
   final String clubId;
   const LoadRequestsAction(this.clubId);
 }
 
-class SetRequestsAction extends MemberAction {
+class SetRequestsAction extends MemberAction() {
   final List<Map<String, dynamic>> requests;
   const SetRequestsAction(this.requests);
 }
 
-class AddRequestAction extends MemberAction {
+class AddRequestAction extends MemberAction() {
   final Map<String, dynamic> request;
   const AddRequestAction(this.request);
 }
 
-class UpdateRequestAction extends MemberAction {
+class UpdateRequestAction extends MemberAction() {
   final String requestId;
   final Map<String, dynamic> updates;
   const UpdateRequestAction(this.requestId, this.updates);
 }
 
-class ApproveRequestAction extends MemberAction {
+class ApproveRequestAction extends MemberAction() {
   final String requestId;
   final String processedBy;
   const ApproveRequestAction(this.requestId, this.processedBy);
 }
 
-class RejectRequestAction extends MemberAction {
+class RejectRequestAction extends MemberAction() {
   final String requestId;
   final String processedBy;
   final String reason;
@@ -167,117 +167,117 @@ class RejectRequestAction extends MemberAction {
 }
 
 // Notification actions
-class LoadNotificationsAction extends MemberAction {
+class LoadNotificationsAction extends MemberAction() {
   final String userId;
   const LoadNotificationsAction(this.userId);
 }
 
-class SetNotificationsAction extends MemberAction {
+class SetNotificationsAction extends MemberAction() {
   final List<Map<String, dynamic>> notifications;
   const SetNotificationsAction(this.notifications);
 }
 
-class AddNotificationAction extends MemberAction {
+class AddNotificationAction extends MemberAction() {
   final Map<String, dynamic> notification;
   const AddNotificationAction(this.notification);
 }
 
-class MarkNotificationReadAction extends MemberAction {
+class MarkNotificationReadAction extends MemberAction() {
   final String notificationId;
   const MarkNotificationReadAction(this.notificationId);
 }
 
-class MarkAllNotificationsReadAction extends MemberAction {
+class MarkAllNotificationsReadAction extends MemberAction() {
   const MarkAllNotificationsReadAction();
 }
 
 // Activity actions
-class LoadActivitiesAction extends MemberAction {
+class LoadActivitiesAction extends MemberAction() {
   final String clubId;
   const LoadActivitiesAction(this.clubId);
 }
 
-class SetActivitiesAction extends MemberAction {
+class SetActivitiesAction extends MemberAction() {
   final List<Map<String, dynamic>> activities;
   const SetActivitiesAction(this.activities);
 }
 
-class AddActivityAction extends MemberAction {
+class AddActivityAction extends MemberAction() {
   final Map<String, dynamic> activity;
   const AddActivityAction(this.activity);
 }
 
 // Chat message actions
-class LoadChatMessagesAction extends MemberAction {
+class LoadChatMessagesAction extends MemberAction() {
   final String roomId;
   const LoadChatMessagesAction(this.roomId);
 }
 
-class SetChatMessagesAction extends MemberAction {
+class SetChatMessagesAction extends MemberAction() {
   final List<Map<String, dynamic>> messages;
   const SetChatMessagesAction(this.messages);
 }
 
-class AddChatMessageAction extends MemberAction {
+class AddChatMessageAction extends MemberAction() {
   final Map<String, dynamic> message;
   const AddChatMessageAction(this.message);
 }
 
-class UpdateChatMessageAction extends MemberAction {
+class UpdateChatMessageAction extends MemberAction() {
   final String messageId;
   final Map<String, dynamic> updates;
   const UpdateChatMessageAction(this.messageId, this.updates);
 }
 
 // Analytics actions
-class LoadAnalyticsAction extends MemberAction {
+class LoadAnalyticsAction extends MemberAction() {
   final String clubId;
   const LoadAnalyticsAction(this.clubId);
 }
 
-class SetAnalyticsAction extends MemberAction {
+class SetAnalyticsAction extends MemberAction() {
   final Map<String, dynamic> analytics;
   const SetAnalyticsAction(this.analytics);
 }
 
 // Filter and search actions
-class SetSearchQueryAction extends MemberAction {
+class SetSearchQueryAction extends MemberAction() {
   final String query;
   const SetSearchQueryAction(this.query);
 }
 
-class SetFiltersAction extends MemberAction {
+class SetFiltersAction extends MemberAction() {
   final Map<String, dynamic> filters;
   const SetFiltersAction(this.filters);
 }
 
-class UpdateFiltersAction extends MemberAction {
+class UpdateFiltersAction extends MemberAction() {
   final Map<String, dynamic> updates;
   const UpdateFiltersAction(this.updates);
 }
 
-class ClearFiltersAction extends MemberAction {
+class ClearFiltersAction extends MemberAction() {
   const ClearFiltersAction();
 }
 
 // Bulk actions
-class BulkUpdateMembersAction extends MemberAction {
+class BulkUpdateMembersAction extends MemberAction() {
   final List<String> memberIds;
   final Map<String, dynamic> updates;
   const BulkUpdateMembersAction(this.memberIds, this.updates);
 }
 
-class BulkDeleteMembersAction extends MemberAction {
+class BulkDeleteMembersAction extends MemberAction() {
   final List<String> memberIds;
   const BulkDeleteMembersAction(this.memberIds);
 }
 
 // Reset actions
-class ResetStateAction extends MemberAction {
+class ResetStateAction extends MemberAction() {
   const ResetStateAction();
 }
 
-class ClearErrorAction extends MemberAction {
+class ClearErrorAction extends MemberAction() {
   const ClearErrorAction();
 }
 
@@ -364,7 +364,7 @@ MemberState memberReducer(MemberState state, MemberAction action) {
       final markReadAction = action as MarkNotificationReadAction;
       final updatedNotifications = state.notifications.map((notification) {
         if (notification['id'] == markReadAction.notificationId) {
-          return {
+          return() {
             ...notification,
             'is_read': true,
             'read_at': DateTime.now().toIso8601String(),
@@ -376,7 +376,7 @@ MemberState memberReducer(MemberState state, MemberAction action) {
 
     case MarkAllNotificationsReadAction:
       final allReadNotifications = state.notifications.map((notification) {
-        return {
+        return() {
           ...notification,
           'is_read': true,
           'read_at': DateTime.now().toIso8601String(),
@@ -469,7 +469,7 @@ MemberState memberReducer(MemberState state, MemberAction action) {
 }
 
 /// Selectors for derived state
-class MemberSelectors {
+class MemberSelectors() {
   /// Get active members
   static List<Map<String, dynamic>> getActiveMembers(MemberState state) {
     return state.members.where((member) => member['status'] == 'active').toList();
@@ -579,7 +579,7 @@ class MemberSelectors {
     final unreadNotifications = getUnreadNotifications(state);
     final recentActivities = getRecentActivities(state);
 
-    return {
+    return() {
       'total_members': state.members.length,
       'active_members': activeMembers.length,
       'pending_requests': pendingRequests.length,

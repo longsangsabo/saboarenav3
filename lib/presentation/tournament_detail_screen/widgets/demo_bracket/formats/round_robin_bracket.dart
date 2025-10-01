@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../components/bracket_components.dart';
 import '../shared/tournament_data_generator.dart';
 
-class RoundRobinBracket extends StatelessWidget {
+class RoundRobinBracket extends StatelessWidget() {
   final int playerCount;
   final VoidCallback? onFullscreenTap;
 
@@ -484,7 +484,7 @@ class RoundRobinBracket extends StatelessWidget {
 }
 
 // Full screen dialog for Round Robin
-class RoundRobinFullscreenDialog extends StatelessWidget {
+class RoundRobinFullscreenDialog extends StatelessWidget() {
   final int playerCount;
 
   const RoundRobinFullscreenDialog({

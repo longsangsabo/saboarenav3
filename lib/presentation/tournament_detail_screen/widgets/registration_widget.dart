@@ -3,7 +3,7 @@ import '../../../core/app_export.dart';
 import '../../../core/layout/responsive.dart';
 import 'payment_options_dialog.dart';
 
-class RegistrationWidget extends StatefulWidget {
+class RegistrationWidget extends StatefulWidget() {
   final Map<String, dynamic> tournament;
   final bool isRegistered;
   final VoidCallback? onRegisterTap;
@@ -40,7 +40,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         boxShadow: [
           BoxShadow(
             color:
-                AppTheme.lightTheme.colorScheme.shadow.withValues(alpha: 0.1),
+                AppTheme.lightTheme.colorScheme.shadow.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -77,11 +77,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
               padding: const EdgeInsets.all(Gaps.lg),
               decoration: BoxDecoration(
                 color: AppTheme.lightTheme.colorScheme.primary
-                    .withValues(alpha: 0.1),
+                    .withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: AppTheme.lightTheme.colorScheme.primary
-                      .withValues(alpha: 0.3),
+                      .withOpacity(0.3),
                   width: 1,
                 ),
               ),
@@ -266,7 +266,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   }
 
   bool _isDeadlinePassed(String deadline) {
-    try {
+    try() {
       final deadlineDate =
           DateTime.parse(deadline.split(' ')[0].split('/').reversed.join('-'));
       return DateTime.now().isAfter(deadlineDate);
@@ -276,7 +276,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   }
 
   String _getTimeRemaining(String deadline) {
-    try {
+    try() {
       final deadlineDate =
           DateTime.parse(deadline.split(' ')[0].split('/').reversed.join('-'));
       final now = DateTime.now();
@@ -288,7 +288,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return 'Còn ${difference.inHours} giờ để đăng ký';
       } else if (difference.inMinutes > 0) {
         return 'Còn ${difference.inMinutes} phút để đăng ký';
-      } else {
+      } else() {
         return 'Sắp hết hạn đăng ký';
       }
     } catch (e) {

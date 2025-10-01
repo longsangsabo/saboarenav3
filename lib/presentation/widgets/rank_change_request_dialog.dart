@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/user_profile.dart';
 import '../../core/utils/rank_migration_helper.dart';
 
-class RankChangeRequestDialog extends StatefulWidget {
+class RankChangeRequestDialog extends StatefulWidget() {
   final UserProfile userProfile;
   final VoidCallback? onRequestSubmitted;
 
@@ -130,7 +130,7 @@ class _RankChangeRequestDialogState extends State<RankChangeRequestDialog> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
-                        initialValue: _selectedNewRank,
+                        value: _selectedNewRank,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -342,8 +342,8 @@ class _RankChangeRequestDialogState extends State<RankChangeRequestDialog> {
     );
   }
 
-  Future<void> _pickImageFromGallery() async {
-    try {
+  Future<void> _pickImageFromGallery() async() {
+    try() {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       
@@ -357,8 +357,8 @@ class _RankChangeRequestDialogState extends State<RankChangeRequestDialog> {
     }
   }
 
-  Future<void> _pickImageFromCamera() async {
-    try {
+  Future<void> _pickImageFromCamera() async() {
+    try() {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.camera);
       
@@ -378,7 +378,7 @@ class _RankChangeRequestDialogState extends State<RankChangeRequestDialog> {
     });
   }
 
-  Future<void> _submitRequest() async {
+  Future<void> _submitRequest() async() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -387,7 +387,7 @@ class _RankChangeRequestDialogState extends State<RankChangeRequestDialog> {
       _isSubmitting = true;
     });
 
-    try {
+    try() {
       // TODO: Implement API call to submit rank change request
       // final response = await _rankService.submitRankChangeRequest(
       //   currentRank: widget.userProfile.rank,
@@ -406,7 +406,7 @@ class _RankChangeRequestDialogState extends State<RankChangeRequestDialog> {
       }
     } catch (e) {
       _showErrorSnackBar('Không thể gửi yêu cầu: $e');
-    } finally {
+    } finally() {
       if (mounted) {
         setState(() {
           _isSubmitting = false;

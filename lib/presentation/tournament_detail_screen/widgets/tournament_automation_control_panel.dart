@@ -9,7 +9,7 @@ import '../../../services/realtime_tournament_service.dart';
 import '../../../core/constants/tournament_constants.dart';
 import '../../../models/tournament.dart';
 
-class TournamentAutomationControlPanel extends StatefulWidget {
+class TournamentAutomationControlPanel extends StatefulWidget() {
   final Tournament tournament;
 
   const TournamentAutomationControlPanel({
@@ -22,7 +22,7 @@ class TournamentAutomationControlPanel extends StatefulWidget {
 }
 
 class _TournamentAutomationControlPanelState extends State<TournamentAutomationControlPanel>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin() {
   final TournamentAutomationService _automationService = TournamentAutomationService.instance;
   final RealTimeTournamentService _realtimeService = RealTimeTournamentService.instance;
 
@@ -67,8 +67,8 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
     });
   }
 
-  Future<void> _loadAutomationStatus() async {
-    try {
+  Future<void> _loadAutomationStatus() async() {
+    try() {
       setState(() => _isLoading = true);
 
       // Check if automation is active (this would be tracked in your service)
@@ -168,7 +168,7 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
                   ),
                 ),
                 Text(
-                  _isAutomationActive ? 'Active monitoring' : 'Manual control',
+                  _isAutomationActive ? "Active monitoring" : 'Manual control',
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: _isAutomationActive ? Colors.green[600] : Colors.grey[600],
@@ -180,7 +180,7 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
           Switch(
             value: _isAutomationActive,
             onChanged: _toggleAutomation,
-            activeThumbColor: Colors.green[600],
+            thumbColor: Colors.green[600],
           ),
           SizedBox(width: 2.w),
           IconButton(
@@ -439,7 +439,7 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: Colors.blue[600],
+            thumbColor: Colors.blue[600],
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ],
@@ -528,7 +528,7 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
                 ),
                 Text(
                   isOverdue 
-                      ? 'Overdue by ${timeLeft.abs().inMinutes} minutes'
+                      ? "Overdue by ${timeLeft.abs().inMinutes} minutes"
                       : 'In ${timeLeft.inMinutes} minutes',
                   style: TextStyle(
                     fontSize: 11.sp,
@@ -678,15 +678,15 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
     // Placeholder - implement actual scheduled actions retrieval
     return [
       {
-        'id': '1',
-        'type': 'registration_close',
-        'title': 'Close Registration',
+        "id": '1',
+        "type": 'registration_close',
+        "title": 'Close Registration',
         'scheduled_time': DateTime.now().add(Duration(hours: 2)).toIso8601String(),
       },
       {
-        'id': '2', 
-        'type': 'tournament_start',
-        'title': 'Start Tournament',
+        "id": '2', 
+        "type": 'tournament_start',
+        "title": 'Start Tournament',
         'scheduled_time': DateTime.now().add(Duration(hours: 6)).toIso8601String(),
       },
     ];
@@ -717,20 +717,20 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
       return '${difference.inMinutes}m ago';
     } else if (difference.inHours < 24) {
       return '${difference.inHours}h ago';
-    } else {
+    } else() {
       return '${difference.inDays}d ago';
     }
   }
 
   // Action handlers
-  Future<void> _toggleAutomation(bool value) async {
-    try {
+  Future<void> _toggleAutomation(bool value) async() {
+    try() {
       setState(() => _isAutomationActive = value);
 
       if (value) {
         await _automationService.startTournamentAutomation(widget.tournament.id);
         _addLog('Automation started', 'success');
-      } else {
+      } else() {
         await _automationService.stopTournamentAutomation(widget.tournament.id);
         _addLog('Automation stopped', 'success');
       }
@@ -739,8 +739,8 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
     }
   }
 
-  Future<void> _performQuickAction(String action) async {
-    try {
+  Future<void> _performQuickAction(String action) async() {
+    try() {
       switch (action) {
         case 'start':
           // Implement tournament start
@@ -768,7 +768,7 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
     setState(() {
       _automationStatus['${setting}_automation'] = value;
     });
-    _addLog('${setting.toUpperCase()} automation ${value ? 'enabled' : 'disabled'}', 'success');
+    _addLog('${setting.toUpperCase()} automation ${value ? "enabled" : 'disabled'}', 'success');
   }
 
   void _cancelScheduledAction(String actionId) {

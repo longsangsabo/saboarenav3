@@ -5,7 +5,7 @@ import '../../../core/app_export.dart';
 import '../../../models/post.dart';
 import '../../../services/social_service.dart';
 
-class PostCardWidget extends StatefulWidget {
+class PostCardWidget extends StatefulWidget() {
   final Post post;
   final VoidCallback? onLike;
   final VoidCallback? onComment;
@@ -26,7 +26,7 @@ class PostCardWidget extends StatefulWidget {
 }
 
 class _PostCardWidgetState extends State<PostCardWidget>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin() {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   bool _isLiked = false;
@@ -52,8 +52,8 @@ class _PostCardWidgetState extends State<PostCardWidget>
     super.dispose();
   }
 
-  Future<void> _checkIfLiked() async {
-    try {
+  Future<void> _checkIfLiked() async() {
+    try() {
       final isLiked = await SocialService.instance.isPostLiked(widget.post.id);
       if (mounted) {
         setState(() => _isLiked = isLiked);
@@ -63,12 +63,12 @@ class _PostCardWidgetState extends State<PostCardWidget>
     }
   }
 
-  void _handleLike() async {
+  void _handleLike() async() {
     if (_isLoading) return;
 
     setState(() => _isLoading = true);
 
-    try {
+    try() {
       final newLikeStatus =
           await SocialService.instance.likePost(widget.post.id);
 
@@ -94,8 +94,8 @@ class _PostCardWidgetState extends State<PostCardWidget>
     }
   }
 
-  void _handleShare() async {
-    try {
+  void _handleShare() async() {
+    try() {
       await SocialService.instance.sharePost(widget.post.id);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -353,7 +353,7 @@ class _PostCardWidgetState extends State<PostCardWidget>
             children: [
               _buildActionButton(
                 context,
-                icon: _isLiked ? 'favorite' : 'favorite_border',
+                icon: _isLiked ? "favorite" : 'favorite_border',
                 label: 'Thích',
                 color: _isLiked ? Colors.red : colorScheme.onSurfaceVariant,
                 onTap: _isLoading ? null : _handleLike,
@@ -448,7 +448,7 @@ class _PostCardWidgetState extends State<PostCardWidget>
       return '${difference.inHours} giờ trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else {
+    } else() {
       return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
     }
   }

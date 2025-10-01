@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 
-class MessagingService {
+class MessagingService() {
   static final MessagingService _instance = MessagingService._internal();
   factory MessagingService() => _instance;
   MessagingService._internal();
@@ -13,8 +13,8 @@ class MessagingService {
   final AuthService _authService = AuthService.instance;
 
   /// Get unread message count for current user
-  Future<int> getUnreadMessageCount() async {
-    try {
+  Future<int> getUnreadMessageCount() async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return 0;
 
@@ -44,8 +44,8 @@ class MessagingService {
   }
 
   /// Get all chat rooms for current user with last message info
-  Future<List<Map<String, dynamic>>> getChatRooms() async {
-    try {
+  Future<List<Map<String, dynamic>>> getChatRooms() async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return [];
 
@@ -61,8 +61,8 @@ class MessagingService {
   }
 
   /// Get messages for a specific chat room
-  Future<List<Map<String, dynamic>>> getChatMessages(String roomId, {int limit = 50}) async {
-    try {
+  Future<List<Map<String, dynamic>>> getChatMessages(String roomId, {int limit = 50}) async() {
+    try() {
       final response = await _supabase
           .from('chat_messages')
           .select('''
@@ -92,8 +92,8 @@ class MessagingService {
     required String content,
     String messageType = 'text',
     String? fileUrl,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -119,8 +119,8 @@ class MessagingService {
   }
 
   /// Mark messages as read
-  Future<void> markMessagesAsRead(String roomId) async {
-    try {
+  Future<void> markMessagesAsRead(String roomId) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return;
 
@@ -136,8 +136,8 @@ class MessagingService {
   }
 
   /// Create or get existing chat room with another user
-  Future<String?> createOrGetChatRoom(String otherUserId) async {
-    try {
+  Future<String?> createOrGetChatRoom(String otherUserId) async() {
+    try() {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -199,7 +199,7 @@ class MessagingService {
           event: PostgresChangeEvent.all,
           schema: 'public',
           table: 'chat_messages',
-          callback: (payload) async {
+          callback: (payload) async() {
             // Recalculate unread count when messages change
             final count = await getUnreadMessageCount();
             onCountChanged(count);

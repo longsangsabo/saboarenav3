@@ -3,7 +3,7 @@ import 'dart:typed_data'; // Add this import
 import '../models/post.dart';
 import '../core/utils/rank_migration_helper.dart';
 
-class SocialService {
+class SocialService() {
   static SocialService? _instance;
   static SocialService get instance => _instance ??= SocialService._();
   SocialService._();
@@ -13,8 +13,8 @@ class SocialService {
   Future<List<Post>> getFeedPosts({
     int limit = 20,
     int offset = 0,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final response = await _supabase
           .from('posts')
           .select('''
@@ -68,8 +68,8 @@ class SocialService {
     List<String>? hashtags,
     String? tournamentId,
     String? clubId,
-  }) async {
-    try {
+  }) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -124,8 +124,8 @@ class SocialService {
     }
   }
 
-  Future<bool> likePost(String postId) async {
-    try {
+  Future<bool> likePost(String postId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -145,12 +145,12 @@ class SocialService {
             .delete()
             .eq('id', existingLike['id']);
         return false;
-      } else {
+      } else() {
         // Like
         await _supabase.from('post_interactions').insert({
           'post_id': postId,
           'user_id': user.id,
-          'interaction_type': 'like',
+          "interaction_type": 'like',
         });
         return true;
       }
@@ -159,15 +159,15 @@ class SocialService {
     }
   }
 
-  Future<bool> sharePost(String postId) async {
-    try {
+  Future<bool> sharePost(String postId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
       await _supabase.from('post_interactions').insert({
         'post_id': postId,
         'user_id': user.id,
-        'interaction_type': 'share',
+        "interaction_type": 'share',
       });
 
       return true;
@@ -176,8 +176,8 @@ class SocialService {
     }
   }
 
-  Future<bool> isPostLiked(String postId) async {
-    try {
+  Future<bool> isPostLiked(String postId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -195,8 +195,8 @@ class SocialService {
     }
   }
 
-  Future<String?> uploadPostImage(List<int> imageBytes, String fileName) async {
-    try {
+  Future<String?> uploadPostImage(List<int> imageBytes, String fileName) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -216,8 +216,8 @@ class SocialService {
     }
   }
 
-  Future<List<Post>> getUserPosts(String userId, {int limit = 20}) async {
-    try {
+  Future<List<Post>> getUserPosts(String userId, {int limit = 20}) async() {
+    try() {
       final response = await _supabase
           .from('posts')
           .select('''
@@ -266,8 +266,8 @@ class SocialService {
     }
   }
 
-  Future<bool> followUser(String userId) async {
-    try {
+  Future<bool> followUser(String userId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -286,7 +286,7 @@ class SocialService {
             .delete()
             .eq('id', existingFollow['id']);
         return false;
-      } else {
+      } else() {
         // Follow
         await _supabase.from('user_follows').insert({
           'follower_id': user.id,
@@ -299,8 +299,8 @@ class SocialService {
     }
   }
 
-  Future<bool> isFollowingUser(String userId) async {
-    try {
+  Future<bool> isFollowingUser(String userId) async() {
+    try() {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 

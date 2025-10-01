@@ -7,7 +7,7 @@ import 'bracket_generator_service.dart';
 
 /// Real-time Bracket Updates Service with WebSocket streaming
 /// Phase 2 enhancement for live tournament updates
-class RealtimeBracketService {
+class RealtimeBracketService() {
   static final RealtimeBracketService _instance = RealtimeBracketService._internal();
   factory RealtimeBracketService() => _instance;
   RealtimeBracketService._internal();
@@ -57,7 +57,7 @@ class RealtimeBracketService {
             column: 'tournament_id',
             value: tournamentId,
           ),
-          callback: (payload) async {
+          callback: (payload) async() {
             debugPrint('🔄 Match update received for tournament $tournamentId');
             await _handleMatchUpdate(tournamentId, payload);
           },
@@ -78,7 +78,7 @@ class RealtimeBracketService {
             column: 'id',
             value: tournamentId,
           ),
-          callback: (payload) async {
+          callback: (payload) async() {
             debugPrint('🔄 Tournament update received for $tournamentId');
             await _handleTournamentUpdate(tournamentId, payload);
           },
@@ -99,7 +99,7 @@ class RealtimeBracketService {
             column: 'tournament_id',
             value: tournamentId,
           ),
-          callback: (payload) async {
+          callback: (payload) async() {
             debugPrint('🔄 Participant update received for tournament $tournamentId');
             await _handleParticipantUpdate(tournamentId, payload);
           },
@@ -108,8 +108,8 @@ class RealtimeBracketService {
   }
 
   /// Handle match update from WebSocket
-  Future<void> _handleMatchUpdate(String tournamentId, PostgresChangePayload payload) async {
-    try {
+  Future<void> _handleMatchUpdate(String tournamentId, PostgresChangePayload payload) async() {
+    try() {
       // Fetch updated matches
       final matchesResponse = await _supabase
           .from('matches')
@@ -135,8 +135,8 @@ class RealtimeBracketService {
   }
 
   /// Handle tournament update from WebSocket
-  Future<void> _handleTournamentUpdate(String tournamentId, PostgresChangePayload payload) async {
-    try {
+  Future<void> _handleTournamentUpdate(String tournamentId, PostgresChangePayload payload) async() {
+    try() {
       final tournamentResponse = await _supabase
           .from('tournaments')
           .select('*')
@@ -155,8 +155,8 @@ class RealtimeBracketService {
   }
 
   /// Handle participant update from WebSocket
-  Future<void> _handleParticipantUpdate(String tournamentId, PostgresChangePayload payload) async {
-    try {
+  Future<void> _handleParticipantUpdate(String tournamentId, PostgresChangePayload payload) async() {
+    try() {
       final participantsResponse = await _supabase
           .from('tournament_participants')
           .select('''
@@ -195,8 +195,8 @@ class RealtimeBracketService {
   }
 
   /// Check if bracket progression is needed after match completion
-  Future<void> _checkBracketProgression(String tournamentId, List<Match> matches) async {
-    try {
+  Future<void> _checkBracketProgression(String tournamentId, List<Match> matches) async() {
+    try() {
       // Get tournament info
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -236,8 +236,8 @@ class RealtimeBracketService {
   }
 
   /// Trigger bracket progression
-  Future<void> _triggerBracketProgression(String tournamentId, Tournament tournament, List<Match> matches) async {
-    try {
+  Future<void> _triggerBracketProgression(String tournamentId, Tournament tournament, List<Match> matches) async() {
+    try() {
       debugPrint('🚀 Triggering bracket progression for tournament $tournamentId');
 
       // Call RPC function for bracket progression
@@ -275,12 +275,12 @@ class RealtimeBracketService {
   }
 
   /// Start live match tracking
-  Future<void> startLiveMatchTracking(String matchId) async {
-    try {
+  Future<void> startLiveMatchTracking(String matchId) async() {
+    try() {
       await _supabase
           .from('matches')
           .update({
-            'status': 'in_progress',
+            "status": 'in_progress',
             'started_at': DateTime.now().toIso8601String(),
             'is_live': true,
           })
@@ -293,8 +293,8 @@ class RealtimeBracketService {
   }
 
   /// Update live match score
-  Future<void> updateLiveMatchScore(String matchId, int player1Score, int player2Score) async {
-    try {
+  Future<void> updateLiveMatchScore(String matchId, int player1Score, int player2Score) async() {
+    try() {
       await _supabase
           .from('matches')
           .update({
@@ -311,12 +311,12 @@ class RealtimeBracketService {
   }
 
   /// Complete live match
-  Future<void> completeLiveMatch(String matchId, String winnerId) async {
-    try {
+  Future<void> completeLiveMatch(String matchId, String winnerId) async() {
+    try() {
       await _supabase
           .from('matches')
           .update({
-            'status': 'completed',
+            "status": 'completed',
             'winner_id': winnerId,
             'completed_at': DateTime.now().toIso8601String(),
             'is_live': false,
@@ -343,8 +343,8 @@ class RealtimeBracketService {
   }
 
   /// Join match as viewer
-  Future<void> joinMatchAsViewer(String matchId, String userId) async {
-    try {
+  Future<void> joinMatchAsViewer(String matchId, String userId) async() {
+    try() {
       await _supabase.channel('match_viewers_$matchId').track({
         'user_id': userId,
         'joined_at': DateTime.now().toIso8601String(),
@@ -362,8 +362,8 @@ class RealtimeBracketService {
   }
 
   /// Leave match as viewer
-  Future<void> leaveMatchAsViewer(String matchId) async {
-    try {
+  Future<void> leaveMatchAsViewer(String matchId) async() {
+    try() {
       await _supabase.channel('match_viewers_$matchId').untrack();
       
       debugPrint('👋 Left match $matchId as viewer');
