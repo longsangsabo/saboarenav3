@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 
 /// Official SABO Arena Rank System
 /// Based on ELO rating with skill descriptions
-class SaboRankSystem() {
+class SaboRankSystem {
   /// SABO rank mapping với hệ thống tên mới
   static const Map<String, Map<String, dynamic>> rankEloMapping = {
     'K': {'elo': 1000, "name": 'Người mới', "skill": '2-4 bi khi hình dễ; mới tập', 'color': Color(0xFF8BC34A)}, // Light Green

@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../services/attendance_service.dart';
 
-class ClubAttendanceDashboard extends StatefulWidget() {
+class ClubAttendanceDashboard extends StatefulWidget {
+  const ClubAttendanceDashboard({super.key});
+
+} 
   final String clubId;
   final String clubName;
 
@@ -17,7 +20,7 @@ class ClubAttendanceDashboard extends StatefulWidget() {
   State<ClubAttendanceDashboard> createState() => _ClubAttendanceDashboardState();
 }
 
-class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with TickerProviderStateMixin() {
+class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with TickerProviderStateMixin {
   late TabController _tabController;
   final AttendanceService _attendanceService = AttendanceService();
 
@@ -41,14 +44,14 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
     super.dispose();
   }
 
-  Future<void> _loadDashboardData() async() {
+  Future<void> _loadDashboardData() async {
     if (!mounted) return;
     setState(() {
       isLoading = true;
       errorMessage = null;
     });
 
-    try() {
+    try {
       await Future.wait([
         _loadTodayAttendance(),
         _loadWeeklyStats(),
@@ -68,7 +71,7 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
     }
   }
 
-  Future<void> _loadTodayAttendance() async() {
+  Future<void> _loadTodayAttendance() async {
     // Mock data - replace with actual API call
     todayAttendance = [
       {
@@ -105,7 +108,7 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
     ];
   }
 
-  Future<void> _loadWeeklyStats() async() {
+  Future<void> _loadWeeklyStats() async {
     // Mock data - replace with actual API call
     weeklyStats = [
       {"day": 'T2', 'present': 12, 'total': 15, 'late': 2},
@@ -118,7 +121,7 @@ class _ClubAttendanceDashboardState extends State<ClubAttendanceDashboard> with 
     ];
   }
 
-  Future<void> _loadSummaryStats() async() {
+  Future<void> _loadSummaryStats() async {
     // Mock data - replace with actual API call
     summaryStats = {
       'total_staff': 15,

@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:sabo_arena/widgets/quick_payment_dialog.dart';
-import 'package:sabo_arena/services/real_payment_service.dart';
-
-class PaymentHelper() {
+class PaymentHelper {
   // Thanh toán cho booking sân
   static Future<bool> payForBooking({
     required BuildContext context,
@@ -12,27 +8,29 @@ class PaymentHelper() {
     required String tableName,
     required Duration duration,
     String? userId,
-  }) async() {
-    final description = 'Thuê $tableName - ${duration.inHours}h${duration.inMinutes % 60}ph';
-    
+  }) async {
+    final description =
+        'Thuê $tableName - ${duration.inHours}h${duration.inMinutes % 60}ph';
+
     return await context.showPaymentQR(
-      clubId: clubId,
-      amount: amount,
-      description: description,
-      userId: userId,
-      onSuccess: (paymentId) async() {
-        // Update booking status
-        try() {
-          await RealPaymentService.updateBookingPaymentStatus(
-            bookingId: bookingId,
-            paymentId: paymentId,
-            status: 'paid',
-          );
-        } catch (e) {
-          print('Error updating booking payment status: $e');
-        }
-      },
-    ) ?? false;
+          clubId: clubId,
+          amount: amount,
+          description: description,
+          userId: userId,
+          onSuccess: (paymentId) async {
+            // Update booking status
+            try {
+              await RealPaymentService.updateBookingPaymentStatus(
+                bookingId: bookingId,
+                paymentId: paymentId,
+                status: 'paid',
+              );
+            } catch (e) {
+              print('Error updating booking payment status: $e');
+            }
+          },
+        ) ??
+        false;
   }
 
   // Thanh toán cho đồ uống/thức ăn
@@ -43,27 +41,29 @@ class PaymentHelper() {
     required double amount,
     required List<Map<String, dynamic>> items,
     String? userId,
-  }) async() {
-    final itemNames = items.map((item) => '${item['name']} x${item['quantity']}').join(', ');
+  }) async {
+    final itemNames =
+        items.map((item) => '${item['name']} x${item['quantity']}').join(', ');
     final description = 'Đơn hàng: $itemNames';
-    
+
     return await context.showPaymentQR(
-      clubId: clubId,
-      amount: amount,
-      description: description,
-      userId: userId,
-      onSuccess: (paymentId) async() {
-        try() {
-          await RealPaymentService.updateOrderPaymentStatus(
-            orderId: orderId,
-            paymentId: paymentId,
-            status: 'paid',
-          );
-        } catch (e) {
-          print('Error updating order payment status: $e');
-        }
-      },
-    ) ?? false;
+          clubId: clubId,
+          amount: amount,
+          description: description,
+          userId: userId,
+          onSuccess: (paymentId) async {
+            try {
+              await RealPaymentService.updateOrderPaymentStatus(
+                orderId: orderId,
+                paymentId: paymentId,
+                status: 'paid',
+              );
+            } catch (e) {
+              print('Error updating order payment status: $e');
+            }
+          },
+        ) ??
+        false;
   }
 
   // Thanh toán thành viên
@@ -75,26 +75,27 @@ class PaymentHelper() {
     required String membershipType,
     required Duration validity,
     String? userId,
-  }) async() {
+  }) async {
     final description = 'Thành viên $membershipType - ${validity.inDays} ngày';
-    
+
     return await context.showPaymentQR(
-      clubId: clubId,
-      amount: amount,
-      description: description,
-      userId: userId,
-      onSuccess: (paymentId) async() {
-        try() {
-          await RealPaymentService.updateMembershipPaymentStatus(
-            membershipId: membershipId,
-            paymentId: paymentId,
-            status: 'active',
-          );
-        } catch (e) {
-          print('Error updating membership payment status: $e');
-        }
-      },
-    ) ?? false;
+          clubId: clubId,
+          amount: amount,
+          description: description,
+          userId: userId,
+          onSuccess: (paymentId) async {
+            try {
+              await RealPaymentService.updateMembershipPaymentStatus(
+                membershipId: membershipId,
+                paymentId: paymentId,
+                status: 'active',
+              );
+            } catch (e) {
+              print('Error updating membership payment status: $e');
+            }
+          },
+        ) ??
+        false;
   }
 
   // Nạp tiền tài khoản
@@ -103,39 +104,40 @@ class PaymentHelper() {
     required String clubId,
     required String userId,
     required double amount,
-  }) async() {
+  }) async {
     final description = 'Nạp tiền tài khoản - ${_formatCurrency(amount)} VNĐ';
-    
+
     return await context.showPaymentQR(
-      clubId: clubId,
-      amount: amount,
-      description: description,
-      userId: userId,
-      onSuccess: (paymentId) async() {
-        try() {
-          await RealPaymentService.addUserBalance(
-            userId: userId,
-            amount: amount,
-            paymentId: paymentId,
-          );
-        } catch (e) {
-          print('Error updating user balance: $e');
-        }
-      },
-    ) ?? false;
+          clubId: clubId,
+          amount: amount,
+          description: description,
+          userId: userId,
+          onSuccess: (paymentId) async {
+            try {
+              await RealPaymentService.addUserBalance(
+                userId: userId,
+                amount: amount,
+                paymentId: paymentId,
+              );
+            } catch (e) {
+              print('Error updating user balance: $e');
+            }
+          },
+        ) ??
+        false;
   }
 
   // Format currency
   static String _formatCurrency(double amount) {
     return amount.toStringAsFixed(0).replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]},',
+        );
   }
 
   // Kiểm tra xem CLB đã thiết lập thanh toán chưa
-  static Future<bool> isPaymentSetup(String clubId) async() {
-    try() {
+  static Future<bool> isPaymentSetup(String clubId) async {
+    try {
       final settings = await RealPaymentService.getClubPaymentSettings(clubId);
       return settings != null;
     } catch (e) {
@@ -193,33 +195,37 @@ class PaymentHelper() {
       future: isPaymentSetup(clubId),
       builder: (context, snapshot) {
         final hasPayment = snapshot.data ?? false;
-        
+
         return ElevatedButton(
-          onPressed: hasPayment 
-            ? () => context.showPaymentQR(
-                clubId: clubId,
-                amount: amount,
-                description: description,
-                userId: userId,
-                onSuccess: onSuccess,
-              )
-            : () => showSetupPrompt(context, clubId),
-          style: style ?? ElevatedButton.styleFrom(
-            backgroundColor: hasPayment ? Colors.green : Colors.orange,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-          child: child ?? Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(hasPayment ? Icons.qr_code : Icons.settings),
-              const SizedBox(width: 8),
-              Text(hasPayment 
-                ? "Thanh toán QR - ${_formatCurrency(amount)} VNĐ"
-                : 'Thiết lập thanh toán'),
-            ],
-          ),
+          onPressed: hasPayment
+              ? () => context.showPaymentQR(
+                    clubId: clubId,
+                    amount: amount,
+                    description: description,
+                    userId: userId,
+                    onSuccess: onSuccess,
+                  )
+              : () => showSetupPrompt(context, clubId),
+          style: style ??
+              ElevatedButton.styleFrom(
+                backgroundColor: hasPayment ? Colors.green : Colors.orange,
+                foregroundColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+          child: child ??
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(hasPayment ? Icons.qr_code : Icons.settings),
+                  const SizedBox(width: 8),
+                  Text(hasPayment
+                      ? "Thanh toán QR - ${_formatCurrency(amount)} VNĐ"
+                      : 'Thiết lập thanh toán'),
+                ],
+              ),
         );
       },
     );

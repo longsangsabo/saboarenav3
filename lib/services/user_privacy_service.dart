@@ -1,11 +1,10 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-class UserPrivacyService() {
+class UserPrivacyService {
   static final _supabase = Supabase.instance.client;
 
   // Get user privacy settings
-  static Future<Map<String, dynamic>?> getUserPrivacySettings(String userId) async() {
-    try() {
+  static Future<Map<String, dynamic>?> getUserPrivacySettings(String userId) async {
+    try {
       final response = await _supabase
           .rpc('get_user_privacy_settings', params: {'target_user_id': userId});
       
@@ -22,8 +21,8 @@ class UserPrivacyService() {
   }
 
   // Save user privacy settings
-  static Future<bool> saveUserPrivacySettings(String userId, Map<String, dynamic> settings) async() {
-    try() {
+  static Future<bool> saveUserPrivacySettings(String userId, Map<String, dynamic> settings) async {
+    try {
       final response = await _supabase.rpc('save_user_privacy_settings', params: {
         'target_user_id': userId,
         'settings': settings,
@@ -37,8 +36,8 @@ class UserPrivacyService() {
   }
 
   // Check if user allows certain interactions
-  static Future<bool> canUserBeChallenged(String userId, String challengerId) async() {
-    try() {
+  static Future<bool> canUserBeChallenged(String userId, String challengerId) async {
+    try {
       final settings = await getUserPrivacySettings(userId);
       if (settings == null) return true;
 
@@ -59,8 +58,8 @@ class UserPrivacyService() {
   }
 
   // Check if user should appear in social feed
-  static Future<bool> shouldShowInSocialFeed(String userId) async() {
-    try() {
+  static Future<bool> shouldShowInSocialFeed(String userId) async {
+    try {
       final settings = await getUserPrivacySettings(userId);
       return settings?['show_in_social_feed'] ?? true;
     } catch (e) {
@@ -70,8 +69,8 @@ class UserPrivacyService() {
   }
 
   // Check if user should appear in challenge list
-  static Future<bool> shouldShowInChallengeList(String userId) async() {
-    try() {
+  static Future<bool> shouldShowInChallengeList(String userId) async {
+    try {
       final settings = await getUserPrivacySettings(userId);
       return settings?['show_in_challenge_list'] ?? true;
     } catch (e) {
@@ -81,8 +80,8 @@ class UserPrivacyService() {
   }
 
   // Check if user should appear in tournament participants
-  static Future<bool> shouldShowInTournamentParticipants(String userId) async() {
-    try() {
+  static Future<bool> shouldShowInTournamentParticipants(String userId) async {
+    try {
       final settings = await getUserPrivacySettings(userId);
       return settings?['show_in_tournament_participants'] ?? true;
     } catch (e) {
@@ -92,8 +91,8 @@ class UserPrivacyService() {
   }
 
   // Check if user should appear in leaderboard
-  static Future<bool> shouldShowInLeaderboard(String userId) async() {
-    try() {
+  static Future<bool> shouldShowInLeaderboard(String userId) async {
+    try {
       final settings = await getUserPrivacySettings(userId);
       return settings?['show_in_leaderboard'] ?? true;
     } catch (e) {
@@ -107,8 +106,8 @@ class UserPrivacyService() {
     String userId, 
     Map<String, dynamic> rawUserInfo,
     {String? viewerId}
-  ) async() {
-    try() {
+  ) async {
+    try {
       final settings = await getUserPrivacySettings(userId);
       if (settings == null) return rawUserInfo;
 
@@ -180,8 +179,8 @@ class UserPrivacyService() {
   static Future<List<Map<String, dynamic>>> searchUsersWithPrivacy(
     String query, 
     {int limit = 20}
-  ) async() {
-    try() {
+  ) async {
+    try {
       // Get all users matching the query
       final response = await _supabase
           .from('users')
@@ -233,8 +232,8 @@ class UserPrivacyService() {
   }
 
   // Helper method to check if users are friends
-  static Future<bool> _areUsersFriends(String userId1, String userId2) async() {
-    try() {
+  static Future<bool> _areUsersFriends(String userId1, String userId2) async {
+    try {
       final response = await _supabase
           .from('friendships')
           .select('id')

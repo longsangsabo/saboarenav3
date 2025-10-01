@@ -2,14 +2,9 @@
 // Phase 3: Pre-configured tournament templates for quick setup
 // Supports custom templates, format presets, and automated configuration
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../core/constants/tournament_constants.dart';
-import '../models/tournament.dart';
-import 'tournament_service.dart';
-import 'package:flutter/foundation.dart';
 
 /// Service quản lý tournament templates và presets
-class TournamentTemplateService() {
+class TournamentTemplateService {
   static TournamentTemplateService? _instance;
   static TournamentTemplateService get instance => _instance ??= TournamentTemplateService._();
   TournamentTemplateService._();
@@ -23,8 +18,8 @@ class TournamentTemplateService() {
   Future<List<Map<String, dynamic>>> getTournamentTemplates({
     String? category,
     String? clubId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('tournament_templates')
           .select('''
@@ -74,8 +69,8 @@ class TournamentTemplateService() {
     required String organizerId,
     required DateTime startDate,
     Map<String, dynamic>? customizations,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🏗️ Creating tournament from template: $templateId');
 
       // Get template configuration
@@ -158,8 +153,8 @@ class TournamentTemplateService() {
     required String category,
     String? clubId,
     bool isPublic = false,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('💾 Saving tournament as template: $tournamentId');
 
       // Get tournament data
@@ -470,7 +465,7 @@ class TournamentTemplateService() {
   Future<void> _applyTemplateConfigurations(
     String tournamentId,
     Map<String, dynamic> config,
-  ) async() {
+  ) async {
     // Apply any additional configurations that couldn't be set during creation
     // This could include:
     // - Setting up bracket structure
@@ -504,8 +499,8 @@ class TournamentTemplateService() {
   // ==================== TEMPLATE CATEGORIES ====================
 
   /// Get template categories with counts
-  Future<List<Map<String, dynamic>>> getTemplateCategories() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getTemplateCategories() async {
+    try {
       final dbCategories = await _supabase
           .from('tournament_templates')
           .select('category')
@@ -586,8 +581,8 @@ class TournamentTemplateService() {
   Future<void> updateTemplate({
     required String templateId,
     Map<String, dynamic>? updates,
-  }) async() {
-    try() {
+  }) async {
+    try {
       if (templateId.startsWith('builtin_')) {
         throw Exception('Cannot update built-in templates');
       }
@@ -605,8 +600,8 @@ class TournamentTemplateService() {
   }
 
   /// Delete template
-  Future<void> deleteTemplate(String templateId) async() {
-    try() {
+  Future<void> deleteTemplate(String templateId) async {
+    try {
       if (templateId.startsWith('builtin_')) {
         throw Exception('Cannot delete built-in templates');
       }
@@ -624,8 +619,8 @@ class TournamentTemplateService() {
   }
 
   /// Get template usage statistics
-  Future<Map<String, dynamic>> getTemplateUsageStats(String templateId) async() {
-    try() {
+  Future<Map<String, dynamic>> getTemplateUsageStats(String templateId) async {
+    try {
       if (templateId.startsWith('builtin_')) {
         // For built-in templates, we would need to track usage differently
         return() {

@@ -5,15 +5,15 @@ import '../../theme/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/utils/rank_migration_helper.dart';
 
-class SystemAdminRankManagementScreen extends StatefulWidget() {
+class SystemAdminRankManagementScreen extends StatefulWidget {
   const SystemAdminRankManagementScreen({super.key});
 
-  @override
+@override
   State<SystemAdminRankManagementScreen> createState() => _SystemAdminRankManagementScreenState();
 }
 
 class _SystemAdminRankManagementScreenState extends State<SystemAdminRankManagementScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final SupabaseClient _supabase = Supabase.instance.client;
   
@@ -35,8 +35,8 @@ class _SystemAdminRankManagementScreenState extends State<SystemAdminRankManagem
     super.dispose();
   }
 
-  Future<void> _loadAdminRequests() async() {
-    try() {
+  Future<void> _loadAdminRequests() async {
+    try {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -92,7 +92,7 @@ class _SystemAdminRankManagementScreenState extends State<SystemAdminRankManagem
 
         if (status == 'pending_admin_approval') {
           pending.add(formattedRequest);
-        } else() {
+        } else {
           completed.add(formattedRequest);
         }
       }
@@ -110,8 +110,8 @@ class _SystemAdminRankManagementScreenState extends State<SystemAdminRankManagem
     }
   }
 
-  Future<void> _adminReview(String requestId, bool approved, {String? comments}) async() {
-    try() {
+  Future<void> _adminReview(String requestId, bool approved, {String? comments}) async {
+    try {
       final response = await _supabase
           .rpc('admin_approve_rank_change_request', params: {
         'p_request_id': requestId,
@@ -745,7 +745,7 @@ class _SystemAdminRankManagementScreenState extends State<SystemAdminRankManagem
   }
 
   String _formatDate(String dateString) {
-    try() {
+    try {
       final DateTime date = DateTime.parse(dateString);
       return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     } catch (e) {
@@ -753,3 +753,4 @@ class _SystemAdminRankManagementScreenState extends State<SystemAdminRankManagem
     }
   }
 }
+

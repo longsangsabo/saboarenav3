@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ImageUploadSection extends StatefulWidget() {
+class ImageUploadSection extends StatefulWidget {
+  const ImageUploadSection({super.key});
+
+} 
   final String coverImageUrl;
   final String logoImageUrl;
   final Function(String) onCoverChanged;

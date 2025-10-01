@@ -2,8 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../routes/app_routes.dart';
 
-class PlayerWelcomeGuide extends StatefulWidget() {
-  const PlayerWelcomeGuide({super.key});
+class PlayerWelcomeGuide extends StatefulWidget {
+  const PlayerWelcomeGuide({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
+  const PlayerWelcomeGuide({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<PlayerWelcomeGuide> createState() => _PlayerWelcomeGuideState();
@@ -207,7 +224,7 @@ class _PlayerWelcomeGuideState extends State<PlayerWelcomeGuide> {
             width: 25.w,
             height: 25.w,
             decoration: BoxDecoration(
-              color: item.color.withOpacity(0.1),
+              color: item.color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -300,7 +317,7 @@ class _PlayerWelcomeGuideState extends State<PlayerWelcomeGuide> {
   }
 }
 
-class GuideItem() {
+class GuideItem {
   final IconData icon;
   final String title;
   final String description;

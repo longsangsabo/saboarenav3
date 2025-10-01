@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 /// Service quản lý progression của matches trong tournament bracket
-class MatchProgressionService() {
+class MatchProgressionService {
   static MatchProgressionService? _instance;
   static MatchProgressionService get instance => _instance ??= MatchProgressionService._();
   MatchProgressionService._();
@@ -29,8 +29,8 @@ class MatchProgressionService() {
     required String loserId,
     required Map<String, int> scores,
     String? notes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 Starting match progression for match $matchId');
 
       // 1. Update match result in database
@@ -134,7 +134,7 @@ class MatchProgressionService() {
     String loserId,
     Map<String, int> scores,
     String? notes,
-  ) async() {
+  ) async {
     await _supabase.from('matches').update({
       'winner_id': winnerId,
       'player1_score': scores['player1'] ?? 0,
@@ -148,7 +148,7 @@ class MatchProgressionService() {
   }
 
   /// Get tournament info
-  Future<Map<String, dynamic>> _getTournamentInfo(String tournamentId) async() {
+  Future<Map<String, dynamic>> _getTournamentInfo(String tournamentId) async {
     final response = await _supabase
         .from('tournaments')
         .select('format, tournament_type, title, status')
@@ -159,7 +159,7 @@ class MatchProgressionService() {
   }
 
   /// Get bracket info cho match progression
-  Future<Map<String, dynamic>> _getBracketInfo(String tournamentId, String matchId) async() {
+  Future<Map<String, dynamic>> _getBracketInfo(String tournamentId, String matchId) async {
     // Get current match info
     final matchResponse = await _supabase
         .from('matches')
@@ -192,7 +192,7 @@ class MatchProgressionService() {
     required String loserId,
     required String format,
     required Map<String, dynamic> bracketInfo,
-  }) async() {
+  }) async {
     switch (format) {
       case TournamentFormats.singleElimination:
         return await _progressSingleElimination(tournamentId, matchId, winnerId, bracketInfo);
@@ -226,7 +226,7 @@ class MatchProgressionService() {
     String matchId,
     String winnerId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     final currentMatch = bracketInfo['current_match'];
     final allMatches = bracketInfo['all_matches'] as List;
     
@@ -299,7 +299,7 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     final currentMatch = bracketInfo['current_match'];
     final allMatches = bracketInfo['all_matches'] as List;
     
@@ -348,7 +348,7 @@ class MatchProgressionService() {
     String matchId,
     String loserId,
     List allMatches,
-  ) async() {
+  ) async {
     // Logic để tìm correct loser bracket position
     // Implementation sẽ phụ thuộc vào cách structure loser bracket
     
@@ -390,7 +390,7 @@ class MatchProgressionService() {
     String matchId,
     String winnerId,
     List allMatches,
-  ) async() {
+  ) async {
     // Similar logic to single elimination nhưng trong loser bracket
     // Implementation chi tiết sẽ phức tạp hơn
     
@@ -407,7 +407,7 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // TODO: Implement Sabo DE16 specific logic
     return {'advancement_made': false, 'next_matches': []};
   }
@@ -419,7 +419,7 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // TODO: Implement Sabo DE32 specific logic
     return {'advancement_made': false, 'next_matches': []};
   }
@@ -430,7 +430,7 @@ class MatchProgressionService() {
     String matchId,
     String winnerId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // Update standings table
     await _updateRoundRobinStandings(tournamentId, matchId, winnerId);
     
@@ -447,7 +447,7 @@ class MatchProgressionService() {
     String matchId,
     String winnerId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // Update Swiss standings và potentially generate next round pairings
     // Complex logic - implementation sau
     return {'advancement_made': false, 'next_matches': []};
@@ -460,7 +460,7 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // Logic để handle group stage và playoff advancement
     return {'advancement_made': false, 'next_matches': []};
   }
@@ -468,13 +468,13 @@ class MatchProgressionService() {
   // ==================== HELPER FUNCTIONS ====================
 
   /// Update Round Robin standings
-  Future<void> _updateRoundRobinStandings(String tournamentId, String matchId, String winnerId) async() {
+  Future<void> _updateRoundRobinStandings(String tournamentId, String matchId, String winnerId) async {
     // Implementation cho round robin standings update
     debugPrint('📊 Updating Round Robin standings for tournament $tournamentId');
   }
 
   /// Check if tournament is complete
-  Future<bool> _checkTournamentCompletion(String tournamentId, String format) async() {
+  Future<bool> _checkTournamentCompletion(String tournamentId, String format) async {
     final allMatches = await _supabase
         .from('matches')
         .select('status')
@@ -504,8 +504,8 @@ class MatchProgressionService() {
     required String loserId,
     required Map<String, dynamic> progressionResult,
     required bool isComplete,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Notify winner of advancement
       if (progressionResult['advancement_made'] == true) {
         await _notificationService.sendNotification(
@@ -542,7 +542,7 @@ class MatchProgressionService() {
   // ==================== PUBLIC UTILITY METHODS ====================
 
   /// Get next matches cho một player
-  Future<List<Map<String, dynamic>>> getPlayerNextMatches(String playerId, String tournamentId) async() {
+  Future<List<Map<String, dynamic>>> getPlayerNextMatches(String playerId, String tournamentId) async {
     final matches = await _supabase
         .from('matches')
         .select('*')
@@ -556,7 +556,7 @@ class MatchProgressionService() {
   }
 
   /// Get tournament progression status
-  Future<Map<String, dynamic>> getTournamentProgress(String tournamentId) async() {
+  Future<Map<String, dynamic>> getTournamentProgress(String tournamentId) async {
     final matches = await _supabase
         .from('matches')
         .select('status, round_number')
@@ -583,8 +583,8 @@ class MatchProgressionService() {
     required String matchId,
     required String winnerId,
     required String loserId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 Processing SPA bonuses for challenge match $matchId');
       
       // Get match details to check if it's a SPA challenge
@@ -662,8 +662,8 @@ class MatchProgressionService() {
 }
 
   /// Get tournament bracket information and current match position
-  Future<Map<String, dynamic>> _getBracketInfo(String tournamentId, String matchId) async() {
-    try() {
+  Future<Map<String, dynamic>> _getBracketInfo(String tournamentId, String matchId) async {
+    try {
       // Get tournament with bracket data
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -699,8 +699,8 @@ class MatchProgressionService() {
     required String loserId,
     required String format,
     required Map<String, dynamic> bracketInfo,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎮 Executing $format bracket progression for match $matchId');
 
       switch (format.toLowerCase()) {
@@ -741,8 +741,8 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
-    try() {
+  ) async {
+    try {
       final currentRound = bracketInfo['current_round'] as int? ?? 1;
       final nextRound = currentRound + 1;
       
@@ -800,8 +800,8 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
-    try() {
+  ) async {
+    try {
       final matchType = bracketInfo['match_type'] as String? ?? '';
       debugPrint('🏆 DE Progression: Match type $matchType');
 
@@ -836,7 +836,7 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // Update standings/points
     await _updateRoundRobinStandings(tournamentId, winnerId, loserId);
     
@@ -854,7 +854,7 @@ class MatchProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // Update player scores and potentially pair next round
     await _updateSwissStandings(tournamentId, winnerId, loserId);
     
@@ -870,8 +870,10 @@ class MatchProgressionService() {
     String tournamentId,
     int currentRound,
     String winnerId,
-  ) async() {
-    try() {
+  ) async(
+    return null;
+  ) {
+    try {
       // This is simplified logic - in real implementation,
       // you'd need to track bracket position more precisely
       final nextRoundMatches = await _supabase
@@ -891,8 +893,8 @@ class MatchProgressionService() {
   }
 
   /// Advance winner to next match
-  Future<void> _advanceWinnerToNextMatch(String nextMatchId, String winnerId) async() {
-    try() {
+  Future<void> _advanceWinnerToNextMatch(String nextMatchId, String winnerId) async {
+    try {
       // Check if player1 slot is empty
       final match = await _supabase
           .from('matches')
@@ -917,8 +919,8 @@ class MatchProgressionService() {
   }
 
   /// Complete tournament and declare champion
-  Future<void> _completeTournament(String tournamentId, String championId) async() {
-    try() {
+  Future<void> _completeTournament(String tournamentId, String championId) async {
+    try {
       await _supabase.from('tournaments').update({
         "status": 'completed',
         'winner_id': championId,
@@ -932,32 +934,32 @@ class MatchProgressionService() {
   }
 
   // Placeholder methods for different bracket types
-  Future<void> _advanceInWinnersBracket(String tournamentId, String winnerId) async() {
+  Future<void> _advanceInWinnersBracket(String tournamentId, String winnerId) async {
     debugPrint('🏆 Advancing $winnerId in winners bracket');
     // TODO: Implement winners bracket advancement logic
   }
 
-  Future<void> _dropToLosersBracket(String tournamentId, String loserId) async() {
+  Future<void> _dropToLosersBracket(String tournamentId, String loserId) async {
     debugPrint('📉 Dropping $loserId to losers bracket');
     // TODO: Implement losers bracket drop logic
   }
 
-  Future<void> _advanceInLosersBracket(String tournamentId, String winnerId) async() {
+  Future<void> _advanceInLosersBracket(String tournamentId, String winnerId) async {
     debugPrint('🏆 Advancing $winnerId in losers bracket');
     // TODO: Implement losers bracket advancement logic
   }
 
-  Future<void> _eliminatePlayer(String tournamentId, String playerId) async() {
+  Future<void> _eliminatePlayer(String tournamentId, String playerId) async {
     debugPrint('❌ Eliminating $playerId from tournament');
     // TODO: Implement player elimination logic
   }
 
-  Future<void> _updateRoundRobinStandings(String tournamentId, String winnerId, String loserId) async() {
+  Future<void> _updateRoundRobinStandings(String tournamentId, String winnerId, String loserId) async {
     debugPrint('📊 Updating Round Robin standings');
     // TODO: Implement Round Robin standings update
   }
 
-  Future<void> _updateSwissStandings(String tournamentId, String winnerId, String loserId) async() {
+  Future<void> _updateSwissStandings(String tournamentId, String winnerId, String loserId) async {
     debugPrint('📊 Updating Swiss System standings');
     // TODO: Implement Swiss System standings update
   }

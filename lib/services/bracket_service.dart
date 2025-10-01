@@ -1,8 +1,5 @@
-import 'dart:math';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
 
-class BracketService() {
+class BracketService {
   static final BracketService _instance = BracketService._internal();
   factory BracketService() => _instance;
   BracketService._internal();
@@ -386,7 +383,7 @@ class BracketService() {
     required int player1Score,
     required int player2Score,
     String? notes,
-  }) async() {
+  }) async {
     // This would update the match in database and calculate next matches
     // Implementation would involve:
     // 1. Update match result in database
@@ -473,8 +470,8 @@ class BracketService() {
   }
 
   /// Save generated bracket to database
-  Future<bool> saveBracketToDatabase(Map<String, dynamic> bracketData) async() {
-    try() {
+  Future<bool> saveBracketToDatabase(Map<String, dynamic> bracketData) async {
+    try {
       final matches = bracketData['matches'] as List<Map<String, dynamic>>;
       
       // Prepare matches for database insertion
@@ -509,8 +506,8 @@ class BracketService() {
   }
 
   /// Delete existing bracket from database (for regeneration)
-  Future<bool> deleteTournamentBracket(String tournamentId) async() {
-    try() {
+  Future<bool> deleteTournamentBracket(String tournamentId) async {
+    try {
       await _supabase
           .from('matches')
           .delete()
@@ -530,8 +527,8 @@ class BracketService() {
     required String winnerId,
     required int player1Score,
     required int player2Score,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 Updating match $matchId directly in matches table...');
       debugPrint('   Winner: $winnerId');
       debugPrint('   Scores: $player1Score - $player2Score');
@@ -566,8 +563,8 @@ class BracketService() {
   }
 
   /// Start a match using RPC function
-  Future<bool> startMatch(String matchId) async() {
-    try() {
+  Future<bool> startMatch(String matchId) async {
+    try {
       debugPrint('🎯 Starting match $matchId with RPC function...');
       
       // Use RPC function to start match

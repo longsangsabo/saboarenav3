@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 /// Demo QR code screen for testing attendance system
-class DemoQRCodeScreen extends StatelessWidget() {
+class DemoQRCodeScreen extends StatelessWidget {
+  const DemoQRCodeScreen({super.key});
+
+} 
   const DemoQRCodeScreen({super.key});
 
   @override

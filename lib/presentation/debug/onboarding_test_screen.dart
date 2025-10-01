@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../routes/app_routes.dart';
 
-class OnboardingTestScreen extends StatelessWidget() {
+class OnboardingTestScreen extends StatelessWidget {
   const OnboardingTestScreen({super.key});
 
-  Future<void> _resetOnboarding(BuildContext context) async() {
-    try() {
+} 
+  const OnboardingTestScreen({super.key});
+
+  Future<void> _resetOnboarding(BuildContext context) async {
+    try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('has_seen_onboarding');
       await prefs.remove('user_role');
@@ -34,8 +37,8 @@ class OnboardingTestScreen extends StatelessWidget() {
     }
   }
 
-  Future<String> _getCurrentRole() async() {
-    try() {
+  Future<String> _getCurrentRole() async {
+    try {
       final prefs = await SharedPreferences.getInstance();
       return prefs.getString('user_role') ?? 'Not set';
     } catch (e) {

@@ -3,7 +3,7 @@ import '../services/auth_service.dart';
 import '../models/notification_models.dart';
 import 'package:flutter/foundation.dart';
 
-class NotificationPreferencesService() {
+class NotificationPreferencesService {
   static final NotificationPreferencesService _instance = NotificationPreferencesService._internal();
   factory NotificationPreferencesService() => _instance;
   NotificationPreferencesService._internal();
@@ -14,8 +14,8 @@ class NotificationPreferencesService() {
   final AuthService _authService = AuthService.instance;
 
   /// Get notification preferences for current user
-  Future<NotificationPreferences?> getUserPreferences() async() {
-    try() {
+  Future<NotificationPreferences?> getUserPreferences() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -38,8 +38,8 @@ class NotificationPreferencesService() {
   }
 
   /// Create default notification preferences
-  Future<NotificationPreferences?> _createDefaultPreferences(String userId) async() {
-    try() {
+  Future<NotificationPreferences?> _createDefaultPreferences(String userId) async {
+    try {
       final defaultPrefs = NotificationPreferences.defaultPreferences();
       final prefsData = defaultPrefs.toJson()..['user_id'] = userId;
 
@@ -57,8 +57,8 @@ class NotificationPreferencesService() {
   }
 
   /// Update notification preferences
-  Future<bool> updatePreferences(NotificationPreferences preferences) async() {
-    try() {
+  Future<bool> updatePreferences(NotificationPreferences preferences) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -84,8 +84,8 @@ class NotificationPreferencesService() {
     bool? pushEnabled,
     bool? emailEnabled,
     bool? smsEnabled,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final preferences = await getUserPreferences();
       if (preferences == null) return false;
 
@@ -112,8 +112,8 @@ class NotificationPreferencesService() {
     required bool enabled,
     TimeOfDay? startTime,
     TimeOfDay? endTime,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final preferences = await getUserPreferences();
       if (preferences == null) return false;
 
@@ -131,8 +131,8 @@ class NotificationPreferencesService() {
   }
 
   /// Update notification sound
-  Future<bool> updateNotificationSound(String soundId) async() {
-    try() {
+  Future<bool> updateNotificationSound(String soundId) async {
+    try {
       final preferences = await getUserPreferences();
       if (preferences == null) return false;
 
@@ -145,8 +145,8 @@ class NotificationPreferencesService() {
   }
 
   /// Update vibration setting
-  Future<bool> updateVibrationEnabled(bool enabled) async() {
-    try() {
+  Future<bool> updateVibrationEnabled(bool enabled) async {
+    try {
       final preferences = await getUserPreferences();
       if (preferences == null) return false;
 
@@ -159,8 +159,8 @@ class NotificationPreferencesService() {
   }
 
   /// Update LED setting
-  Future<bool> updateLedEnabled(bool enabled) async() {
-    try() {
+  Future<bool> updateLedEnabled(bool enabled) async {
+    try {
       final preferences = await getUserPreferences();
       if (preferences == null) return false;
 
@@ -176,8 +176,8 @@ class NotificationPreferencesService() {
   Future<bool> shouldShowNotification({
     required NotificationType type,
     required NotificationChannel channel,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final preferences = await getUserPreferences();
       if (preferences == null) return true; // Default to showing notifications
 
@@ -240,8 +240,8 @@ class NotificationPreferencesService() {
   }
 
   /// Get available notification sounds
-  Future<List<NotificationSound>> getAvailableSounds() async() {
-    try() {
+  Future<List<NotificationSound>> getAvailableSounds() async {
+    try {
       final response = await _supabase
           .from('notification_sounds')
           .select('*')
@@ -255,8 +255,8 @@ class NotificationPreferencesService() {
   }
 
   /// Test notification sound
-  Future<void> testNotificationSound(String soundId) async() {
-    try() {
+  Future<void> testNotificationSound(String soundId) async {
+    try {
       // TODO: Implement sound playing logic based on platform
       debugPrint('Testing notification sound: $soundId');
     } catch (e) {
@@ -265,8 +265,8 @@ class NotificationPreferencesService() {
   }
 
   /// Reset preferences to default
-  Future<bool> resetToDefault() async() {
-    try() {
+  Future<bool> resetToDefault() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -284,8 +284,8 @@ class NotificationPreferencesService() {
   }
 
   /// Export preferences as JSON
-  Future<Map<String, dynamic>?> exportPreferences() async() {
-    try() {
+  Future<Map<String, dynamic>?> exportPreferences() async {
+    try {
       final preferences = await getUserPreferences();
       return preferences?.toJson();
     } catch (e) {
@@ -295,8 +295,8 @@ class NotificationPreferencesService() {
   }
 
   /// Import preferences from JSON
-  Future<bool> importPreferences(Map<String, dynamic> prefsData) async() {
-    try() {
+  Future<bool> importPreferences(Map<String, dynamic> prefsData) async {
+    try {
       final preferences = NotificationPreferences.fromJson(prefsData);
       return await updatePreferences(preferences);
     } catch (e) {
@@ -324,7 +324,7 @@ class NotificationPreferencesService() {
             value: currentUser.id,
           ),
           callback: (payload) {
-            try() {
+            try {
               final preferences = NotificationPreferences.fromJson(payload.newRecord);
               onChanged(preferences);
             } catch (e) {
@@ -337,7 +337,7 @@ class NotificationPreferencesService() {
 }
 
 /// Extension to add TimeOfDay functionality
-extension TimeOfDayExtension on TimeOfDay() {
+extension TimeOfDayExtension on TimeOfDay {
   static TimeOfDay now() {
     final now = DateTime.now();
     return TimeOfDay(hour: now.hour, minute: now.minute);

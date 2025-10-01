@@ -2,13 +2,9 @@
 // Creates tournament brackets with correct progressive match generation
 // Only creates Round 1 initially, subsequent rounds created when previous round completes
 
-import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:math' as math;
-import 'package:uuid/uuid.dart';
 
 /// Service for generating proper single elimination brackets
-class ProperBracketService() {
+class ProperBracketService {
   static ProperBracketService? _instance;
   static ProperBracketService get instance => _instance ??= ProperBracketService._();
   ProperBracketService._();
@@ -22,8 +18,8 @@ class ProperBracketService() {
   Future<Map<String, dynamic>> generateSingleEliminationBracket({
     required String tournamentId,
     bool clearExisting = false,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('$_tag: 🎯 Generating PROPER single elimination bracket for tournament $tournamentId');
 
       if (clearExisting) {
@@ -139,7 +135,7 @@ class ProperBracketService() {
   // ==================== PARTICIPANT MANAGEMENT ====================
 
   /// Get confirmed tournament participants
-  Future<List<Map<String, dynamic>>> _getTournamentParticipants(String tournamentId) async() {
+  Future<List<Map<String, dynamic>>> _getTournamentParticipants(String tournamentId) async {
     final response = await _supabase
         .from('tournament_participants')
         .select('''
@@ -168,7 +164,7 @@ class ProperBracketService() {
     required String tournamentId,
     required List<Map<String, dynamic>> participants,
     required Map<String, dynamic> bracketInfo,
-  }) async() {
+  }) async {
     final matches = <Map<String, dynamic>>[];
     final bracketSize = bracketInfo['bracketSize'] as int;
     final firstRoundMatches = bracketInfo['firstRoundMatches'] as int;
@@ -270,8 +266,8 @@ class ProperBracketService() {
   Future<Map<String, dynamic>> createNextRoundMatches({
     required String tournamentId,
     required int completedRound,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('$_tag: 🎯 Creating Round ${completedRound + 1} matches after Round $completedRound completion');
 
       // Get winners from completed round
@@ -318,7 +314,7 @@ class ProperBracketService() {
   }
 
   /// Get winners from a completed round
-  Future<List<Map<String, dynamic>>> _getRoundWinners(String tournamentId, int round) async() {
+  Future<List<Map<String, dynamic>>> _getRoundWinners(String tournamentId, int round) async {
     final response = await _supabase
         .from('matches')
         .select('''
@@ -353,7 +349,7 @@ class ProperBracketService() {
     required String tournamentId,
     required int roundNumber,
     required List<Map<String, dynamic>> winners,
-  }) async() {
+  }) async {
     final matchCount = winners.length ~/ 2;
     final matches = <Map<String, dynamic>>[];
 
@@ -392,7 +388,7 @@ class ProperBracketService() {
   // ==================== UTILITY METHODS ====================
 
   /// Clear existing matches for tournament
-  Future<void> _clearExistingMatches(String tournamentId) async() {
+  Future<void> _clearExistingMatches(String tournamentId) async {
     await _supabase
         .from('matches')
         .delete()
@@ -401,7 +397,7 @@ class ProperBracketService() {
   }
 
   /// Store bracket metadata
-  Future<void> _storeBracketMetadata(String tournamentId, Map<String, dynamic> bracketInfo, int participantCount) async() {
+  Future<void> _storeBracketMetadata(String tournamentId, Map<String, dynamic> bracketInfo, int participantCount) async {
     // Convert bracketInfo to ensure JSON serialization compatibility
     final serializableBracketInfo = Map<String, dynamic>.from(bracketInfo);
     
@@ -427,7 +423,7 @@ class ProperBracketService() {
   }
 
   /// Complete tournament
-  Future<void> _completeTournament(String tournamentId, Map<String, dynamic> winner) async() {
+  Future<void> _completeTournament(String tournamentId, Map<String, dynamic> winner) async {
     await _supabase
         .from('tournaments')
         .update({

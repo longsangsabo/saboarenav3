@@ -14,15 +14,15 @@ import './widgets/club_tournaments_widget.dart';
 import '../tournament_creation_wizard/tournament_creation_wizard.dart';
 import '../rank_registration_screen/rank_registration_screen.dart';
 
-class ClubProfileScreen extends StatefulWidget() {
+class ClubProfileScreen extends StatefulWidget {
   const ClubProfileScreen({super.key});
 
-  @override
+@override
   State<ClubProfileScreen> createState() => _ClubProfileScreenState();
 }
 
 class _ClubProfileScreenState extends State<ClubProfileScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late ScrollController _scrollController;
   late TabController _tabController;
   
@@ -210,12 +210,12 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
     _loadUserData();
   }
   
-  Future<void> _loadUserData() async() {
+  Future<void> _loadUserData() async {
     setState(() {
       _isLoadingUser = true;
     });
     
-    try() {
+    try {
       // Load current user data from Supabase
       final user = Supabase.instance.client.auth.currentUser;
       if (user != null) {
@@ -231,7 +231,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
       }
     } catch (error) {
       debugPrint('Error loading user data: $error');
-    } finally() {
+    } finally {
       setState(() {
         _isLoadingUser = false;
       });
@@ -511,7 +511,7 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
       _clubData["isMember"] = !isMember;
       if (!isMember) {
         _clubData["memberCount"] = (_clubData["memberCount"] as int) + 1;
-      } else() {
+      } else {
         _clubData["memberCount"] = (_clubData["memberCount"] as int) - 1;
       }
     });
@@ -992,3 +992,4 @@ class _ClubProfileScreenState extends State<ClubProfileScreen>
     }
   }
 }
+

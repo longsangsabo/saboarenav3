@@ -2,12 +2,9 @@
 // Phase 2: Comprehensive tournament analytics and performance tracking
 // Provides detailed statistics, trends, and insights for tournaments
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:math' as math;
-import 'package:flutter/foundation.dart';
 
 /// Service cung cấp thống kê nâng cao cho tournament system
-class TournamentStatisticsService() {
+class TournamentStatisticsService {
   static TournamentStatisticsService? _instance;
   static TournamentStatisticsService get instance => _instance ??= TournamentStatisticsService._();
   TournamentStatisticsService._();
@@ -17,8 +14,8 @@ class TournamentStatisticsService() {
   // ==================== TOURNAMENT ANALYTICS ====================
 
   /// Get comprehensive tournament statistics
-  Future<Map<String, dynamic>> getTournamentAnalytics(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>> getTournamentAnalytics(String tournamentId) async {
+    try {
       debugPrint('📊 Getting tournament analytics for: $tournamentId');
 
       final results = await Future.wait([
@@ -46,7 +43,7 @@ class TournamentStatisticsService() {
   }
 
   /// Get basic tournament statistics
-  Future<Map<String, dynamic>> _getBasicStats(String tournamentId) async() {
+  Future<Map<String, dynamic>> _getBasicStats(String tournamentId) async {
     final tournament = await _supabase
         .from('tournaments')
         .select('*')
@@ -92,7 +89,7 @@ class TournamentStatisticsService() {
   }
 
   /// Get participant analytics and demographics
-  Future<Map<String, dynamic>> _getParticipantAnalytics(String tournamentId) async() {
+  Future<Map<String, dynamic>> _getParticipantAnalytics(String tournamentId) async {
     final participants = await _supabase
         .from('tournament_participants')
         .select('''
@@ -164,7 +161,7 @@ class TournamentStatisticsService() {
   }
 
   /// Get match analytics and patterns
-  Future<Map<String, dynamic>> _getMatchAnalytics(String tournamentId) async() {
+  Future<Map<String, dynamic>> _getMatchAnalytics(String tournamentId) async {
     final matches = await _supabase
         .from('matches')
         .select('''
@@ -240,7 +237,7 @@ class TournamentStatisticsService() {
   }
 
   /// Get performance metrics for participants
-  Future<Map<String, dynamic>> _getPerformanceMetrics(String tournamentId) async() {
+  Future<Map<String, dynamic>> _getPerformanceMetrics(String tournamentId) async {
     final participantsWithStats = await _supabase
         .from('tournament_participants')
         .select('''
@@ -319,7 +316,7 @@ class TournamentStatisticsService() {
   }
 
   /// Get engagement and social metrics
-  Future<Map<String, dynamic>> _getEngagementMetrics(String tournamentId) async() {
+  Future<Map<String, dynamic>> _getEngagementMetrics(String tournamentId) async {
     // This would integrate with social features, notifications, etc.
     // For now, return basic engagement data
     
@@ -355,8 +352,8 @@ class TournamentStatisticsService() {
     DateTime? startDate,
     DateTime? endDate,
     int limit = 50,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('tournaments')
           .select('''

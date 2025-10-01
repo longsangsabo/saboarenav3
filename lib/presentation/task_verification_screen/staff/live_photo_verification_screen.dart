@@ -8,7 +8,10 @@ import 'dart:typed_data';
 import '../shared/task_models.dart';
 import '../shared/live_photo_verification_service.dart';
 
-class LivePhotoVerificationScreen extends StatefulWidget() {
+class LivePhotoVerificationScreen extends StatefulWidget {
+  const LivePhotoVerificationScreen({super.key});
+
+} 
   final StaffTask task;
 
   const LivePhotoVerificationScreen({
@@ -21,7 +24,7 @@ class LivePhotoVerificationScreen extends StatefulWidget() {
 }
 
 class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScreen>
-    with WidgetsBindingObserver() {
+    with WidgetsBindingObserver {
   CameraController? _controller;
   List<CameraDescription>? _cameras;
   bool _isCameraInitialized = false;
@@ -66,8 +69,8 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
     }
   }
 
-  Future<void> _initializeCamera() async() {
-    try() {
+  Future<void> _initializeCamera() async {
+    try {
       _cameras = await availableCameras();
       if (_cameras!.isEmpty) {
         setState(() {
@@ -97,8 +100,8 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
     }
   }
 
-  Future<void> _getCurrentLocation() async() {
-    try() {
+  Future<void> _getCurrentLocation() async {
+    try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() {
@@ -160,7 +163,7 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
     });
   }
 
-  Future<void> _capturePhoto() async() {
+  Future<void> _capturePhoto() async {
     if (!_isCameraInitialized || _isCapturing || _controller == null) return;
 
     if (_currentLocation == null) {
@@ -172,7 +175,7 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
       _isCapturing = true;
     });
 
-    try() {
+    try {
       final XFile photo = await _controller!.takePicture();
       
       setState(() {
@@ -192,8 +195,8 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
     }
   }
 
-  Future<void> _processAndSubmitPhoto(XFile photo) async() {
-    try() {
+  Future<void> _processAndSubmitPhoto(XFile photo) async {
+    try {
       // Read image bytes
       final bytes = await photo.readAsBytes();
       
@@ -219,7 +222,7 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
 
       if (success) {
         _showSuccessDialog();
-      } else() {
+      } else {
         _showErrorDialog('Lỗi submit xác minh. Vui lòng thử lại.');
       }
     } catch (e) {
@@ -230,7 +233,7 @@ class _LivePhotoVerificationScreenState extends State<LivePhotoVerificationScree
     }
   }
 
-  void _flipCamera() async() {
+  void _flipCamera() async {
     if (_cameras == null || _cameras!.length < 2) return;
 
     final currentIndex = _cameras!.indexOf(_controller!.description);

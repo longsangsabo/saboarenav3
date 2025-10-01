@@ -4,7 +4,10 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class TournamentRulesWidget extends StatelessWidget() {
+class TournamentRulesWidget extends StatelessWidget {
+  const TournamentRulesWidget({super.key});
+
+} 
   final List<String> rules;
 
   const TournamentRulesWidget({

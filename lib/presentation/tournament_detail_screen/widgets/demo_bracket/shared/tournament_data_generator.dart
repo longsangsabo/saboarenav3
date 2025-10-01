@@ -1,10 +1,8 @@
 // 🎯 SABO ARENA - Tournament Data Generator
 // Handles match generation and tournament calculation logic
 
-import 'dart:math';
-import 'package:flutter/material.dart';
 
-class TournamentDataGenerator() {
+class TournamentDataGenerator {
   /// Calculate rounds for Single Elimination format
   static List<Map<String, dynamic>> calculateSingleEliminationRounds(int playerCount) {
     final List<Map<String, dynamic>> rounds = [];
@@ -19,7 +17,7 @@ class TournamentDataGenerator() {
         title = 'Bán kết';
       } else if (currentPlayerCount == 8) {
         title = 'Tứ kết';
-      } else() {
+      } else {
         title = 'Vòng $roundNumber';
       }
       
@@ -158,7 +156,7 @@ class TournamentDataGenerator() {
             score1 = '2';
             score2 = random == 2 ? "0" : '1';
             result = 'Player $i Win';
-          } else() {
+          } else {
             // Player 2 wins
             score1 = random == 3 ? "0" : '1';
             score2 = '2';
@@ -246,7 +244,7 @@ class TournamentDataGenerator() {
             wins++;
           } else if (playerScore == opponentScore) {
             draws++;
-          } else() {
+          } else {
             losses++;
           }
         }
@@ -304,7 +302,7 @@ class TournamentDataGenerator() {
         form.write('W');
       } else if (playerScore == opponentScore) {
         form.write('D');
-      } else() {
+      } else {
         form.write('L');
       }
     }
@@ -442,7 +440,7 @@ class TournamentDataGenerator() {
         // Round where players from winners bracket drop down
         playersFromWinners = playerCount ~/ (1 << ((i + 1) ~/ 2));
         playersInLosers += playersFromWinners;
-      } else() {
+      } else {
         // Round where only losers bracket players compete
         playersInLosers = playersInLosers ~/ 2;
       }
@@ -455,7 +453,7 @@ class TournamentDataGenerator() {
           roundTitle = 'Losers Final';
         } else if (i >= (winnersRoundCount * 2 - 4)) {
           roundTitle = 'Losers Semifinals';
-        } else() {
+        } else {
           roundTitle = 'Losers Round $roundNumber';
         }
         
@@ -517,7 +515,7 @@ class TournamentDataGenerator() {
           score1 = ['2', '2', '1', '2'][i % 4];
           score2 = ['0', '1', '2', '1'][i % 4];
         }
-      } else() {
+      } else {
         // Later rounds: winners from previous rounds
         player1 = 'Winner WB${round-1}-${(i*2)+1}';
         player2 = 'Winner WB${round-1}-${(i*2)+2}';
@@ -553,7 +551,7 @@ class TournamentDataGenerator() {
         // Mixed round: some from losers bracket, some from winners bracket
         player1 = 'Loser WB${(round + 1) ~/ 2}-${(i*2)+1}';
         player2 = round == 1 ? "Loser WB1-${(i*2)+2}" : 'Winner LB${round-1}-${i+1}';
-      } else() {
+      } else {
         // Pure losers bracket round
         player1 = 'Winner LB${round-1}-${(i*2)+1}';
         player2 = 'Winner LB${round-1}-${(i*2)+2}';
@@ -622,7 +620,7 @@ class TournamentDataGenerator() {
         title = 'Winners Round 1';
       } else if (currentPlayerCount == 32) {
         title = 'Winners Round 1';
-      } else() {
+      } else {
         title = 'Winners Round $roundNumber';
       }
       
@@ -677,7 +675,7 @@ class TournamentDataGenerator() {
         });
         currentSurvivors = lbR1Matches; // Winners from LB R1
         roundNumber++;
-      } else() {
+      } else {
         // LB Round N: Mix eliminated players with survivors
         if (currentSurvivors > 0 && eliminatedCount > 0) {
           // Mix round: survivors vs new eliminations
@@ -747,11 +745,11 @@ class TournamentDataGenerator() {
         if (roundNumber == 2) {
           player1 = 'LB R1 Winner ${i + 1}';
           player2 = 'WB R2 Loser ${i + 1}';
-        } else() {
+        } else {
           player1 = 'LB R${roundNumber - 1} Winner ${i + 1}';
           player2 = 'WB R$roundNumber Loser ${i + 1}';
         }
-      } else() {
+      } else {
         // Advancement matches between survivors
         player1 = 'LB Winner ${i * 2 + 1}';
         player2 = 'LB Winner ${i * 2 + 2}';

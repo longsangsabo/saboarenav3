@@ -1,6 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AdminRankApprovalService() {
+class AdminRankApprovalService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Direct rank request approval without using RPC function
@@ -9,8 +8,8 @@ class AdminRankApprovalService() {
     required String requestId,
     required bool approved,
     String? comments,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Step 1: Get the rank request details
       final rankRequestResponse = await _supabase
           .from('rank_requests')
@@ -125,8 +124,8 @@ class AdminRankApprovalService() {
   }
 
   /// Get pending rank requests for the current club owner
-  Future<List<Map<String, dynamic>>> getPendingRankRequests() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getPendingRankRequests() async {
+    try {
       final currentUserId = _supabase.auth.currentUser?.id;
       if (currentUserId == null) {
         throw Exception('User not authenticated');
@@ -188,8 +187,8 @@ class AdminRankApprovalService() {
   }
 
   /// Get the current user's club information
-  Future<Map<String, dynamic>?> getCurrentUserClub() async() {
-    try() {
+  Future<Map<String, dynamic>?> getCurrentUserClub() async {
+    try {
       final currentUserId = _supabase.auth.currentUser?.id;
       if (currentUserId == null) return null;
 

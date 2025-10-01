@@ -1,10 +1,7 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/user_profile.dart';
-import 'package:flutter/foundation.dart';
 
 /// Service để handle test user cho development
 /// CHỈ sử dụng khi không có authentication
-class TestUserService() {
+class TestUserService {
   static TestUserService? _instance;
   static TestUserService get instance => _instance ??= TestUserService._();
   TestUserService._();
@@ -17,12 +14,12 @@ class TestUserService() {
   bool get isDevelopment => const bool.fromEnvironment('dart.vm.product') == false;
 
   /// Lấy test user profile hoặc tạo mới nếu chưa có
-  Future<UserProfile?> getOrCreateTestUser() async() {
+  Future<UserProfile?> getOrCreateTestUser() async {
     if (!isDevelopment) {
       throw Exception('TestUserService chỉ được dùng trong development!');
     }
 
-    try() {
+    try {
       // Thử lấy test user hiện có
       final response = await _supabase
           .from('users')
@@ -45,7 +42,7 @@ class TestUserService() {
   }
 
   /// Tạo test user mới trong database
-  Future<UserProfile> _createTestUser() async() {
+  Future<UserProfile> _createTestUser() async {
     final testUserData = {
       'id': TEST_USER_ID,
       "email": 'test@sabo.app',
@@ -60,7 +57,7 @@ class TestUserService() {
       'updated_at': DateTime.now().toIso8601String(),
     };
 
-    try() {
+    try {
       final response = await _supabase
           .from('users')
           .upsert(testUserData)
@@ -80,12 +77,12 @@ class TestUserService() {
     String? coverPhotoUrl,
     String? bio,
     String? displayName,
-  }) async() {
+  }) async {
     if (!isDevelopment) {
       throw Exception('TestUserService chỉ được dùng trong development!');
     }
 
-    try() {
+    try {
       final updateData = <String, dynamic>{
         'updated_at': DateTime.now().toIso8601String(),
       };

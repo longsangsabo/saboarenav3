@@ -6,7 +6,10 @@ import '../../../services/achievement_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
-class AchievementsSectionWidget extends StatefulWidget() {
+class AchievementsSectionWidget extends StatefulWidget {
+  const AchievementsSectionWidget({super.key});
+
+} 
   final String userId;
   final VoidCallback? onViewAll; // Add optional callback
 
@@ -33,8 +36,8 @@ class _AchievementsSectionWidgetState extends State<AchievementsSectionWidget> {
     _loadAchievements();
   }
 
-  Future<void> _loadAchievements() async() {
-    try() {
+  Future<void> _loadAchievements() async {
+    try {
       setState(() => _isLoading = true);
 
       final achievements = await _achievementService.getUserAchievements(

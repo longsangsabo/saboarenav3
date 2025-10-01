@@ -1,24 +1,21 @@
-import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-class MemberRealtimeService() {
-  static final MemberRealtimeService _instance = MemberRealtimeService._internal();
+class MemberRealtimeService {
+  static final MemberRealtimeService _instance =
+      MemberRealtimeService._internal();
   factory MemberRealtimeService() => _instance;
   MemberRealtimeService._internal();
 
   final SupabaseClient _supabase = Supabase.instance.client;
-  
+
   // Stream controllers for real-time data
-  final StreamController<List<Map<String, dynamic>>> _membersController = 
+  final StreamController<List<Map<String, dynamic>>> _membersController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
-  final StreamController<List<Map<String, dynamic>>> _requestsController = 
+  final StreamController<List<Map<String, dynamic>>> _requestsController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
-  final StreamController<List<Map<String, dynamic>>> _chatMessagesController = 
+  final StreamController<List<Map<String, dynamic>>> _chatMessagesController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
-  final StreamController<List<Map<String, dynamic>>> _notificationsController = 
+  final StreamController<List<Map<String, dynamic>>> _notificationsController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
-  final StreamController<List<Map<String, dynamic>>> _activitiesController = 
+  final StreamController<List<Map<String, dynamic>>> _activitiesController =
       StreamController<List<Map<String, dynamic>>>.broadcast();
 
   // Subscription references
@@ -33,15 +30,20 @@ class MemberRealtimeService() {
 
   // Connection status
   bool _isConnected = false;
-  final StreamController<bool> _connectionController = 
+  final StreamController<bool> _connectionController =
       StreamController<bool>.broadcast();
 
   // Getters for streams
-  Stream<List<Map<String, dynamic>>> get membersStream => _membersController.stream;
-  Stream<List<Map<String, dynamic>>> get requestsStream => _requestsController.stream;
-  Stream<List<Map<String, dynamic>>> get chatMessagesStream => _chatMessagesController.stream;
-  Stream<List<Map<String, dynamic>>> get notificationsStream => _notificationsController.stream;
-  Stream<List<Map<String, dynamic>>> get activitiesStream => _activitiesController.stream;
+  Stream<List<Map<String, dynamic>>> get membersStream =>
+      _membersController.stream;
+  Stream<List<Map<String, dynamic>>> get requestsStream =>
+      _requestsController.stream;
+  Stream<List<Map<String, dynamic>>> get chatMessagesStream =>
+      _chatMessagesController.stream;
+  Stream<List<Map<String, dynamic>>> get notificationsStream =>
+      _notificationsController.stream;
+  Stream<List<Map<String, dynamic>>> get activitiesStream =>
+      _activitiesController.stream;
   Stream<bool> get connectionStream => _connectionController.stream;
 
   bool get isConnected => _isConnected;
@@ -51,8 +53,8 @@ class MemberRealtimeService() {
   // ====================================
 
   /// Initialize real-time connections for a specific club
-  Future<void> initializeForClub(String clubId) async() {
-    try() {
+  Future<void> initializeForClub(String clubId) async {
+    try {
       if (kDebugMode) {
         debugPrint('🔄 Initializing real-time connections for club: $clubId');
       }
@@ -62,10 +64,10 @@ class MemberRealtimeService() {
 
       // Subscribe to club memberships
       await _subscribeToMembers(clubId);
-      
+
       // Subscribe to membership requests
       await _subscribeToRequests(clubId);
-      
+
       // Subscribe to activities
       await _subscribeToActivities(clubId);
 
@@ -85,8 +87,8 @@ class MemberRealtimeService() {
   }
 
   /// Initialize real-time connections for a specific user
-  Future<void> initializeForUser(String userId) async() {
-    try() {
+  Future<void> initializeForUser(String userId) async {
+    try {
       if (kDebugMode) {
         debugPrint('🔄 Initializing real-time connections for user: $userId');
       }
@@ -106,8 +108,8 @@ class MemberRealtimeService() {
   }
 
   /// Initialize chat room real-time connections
-  Future<void> initializeForChatRoom(String roomId) async() {
-    try() {
+  Future<void> initializeForChatRoom(String roomId) async {
+    try {
       if (kDebugMode) {
         debugPrint('🔄 Initializing chat room connections: $roomId');
       }
@@ -126,8 +128,8 @@ class MemberRealtimeService() {
   }
 
   /// Disconnect all real-time subscriptions
-  Future<void> disconnect() async() {
-    try() {
+  Future<void> disconnect() async {
+    try {
       if (kDebugMode) {
         debugPrint('🔄 Disconnecting real-time connections');
       }
@@ -164,8 +166,8 @@ class MemberRealtimeService() {
   // ====================================
 
   /// Subscribe to club members changes
-  Future<void> _subscribeToMembers(String clubId) async() {
-    try() {
+  Future<void> _subscribeToMembers(String clubId) async {
+    try {
       _membersSubscription = _supabase
           .channel('club_memberships_$clubId')
           .onPostgresChanges(
@@ -196,8 +198,8 @@ class MemberRealtimeService() {
   }
 
   /// Subscribe to membership requests changes
-  Future<void> _subscribeToRequests(String clubId) async() {
-    try() {
+  Future<void> _subscribeToRequests(String clubId) async {
+    try {
       _requestsSubscription = _supabase
           .channel('membership_requests_$clubId')
           .onPostgresChanges(
@@ -228,8 +230,8 @@ class MemberRealtimeService() {
   }
 
   /// Subscribe to chat messages changes
-  Future<void> _subscribeToChatMessages(String roomId) async() {
-    try() {
+  Future<void> _subscribeToChatMessages(String roomId) async {
+    try {
       _chatMessagesSubscription = _supabase
           .channel('chat_messages_$roomId')
           .onPostgresChanges(
@@ -260,8 +262,8 @@ class MemberRealtimeService() {
   }
 
   /// Subscribe to user notifications changes
-  Future<void> _subscribeToNotifications(String userId) async() {
-    try() {
+  Future<void> _subscribeToNotifications(String userId) async {
+    try {
       _notificationsSubscription = _supabase
           .channel('notifications_$userId')
           .onPostgresChanges(
@@ -292,8 +294,8 @@ class MemberRealtimeService() {
   }
 
   /// Subscribe to member activities changes
-  Future<void> _subscribeToActivities(String clubId) async() {
-    try() {
+  Future<void> _subscribeToActivities(String clubId) async {
+    try {
       _activitiesSubscription = _supabase
           .channel('member_activities_$clubId')
           .onPostgresChanges(
@@ -333,21 +335,24 @@ class MemberRealtimeService() {
     }
 
     final cacheKey = 'members_$clubId';
-    final currentData = List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
+    final currentData =
+        List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
 
     switch (payload.eventType) {
       case PostgresChangeEvent.insert:
         currentData.add(payload.newRecord);
-              break;
+        break;
       case PostgresChangeEvent.update:
-        final index = currentData.indexWhere((item) => item['id'] == payload.newRecord['id']);
+        final index = currentData
+            .indexWhere((item) => item['id'] == payload.newRecord['id']);
         if (index != -1) {
           currentData[index] = payload.newRecord;
         }
-              break;
+        break;
       case PostgresChangeEvent.delete:
-        currentData.removeWhere((item) => item['id'] == payload.oldRecord['id']);
-              break;
+        currentData
+            .removeWhere((item) => item['id'] == payload.oldRecord['id']);
+        break;
     }
 
     _dataCache[cacheKey] = currentData;
@@ -360,21 +365,25 @@ class MemberRealtimeService() {
     }
 
     final cacheKey = 'requests_$clubId';
-    final currentData = List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
+    final currentData =
+        List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
 
     switch (payload.eventType) {
       case PostgresChangeEvent.insert:
-        currentData.insert(0, payload.newRecord); // Add to beginning for latest first
-              break;
+        currentData.insert(
+            0, payload.newRecord); // Add to beginning for latest first
+        break;
       case PostgresChangeEvent.update:
-        final index = currentData.indexWhere((item) => item['id'] == payload.newRecord['id']);
+        final index = currentData
+            .indexWhere((item) => item['id'] == payload.newRecord['id']);
         if (index != -1) {
           currentData[index] = payload.newRecord;
         }
-              break;
+        break;
       case PostgresChangeEvent.delete:
-        currentData.removeWhere((item) => item['id'] == payload.oldRecord['id']);
-              break;
+        currentData
+            .removeWhere((item) => item['id'] == payload.oldRecord['id']);
+        break;
     }
 
     _dataCache[cacheKey] = currentData;
@@ -387,50 +396,57 @@ class MemberRealtimeService() {
     }
 
     final cacheKey = 'messages_$roomId';
-    final currentData = List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
+    final currentData =
+        List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
 
     switch (payload.eventType) {
       case PostgresChangeEvent.insert:
         currentData.insert(0, payload.newRecord); // New messages at top
-              break;
+        break;
       case PostgresChangeEvent.update:
-        final index = currentData.indexWhere((item) => item['id'] == payload.newRecord['id']);
+        final index = currentData
+            .indexWhere((item) => item['id'] == payload.newRecord['id']);
         if (index != -1) {
           currentData[index] = payload.newRecord;
         }
-              break;
+        break;
       case PostgresChangeEvent.delete:
-        currentData.removeWhere((item) => item['id'] == payload.oldRecord['id']);
-              break;
+        currentData
+            .removeWhere((item) => item['id'] == payload.oldRecord['id']);
+        break;
     }
 
     _dataCache[cacheKey] = currentData;
     _chatMessagesController.add(currentData);
   }
 
-  void _handleNotificationsChange(PostgresChangePayload payload, String userId) {
+  void _handleNotificationsChange(
+      PostgresChangePayload payload, String userId) {
     if (kDebugMode) {
       debugPrint('📥 Notifications change: ${payload.eventType}');
     }
 
     final cacheKey = 'notifications_$userId';
-    final currentData = List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
+    final currentData =
+        List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
 
     switch (payload.eventType) {
       case PostgresChangeEvent.insert:
         currentData.insert(0, payload.newRecord); // New notifications at top
         // Show local notification for new items
         _showLocalNotification(payload.newRecord);
-              break;
+        break;
       case PostgresChangeEvent.update:
-        final index = currentData.indexWhere((item) => item['id'] == payload.newRecord['id']);
+        final index = currentData
+            .indexWhere((item) => item['id'] == payload.newRecord['id']);
         if (index != -1) {
           currentData[index] = payload.newRecord;
         }
-              break;
+        break;
       case PostgresChangeEvent.delete:
-        currentData.removeWhere((item) => item['id'] == payload.oldRecord['id']);
-              break;
+        currentData
+            .removeWhere((item) => item['id'] == payload.oldRecord['id']);
+        break;
     }
 
     _dataCache[cacheKey] = currentData;
@@ -443,21 +459,24 @@ class MemberRealtimeService() {
     }
 
     final cacheKey = 'activities_$clubId';
-    final currentData = List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
+    final currentData =
+        List<Map<String, dynamic>>.from(_dataCache[cacheKey] ?? []);
 
     switch (payload.eventType) {
       case PostgresChangeEvent.insert:
         currentData.insert(0, payload.newRecord); // New activities at top
-              break;
+        break;
       case PostgresChangeEvent.update:
-        final index = currentData.indexWhere((item) => item['id'] == payload.newRecord['id']);
+        final index = currentData
+            .indexWhere((item) => item['id'] == payload.newRecord['id']);
         if (index != -1) {
           currentData[index] = payload.newRecord;
         }
-              break;
+        break;
       case PostgresChangeEvent.delete:
-        currentData.removeWhere((item) => item['id'] == payload.oldRecord['id']);
-              break;
+        currentData
+            .removeWhere((item) => item['id'] == payload.oldRecord['id']);
+        break;
     }
 
     _dataCache[cacheKey] = currentData;
@@ -468,8 +487,8 @@ class MemberRealtimeService() {
   // INITIAL DATA LOADING
   // ====================================
 
-  Future<void> _loadInitialMembers(String clubId) async() {
-    try() {
+  Future<void> _loadInitialMembers(String clubId) async {
+    try {
       final response = await _supabase
           .from('club_memberships')
           .select('*, users(*)')
@@ -486,8 +505,8 @@ class MemberRealtimeService() {
     }
   }
 
-  Future<void> _loadInitialRequests(String clubId) async() {
-    try() {
+  Future<void> _loadInitialRequests(String clubId) async {
+    try {
       final response = await _supabase
           .from('membership_requests')
           .select('*, users(*)')
@@ -504,8 +523,8 @@ class MemberRealtimeService() {
     }
   }
 
-  Future<void> _loadInitialChatMessages(String roomId) async() {
-    try() {
+  Future<void> _loadInitialChatMessages(String roomId) async {
+    try {
       final response = await _supabase
           .from('chat_messages')
           .select('*, users(*)')
@@ -524,8 +543,8 @@ class MemberRealtimeService() {
     }
   }
 
-  Future<void> _loadInitialNotifications(String userId) async() {
-    try() {
+  Future<void> _loadInitialNotifications(String userId) async {
+    try {
       final response = await _supabase
           .from('notifications')
           .select('*')
@@ -543,8 +562,8 @@ class MemberRealtimeService() {
     }
   }
 
-  Future<void> _loadInitialActivities(String clubId) async() {
-    try() {
+  Future<void> _loadInitialActivities(String clubId) async {
+    try {
       final response = await _supabase
           .from('member_activities')
           .select('*, users(*)')
@@ -591,7 +610,7 @@ class MemberRealtimeService() {
   }
 
   /// Force refresh data for a specific subscription
-  Future<void> refreshData(String type, String id) async() {
+  Future<void> refreshData(String type, String id) async {
     switch (type) {
       case 'members':
         await _loadInitialMembers(id);

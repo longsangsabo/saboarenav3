@@ -7,7 +7,10 @@ import '../../services/basic_referral_service.dart';
 
 /// Basic Referral Card Widget
 /// Displays user's referral code with sharing functionality
-class BasicReferralCard extends StatefulWidget() {
+class BasicReferralCard extends StatefulWidget {
+  const BasicReferralCard({super.key});
+
+} 
   final String userId;
   final VoidCallback? onStatsUpdate;
 
@@ -32,10 +35,10 @@ class _BasicReferralCardState extends State<BasicReferralCard> {
     _loadOrGenerateReferralCode();
   }
 
-  Future<void> _loadOrGenerateReferralCode() async() {
+  Future<void> _loadOrGenerateReferralCode() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       // Try to get existing code first
       final stats = await BasicReferralService.getUserReferralStats(widget.userId);
       
@@ -44,20 +47,22 @@ class _BasicReferralCardState extends State<BasicReferralCard> {
           _referralCode = stats['user_code'];
           _isLoading = false;
         });
-      } else() {
+      } else {
+        () {
         // Generate new code if doesn't exist
         await _generateNewCode();
       }
-    } catch (e) {
+    
+      }} catch (e) {
       debugPrint('Error loading referral code: $e');
       setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _generateNewCode() async() {
+  Future<void> _generateNewCode() async {
     setState(() => _isGenerating = true);
     
-    try() {
+    try {
       final newCode = await BasicReferralService.generateReferralCode(widget.userId);
       
       if (newCode != null) {
@@ -75,10 +80,12 @@ class _BasicReferralCardState extends State<BasicReferralCard> {
             backgroundColor: Colors.green,
           ),
         );
-      } else() {
+      } else {
+        () {
         throw Exception('Failed to generate code');
       }
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() {
         _isGenerating = false;
         _isLoading = false;
@@ -93,7 +100,7 @@ class _BasicReferralCardState extends State<BasicReferralCard> {
     }
   }
 
-  Future<void> _copyToClipboard() async() {
+  Future<void> _copyToClipboard() async {
     if (_referralCode != null) {
       await Clipboard.setData(ClipboardData(text: _referralCode!));
       
@@ -106,7 +113,7 @@ class _BasicReferralCardState extends State<BasicReferralCard> {
     }
   }
 
-  Future<void> _shareReferralCode() async() {
+  Future<void> _shareReferralCode() async {
     if (_referralCode != null) {
       final shareText = '''
 🏆 Tham gia SABO Arena cùng tôi!

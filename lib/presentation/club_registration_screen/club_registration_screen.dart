@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../services/club_service.dart';
 
-class ClubRegistrationScreen extends StatefulWidget() {
+class ClubRegistrationScreen extends StatefulWidget {
   const ClubRegistrationScreen({super.key});
 
-  @override
+@override
   State<ClubRegistrationScreen> createState() => _ClubRegistrationScreenState();
 }
 
@@ -461,7 +461,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
     String? Function(String?)? validator,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       onChanged: onChanged,
       validator: validator,
       decoration: InputDecoration(
@@ -508,10 +508,12 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
             setState(() {
               if (selected) {
                 _selectedAmenities.add(amenity);
-              } else() {
+              } else {
+                () {
                 _selectedAmenities.remove(amenity);
               }
-            });
+            
+              }});
           },
           backgroundColor: colorScheme.surface,
           selectedColor: colorScheme.primaryContainer,
@@ -604,7 +606,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
     );
   }
 
-  void _submitForm() async() {
+  void _submitForm() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -618,7 +620,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
       _isLoading = true;
     });
 
-    try() {
+    try {
       // Call ClubService to create club
       final clubService = ClubService.instance;
       
@@ -638,7 +640,7 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
       if (mounted) {
         _showErrorSnackBar('Có lỗi xảy ra: ${error.toString()}');
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -748,3 +750,4 @@ class _ClubRegistrationScreenState extends State<ClubRegistrationScreen> {
     );
   }
 }
+

@@ -5,15 +5,32 @@ import 'package:sabo_arena/services/integrated_qr_service.dart';
 import '../routes/app_routes.dart';
 import '../core/utils/rank_migration_helper.dart';
 
-class QRScannerWidget extends StatefulWidget() {
+class QRScannerWidget extends StatefulWidget {
+  const QRScannerWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final Function(Map<String, dynamic>)? onUserFound;
   final VoidCallback? onCancel;
 
   const QRScannerWidget({
+    
     super.key,
     this.onUserFound,
     this.onCancel,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<QRScannerWidget> createState() => _QRScannerWidgetState();
@@ -220,8 +237,8 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
     _processQRCode(barcode.rawValue!);
   }
 
-  Future<void> _processQRCode(String qrData) async() {
-    try() {
+  Future<void> _processQRCode(String qrData) async {
+    try {
       debugPrint('🔍 Processing QR code: $qrData');
       
       // Use IntegratedQRService to scan and validate
@@ -234,22 +251,28 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
         if (qrType == 'integrated_profile') {
           // Show integrated profile view with referral option
           _showIntegratedProfileDialog(scanResult);
-        } else() {
+        } else {
+          () {
           // Legacy QR code, show normal user info
           if (widget.onUserFound != null) {
             widget.onUserFound!(userProfile ?? {});
-          } else() {
+          } else {
+            () {
             _showUserFoundDialog(userProfile ?? {});
           }
-        }
-      } else() {
+        
+          }}
+      
+        }} else {
+        () {
         // QR invalid or user not found
         setState(() {
           errorMessage = scanResult?['error'] ?? 'QR code không hợp lệ';
           isScanning = true;
         });
       }
-    } catch (e) {
+    
+      }} catch (e) {
       debugPrint('❌ Error processing QR: $e');
       setState(() {
         errorMessage = 'Lỗi xử lý QR: $e';
@@ -322,7 +345,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
               Container(
                 padding: EdgeInsets.all(3.w),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: Colors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(2.w),
                 ),
                 child: Column(
@@ -482,7 +505,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   }
 }
 
-class QRScannerOverlayPainter extends CustomPainter() {
+class QRScannerOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint backgroundPaint = Paint()
@@ -576,7 +599,7 @@ class QRScannerOverlayPainter extends CustomPainter() {
 }
 
 // Helper widget to launch QR scanner
-class QRScannerModal() {
+class QRScannerModal {
   static void show(BuildContext context, {Function(Map<String, dynamic>)? onUserFound}) {
     Navigator.push(
       context,

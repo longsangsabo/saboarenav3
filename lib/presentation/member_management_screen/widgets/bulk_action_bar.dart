@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BulkActionBar extends StatelessWidget() {
+class BulkActionBar extends StatelessWidget {
+  const BulkActionBar({super.key});
+
+} 
   final int selectedCount;
   final Function(String) onAction;
   final VoidCallback onClear;

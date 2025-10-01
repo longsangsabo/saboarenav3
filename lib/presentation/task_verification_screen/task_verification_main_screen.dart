@@ -10,7 +10,10 @@ import '../../services/task_verification_service.dart';
 import 'task_detail_screen.dart';
 import 'live_photo_verification_screen.dart';
 
-class TaskVerificationMainScreen extends StatefulWidget() {
+class TaskVerificationMainScreen extends StatefulWidget {
+  const TaskVerificationMainScreen({super.key});
+
+} 
   final String clubId;
   final String staffId;
 
@@ -25,7 +28,7 @@ class TaskVerificationMainScreen extends StatefulWidget() {
 }
 
 class _TaskVerificationMainScreenState extends State<TaskVerificationMainScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   final TaskVerificationService _taskService = TaskVerificationService();
   
@@ -51,9 +54,9 @@ class _TaskVerificationMainScreenState extends State<TaskVerificationMainScreen>
     super.dispose();
   }
 
-  Future<void> _loadTasks() async() {
+  Future<void> _loadTasks() async {
     setState(() => _isLoading = true);
-    try() {
+    try {
       final tasks = await _taskService.getStaffTasks(
         clubId: widget.clubId,
         staffId: widget.staffId,
@@ -321,8 +324,8 @@ class _TaskVerificationMainScreenState extends State<TaskVerificationMainScreen>
     }
   }
 
-  Future<void> _startTask(StaffTask task) async() {
-    try() {
+  Future<void> _startTask(StaffTask task) async {
+    try {
       await _taskService.startTask(task.id);
       _loadTasks();
       _showSuccessSnackBar('Đã bắt đầu nhiệm vụ');
@@ -331,7 +334,7 @@ class _TaskVerificationMainScreenState extends State<TaskVerificationMainScreen>
     }
   }
 
-  Future<void> _completeTask(StaffTask task) async() {
+  Future<void> _completeTask(StaffTask task) async {
     // Navigate to photo verification screen
     final result = await Navigator.push(
       context,
@@ -345,7 +348,7 @@ class _TaskVerificationMainScreenState extends State<TaskVerificationMainScreen>
     }
   }
 
-  Future<void> _verifyTask(StaffTask task) async() {
+  Future<void> _verifyTask(StaffTask task) async {
     // For admin to manually verify
     showDialog(
       context: context,
@@ -434,7 +437,10 @@ class _TaskVerificationMainScreenState extends State<TaskVerificationMainScreen>
 }
 
 // Task Card Widget
-class TaskCard extends StatelessWidget() {
+class TaskCard extends StatelessWidget {
+  const TaskCard({super.key});
+
+} 
   final StaffTask task;
   final VoidCallback onTaskTap;
   final Function(String) onActionTap;

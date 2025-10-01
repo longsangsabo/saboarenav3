@@ -9,7 +9,10 @@ import '../../../services/realtime_tournament_service.dart';
 import '../../../core/constants/tournament_constants.dart';
 import '../../../models/tournament.dart';
 
-class TournamentAutomationControlPanel extends StatefulWidget() {
+class TournamentAutomationControlPanel extends StatefulWidget {
+  const TournamentAutomationControlPanel({super.key});
+
+} 
   final Tournament tournament;
 
   const TournamentAutomationControlPanel({
@@ -22,7 +25,7 @@ class TournamentAutomationControlPanel extends StatefulWidget() {
 }
 
 class _TournamentAutomationControlPanelState extends State<TournamentAutomationControlPanel>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   final TournamentAutomationService _automationService = TournamentAutomationService.instance;
   final RealTimeTournamentService _realtimeService = RealTimeTournamentService.instance;
 
@@ -67,8 +70,8 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
     });
   }
 
-  Future<void> _loadAutomationStatus() async() {
-    try() {
+  Future<void> _loadAutomationStatus() async {
+    try {
       setState(() => _isLoading = true);
 
       // Check if automation is active (this would be tracked in your service)
@@ -717,20 +720,20 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
       return '${difference.inMinutes}m ago';
     } else if (difference.inHours < 24) {
       return '${difference.inHours}h ago';
-    } else() {
+    } else {
       return '${difference.inDays}d ago';
     }
   }
 
   // Action handlers
-  Future<void> _toggleAutomation(bool value) async() {
-    try() {
+  Future<void> _toggleAutomation(bool value) async {
+    try {
       setState(() => _isAutomationActive = value);
 
       if (value) {
         await _automationService.startTournamentAutomation(widget.tournament.id);
         _addLog('Automation started', 'success');
-      } else() {
+      } else {
         await _automationService.stopTournamentAutomation(widget.tournament.id);
         _addLog('Automation stopped', 'success');
       }
@@ -739,8 +742,8 @@ class _TournamentAutomationControlPanelState extends State<TournamentAutomationC
     }
   }
 
-  Future<void> _performQuickAction(String action) async() {
-    try() {
+  Future<void> _performQuickAction(String action) async {
+    try {
       switch (action) {
         case 'start':
           // Implement tournament start

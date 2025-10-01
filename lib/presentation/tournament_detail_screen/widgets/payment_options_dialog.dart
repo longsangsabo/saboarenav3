@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class PaymentOptionsDialog extends StatefulWidget() {
+class PaymentOptionsDialog extends StatefulWidget {
+  const PaymentOptionsDialog({super.key});
+
+} 
   final String tournamentId;
   final String tournamentName;
   final double entryFee;
@@ -115,10 +118,12 @@ class _PaymentOptionsDialogState extends State<PaymentOptionsDialog> {
                       // Don't pop yet - let confirmation dialogs handle it
                       if (selectedPaymentMethod == 0) {
                         _showPayAtVenueConfirmation();
-                      } else() {
+                      } else {
+                        () {
                         _showQRPayment();
                       }
-                    },
+                    
+                      }},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,

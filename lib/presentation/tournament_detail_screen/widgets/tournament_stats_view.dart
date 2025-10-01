@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class TournamentStatsView extends StatefulWidget() {
+class TournamentStatsView extends StatefulWidget {
+  const TournamentStatsView({super.key});
+
+} 
   final String tournamentId;
   final String tournamentStatus;
 
@@ -16,7 +19,7 @@ class TournamentStatsView extends StatefulWidget() {
 }
 
 class _TournamentStatsViewState extends State<TournamentStatsView>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late List<Animation<double>> _cardAnimations;
   
@@ -55,7 +58,7 @@ class _TournamentStatsViewState extends State<TournamentStatsView>
     super.dispose();
   }
 
-  Future<void> _loadStats() async() {
+  Future<void> _loadStats() async {
     // Simulate loading
     await Future.delayed(Duration(milliseconds: 800));
     

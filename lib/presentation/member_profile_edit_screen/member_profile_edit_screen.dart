@@ -3,7 +3,10 @@ import '../../core/app_export.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../member_management_screen/member_management_screen.dart';
 
-class MemberProfileEditScreen extends StatefulWidget() {
+class MemberProfileEditScreen extends StatefulWidget {
+  const MemberProfileEditScreen({super.key});
+
+} 
   final MemberData memberData;
 
   const MemberProfileEditScreen({
@@ -16,7 +19,7 @@ class MemberProfileEditScreen extends StatefulWidget() {
 }
 
 class _MemberProfileEditScreenState extends State<MemberProfileEditScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -789,7 +792,7 @@ class _MemberProfileEditScreenState extends State<MemberProfileEditScreen>
   }
 
   // Event handlers
-  Future<bool> _handleBackPress() async() {
+  Future<bool> _handleBackPress() async {
     if (_hasChanges) {
       final result = await showDialog<bool>(
         context: context,
@@ -909,7 +912,7 @@ class _MemberProfileEditScreenState extends State<MemberProfileEditScreen>
     );
   }
 
-  Future<void> _saveChanges() async() {
+  Future<void> _saveChanges() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -918,7 +921,7 @@ class _MemberProfileEditScreenState extends State<MemberProfileEditScreen>
       _isLoading = true;
     });
 
-    try() {
+    try {
       // Simulate API call
       await Future.delayed(Duration(seconds: 2));
 
@@ -942,7 +945,7 @@ class _MemberProfileEditScreenState extends State<MemberProfileEditScreen>
           backgroundColor: Colors.red,
         ),
       );
-    } finally() {
+    } finally {
       setState(() {
         _isLoading = false;
       });

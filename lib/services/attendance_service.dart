@@ -1,8 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'dart:convert';
 
-class AttendanceService() {
+class AttendanceService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // =============================================
@@ -10,8 +7,8 @@ class AttendanceService() {
   // =============================================
 
   /// Verify attendance QR code and location
-  Future<Map<String, dynamic>> verifyAttendanceQR(String qrData) async() {
-    try() {
+  Future<Map<String, dynamic>> verifyAttendanceQR(String qrData) async {
+    try {
       // Parse QR data
       final qrContent = jsonDecode(qrData);
       
@@ -75,8 +72,8 @@ class AttendanceService() {
   // =============================================
 
   /// Check in to work
-  Future<Map<String, dynamic>> checkIn(String clubId, Map<String, dynamic> locationData) async() {
-    try() {
+  Future<Map<String, dynamic>> checkIn(String clubId, Map<String, dynamic> locationData) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('Bạn cần đăng nhập để chấm công');
@@ -151,8 +148,8 @@ class AttendanceService() {
   }
 
   /// Check out from work
-  Future<Map<String, dynamic>> checkOut(String attendanceId, Map<String, dynamic> locationData) async() {
-    try() {
+  Future<Map<String, dynamic>> checkOut(String attendanceId, Map<String, dynamic> locationData) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('Bạn cần đăng nhập để chấm công');
@@ -192,8 +189,8 @@ class AttendanceService() {
   // =============================================
 
   /// Start break
-  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType, {String? reason}) async() {
-    try() {
+  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType, {String? reason}) async {
+    try {
       final breakResponse = await _supabase
           .from('staff_breaks')
           .insert({
@@ -221,8 +218,8 @@ class AttendanceService() {
   }
 
   /// End break
-  Future<Map<String, dynamic>> endBreak(String breakId) async() {
-    try() {
+  Future<Map<String, dynamic>> endBreak(String breakId) async {
+    try {
       final breakResponse = await _supabase
           .from('staff_breaks')
           .update({
@@ -252,8 +249,8 @@ class AttendanceService() {
   // =============================================
 
   /// Get current attendance status
-  Future<Map<String, dynamic>?> getCurrentAttendanceStatus() async() {
-    try() {
+  Future<Map<String, dynamic>?> getCurrentAttendanceStatus() async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return null;
 
@@ -286,8 +283,8 @@ class AttendanceService() {
   }
 
   /// Get attendance history
-  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 30}) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 30}) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return [];
 
@@ -317,8 +314,8 @@ class AttendanceService() {
   }
 
   /// Get today's shifts for staff member
-  Future<List<Map<String, dynamic>>> getTodayShifts() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getTodayShifts() async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) return [];
 
@@ -348,7 +345,7 @@ class AttendanceService() {
   // =============================================
 
   /// Get current GPS location
-  Future<Position> _getCurrentLocation() async() {
+  Future<Position> _getCurrentLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw Exception('Dịch vụ định vị chưa được bật');
@@ -375,7 +372,7 @@ class AttendanceService() {
   }
 
   /// Get device information for security
-  Future<Map<String, dynamic>> _getDeviceInfo() async() {
+  Future<Map<String, dynamic>> _getDeviceInfo() async {
     // Simple device info for now
     return() {
       "platform": 'flutter',

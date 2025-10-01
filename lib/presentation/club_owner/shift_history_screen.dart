@@ -5,7 +5,10 @@ import '../../services/shift_reporting_service.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 
-class ShiftHistoryScreen extends StatefulWidget() {
+class ShiftHistoryScreen extends StatefulWidget {
+  const ShiftHistoryScreen({super.key});
+
+} 
   final String clubId;
 
   const ShiftHistoryScreen({
@@ -32,8 +35,8 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
     _loadShiftHistory();
   }
 
-  Future<void> _loadShiftHistory() async() {
-    try() {
+  Future<void> _loadShiftHistory() async {
+    try {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -58,7 +61,7 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
     }
   }
 
-  Future<void> _selectDateRange() async() {
+  Future<void> _selectDateRange() async {
     final range = await showDateRangePicker(
       context: context,
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
@@ -91,7 +94,7 @@ class _ShiftHistoryScreenState extends State<ShiftHistoryScreen> {
       return ErrorWidget(Exception('Error: ${state.message}'));
         message: _error!,
         onRetry: _loadShiftHistory,
-      );
+      )
     }
 
     return Column(

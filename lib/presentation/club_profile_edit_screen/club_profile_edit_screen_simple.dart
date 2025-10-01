@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/models/club.dart';
 import 'package:sabo_arena/services/club_service.dart';
 
-class ClubProfileEditScreenSimple extends StatefulWidget() {
+class ClubProfileEditScreenSimple extends StatefulWidget {
+  const ClubProfileEditScreenSimple({super.key});
+
+} 
   final String clubId;
 
   const ClubProfileEditScreenSimple({
@@ -39,8 +42,8 @@ class _ClubProfileEditScreenSimpleState extends State<ClubProfileEditScreenSimpl
     super.dispose();
   }
 
-  Future<void> _loadClubData() async() {
-    try() {
+  Future<void> _loadClubData() async {
+    try {
       final club = await _clubService.getClubById(widget.clubId);
       setState(() {
         _club = club;
@@ -57,10 +60,10 @@ class _ClubProfileEditScreenSimpleState extends State<ClubProfileEditScreenSimpl
     }
   }
 
-  Future<void> _saveChanges() async() {
+  Future<void> _saveChanges() async {
     if (_club == null) return;
 
-    try() {
+    try {
       // TODO: Implement update club
       // await _clubService.updateClub(
       //   _club!.id,

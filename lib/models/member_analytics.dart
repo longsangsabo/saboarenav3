@@ -1,4 +1,4 @@
-class MemberAnalytics() {
+class MemberAnalytics {
   final int totalMembers;
   final int activeMembers;
   final int newThisMonth;

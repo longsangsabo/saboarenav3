@@ -6,10 +6,10 @@ import '../../routes/app_routes.dart';
 import 'widgets/horizontal_club_list.dart';
 import 'widgets/club_detail_section.dart';
 
-class ClubMainScreen extends StatefulWidget() {
+class ClubMainScreen extends StatefulWidget {
   const ClubMainScreen({super.key});
 
-  @override
+@override
   State<ClubMainScreen> createState() => _ClubMainScreenState();
 }
 
@@ -24,12 +24,12 @@ class _ClubMainScreenState extends State<ClubMainScreen> {
     _loadClubs();
   }
 
-  void _loadClubs() async() {
+  void _loadClubs() async {
     setState(() {
       _isLoading = true;
     });
 
-    try() {
+    try {
       // Load clubs from Supabase
       final clubs = await ClubService.instance.getClubs(limit: 10);
       
@@ -717,3 +717,4 @@ class _ClubMainScreenState extends State<ClubMainScreen> {
     ];
   }
 }
+

@@ -2,33 +2,30 @@
 // Defines tournament formats, status, types, and other constants
 // Based on CORE_LOGIC_ARCHITECTURE.md hybrid approach
 
-import 'dart:math';
-import 'package:flutter/material.dart';
-
 /// Tournament Formats với định nghĩa đầy đủ
-class TournamentFormats() {
+class TournamentFormats {
   /// Loại trực tiếp (Single Elimination)
   static const String singleElimination = 'single_elimination';
-  
-  /// Loại kép truyền thống (Traditional Double Elimination) 
+
+  /// Loại kép truyền thống (Traditional Double Elimination)
   static const String doubleElimination = 'double_elimination';
-  
+
   /// Loại kép Sabo DE16 (Sabo Double Elimination 16 players)
   static const String saboDoubleElimination = 'sabo_double_elimination';
   static const String saboDE16 = 'sabo_de16';
-  
+
   /// Loại kép Sabo DE32 (Sabo Double Elimination 32 players)
   static const String saboDoubleElimination32 = 'sabo_double_elimination_32';
-  
+
   /// Vòng tròn (Round Robin)
   static const String roundRobin = 'round_robin';
-  
+
   /// Swiss System
   static const String swiss = 'swiss';
-  
+
   /// Parallel Groups + Finals
   static const String parallelGroups = 'parallel_groups';
-  
+
   /// Winner Takes All
   static const String winnerTakesAll = 'winner_takes_all';
 
@@ -60,7 +57,7 @@ class TournamentFormats() {
       'color': Colors.red,
     },
     doubleElimination: {
-      "name": 'Traditional Double Elimination', 
+      "name": 'Traditional Double Elimination',
       "nameVi": 'Loại kép truyền thống',
       "description": 'Classic double elimination with Winners Final',
       "descriptionVi": 'Loại kép truyền thống với chung kết Winners',
@@ -73,7 +70,7 @@ class TournamentFormats() {
       'color': Colors.orange,
     },
     saboDoubleElimination: {
-      "name": 'Sabo Double Elimination (DE16)', 
+      "name": 'Sabo Double Elimination (DE16)',
       "nameVi": 'Loại kép Sabo (DE16)',
       "description": 'SABO Arena DE16 with 2 Loser Branches + SABO Finals',
       "descriptionVi": 'DE16 Sabo Arena với 2 nhánh thua + chung kết Sabo',
@@ -86,14 +83,15 @@ class TournamentFormats() {
       'color': Colors.deepPurple,
       'totalMatches': 27,
       'winnersMatches': 14, // 8+4+2
-      'losersAMatches': 7,  // 4+2+1  
-      'losersBMatches': 3,  // 2+1
-      'finalsMatches': 3,   // 2 semifinals + 1 final
+      'losersAMatches': 7, // 4+2+1
+      'losersBMatches': 3, // 2+1
+      'finalsMatches': 3, // 2 semifinals + 1 final
     },
     saboDoubleElimination32: {
-      "name": 'Sabo Double Elimination (DE32)', 
+      "name": 'Sabo Double Elimination (DE32)',
       "nameVi": 'Loại kép Sabo (DE32)',
-      "description": 'SABO Arena DE32 with Two-Group System + Cross-Bracket Finals',
+      "description":
+          'SABO Arena DE32 with Two-Group System + Cross-Bracket Finals',
       "descriptionVi": 'DE32 Sabo Arena với hệ thống 2 nhóm + chung kết chéo',
       'minPlayers': 32,
       'maxPlayers': 32,
@@ -103,8 +101,8 @@ class TournamentFormats() {
       'icon': Icons.workspaces,
       'color': Colors.indigo,
       'totalMatches': 55,
-      'groupAMatches': 26,    // Group A: 14+7+3+2
-      'groupBMatches': 26,    // Group B: 14+7+3+2
+      'groupAMatches': 26, // Group A: 14+7+3+2
+      'groupBMatches': 26, // Group B: 14+7+3+2
       'crossBracketMatches': 3, // 2 semifinals + 1 final
       'hasGroups': true,
       'groupCount': 2,
@@ -112,7 +110,7 @@ class TournamentFormats() {
       'qualifiersPerGroup': 2,
     },
     'sabo_de16': {
-      'name': 'Sabo Double Elimination (DE16)', 
+      'name': 'Sabo Double Elimination (DE16)',
       'nameVi': 'Loại kép Sabo (DE16)',
       'description': 'SABO Arena DE16 with 2 Loser Branches + SABO Finals',
       'descriptionVi': 'DE16 Sabo Arena với 2 nhánh thua + chung kết Sabo',
@@ -125,9 +123,9 @@ class TournamentFormats() {
       'color': Colors.deepPurple,
       'totalMatches': 27,
       'winnersMatches': 14, // 8+4+2
-      'losersAMatches': 7,  // 4+2+1  
-      'losersBMatches': 3,  // 2+1
-      'finalsMatches': 3,   // 2 semifinals + 1 final
+      'losersAMatches': 7, // 4+2+1
+      'losersBMatches': 3, // 2+1
+      'finalsMatches': 3, // 2 semifinals + 1 final
     },
     roundRobin: {
       "name": 'Round Robin',
@@ -159,7 +157,8 @@ class TournamentFormats() {
       "name": 'Parallel Groups',
       "nameVi": 'Bảng đấu song song',
       "description": 'Multiple groups with top players advancing to finals',
-      "descriptionVi": 'Nhiều bảng đấu với những người đứng đầu vào vòng chung kết',
+      "descriptionVi":
+          'Nhiều bảng đấu với những người đứng đầu vào vòng chung kết',
       'minPlayers': 8,
       'maxPlayers': 64,
       "eliminationType": 'group_stage',
@@ -185,25 +184,25 @@ class TournamentFormats() {
 }
 
 /// Tournament Status Constants
-class TournamentStatus() {
+class TournamentStatus {
   /// Chưa mở đăng ký
   static const String draft = 'draft';
-  
+
   /// Đang mở đăng ký
   static const String registrationOpen = 'registration_open';
-  
+
   /// Đã đóng đăng ký, chờ bắt đầu
   static const String upcoming = 'upcoming';
-  
+
   /// Đang diễn ra
   static const String live = 'live';
-  
+
   /// Tạm dừng
   static const String paused = 'paused';
-  
+
   /// Đã hoàn thành
   static const String completed = 'completed';
-  
+
   /// Đã hủy
   static const String cancelled = 'cancelled';
 
@@ -278,7 +277,7 @@ class TournamentStatus() {
 }
 
 /// Game Types - Các loại hình bi-a
-class GameTypes() {
+class GameTypes {
   static const String eightBall = '8-ball';
   static const String nineBall = '9-ball';
   static const String tenBall = '10-ball';
@@ -372,14 +371,29 @@ class GameTypes() {
 }
 
 /// Prize Distribution Templates
-class PrizeDistribution() {
+class PrizeDistribution {
   /// Standard tournament distribution
   static const Map<String, List<double>> standardDistribution = {
     '4': [0.60, 0.40], // Top 2 get prizes
     '8': [0.50, 0.30, 0.20], // Top 3 get prizes
     '16': [0.40, 0.25, 0.15, 0.10, 0.05, 0.05], // Top 6 get prizes
     '32': [0.35, 0.20, 0.15, 0.10, 0.08, 0.06, 0.03, 0.03], // Top 8 get prizes
-    '64': [0.30, 0.18, 0.12, 0.08, 0.06, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02, 0.02, 0.01], // Top 14 get prizes
+    '64': [
+      0.30,
+      0.18,
+      0.12,
+      0.08,
+      0.06,
+      0.05,
+      0.04,
+      0.04,
+      0.03,
+      0.03,
+      0.02,
+      0.02,
+      0.02,
+      0.01
+    ], // Top 14 get prizes
   };
 
   /// Winner takes all distribution
@@ -405,7 +419,22 @@ class PrizeDistribution() {
     '4': [0.55, 0.45],
     '8': [0.35, 0.25, 0.20, 0.20],
     '16': [0.25, 0.20, 0.15, 0.15, 0.10, 0.08, 0.04, 0.03],
-    '32': [0.20, 0.15, 0.12, 0.10, 0.08, 0.07, 0.06, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.01],
+    '32': [
+      0.20,
+      0.15,
+      0.12,
+      0.10,
+      0.08,
+      0.07,
+      0.06,
+      0.05,
+      0.04,
+      0.04,
+      0.03,
+      0.03,
+      0.02,
+      0.01
+    ],
   };
 
   static const Map<String, Map<String, List<double>>> allDistributions = {
@@ -444,7 +473,7 @@ class PrizeDistribution() {
 }
 
 /// Prize Types
-class PrizeTypes() {
+class PrizeTypes {
   static const String cash = 'CASH';
   static const String spaPoints = 'SPA_POINTS';
   static const String trophy = 'TROPHY';
@@ -508,7 +537,7 @@ class PrizeTypes() {
 }
 
 /// Seeding Methods
-class SeedingMethods() {
+class SeedingMethods {
   static const String random = 'random';
   static const String eloRating = 'elo_rating';
   static const String clubRanking = 'club_ranking';
@@ -558,14 +587,14 @@ class SeedingMethods() {
 }
 
 /// Helper functions
-class TournamentHelper() {
+class TournamentHelper {
   /// Tính số vòng đấu dựa trên format và số người chơi
   static int calculateRounds(String format, int playerCount) {
     final details = TournamentFormats.formatDetails[format];
     if (details == null) return 0;
 
     final formula = details['roundsFormula'] as String;
-    
+
     switch (formula) {
       case 'log2(players)':
         return (log2(playerCount)).ceil();
@@ -589,34 +618,36 @@ class TournamentHelper() {
 
     final minPlayers = details['minPlayers'] as int;
     final maxPlayers = details['maxPlayers'] as int;
-    
+
     return playerCount >= minPlayers && playerCount <= maxPlayers;
   }
 
   /// Lấy prize distribution cho số người chơi
-  static List<double> getPrizeDistribution(String distributionType, int playerCount) {
+  static List<double> getPrizeDistribution(
+      String distributionType, int playerCount) {
     final distributions = PrizeDistribution.allDistributions[distributionType];
     if (distributions == null) return [];
 
     // Tìm distribution phù hợp nhất
-    final playerCountStr = _getNearestPlayerCountKey(playerCount, distributions.keys.toList());
+    final playerCountStr =
+        _getNearestPlayerCountKey(playerCount, distributions.keys.toList());
     return distributions[playerCountStr] ?? [];
   }
 
   /// Tìm key gần nhất cho số người chơi
-  static String _getNearestPlayerCountKey(int playerCount, List<String> availableKeys) {
+  static String _getNearestPlayerCountKey(
+      int playerCount, List<String> availableKeys) {
     final numericKeys = availableKeys.map(int.parse).toList()..sort();
-    
+
     for (int key in numericKeys) {
       if (playerCount <= key) {
         return key.toString();
       }
     }
-    
+
     return numericKeys.last.toString();
   }
 
   /// Helper function để tính log2
   static double log2(num x) => log(x) / log(2);
 }
-

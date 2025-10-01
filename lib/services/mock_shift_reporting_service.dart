@@ -1,7 +1,5 @@
-import '../models/shift_models.dart';
-import 'dart:math';
 
-class MockShiftReportingService() {
+class MockShiftReportingService {
   static final MockShiftReportingService _instance = MockShiftReportingService._internal();
   factory MockShiftReportingService() => _instance;
   MockShiftReportingService._internal();
@@ -258,28 +256,28 @@ class MockShiftReportingService() {
   // MOCK SERVICE METHODS
   // =====================================================
 
-  Future<ShiftSession?> getActiveShift(String staffId) async() {
+  Future<ShiftSession?> getActiveShift(String staffId) async {
     await Future.delayed(const Duration(milliseconds: 500));
     _initializeMockData();
     
     return _mockSessions.where((s) => s.staffId == staffId && s.status == 'active').firstOrNull;
   }
 
-  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async() {
+  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async {
     await Future.delayed(const Duration(milliseconds: 300));
     _initializeMockData();
     
     return _mockTransactions.where((t) => t.shiftSessionId == sessionId).toList();
   }
 
-  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async() {
+  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async {
     await Future.delayed(const Duration(milliseconds: 300));
     _initializeMockData();
     
     return _mockInventory.where((i) => i.shiftSessionId == sessionId).toList();
   }
 
-  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async() {
+  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async {
     await Future.delayed(const Duration(milliseconds: 300));
     _initializeMockData();
     
@@ -290,7 +288,7 @@ class MockShiftReportingService() {
     DateTime? startDate,
     DateTime? endDate,
     String? status,
-  }) async() {
+  }) async {
     await Future.delayed(const Duration(milliseconds: 400));
     _initializeMockData();
     
@@ -314,7 +312,7 @@ class MockShiftReportingService() {
   Future<Map<String, dynamic>> getShiftAnalytics(String clubId, {
     DateTime? startDate,
     DateTime? endDate,
-  }) async() {
+  }) async {
     await Future.delayed(const Duration(milliseconds: 400));
     _initializeMockData();
     
@@ -357,7 +355,7 @@ class MockShiftReportingService() {
     required String endTime,
     required double openingCash,
     String? notes,
-  }) async() {
+  }) async {
     await Future.delayed(const Duration(milliseconds: 800));
     
     final newSession = ShiftSession(
@@ -383,7 +381,7 @@ class MockShiftReportingService() {
     return newSession;
   }
 
-  Future<bool> endShift(String sessionId, {required double closingCash}) async() {
+  Future<bool> endShift(String sessionId, {required double closingCash}) async {
     await Future.delayed(const Duration(milliseconds: 600));
     
     final sessionIndex = _mockSessions.indexWhere((s) => s.id == sessionId);

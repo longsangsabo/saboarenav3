@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/repositories/comment_repository.dart';
 
-class TestCommentWidget extends StatefulWidget() {
-  const TestCommentWidget({super.key});
+class TestCommentWidget extends StatefulWidget {
+  const TestCommentWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
+  const TestCommentWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   _TestCommentWidgetState createState() => _TestCommentWidgetState();
@@ -21,10 +38,10 @@ class _TestCommentWidgetState extends State<TestCommentWidget> {
     });
   }
 
-  Future<void> _testCreateComment() async() {
+  Future<void> _testCreateComment() async {
     if (_commentController.text.trim().isEmpty) return;
 
-    try() {
+    try {
       setState(() => _isPosting = true);
       debugPrint('🧪 Testing comment creation...');
       debugPrint('Content: ${_commentController.text.trim()}');
@@ -45,7 +62,7 @@ class _TestCommentWidgetState extends State<TestCommentWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('❌ Error: $e')),
       );
-    } finally() {
+    } finally {
       setState(() => _isPosting = false);
     }
   }

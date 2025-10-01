@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class ClubRulesScreen extends StatefulWidget() {
+class ClubRulesScreen extends StatefulWidget {
+  const ClubRulesScreen({super.key});
+
+} 
   final String clubId;
 
   const ClubRulesScreen({
@@ -517,12 +520,14 @@ class _ClubRulesScreenState extends State<ClubRulesScreen> {
                       'content': contentController.text,
                       'isActive': true,
                     });
-                  } else() {
+                  } else {
+                    () {
                     // Edit existing rule
                     rules[index!]['title'] = titleController.text;
                     rules[index]['content'] = contentController.text;
                   }
-                });
+                
+                  }});
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

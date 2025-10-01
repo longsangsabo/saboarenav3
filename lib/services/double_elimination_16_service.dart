@@ -11,7 +11,7 @@ class DoubleElimination16Service {
       // =============================================
       // WINNER BRACKET - ROUNDS 1-4 (15 matches)
       // =============================================
-      
+
       // WB ROUND 1 (8 matches) - Initial seeding
       "R1M1": {
         "round": 1,
@@ -77,7 +77,7 @@ class DoubleElimination16Service {
         "round": 1,
         "match_number": 7,
         "bracket_type": "winner",
-        "ui_tab": "WB - VÒNG 1", 
+        "ui_tab": "WB - VÒNG 1",
         "description": "WB R1 Match 7",
         "winner_advances_to": "R2M12",
         "loser_advances_to": "R101M19",
@@ -88,12 +88,12 @@ class DoubleElimination16Service {
         "match_number": 8,
         "bracket_type": "winner",
         "ui_tab": "WB - VÒNG 1",
-        "description": "WB R1 Match 8", 
+        "description": "WB R1 Match 8",
         "winner_advances_to": "R2M12",
         "loser_advances_to": "R101M19",
         "initial_seeds": [6, 11]
       },
-      
+
       // WB ROUND 2 (4 matches)
       "R2M9": {
         "round": 2,
@@ -135,7 +135,7 @@ class DoubleElimination16Service {
         "loser_advances_to": "R102M21",
         "players_from": ["R1M7", "R1M8"]
       },
-      
+
       // WB ROUND 3 - SEMIFINALS (2 matches)
       "R3M13": {
         "round": 3,
@@ -157,7 +157,7 @@ class DoubleElimination16Service {
         "loser_advances_to": "R105M26",
         "players_from": ["R2M11", "R2M12"]
       },
-      
+
       // WB ROUND 4 - FINAL (1 match)
       "R4M15": {
         "round": 4,
@@ -169,11 +169,11 @@ class DoubleElimination16Service {
         "loser_advances_to": "R107M28",
         "players_from": ["R3M13", "R3M14"]
       },
-      
+
       // =============================================
       // LOSER BRACKET - ROUNDS 101-107 (13 matches)
       // =============================================
-      
+
       // LB ROUND 1 (4 matches) - WB R1 losers
       "R101M16": {
         "round": 101,
@@ -190,7 +190,7 @@ class DoubleElimination16Service {
         "match_number": 17,
         "bracket_type": "loser",
         "ui_tab": "LB - VÒNG 1",
-        "description": "LB R1 Match 2", 
+        "description": "LB R1 Match 2",
         "winner_advances_to": "R102M21",
         "loser_eliminated": true,
         "players_from": ["R1M3", "R1M4"]
@@ -215,7 +215,7 @@ class DoubleElimination16Service {
         "loser_eliminated": true,
         "players_from": ["R1M7", "R1M8"]
       },
-      
+
       // LB ROUND 2 (2 matches) - LB R1 winners vs WB R2 losers
       "R102M20": {
         "round": 102,
@@ -239,7 +239,7 @@ class DoubleElimination16Service {
         "lb_winners_from": ["R101M17", "R101M19"],
         "wb_losers_from": ["R2M10", "R2M12"]
       },
-      
+
       // LB ROUND 3 (2 matches)
       "R103M22": {
         "round": 103,
@@ -261,7 +261,7 @@ class DoubleElimination16Service {
         "loser_eliminated": true,
         "players_from": ["R102M21"]
       },
-      
+
       // LB ROUND 4 (2 matches)
       "R104M24": {
         "round": 104,
@@ -283,7 +283,7 @@ class DoubleElimination16Service {
         "loser_eliminated": true,
         "players_from": ["R103M23"]
       },
-      
+
       // LB ROUND 5 - SEMIFINAL (1 match)
       "R105M26": {
         "round": 105,
@@ -296,7 +296,7 @@ class DoubleElimination16Service {
         "lb_winners_from": ["R104M24", "R104M25"],
         "wb_losers_from": ["R3M13", "R3M14"]
       },
-      
+
       // LB ROUND 106 - FINAL (1 match) - CORRECTED!
       "R106M29": {
         "round": 106,
@@ -306,15 +306,18 @@ class DoubleElimination16Service {
         "description": "LB Final",
         "winner_advances_to": "R200M30", // FIXED: Match 30
         "loser_eliminated": true,
-        "players_from": ["R105M28", "WB_R4_LOSER"], // LB semifinal winner + WB final loser
+        "players_from": [
+          "R105M28",
+          "WB_R4_LOSER"
+        ], // LB semifinal winner + WB final loser
         "lb_winner_from": "R105M28",
         "wb_loser_from": "R4M15"
       },
-      
+
       // =============================================
       // GRAND FINALS - ROUNDS 200-201 (2 matches)
       // =============================================
-      
+
       "R200M30": {
         "round": 200,
         "match_number": 30, // FIXED: Match 30
@@ -326,7 +329,7 @@ class DoubleElimination16Service {
         "wb_champion_from": "R4M15",
         "lb_champion_from": "R106M29" // FIXED: From R106
       },
-      
+
       "R201M31": {
         "round": 201,
         "match_number": 31,
@@ -344,7 +347,7 @@ class DoubleElimination16Service {
   static List<Map<String, dynamic>> getMatchesForRound(int roundNumber) {
     final bracket = getBracketStructure();
     final matches = <Map<String, dynamic>>[];
-    
+
     bracket.forEach((matchId, matchData) {
       if (matchData['round'] == roundNumber) {
         matches.add({
@@ -353,17 +356,18 @@ class DoubleElimination16Service {
         });
       }
     });
-    
-    return matches..sort((a, b) => a['match_number'].compareTo(b['match_number']));
+
+    return matches
+      ..sort((a, b) => a['match_number'].compareTo(b['match_number']));
   }
 
   /// Get the next match for a winner/loser
   static String? getNextMatch(String currentMatchId, bool isWinner) {
     final bracket = getBracketStructure();
     final currentMatch = bracket[currentMatchId];
-    
+
     if (currentMatch == null) return null;
-    
+
     if (isWinner) {
       return currentMatch['winner_advances_to'];
     } else {
@@ -376,10 +380,10 @@ class DoubleElimination16Service {
     return {
       // Winner Bracket
       1: "WB - VÒNG 1",
-      2: "WB - VÒNG 2", 
+      2: "WB - VÒNG 2",
       3: "WB - BÁN KẾT",
       4: "WB - CHUNG KẾT",
-      
+
       // Loser Bracket
       101: "LB - VÒNG 1",
       102: "LB - VÒNG 2",
@@ -387,7 +391,7 @@ class DoubleElimination16Service {
       104: "LB - VÒNG 4",
       105: "LB - BÁN KẾT",
       106: "LB - CHUNG KẾT", // FIXED: R106 is now LB Final
-      
+
       // Grand Finals
       200: "CHUNG KẾT CUỐI",
       201: "CHUNG KẾT RESET"
@@ -398,16 +402,22 @@ class DoubleElimination16Service {
   static bool validateBracketIntegrity() {
     final bracket = getBracketStructure();
     bool isValid = true;
-    
+
     // Check total matches (should be 30 for 16 players)
     if (bracket.length != 30) {
       debugPrint('❌ Expected 30 matches, got ${bracket.length}');
       isValid = false;
     }
-    
+
     // Check each match has required fields
     bracket.forEach((matchId, matchData) {
-      final required = ['round', 'match_number', 'bracket_type', 'ui_tab', 'description'];
+      final required = [
+        'round',
+        'match_number',
+        'bracket_type',
+        'ui_tab',
+        'description'
+      ];
       for (String field in required) {
         if (!matchData.containsKey(field)) {
           debugPrint('❌ Match $matchId missing required field: $field');
@@ -415,11 +425,11 @@ class DoubleElimination16Service {
         }
       }
     });
-    
+
     if (isValid) {
       debugPrint('✅ Double Elimination 16 bracket structure is valid');
     }
-    
+
     return isValid;
   }
 }

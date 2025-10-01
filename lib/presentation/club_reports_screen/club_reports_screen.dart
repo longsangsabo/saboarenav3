@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class ClubReportsScreen extends StatefulWidget() {
+class ClubReportsScreen extends StatefulWidget {
+  const ClubReportsScreen({super.key});
+
+} 
   final String clubId;
 
   const ClubReportsScreen({
@@ -15,7 +18,7 @@ class ClubReportsScreen extends StatefulWidget() {
 }
 
 class _ClubReportsScreenState extends State<ClubReportsScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   String _selectedPeriod = 'month';
 

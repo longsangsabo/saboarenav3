@@ -1,6 +1,5 @@
-import 'dart:convert';
 
-class Club() {
+class Club {
   final String id;
   final String ownerId;
   final String name;
@@ -34,7 +33,7 @@ class Club() {
     if (value == null) return null;
     if (value is Map<String, dynamic>) return value;
     if (value is String) {
-      try() {
+      try {
         return jsonDecode(value) as Map<String, dynamic>;
       } catch (e) {
         // If parsing fails, return null or handle as needed

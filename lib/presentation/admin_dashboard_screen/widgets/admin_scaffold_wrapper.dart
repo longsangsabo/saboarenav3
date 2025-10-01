@@ -6,7 +6,10 @@ import '../../../routes/app_routes.dart';
 import './admin_navigation_drawer.dart';
 import './admin_bottom_navigation.dart';
 
-class AdminScaffoldWrapper extends StatelessWidget() {
+class AdminScaffoldWrapper extends StatelessWidget {
+  const AdminScaffoldWrapper({super.key});
+
+} 
   final Widget body;
   final String title;
   final int currentIndex;
@@ -160,7 +163,7 @@ class AdminScaffoldWrapper extends StatelessWidget() {
     );
   }
 
-  void _handleMenuAction(BuildContext context, String action) async() {
+  void _handleMenuAction(BuildContext context, String action) async {
     switch (action) {
       case 'switch_to_user':
         _switchToUserMode(context);
@@ -210,10 +213,10 @@ class AdminScaffoldWrapper extends StatelessWidget() {
               child: Text('Hủy'),
             ),
             ElevatedButton(
-              onPressed: () async() {
+              onPressed: () async {
                 Navigator.of(context).pop();
                 
-                try() {
+                try {
                   await AuthService.instance.signOut();
                   
                   Navigator.of(context).pushNamedAndRemoveUntil(

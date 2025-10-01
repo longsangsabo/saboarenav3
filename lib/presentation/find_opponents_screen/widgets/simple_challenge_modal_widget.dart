@@ -5,7 +5,10 @@ import 'package:sizer/sizer.dart';
 import '../../../services/simple_challenge_service.dart';
 import '../../../services/opponent_club_service.dart';
 
-class SimpleChallengeModalWidget extends StatefulWidget() {
+class SimpleChallengeModalWidget extends StatefulWidget {
+  const SimpleChallengeModalWidget({super.key});
+
+} 
   final Map<String, dynamic> player;
   final String challengeType; // 'thach_dau' or 'giao_luu'
   final VoidCallback? onSendChallenge;
@@ -43,8 +46,8 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
     _loadLocations();
   }
 
-  Future<void> _loadLocations() async() {
-    try() {
+  Future<void> _loadLocations() async {
+    try {
       debugPrint('🏢 Loading club locations from Supabase...');
       final clubs = await OpponentClubService.instance.getActiveClubs();
       
@@ -189,7 +192,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
         ),
         SizedBox(height: 6),
         DropdownButtonFormField<String>(
-          value: _selectedGameType,
+          initialValue: _selectedGameType,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -268,7 +271,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
         ),
         SizedBox(height: 6),
         DropdownButtonFormField<String>(
-          value: _locations.isEmpty ? null : _selectedLocation,
+          initialValue: _locations.isEmpty ? null : _selectedLocation,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -307,7 +310,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
         ),
         SizedBox(height: 6),
         DropdownButtonFormField<int>(
-          value: _spaPoints,
+          initialValue: _spaPoints,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -403,7 +406,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
     );
   }
 
-  void _selectDate() async() {
+  void _selectDate() async {
     final picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
@@ -417,7 +420,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
     }
   }
 
-  void _selectTime() async() {
+  void _selectTime() async {
     final picked = await showTimePicker(
       context: context,
       initialTime: _selectedTime,
@@ -429,7 +432,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
     }
   }
 
-  void _sendChallenge() async() {
+  void _sendChallenge() async {
     debugPrint('🎯 _sendChallenge() called!');
     
     if (_isLoading) {
@@ -452,7 +455,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
       _isLoading = true;
     });
 
-    try() {
+    try {
       debugPrint('📝 Preparing challenge data...');
       final scheduledDateTime = DateTime(
         _selectedDate.year,
@@ -500,7 +503,7 @@ class _SimpleChallengeModalWidgetState extends State<SimpleChallengeModalWidget>
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;

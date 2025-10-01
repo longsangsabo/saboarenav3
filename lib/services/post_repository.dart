@@ -1,13 +1,10 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/post_model.dart';
-import 'package:flutter/foundation.dart';
 
-class PostRepository() {
+class PostRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // Lấy danh sách bài viết từ feed
-  Future<List<PostModel>> getPosts({int limit = 20, int offset = 0}) async() {
-    try() {
+  Future<List<PostModel>> getPosts({int limit = 20, int offset = 0}) async {
+    try {
       final response = await _supabase
           .from('posts')
           .select('''
@@ -69,8 +66,8 @@ class PostRepository() {
     String? locationName,
     double? latitude,
     double? longitude,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
@@ -127,8 +124,8 @@ class PostRepository() {
   }
 
   // Like/Unlike bài viết
-  Future<bool> toggleLike(String postId) async() {
-    try() {
+  Future<bool> toggleLike(String postId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -169,8 +166,8 @@ class PostRepository() {
   }
 
   // Lấy bài viết theo ID
-  Future<PostModel?> getPostById(String postId) async() {
-    try() {
+  Future<PostModel?> getPostById(String postId) async {
+    try {
       final response = await _supabase
           .from('posts')
           .select('''
@@ -214,8 +211,8 @@ class PostRepository() {
   }
 
   // Xóa bài viết
-  Future<bool> deletePost(String postId) async() {
-    try() {
+  Future<bool> deletePost(String postId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -233,8 +230,8 @@ class PostRepository() {
   }
 
   // Tìm kiếm bài viết
-  Future<List<PostModel>> searchPosts(String query) async() {
-    try() {
+  Future<List<PostModel>> searchPosts(String query) async {
+    try {
       final response = await _supabase
           .from('posts')
           .select('''
@@ -283,8 +280,8 @@ class PostRepository() {
   }
 
   // Like a post
-  Future<void> likePost(String postId) async() {
-    try() {
+  Future<void> likePost(String postId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -301,7 +298,7 @@ class PostRepository() {
 
       // The database trigger should automatically increment like_count
       // But let's also do manual update as fallback
-      try() {
+      try {
         final currentPost = await _supabase
             .from('posts')
             .select('like_count')
@@ -327,8 +324,8 @@ class PostRepository() {
   }
 
   // Unlike a post
-  Future<void> unlikePost(String postId) async() {
-    try() {
+  Future<void> unlikePost(String postId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -346,7 +343,7 @@ class PostRepository() {
 
       // The database trigger should automatically decrement like_count
       // But let's also do manual update as fallback
-      try() {
+      try {
         final currentPost = await _supabase
             .from('posts')
             .select('like_count')
@@ -372,8 +369,8 @@ class PostRepository() {
   }
 
   // Check if user has liked a post
-  Future<bool> hasUserLikedPost(String postId) async() {
-    try() {
+  Future<bool> hasUserLikedPost(String postId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 

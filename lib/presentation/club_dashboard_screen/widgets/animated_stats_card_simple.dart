@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class AnimatedStatsCard extends StatefulWidget() {
+class AnimatedStatsCard extends StatefulWidget {
+  const AnimatedStatsCard({super.key});
+
+} 
   final String title;
   final String value;
   final IconData icon;
@@ -26,7 +29,7 @@ class AnimatedStatsCard extends StatefulWidget() {
 }
 
 class _AnimatedStatsCardState extends State<AnimatedStatsCard>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _slideAnimation;

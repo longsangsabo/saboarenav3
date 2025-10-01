@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/services/club_permission_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ActivityHistoryScreen extends StatefulWidget() {
+class ActivityHistoryScreen extends StatefulWidget {
+  const ActivityHistoryScreen({super.key});
+
+} 
   final String clubId;
 
   const ActivityHistoryScreen({
@@ -34,10 +37,10 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
     _loadActivities();
   }
 
-  Future<void> _loadActivities() async() {
+  Future<void> _loadActivities() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       // Check if user has permission to view activity history
       final canView = await _permissionService.hasPermission(
         widget.clubId,
@@ -72,8 +75,8 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
     }
   }
 
-  Future<List<ClubActivityLog>> _fetchActivitiesFromDatabase() async() {
-    try() {
+  Future<List<ClubActivityLog>> _fetchActivitiesFromDatabase() async {
+    try {
       final supabase = Supabase.instance.client;
       
       // Query activity logs from database
@@ -455,7 +458,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
       return '${difference.inHours} giờ trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else() {
+    } else {
       return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
     }
   }
@@ -473,7 +476,7 @@ class _ActivityHistoryScreenState extends State<ActivityHistoryScreen> {
   }
 }
 
-class ClubActivityLog() {
+class ClubActivityLog {
   final String id;
   final String activityType;
   final String description;

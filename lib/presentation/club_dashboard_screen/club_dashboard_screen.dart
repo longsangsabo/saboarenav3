@@ -17,7 +17,7 @@ import '../../models/club.dart';
 import 'import '../task_verification_screen/demo/task_verification_demo.dart';';
 
 // Temporary mock classes
-class ClubDashboardStats() {
+class ClubDashboardStats {
   final int totalMembers;
   final int activeMembers;
   final double monthlyRevenue;
@@ -35,7 +35,7 @@ class ClubDashboardStats() {
   });
 }
 
-class ClubActivity() {
+class ClubActivity {
   final String title;
   final String subtitle;
   final String type;
@@ -53,10 +53,10 @@ class ClubActivity() {
   });
 }
 
-class ClubDashboardScreen extends StatefulWidget() {
+class ClubDashboardScreen extends StatefulWidget {
   const ClubDashboardScreen({super.key});
 
-  @override
+@override
   _ClubDashboardScreenState createState() => _ClubDashboardScreenState();
 }
 
@@ -77,20 +77,20 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
     _initializeDashboard();
   }
 
-  Future<void> _initializeDashboard() async() {
+  Future<void> _initializeDashboard() async {
     await _verifyClubOwnership();
     if (_hasPermission && _currentClub != null) {
       await _loadDashboardData();
     }
   }
 
-  Future<void> _verifyClubOwnership() async() {
+  Future<void> _verifyClubOwnership() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try() {
+    try {
       // Check if user is authenticated
       if (!AuthService.instance.isAuthenticated) {
         setState(() {
@@ -814,7 +814,7 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
       return '${difference.inMinutes} phút trước';
     } else if (difference.inHours < 24) {
       return '${difference.inHours} giờ trước';
-    } else() {
+    } else {
       return '${difference.inDays} ngày trước';
     }
   }
@@ -1128,7 +1128,7 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
       return "${(amount / 1000000).toStringAsFixed(1)}M";
     } else if (amount >= 1000) {
       return "${(amount / 1000).toStringAsFixed(1)}K";
-    } else() {
+    } else {
       return amount.toStringAsFixed(0);
     }
   }
@@ -1246,14 +1246,14 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
     );
   }
 
-  Future<void> _loadDashboardData() async() {
+  Future<void> _loadDashboardData() async {
     if (_currentClub == null) return;
     
     setState(() {
       _isLoadingData = true;
     });
 
-    try() {
+    try {
       // Load dashboard stats and recent activities in parallel
       final results = await Future.wait([
         // Mock data for club stats
@@ -1578,3 +1578,4 @@ class _ClubDashboardScreenState extends State<ClubDashboardScreen> {
     }
   }
 }
+

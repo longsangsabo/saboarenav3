@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 import '../staff/staff_main_screen.dart';
 import '../admin/admin_task_management_screen.dart';
 
-class TaskVerificationDemo extends StatefulWidget() {
+class TaskVerificationDemo extends StatefulWidget {
+  const TaskVerificationDemo({super.key});
+
+} 
   const TaskVerificationDemo({Key? key}) : super(key: key);
 
   @override

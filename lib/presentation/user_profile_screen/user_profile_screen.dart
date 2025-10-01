@@ -30,7 +30,7 @@ import './widgets/qr_code_widget.dart';
 import './widgets/social_features_widget.dart';
 import './widgets/statistics_cards_widget.dart';
 
-class UserProfileScreen extends StatefulWidget() {
+class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
 
   @override
@@ -38,7 +38,7 @@ class UserProfileScreen extends StatefulWidget() {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   bool _isRefreshing = false;
   bool _isLoading = true;
@@ -78,8 +78,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     super.dispose();
   }
 
-  Future<void> _loadUserProfile() async() {
-    try() {
+  Future<void> _loadUserProfile() async {
+    try {
       if (!mounted) return;
       setState(() {
         _isLoading = true;
@@ -98,7 +98,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         }
 
         await _loadProfileData(userProfile.id);
-      } else() {
+      } else {
         debugPrint('⚠️ Profile: No authenticated user.');
       }
 
@@ -113,7 +113,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -122,8 +122,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _loadProfileData(String userId) async() {
-    try() {
+  Future<void> _loadProfileData(String userId) async {
+    try {
       debugPrint('🚀 Profile: Loading social data...');
 
       final friends = await _userService.getUserFollowers(userId);
@@ -147,8 +147,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _loadUnreadMessageCount() async() {
-    try() {
+  Future<void> _loadUnreadMessageCount() async {
+    try {
       final count = await _messagingService.getUnreadMessageCount();
       if (mounted) {
         setState(() {
@@ -160,8 +160,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _loadUnreadNotificationCount() async() {
-    try() {
+  Future<void> _loadUnreadNotificationCount() async {
+    try {
       final count = await _notificationService.getUnreadNotificationCount();
       if (mounted) {
         setState(() {
@@ -173,7 +173,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _refreshProfile() async() {
+  Future<void> _refreshProfile() async {
     if (_isRefreshing) return;
 
     setState(() {
@@ -427,8 +427,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       backgroundColor: Colors.transparent,
       builder: (context) => EditProfileModal(
         userProfile: _userProfile!,
-        onSave: (updatedProfile) async() {
-          try() {
+        onSave: (updatedProfile) async {
+          try {
             // Cập nhật profile qua API
             await _userService.updateUserProfile(
               fullName: updatedProfile.fullName,
@@ -599,10 +599,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   // Cover Photo Functions
-  Future<void> _pickCoverPhotoFromCamera() async() {
+  Future<void> _pickCoverPhotoFromCamera() async {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try() {
+    try {
       // Kiểm tra quyền camera
       final cameraGranted = await PermissionService.checkCameraPermission();
       if (!cameraGranted) {
@@ -630,10 +630,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _pickCoverPhotoFromGallery() async() {
+  Future<void> _pickCoverPhotoFromGallery() async {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try() {
+    try {
       // Kiểm tra quyền truy cập thư viện ảnh
       final photosGranted = await PermissionService.checkPhotosPermission();
       if (!photosGranted) {
@@ -662,10 +662,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   // Avatar Functions
-  Future<void> _pickAvatarFromCamera() async() {
+  Future<void> _pickAvatarFromCamera() async {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try() {
+    try {
       // Kiểm tra quyền camera
       final cameraGranted = await PermissionService.checkCameraPermission();
       if (!cameraGranted) {
@@ -693,10 +693,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _pickAvatarFromGallery() async() {
+  Future<void> _pickAvatarFromGallery() async {
     Navigator.pop(context); // Đóng bottom sheet
     
-    try() {
+    try {
       // Kiểm tra quyền truy cập thư viện ảnh
       final photosGranted = await PermissionService.checkPhotosPermission();
       if (!photosGranted) {
@@ -758,8 +758,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   }
 
   // Upload functions
-  Future<void> _uploadCoverPhoto(String imagePath) async() {
-    try() {
+  Future<void> _uploadCoverPhoto(String imagePath) async {
+    try {
       debugPrint('🚀 Uploading cover photo: $imagePath');
       
       // Get old cover photo URL to delete later
@@ -783,7 +783,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         });
         
         _showSuccessMessage('✅ Ảnh bìa đã được lưu thành công!');
-      } else() {
+      } else {
         _showErrorMessage('❌ Không thể tải lên ảnh bìa. Vui lòng thử lại.');
       }
     } catch (e) {
@@ -792,8 +792,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _uploadAvatar(String imagePath) async() {
-    try() {
+  Future<void> _uploadAvatar(String imagePath) async {
+    try {
       debugPrint('🚀 Uploading avatar: $imagePath');
       
       // Get old avatar URL to delete later
@@ -817,7 +817,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         });
         
         _showSuccessMessage('✅ Ảnh đại diện đã được lưu thành công!');
-      } else() {
+      } else {
         _showErrorMessage('❌ Không thể tải lên ảnh đại diện. Vui lòng thử lại.');
       }
     } catch (e) {
@@ -826,8 +826,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  Future<void> _removeAvatarFromServer() async() {
-    try() {
+  Future<void> _removeAvatarFromServer() async {
+    try {
       debugPrint('🚀 Removing avatar from server');
       
       final oldAvatarUrl = _userProfile?.avatarUrl ?? '';
@@ -942,7 +942,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _switchToClubInterface() async() {
+  void _switchToClubInterface() async {
     if (_userProfile?.role != 'clb' && _userProfile?.role != 'club_owner') {
       _showErrorMessage('Bạn không có quyền truy cập giao diện club');
       return;
@@ -955,7 +955,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
 
-    try() {
+    try {
       // Tìm club đầu tiên mà user sở hữu hoặc là member
       final club = await ClubService.instance.getFirstClubForUser(_userProfile!.id);
       
@@ -997,10 +997,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _shareProfile() async() {
+  void _shareProfile() async {
     if (_userProfile == null) return;
     
-    try() {
+    try {
       await ShareService.shareUserProfile(_userProfile!);
     } catch (e) {
       if (mounted) {
@@ -1913,8 +1913,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _navigateToClubManagement() async() {
-    try() {
+  void _navigateToClubManagement() async {
+    try {
       // Get current user ID
       final currentUserId = _authService.currentUser?.id;
       if (currentUserId == null) {
@@ -2008,9 +2008,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-  void _handleLogout() async() {
+  void _handleLogout() async {
     HapticFeedback.mediumImpact();
-    try() {
+    try {
       await _authService.signOut();
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(context, AppRoutes.loginScreen, (route) => false);
@@ -2290,7 +2290,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       return '${difference.inHours} giờ trước';
     } else if (difference.inMinutes > 0) {
       return '${difference.inMinutes} phút trước';
-    } else() {
+    } else {
       return 'Vừa xong';
     }
   }
@@ -2334,8 +2334,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     }
   }
 
-  void _markAllNotificationsAsRead() async() {
-    try() {
+  void _markAllNotificationsAsRead() async {
+    try {
       await _notificationService.markAllNotificationsAsRead();
       setState(() {
         _unreadNotificationCount = 0;

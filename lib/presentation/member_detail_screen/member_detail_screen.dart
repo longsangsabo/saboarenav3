@@ -9,7 +9,10 @@ import 'widgets/member_overview_tab.dart';
 // import 'widgets/member_tournaments_tab.dart';
 // import 'widgets/member_settings_tab.dart';
 
-class MemberDetailScreen extends StatefulWidget() {
+class MemberDetailScreen extends StatefulWidget {
+  const MemberDetailScreen({super.key});
+
+} 
   final String clubId;
   final String memberId;
   final UserProfile? initialUserProfile;
@@ -26,7 +29,7 @@ class MemberDetailScreen extends StatefulWidget() {
 }
 
 class _MemberDetailScreenState extends State<MemberDetailScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -68,16 +71,16 @@ class _MemberDetailScreenState extends State<MemberDetailScreen>
     super.dispose();
   }
 
-  Future<void> _loadUserProfile() async() {
+  Future<void> _loadUserProfile() async {
     setState(() {
       _isLoading = true;
       _error = null;
     });
-    try() {
+    try {
       UserProfile? profile;
       if (widget.initialUserProfile != null) {
         profile = widget.initialUserProfile;
-      } else() {
+      } else {
         profile = await _userService.getUserProfileById(widget.memberId);
       }
       setState(() {

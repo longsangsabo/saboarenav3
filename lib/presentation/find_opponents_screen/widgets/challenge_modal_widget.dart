@@ -8,7 +8,10 @@ import 'package:flutter/foundation.dart';
 // import '../../../services/challenge_service_extensions.dart';
 // import '../../../services/challenge_rules_service.dart';
 
-class ChallengeModalWidget extends StatefulWidget() {
+class ChallengeModalWidget extends StatefulWidget {
+  const ChallengeModalWidget({super.key});
+
+} 
   final Map<String, dynamic> player;
   final String challengeType; // 'thach_dau' or 'giao_luu'
   final VoidCallback? onSendChallenge;
@@ -51,13 +54,13 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
   }
 
   /// Update handicap preview when SPA points change
-  Future<void> _updateHandicapPreview() async() {
+  Future<void> _updateHandicapPreview() async {
     if (_spaPoints == 0 || widget.challengeType != 'thach_dau') {
       _handicapPreview = null;
       return;
     }
 
-    try() {
+    try {
       final playerId = widget.player['user_id'] as String?;
       if (playerId == null) return;
 
@@ -296,7 +299,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
       return '+${_handicapPreview!.challengerHandicap} bàn';
     } else if (_handicapPreview!.challengedHandicap > 0) {
       return 'Đối thủ +${_handicapPreview!.challengedHandicap} bàn';
-    } else() {
+    } else {
       return 'Không handicap';
     }
   }
@@ -353,7 +356,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
               return ChoiceChip(
                 label: Text('$points (R-$raceTo)'),
                 selected: isSelected,
-                onSelected: (selected) async() {
+                onSelected: (selected) async {
                   if (selected) {
                     setState(() {
                       _spaPoints = points;
@@ -433,7 +436,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
         ),
         SizedBox(height: 1.h),
         DropdownButtonFormField<String>(
-          value: _selectedLocation,
+          initialValue: _selectedLocation,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -487,7 +490,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
     );
   }
 
-  Future<void> _selectDate() async() {
+  Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
@@ -501,7 +504,7 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
     }
   }
 
-  Future<void> _selectTime() async() {
+  Future<void> _selectTime() async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: _selectedTime,
@@ -513,8 +516,8 @@ class _ChallengeModalWidgetState extends State<ChallengeModalWidget> {
     }
   }
 
-  void _sendChallenge() async() {
-    try() {
+  void _sendChallenge() async {
+    try {
       final challengeService = ChallengeService.instance;
       final playerId = widget.player['id'] ?? widget.player['user_id'] ?? '';
       

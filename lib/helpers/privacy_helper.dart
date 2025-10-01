@@ -1,11 +1,10 @@
-import 'package:sabo_arena/services/user_privacy_service.dart';
 
-class PrivacyHelper() {
+class PrivacyHelper {
   // Filter users list based on privacy settings (for social feed, challenge list, etc.)
   static Future<List<Map<String, dynamic>>> filterUsersForPublicDisplay(
     List<Map<String, dynamic>> users,
     String displayContext, // 'social_feed', 'challenge_list', 'tournament', 'leaderboard'
-  ) async() {
+  ) async {
     final filteredUsers = <Map<String, dynamic>>[];
 
     for (final user in users) {
@@ -44,8 +43,8 @@ class PrivacyHelper() {
   static Future<Map<String, dynamic>> checkChallengePermission(
     String challengerId, 
     String targetUserId,
-  ) async() {
-    try() {
+  ) async {
+    try {
       final canChallenge = await UserPrivacyService.canUserBeChallenged(
         targetUserId, 
         challengerId,
@@ -74,8 +73,8 @@ class PrivacyHelper() {
   static Future<Map<String, dynamic>?> getPrivacyAwareUserProfile(
     String userId,
     {String? viewerId}
-  ) async() {
-    try() {
+  ) async {
+    try {
       // First get the raw user data from database
       // This would typically be from your user service
       final rawUserData = await _getUserRawData(userId);
@@ -99,7 +98,7 @@ class PrivacyHelper() {
   static Future<List<Map<String, dynamic>>> searchUsersWithPrivacy(
     String query,
     {int limit = 20}
-  ) async() {
+  ) async {
     return await UserPrivacyService.searchUsersWithPrivacy(query, limit: limit);
   }
 
@@ -107,8 +106,8 @@ class PrivacyHelper() {
   static Future<bool> shouldShowProfileSection(
     String userId, 
     String section, // 'personal_info', 'match_history', 'achievements', etc.
-  ) async() {
-    try() {
+  ) async {
+    try {
       final settings = await UserPrivacyService.getUserPrivacySettings(userId);
       if (settings == null) return true;
 
@@ -140,8 +139,8 @@ class PrivacyHelper() {
   }
 
   // Get privacy-aware notification preferences
-  static Future<Map<String, bool>> getNotificationPreferences(String userId) async() {
-    try() {
+  static Future<Map<String, bool>> getNotificationPreferences(String userId) async {
+    try {
       final settings = await UserPrivacyService.getUserPrivacySettings(userId);
       if (settings == null) {
         return() {
@@ -227,7 +226,7 @@ class PrivacyHelper() {
   }
 
   // Mock function - replace with actual user service call
-  static Future<Map<String, dynamic>?> _getUserRawData(String userId) async() {
+  static Future<Map<String, dynamic>?> _getUserRawData(String userId) async {
     // This should be replaced with actual call to your user service
     // For now, return null - implement based on your user data structure
     return null;

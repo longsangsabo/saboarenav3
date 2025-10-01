@@ -1,10 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sabo_arena/services/registration_qr_service.dart';
-import 'basic_referral_service.dart';
-import 'integrated_qr_service.dart';
-import 'package:flutter/foundation.dart';
 
-class IntegratedRegistrationService() {
+class IntegratedRegistrationService {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   /// Register user with automatic referral application from scanned QR
@@ -18,8 +13,8 @@ class IntegratedRegistrationService() {
     String skillLevel = 'beginner',
     String role = 'player',
     String? scannedQRData, // QR data from previous scan
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 Starting integrated registration with QR referral');
       debugPrint('   Email: $email');
       debugPrint('   Scanned QR: $scannedQRData');
@@ -114,8 +109,8 @@ class IntegratedRegistrationService() {
   }
   
   /// Generate referral code for new user
-  static Future<String> _generateUserReferralCode(String userId, String? username) async() {
-    try() {
+  static Future<String> _generateUserReferralCode(String userId, String? username) async {
+    try {
       // Create referral code based on username or fallback
       final baseUsername = username ?? 'USER${userId.substring(0, 6)}';
       final referralCode = 'SABO-${baseUsername.toUpperCase()}';
@@ -158,7 +153,7 @@ class IntegratedRegistrationService() {
   static bool hasReferralInQR(String? qrData) {
     if (qrData == null || qrData.isEmpty) return false;
     
-    try() {
+    try {
       final uri = Uri.tryParse(qrData);
       return uri?.queryParameters.containsKey('ref') == true;
     } catch (e) {
@@ -170,7 +165,7 @@ class IntegratedRegistrationService() {
   static String? extractReferralFromQR(String? qrData) {
     if (qrData == null || qrData.isEmpty) return null;
     
-    try() {
+    try {
       final uri = Uri.tryParse(qrData);
       return uri?.queryParameters['ref'];
     } catch (e) {
@@ -179,8 +174,8 @@ class IntegratedRegistrationService() {
   }
   
   /// Preview referral benefits from QR before registration
-  static Future<Map<String, dynamic>?> previewReferralBenefits(String qrData) async() {
-    try() {
+  static Future<Map<String, dynamic>?> previewReferralBenefits(String qrData) async {
+    try {
       final referralCode = extractReferralFromQR(qrData);
       if (referralCode == null) return null;
       

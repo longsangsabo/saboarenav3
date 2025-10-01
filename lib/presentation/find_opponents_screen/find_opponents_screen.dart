@@ -11,15 +11,15 @@ import './widgets/competitive_play_tab.dart';
 import './widgets/social_play_tab.dart';
 import '../../widgets/qr_scanner_widget.dart';
 
-class FindOpponentsScreen extends StatefulWidget() {
+class FindOpponentsScreen extends StatefulWidget {
   const FindOpponentsScreen({super.key});
 
-  @override
+@override
   State<FindOpponentsScreen> createState() => _FindOpponentsScreenState();
 }
 
 class _FindOpponentsScreenState extends State<FindOpponentsScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   final UserService _userService = UserService.instance;
   final LocationService _locationService = LocationService.instance;
 
@@ -46,8 +46,8 @@ class _FindOpponentsScreenState extends State<FindOpponentsScreen>
     super.dispose();
   }
 
-  Future<void> _loadPlayers() async() {
-    try() {
+  Future<void> _loadPlayers() async {
+    try {
       if (mounted) {
         setState(() {
           _isLoading = true;
@@ -312,3 +312,4 @@ class _FindOpponentsScreenState extends State<FindOpponentsScreen>
 
 
 }
+

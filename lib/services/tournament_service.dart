@@ -1,15 +1,5 @@
-import '../core/utils/rank_migration_helper.dart';
-import '../models/tournament.dart';
-import '../models/user_profile.dart';
-import '../core/constants/tournament_constants.dart';
-import 'notification_service.dart';
-import 'complete_double_elimination_service.dart';
-import 'complete_sabo_de16_service.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:math' as math;
-import 'package:flutter/foundation.dart';
 
-class TournamentService() {
+class TournamentService {
   static TournamentService? _instance;
   static TournamentService get instance => _instance ??= TournamentService._();
   TournamentService._();
@@ -22,8 +12,8 @@ class TournamentService() {
     String? skillLevel,
     int page = 1,
     int pageSize = 15,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase.from('tournaments').select();
 
       if (status != null) {
@@ -55,8 +45,8 @@ class TournamentService() {
     String? status,
     int page = 1,
     int pageSize = 100,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🔍 TournamentService: Loading tournaments for club $clubId');
       
       var query = _supabase.from('tournaments').select();
@@ -149,8 +139,8 @@ class TournamentService() {
     ];
   }
 
-  Future<Tournament> getTournamentById(String tournamentId) async() {
-    try() {
+  Future<Tournament> getTournamentById(String tournamentId) async {
+    try {
       final response = await _supabase
           .from('tournaments')
           .select()
@@ -164,8 +154,8 @@ class TournamentService() {
   }
 
   Future<List<UserProfile>> getTournamentParticipants(
-      String tournamentId) async() {
-    try() {
+      String tournamentId) async {
+    try {
       debugPrint('🔍 TournamentService: Querying participants for tournament $tournamentId');
       final response =
           await _supabase.from('tournament_participants').select('''
@@ -191,8 +181,8 @@ class TournamentService() {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTournamentMatches(String tournamentId) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getTournamentMatches(String tournamentId) async {
+    try {
       // First get matches
       final matches = await _supabase
           .from('matches')
@@ -256,8 +246,8 @@ class TournamentService() {
     }
   }
 
-  Future<bool> registerForTournament(String tournamentId, {String paymentMethod = '0'}) async() {
-    try() {
+  Future<bool> registerForTournament(String tournamentId, {String paymentMethod = '0'}) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -298,7 +288,7 @@ class TournamentService() {
           params: {'tournament_id': tournamentId});
 
       // Send notification to club admin (fire and forget)
-      try() {
+      try {
         NotificationService.instance.sendRegistrationNotification(
           tournamentId: tournamentId,
           userId: user.id,
@@ -314,8 +304,8 @@ class TournamentService() {
     }
   }
 
-  Future<bool> unregisterFromTournament(String tournamentId) async() {
-    try() {
+  Future<bool> unregisterFromTournament(String tournamentId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -335,8 +325,8 @@ class TournamentService() {
     }
   }
 
-  Future<bool> isRegisteredForTournament(String tournamentId) async() {
-    try() {
+  Future<bool> isRegisteredForTournament(String tournamentId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -369,8 +359,8 @@ class TournamentService() {
     String gameType = '8-ball', // Game type (8-ball, 9-ball, 10-ball)
     String? rules,
     String? requirements,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -405,8 +395,8 @@ class TournamentService() {
     }
   }
 
-  Future<List<Tournament>> getUserTournaments() async() {
-    try() {
+  Future<List<Tournament>> getUserTournaments() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -423,8 +413,8 @@ class TournamentService() {
     }
   }
 
-  Future<List<Tournament>> getUserOrganizedTournaments() async() {
-    try() {
+  Future<List<Tournament>> getUserOrganizedTournaments() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -442,8 +432,8 @@ class TournamentService() {
     }
   }
 
-  Future<List<Tournament>> searchTournaments(String query) async() {
-    try() {
+  Future<List<Tournament>> searchTournaments(String query) async {
+    try {
       final response = await _supabase
           .from('tournaments')
           .select()
@@ -460,8 +450,8 @@ class TournamentService() {
     }
   }
 
-  Future<Map<String, dynamic>> getTournamentStats(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>> getTournamentStats(String tournamentId) async {
+    try {
       final tournament = await getTournamentById(tournamentId);
       final participants = await getTournamentParticipants(tournamentId);
 
@@ -495,8 +485,8 @@ class TournamentService() {
 
   /// Get tournament participants with payment status for club management
   Future<List<Map<String, dynamic>>> getTournamentParticipantsWithPaymentStatus(
-      String tournamentId) async() {
-    try() {
+      String tournamentId) async {
+    try {
       debugPrint('🔍 WithPaymentStatus: Querying participants for tournament $tournamentId');
       
       // Check authentication status
@@ -568,8 +558,8 @@ class TournamentService() {
   }
 
   /// Backup method to get participants without join (in case of join issues)
-  Future<List<Map<String, dynamic>>> _getTournamentParticipantsWithoutJoin(String tournamentId) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> _getTournamentParticipantsWithoutJoin(String tournamentId) async {
+    try {
       debugPrint('🔄 Fallback: Getting participants without join...');
       
       // First get tournament participants
@@ -586,7 +576,7 @@ class TournamentService() {
       // Then get user data separately
       final List<Map<String, dynamic>> result = [];
       for (final participant in participants) {
-        try() {
+        try {
           final userData = await _supabase
               .from('users')
               .select('id, email, full_name, avatar_url, elo_rating, rank')
@@ -647,8 +637,8 @@ class TournamentService() {
     required String userId,
     required String paymentStatus, // 'pending', 'confirmed', 'completed'
     String? notes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) throw Exception('User not authenticated');
 
@@ -680,8 +670,8 @@ class TournamentService() {
     required String tournamentId,
     required String userId,
     String? reason,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) throw Exception('User not authenticated');
 
@@ -712,8 +702,8 @@ class TournamentService() {
     required String format,
     required List<UserProfile> participants,
     String seedingMethod = SeedingMethods.eloRating,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 GenerateBracket: Starting bracket generation for tournament $tournamentId with ${participants.length} participants');
       
       // Validate format và số người chơi
@@ -892,7 +882,7 @@ class TournamentService() {
   Future<List<SeededParticipant>> _seedParticipants(
     List<UserProfile> participants,
     String seedingMethod,
-  ) async() {
+  ) async {
     List<SeededParticipant> seeded = [];
 
     switch (seedingMethod) {
@@ -1121,8 +1111,8 @@ class TournamentService() {
   }
 
   /// Save generated matches to database
-  Future<void> _saveMatchesToDatabase(List<TournamentMatch> matches) async() {
-    try() {
+  Future<void> _saveMatchesToDatabase(List<TournamentMatch> matches) async {
+    try {
       debugPrint('🔄 Saving ${matches.length} matches to database...');
       
       for (final match in matches) {
@@ -1238,8 +1228,8 @@ class TournamentService() {
     required String distributionType,
     required double totalPrizePool,
     required List<TournamentResult> results,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final playerCount = results.length;
       final distribution = TournamentHelper.getPrizeDistribution(distributionType, playerCount);
       
@@ -1265,8 +1255,8 @@ class TournamentService() {
   }
 
   /// Update tournament status
-  Future<void> updateTournamentStatus(String tournamentId, String newStatus) async() {
-    try() {
+  Future<void> updateTournamentStatus(String tournamentId, String newStatus) async {
+    try {
       await _supabase
           .from('tournaments')
           .update({'status': newStatus, 'updated_at': DateTime.now().toIso8601String()})
@@ -1295,8 +1285,8 @@ class TournamentService() {
     required List<TournamentResult> results,
     required String tournamentFormat,
     required int participantCount,
-  }) async() {
-    try() {
+  }) async {
+    try {
       List<EloChange> eloChanges = [];
       
       for (int i = 0; i < results.length; i++) {
@@ -1363,7 +1353,7 @@ class TournamentService() {
   }
 
   /// Calculate performance bonuses
-  Future<int> _calculatePerformanceBonus(TournamentResult result, List<TournamentResult> allResults) async() {
+  Future<int> _calculatePerformanceBonus(TournamentResult result, List<TournamentResult> allResults) async {
     int bonus = 0;
     
     // Perfect run bonus (no losses in single elimination)
@@ -1387,7 +1377,7 @@ class TournamentService() {
 // ==================== DATA MODELS ====================
 
 /// Tournament Bracket Model
-class TournamentBracket() {
+class TournamentBracket {
   final String tournamentId;
   final String format;
   final List<SeededParticipant> participants;
@@ -1408,7 +1398,7 @@ class TournamentBracket() {
 }
 
 /// Seeded Participant Model
-class SeededParticipant() {
+class SeededParticipant {
   final UserProfile participant;
   final int seedNumber;
   final String seedingMethod;
@@ -1421,7 +1411,7 @@ class SeededParticipant() {
 }
 
 /// Tournament Match Model
-class TournamentMatch() {
+class TournamentMatch {
   final String id;
   final String tournamentId;
   final String? player1Id;
@@ -1454,14 +1444,14 @@ class TournamentMatch() {
 }
 
 /// Match Status Constants
-class MatchStatus() {
+class MatchStatus {
   static const String pending = 'pending';
   static const String inProgress = 'in_progress';
   static const String completed = 'completed';
 }
 
 /// Tournament Result Model
-class TournamentResult() {
+class TournamentResult {
   final String participantId;
   final int finalPosition;
   final int matchesPlayed;
@@ -1484,7 +1474,7 @@ class TournamentResult() {
 }
 
 /// Prize Distribution Result Model
-class PrizeDistributionResult() {
+class PrizeDistributionResult {
   final int position;
   final String participantId;
   final double prizeAmount;
@@ -1501,7 +1491,7 @@ class PrizeDistributionResult() {
 }
 
 /// ELO Change Model
-class EloChange() {
+class EloChange {
   final String participantId;
   final int oldElo;
   final int newElo;

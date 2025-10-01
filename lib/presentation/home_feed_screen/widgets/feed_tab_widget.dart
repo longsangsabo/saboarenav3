@@ -4,7 +4,10 @@ import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
-class FeedTabWidget extends StatelessWidget() {
+class FeedTabWidget extends StatelessWidget {
+  const FeedTabWidget({super.key});
+
+} 
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
 

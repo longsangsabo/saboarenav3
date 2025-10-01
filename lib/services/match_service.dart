@@ -1,6 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-class Match() {
+class Match {
   final String id;
   final String tournamentId;
   final String? player1Id;
@@ -59,14 +57,15 @@ class Match() {
       roundNumber: json['round_number'] ?? 1,
       matchNumber: json['match_number'] ?? 1,
       status: json['status'] ?? 'pending',
-      scheduledTime: json['scheduled_at'] != null  // Fixed: scheduled_time -> scheduled_at
-          ? DateTime.parse(json['scheduled_at'])
-          : null,
-      startTime: json['started_at'] != null       // Fixed: start_time -> started_at  
+      scheduledTime:
+          json['scheduled_at'] != null // Fixed: scheduled_time -> scheduled_at
+              ? DateTime.parse(json['scheduled_at'])
+              : null,
+      startTime: json['started_at'] != null // Fixed: start_time -> started_at
           ? DateTime.parse(json['started_at'])
           : null,
-      endTime: json['completed_at'] != null        // Fixed: end_time -> completed_at
-          ? DateTime.parse(json['completed_at']) 
+      endTime: json['completed_at'] != null // Fixed: end_time -> completed_at
+          ? DateTime.parse(json['completed_at'])
           : null,
       notes: json['notes'],
       createdAt: DateTime.parse(json['created_at']),
@@ -79,15 +78,15 @@ class Match() {
   }
 }
 
-class MatchService() {
+class MatchService {
   static MatchService? _instance;
   static MatchService get instance => _instance ??= MatchService._();
   MatchService._();
 
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  Future<List<Match>> getTournamentMatches(String tournamentId) async() {
-    try() {
+  Future<List<Match>> getTournamentMatches(String tournamentId) async {
+    try {
       final response = await _supabase
           .from('matches')
           .select('''
@@ -107,8 +106,8 @@ class MatchService() {
     }
   }
 
-  Future<List<Match>> getUserMatches(String userId, {int limit = 20}) async() {
-    try() {
+  Future<List<Match>> getUserMatches(String userId, {int limit = 20}) async {
+    try {
       final response = await _supabase
           .from('matches')
           .select('''
@@ -128,8 +127,8 @@ class MatchService() {
     }
   }
 
-  Future<List<Match>> getLiveMatches({int limit = 10}) async() {
-    try() {
+  Future<List<Match>> getLiveMatches({int limit = 10}) async {
+    try {
       final response = await _supabase
           .from('matches')
           .select('''
@@ -149,8 +148,8 @@ class MatchService() {
     }
   }
 
-  Future<List<Match>> getUpcomingMatches({int limit = 10}) async() {
-    try() {
+  Future<List<Match>> getUpcomingMatches({int limit = 10}) async {
+    try {
       final response = await _supabase
           .from('matches')
           .select('''
@@ -160,9 +159,13 @@ class MatchService() {
             winner:users!matches_winner_id_fkey (full_name),
             tournament:tournaments (title)
           ''')
-          .eq('status', 'pending')  // REVERT: scheduled -> pending (correct enum)
-          .gte('scheduled_time', DateTime.now().toIso8601String())  // REVERT: scheduled_at -> scheduled_time
-          .order('scheduled_time')  // REVERT: scheduled_at -> scheduled_time
+          .eq('status',
+              'pending') // REVERT: scheduled -> pending (correct enum)
+          .gte(
+              'scheduled_time',
+              DateTime.now()
+                  .toIso8601String()) // REVERT: scheduled_at -> scheduled_time
+          .order('scheduled_time') // REVERT: scheduled_at -> scheduled_time
           .limit(limit);
 
       return response.map<Match>((json) => Match.fromJson(json)).toList();
@@ -176,8 +179,8 @@ class MatchService() {
     required int player1Score,
     required int player2Score,
     String? winnerId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -211,8 +214,8 @@ class MatchService() {
     }
   }
 
-  Future<Match> startMatch(String matchId) async() {
-    try() {
+  Future<Match> startMatch(String matchId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 

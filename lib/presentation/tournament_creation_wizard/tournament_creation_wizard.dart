@@ -4,7 +4,10 @@ import 'package:sabo_arena/utils/size_extensions.dart';
 import '../../services/tournament_service.dart';
 import '../../core/constants/ranking_constants.dart';
 
-class TournamentCreationWizard extends StatefulWidget() {
+class TournamentCreationWizard extends StatefulWidget {
+  const TournamentCreationWizard({super.key});
+
+} 
   final String? clubId;
 
   const TournamentCreationWizard({
@@ -17,7 +20,7 @@ class TournamentCreationWizard extends StatefulWidget() {
 }
 
 class _TournamentCreationWizardState extends State<TournamentCreationWizard>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late PageController _pageController;
   int _currentStep = 0;
   bool _isCreating = false;
@@ -109,7 +112,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     _tournamentData['tournamentEndDate'] = now.add(Duration(days: 8));
   }
 
-  void _loadClubData() async() {
+  void _loadClubData() async {
     // TODO: Load club data from service
     // _tournamentData['venue'] = club.address;
     // _tournamentData['contactInfo'] = club.phone;
@@ -841,7 +844,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     required Function(DateTime) onChanged,
   }) {
     return InkWell(
-      onTap: () async() {
+      onTap: () async {
         final date = await showDatePicker(
           context: context,
           initialDate: value ?? DateTime.now().add(Duration(days: 1)),
@@ -960,7 +963,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     );
   }
 
-  void _validateAndPublish() async() {
+  void _validateAndPublish() async {
     debugPrint('🔍 Tournament creation validation started');
     
     // Validate all forms
@@ -1022,7 +1025,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
     // Set loading state
     setState(() => _isCreating = true);
 
-    try() {
+    try {
       // Create tournament using service with proper parameters
       final tournament = await _tournamentService.createTournament(
         clubId: widget.clubId ?? '',
@@ -1057,7 +1060,7 @@ class _TournamentCreationWizardState extends State<TournamentCreationWizard>
           backgroundColor: Colors.red,
         ),
       );
-    } finally() {
+    } finally {
       setState(() => _isCreating = false);
     }
   }

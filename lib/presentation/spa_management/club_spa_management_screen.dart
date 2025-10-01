@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../services/club_spa_service.dart';
 
 /// Screen for club owners to manage SPA rewards and monitor usage  
-class ClubSpaManagementScreen extends StatefulWidget() {
+class ClubSpaManagementScreen extends StatefulWidget {
+  const ClubSpaManagementScreen({super.key});
+
+} 
   final String clubId;
   final String clubName;
 
@@ -17,7 +20,7 @@ class ClubSpaManagementScreen extends StatefulWidget() {
 }
 
 class _ClubSpaManagementScreenState extends State<ClubSpaManagementScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ClubSpaService _spaService = ClubSpaService();
 
@@ -39,10 +42,10 @@ class _ClubSpaManagementScreenState extends State<ClubSpaManagementScreen>
     super.dispose();
   }
 
-  Future<void> _loadClubData() async() {
+  Future<void> _loadClubData() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       final results = await Future.wait([
         _spaService.getClubSpaBalance(widget.clubId),
         _spaService.getClubRewards(widget.clubId),
@@ -61,12 +64,12 @@ class _ClubSpaManagementScreenState extends State<ClubSpaManagementScreen>
           SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
         );
       }
-    } finally() {
+    } finally {
       setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _showCreateRewardDialog() async() {
+  Future<void> _showCreateRewardDialog() async {
     final formKey = GlobalKey<FormState>();
     String rewardName = '';
     String rewardDescription = '';
@@ -162,7 +165,7 @@ class _ClubSpaManagementScreenState extends State<ClubSpaManagementScreen>
             child: const Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async() {
+            onPressed: () async {
               if (formKey.currentState?.validate() == true) {
                 formKey.currentState?.save();
                 Navigator.pop(context);
@@ -183,7 +186,7 @@ class _ClubSpaManagementScreenState extends State<ClubSpaManagementScreen>
                     const SnackBar(content: Text('Tạo phần thưởng thành công!')),
                   );
                   _loadClubData();
-                } else() {
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Lỗi khi tạo phần thưởng')),
                   );
@@ -466,7 +469,7 @@ class _ClubSpaManagementScreenState extends State<ClubSpaManagementScreen>
                             ),
                             Switch(
                               value: reward['is_active'] ?? false,
-                              onChanged: (value) async() {
+                              onChanged: (value) async {
                                 // TODO: Implement toggle reward active status
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Tính năng sẽ được cập nhật')),

@@ -1,6 +1,7 @@
-﻿import 'dart:convert';
 
-class Match() {
+import 'dart:convert';
+
+class Match {
   final String id;
   final String? tournamentId;
   final String player1Id;
@@ -98,7 +99,7 @@ class Match() {
     if (value == null) return null;
     if (value is Map<String, dynamic>) return value;
     if (value is String) {
-      try() {
+      try {
         return jsonDecode(value) as Map<String, dynamic>;
       } catch (e) {
         return null;
@@ -111,7 +112,7 @@ class Match() {
     if (value == null) return null;
     if (value is Map<String, dynamic>) return value;
     if (value is String) {
-      try() {
+      try {
         return jsonDecode(value) as Map<String, dynamic>;
       } catch (e) {
         return null;

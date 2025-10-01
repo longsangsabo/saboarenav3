@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../models/member_analytics.dart';
 
-class MemberAnalyticsCard extends StatefulWidget() {
+class MemberAnalyticsCard extends StatefulWidget {
+  const MemberAnalyticsCard({super.key});
+
+} 
   final MemberAnalytics analytics;
   
   const MemberAnalyticsCard({
@@ -14,7 +17,7 @@ class MemberAnalyticsCard extends StatefulWidget() {
 }
 
 class _MemberAnalyticsCardState extends State<MemberAnalyticsCard>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late List<Animation<double>> _animations;
 
@@ -259,7 +262,7 @@ class _MemberAnalyticsCardState extends State<MemberAnalyticsCard>
   }
 }
 
-class _DetailedAnalyticsDialog extends StatelessWidget() {
+class _DetailedAnalyticsDialog extends StatelessWidget {
   final MemberAnalytics analytics;
 
   const _DetailedAnalyticsDialog({
@@ -435,7 +438,7 @@ class _DetailedAnalyticsDialog extends StatelessWidget() {
   }
 }
 
-class _DetailItem() {
+class _DetailItem {
   final String label;
   final String value;
 

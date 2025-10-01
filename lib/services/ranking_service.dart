@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:sabo_arena/core/constants/ranking_constants.dart';
-import 'package:sabo_arena/models/user_profile.dart';
 
 /// 🎯 Ranking Service
 ///
 /// Handles all logic related to calculating, updating, and verifying player ranks.
 /// This service uses the ELO rating of a user to determine their appropriate rank
 /// based on the definitions in [RankingConstants].
-class RankingService() {
+class RankingService {
   /// Returns display information for a given rank code.
   ///
   /// - [rankCode]: The rank code (e.g., 'K', 'I+').
@@ -125,7 +123,7 @@ class RankingService() {
 }
 
 /// A data class to hold display-friendly information about a rank.
-class RankDisplayInfo() {
+class RankDisplayInfo {
   final String code;
   final String name;
   final Color color;

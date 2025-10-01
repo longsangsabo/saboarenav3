@@ -2,16 +2,9 @@
 // Integrates ELO rating system with tournament results and ranking progression
 // Implements advanced ELO calculations with tournament bonuses and modifiers
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services/tournament_service.dart';
-import '../services/ranking_service.dart';
-import '../services/config_service.dart';
-import '../models/user_profile.dart';
-import 'dart:math' as math;
-import 'package:flutter/foundation.dart';
 
 /// Service tích hợp ELO rating với tournament system
-class TournamentEloService() {
+class TournamentEloService {
   static TournamentEloService? _instance;
   static TournamentEloService get instance => _instance ??= TournamentEloService._();
   TournamentEloService._();
@@ -27,8 +20,8 @@ class TournamentEloService() {
     required String tournamentId,
     required List<TournamentResult> results,
     required String tournamentFormat,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get ELO configuration từ database
       final eloConfig = await _configService.getEloConfig();
       
@@ -65,7 +58,7 @@ class TournamentEloService() {
     required List<TournamentResult> results,
     required String tournamentFormat,
     required EloConfig eloConfig,
-  }) async() {
+  }) async {
     List<DetailedEloChange> eloChanges = [];
     final participantCount = results.length;
 
@@ -162,7 +155,7 @@ class TournamentEloService() {
     required String tournamentFormat,
     required int participantCount,
     required List<TournamentResult> allResults,
-  }) async() {
+  }) async {
     int sizeBonus = 0;
     int formatBonus = 0;
     int perfectRunBonus = 0;
@@ -255,7 +248,7 @@ class TournamentEloService() {
   }
 
   /// Get expected tournament position dựa trên ELO
-  Future<int> _getExpectedPosition(UserProfile participant, List<TournamentResult> allResults) async() {
+  Future<int> _getExpectedPosition(UserProfile participant, List<TournamentResult> allResults) async {
     // Get all participants' starting ELO
     List<int> allElos = [];
     for (final result in allResults) {
@@ -276,8 +269,8 @@ class TournamentEloService() {
   }
 
   /// Calculate streak bonus for consecutive good performances
-  Future<int> _calculateStreakBonus(String participantId) async() {
-    try() {
+  Future<int> _calculateStreakBonus(String participantId) async {
+    try {
       // Get recent tournament performances
       final recentPerformances = await _getRecentTournamentPerformances(participantId, 5);
       
@@ -306,8 +299,8 @@ class TournamentEloService() {
   }
 
   /// Get recent tournament performances
-  Future<List<Map<String, dynamic>>> _getRecentTournamentPerformances(String participantId, int limit) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> _getRecentTournamentPerformances(String participantId, int limit) async {
+    try {
       final response = await _supabase
           .from('tournament_participants')
           .select('final_position, tournament_id, created_at')
@@ -323,8 +316,8 @@ class TournamentEloService() {
   }
 
   /// Apply ELO change to database
-  Future<EloUpdateResult> _applyEloChange(DetailedEloChange change) async() {
-    try() {
+  Future<EloUpdateResult> _applyEloChange(DetailedEloChange change) async {
+    try {
       // Update user's ELO rating
       await _supabase
           .from('users')
@@ -367,8 +360,8 @@ class TournamentEloService() {
   }
 
   /// Log tournament ELO changes
-  Future<void> _logTournamentEloChanges(String tournamentId, List<EloUpdateResult> results) async() {
-    try() {
+  Future<void> _logTournamentEloChanges(String tournamentId, List<EloUpdateResult> results) async {
+    try {
       await _supabase.from('tournament_elo_logs').insert({
         'tournament_id': tournamentId,
         'total_participants': results.length,
@@ -387,7 +380,7 @@ class TournamentEloService() {
   }
 
   /// Check for ranking changes after ELO updates
-  Future<void> _checkRankingChanges(List<EloUpdateResult> updateResults) async() {
+  Future<void> _checkRankingChanges(List<EloUpdateResult> updateResults) async {
     for (final result in updateResults.where((r) => r.success)) {
       final oldRank = _rankingService.getRankFromElo(result.oldElo);
       final newRank = _rankingService.getRankFromElo(result.newElo);
@@ -399,8 +392,8 @@ class TournamentEloService() {
   }
 
   /// Notify user of ranking change
-  Future<void> _notifyRankingChange(String userId, String oldRank, String newRank) async() {
-    try() {
+  Future<void> _notifyRankingChange(String userId, String oldRank, String newRank) async {
+    try {
       // Create notification
       await _supabase.from('notifications').insert({
         'user_id': userId,
@@ -420,8 +413,8 @@ class TournamentEloService() {
   }
 
   /// Get participant profile
-  Future<UserProfile?> _getParticipantProfile(String participantId) async() {
-    try() {
+  Future<UserProfile?> _getParticipantProfile(String participantId) async {
+    try {
       final response = await _supabase
           .from('users')
           .select('*')
@@ -462,7 +455,7 @@ class TournamentEloService() {
 // ==================== DATA MODELS ====================
 
 /// Detailed ELO Change with all bonuses and modifiers
-class DetailedEloChange() {
+class DetailedEloChange {
   final String participantId;
   final int oldElo;
   final int newElo;
@@ -489,7 +482,7 @@ class DetailedEloChange() {
 }
 
 /// Tournament Bonuses breakdown
-class TournamentBonuses() {
+class TournamentBonuses {
   final int sizeBonus;
   final int formatBonus;
   final int perfectRunBonus;
@@ -522,7 +515,7 @@ class TournamentBonuses() {
 }
 
 /// ELO Update Result
-class EloUpdateResult() {
+class EloUpdateResult {
   final String participantId;
   final bool success;
   final int oldElo;

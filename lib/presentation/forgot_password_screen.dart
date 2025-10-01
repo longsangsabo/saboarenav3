@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../services/auth_service.dart';
 
-class ForgotPasswordScreen extends StatefulWidget() {
+class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
-  @override
+@override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
@@ -20,12 +20,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  Future<void> _sendResetLink() async() {
+  Future<void> _sendResetLink() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    try() {
+    try {
       await AuthService.instance.resetPassword(
         _emailController.text.trim(),
       );
@@ -48,7 +48,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isLoading = false);
       }
@@ -147,3 +147,4 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
+

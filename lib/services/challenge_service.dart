@@ -1,9 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'notification_service.dart';
-import 'challenge_rules_service.dart';
-import 'package:flutter/foundation.dart';
 
-class ChallengeService() {
+class ChallengeService {
   static ChallengeService? _instance;
   static ChallengeService get instance => _instance ??= ChallengeService._();
   ChallengeService._();
@@ -21,8 +17,8 @@ class ChallengeService() {
     int handicap = 0,
     int spaPoints = 0,
     String? message,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('User not authenticated');
@@ -128,8 +124,8 @@ class ChallengeService() {
     required DateTime scheduledDate,
     required String timeSlot,
     String? message,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('User not authenticated');
@@ -177,8 +173,8 @@ class ChallengeService() {
   }
 
   /// Accept a challenge
-  Future<void> acceptChallenge(String challengeId) async() {
-    try() {
+  Future<void> acceptChallenge(String challengeId) async {
+    try {
       await _supabase
           .from('challenges')
           .update({
@@ -208,8 +204,8 @@ class ChallengeService() {
   }
 
   /// Decline a challenge
-  Future<void> declineChallenge(String challengeId, {String? reason}) async() {
-    try() {
+  Future<void> declineChallenge(String challengeId, {String? reason}) async {
+    try {
       await _supabase
           .from('challenges')
           .update({
@@ -243,8 +239,8 @@ class ChallengeService() {
   Future<List<Map<String, dynamic>>> getUserChallenges({
     String? type, // 'sent', 'received', null for all
     String? status, // 'pending', 'accepted', 'declined', null for all
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
         throw Exception('User not authenticated');
@@ -286,7 +282,7 @@ class ChallengeService() {
     required DateTime scheduledTime,
     required String location,
     required int spaPoints,
-  }) async() {
+  }) async {
     final title = challengeType == 'thach_dau' 
         ? "⚔️ Thách đấu mới!" 
         : '🎱 Lời mời giao lưu!';
@@ -319,7 +315,7 @@ Hãy vào ứng dụng để chấp nhận hoặc từ chối!
     required String targetUserId,
     required DateTime scheduledDate,
     required String timeSlot,
-  }) async() {
+  }) async {
     final message = '''
 📅 Lời mời hẹn lịch chơi bida!
 

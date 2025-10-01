@@ -1,8 +1,5 @@
-import '../models/club_model.dart';
-import '../models/tournament_model.dart';
-
-class TournamentRepository() {
-  Future<List<TournamentModel>> getTournaments() async() {
+class TournamentRepository {
+  Future<List<TournamentModel>> getTournaments() async {
     // This is mock data. In a real app, you would fetch this from a database or API.
     await Future.delayed(const Duration(seconds: 1));
     return [
@@ -18,7 +15,8 @@ class TournamentRepository() {
         startDate: DateTime.now().add(const Duration(days: 7)),
         registrationDeadline: DateTime.now().add(const Duration(days: 5)),
         status: 'upcoming',
-        coverImageUrl: 'https://via.placeholder.com/300x200.png?text=Tournament+1',
+        coverImageUrl:
+            'https://via.placeholder.com/300x200.png?text=Tournament+1',
         hasLiveStream: true,
         skillLevelRequired: 'Mọi trình độ',
       ),
@@ -34,11 +32,12 @@ class TournamentRepository() {
         startDate: DateTime.now().add(const Duration(days: 14)),
         registrationDeadline: DateTime.now().add(const Duration(days: 10)),
         status: 'upcoming',
-        coverImageUrl: 'https://via.placeholder.com/300x200.png?text=Tournament+2',
+        coverImageUrl:
+            'https://via.placeholder.com/300x200.png?text=Tournament+2',
         hasLiveStream: false,
         skillLevelRequired: 'Nâng cao',
       ),
-       TournamentModel(
+      TournamentModel(
         id: '3',
         title: 'Giải đấu Đang Diễn Ra',
         club: ClubModel(id: 'clb3', name: 'CLB Bida C', location: 'Đà Nẵng'),
@@ -49,11 +48,12 @@ class TournamentRepository() {
         maxParticipants: 32,
         startDate: DateTime.now().subtract(const Duration(days: 1)),
         status: 'live',
-        coverImageUrl: 'https://via.placeholder.com/300x200.png?text=Tournament+3',
+        coverImageUrl:
+            'https://via.placeholder.com/300x200.png?text=Tournament+3',
         hasLiveStream: true,
         skillLevelRequired: 'Chuyên nghiệp',
       ),
-        TournamentModel(
+      TournamentModel(
         id: '4',
         title: 'Giải đấu Đã Kết Thúc',
         club: ClubModel(id: 'clb4', name: 'CLB Bida D', location: 'Cần Thơ'),
@@ -64,7 +64,8 @@ class TournamentRepository() {
         maxParticipants: 16,
         startDate: DateTime.now().subtract(const Duration(days: 10)),
         status: 'completed',
-        coverImageUrl: 'https://via.placeholder.com/300x200.png?text=Tournament+4',
+        coverImageUrl:
+            'https://via.placeholder.com/300x200.png?text=Tournament+4',
         hasLiveStream: false,
         skillLevelRequired: 'Mọi trình độ',
       ),

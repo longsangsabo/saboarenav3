@@ -3,7 +3,10 @@ import '../../../theme/app_theme.dart';
 import '../../../routes/app_routes.dart';
 import '../../admin_tournament_management_screen/admin_tournament_management_screen.dart';
 
-class AdminBottomNavigation extends StatelessWidget() {
+class AdminBottomNavigation extends StatelessWidget {
+  const AdminBottomNavigation({super.key});
+
+} 
   final int currentIndex;
   final Function(int) onTap;
 

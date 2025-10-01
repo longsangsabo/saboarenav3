@@ -10,7 +10,10 @@ import '../../../widgets/privacy_status_widget.dart';
 
 import './rank_registration_info_modal.dart';
 
-class ProfileHeaderWidget extends StatelessWidget() {
+class ProfileHeaderWidget extends StatelessWidget {
+  const ProfileHeaderWidget({super.key});
+
+} 
   final Map<String, dynamic> userData;
   final VoidCallback? onEditProfile;
   final VoidCallback? onCoverPhotoTap;
@@ -315,7 +318,7 @@ class ProfileHeaderWidget extends StatelessWidget() {
         if (hasRank) {
           // Người dùng đã có rank, có thể hiển thị thông tin chi tiết về rank
           _showRankDetails(context);
-        } else() {
+        } else {
           // Người dùng chưa có rank, hiển thị modal đăng ký
           _showRankInfoModal(context);
         }
@@ -663,7 +666,7 @@ class ProfileHeaderWidget extends StatelessWidget() {
       return '${(number / 1000000).toStringAsFixed(1)}M';
     } else if (number >= 1000) {
       return '${(number / 1000).toStringAsFixed(1)}K';
-    } else() {
+    } else {
       return number.toString();
     }
   }
@@ -675,7 +678,7 @@ class ProfileHeaderWidget extends StatelessWidget() {
       return '${(amount / 1000).toStringAsFixed(1)}K';
     } else if (amount == amount.toInt()) {
       return amount.toInt().toString();
-    } else() {
+    } else {
       return amount.toStringAsFixed(2);
     }
   }
@@ -704,7 +707,7 @@ class ProfileHeaderWidget extends StatelessWidget() {
           );
         },
       );
-    } else() {
+    } else {
       // Network URL
       return CustomImageWidget(
         imageUrl: imageUrl,
@@ -837,7 +840,7 @@ class ProfileHeaderWidget extends StatelessWidget() {
         '• Premium features và benefits',
         '• Tournament entry fees (tùy chọn)',
       ];
-    } else() {
+    } else {
       title = 'Prize Pool System';
       icon = Icons.monetization_on;
       description = 'Tổng giá trị tiền thưởng (VNĐ) bạn đã giành được từ tournaments.';

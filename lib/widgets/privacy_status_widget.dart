@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/helpers/privacy_helper.dart';
 import 'package:sabo_arena/services/user_privacy_service.dart';
 
-class PrivacyStatusWidget extends StatefulWidget() {
+class PrivacyStatusWidget extends StatefulWidget {
+  const PrivacyStatusWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String userId;
   final bool isOwnProfile;
   final VoidCallback? onPrivacyTap;
@@ -28,8 +38,8 @@ class _PrivacyStatusWidgetState extends State<PrivacyStatusWidget> {
     _loadPrivacySettings();
   }
 
-  Future<void> _loadPrivacySettings() async() {
-    try() {
+  Future<void> _loadPrivacySettings() async {
+    try {
       final settings = await UserPrivacyService.getUserPrivacySettings(widget.userId);
       setState(() {
         _privacySettings = settings;
@@ -66,10 +76,10 @@ class _PrivacyStatusWidgetState extends State<PrivacyStatusWidget> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: _getPrivacyColor(privacyLevel).withOpacity(0.1),
+          color: _getPrivacyColor(privacyLevel).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: _getPrivacyColor(privacyLevel).withOpacity(0.3),
+            color: _getPrivacyColor(privacyLevel).withValues(alpha: 0.3),
           ),
         ),
         child: Row(
@@ -116,7 +126,17 @@ class _PrivacyStatusWidgetState extends State<PrivacyStatusWidget> {
   }
 }
 
-class PrivacyQuickSettingsWidget extends StatefulWidget() {
+class PrivacyQuickSettingsWidget extends StatefulWidget {
+  const PrivacyQuickSettingsWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String userId;
   final VoidCallback? onSettingsChanged;
 
@@ -141,8 +161,8 @@ class _PrivacyQuickSettingsWidgetState extends State<PrivacyQuickSettingsWidget>
     _loadCurrentSettings();
   }
 
-  Future<void> _loadCurrentSettings() async() {
-    try() {
+  Future<void> _loadCurrentSettings() async {
+    try {
       final settings = await UserPrivacyService.getUserPrivacySettings(widget.userId);
       setState(() {
         _currentSettings = settings;
@@ -155,12 +175,12 @@ class _PrivacyQuickSettingsWidgetState extends State<PrivacyQuickSettingsWidget>
     }
   }
 
-  Future<void> _applyPreset(String presetKey) async() {
+  Future<void> _applyPreset(String presetKey) async {
     setState(() {
       _isSaving = true;
     });
 
-    try() {
+    try {
       final presets = PrivacyHelper.getQuickPrivacyPresets();
       final preset = presets[presetKey];
       
@@ -192,7 +212,7 @@ class _PrivacyQuickSettingsWidgetState extends State<PrivacyQuickSettingsWidget>
           ),
         );
       }
-    } finally() {
+    } finally {
       setState(() {
         _isSaving = false;
       });
@@ -240,7 +260,7 @@ class _PrivacyQuickSettingsWidgetState extends State<PrivacyQuickSettingsWidget>
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isSelected 
-                        ? Theme.of(context).primaryColor.withOpacity(0.1)
+                        ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
                         : Colors.grey[50],
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
@@ -309,7 +329,17 @@ class _PrivacyQuickSettingsWidgetState extends State<PrivacyQuickSettingsWidget>
   }
 }
 
-class PrivacyInfoDialog extends StatelessWidget() {
+class PrivacyInfoDialog extends StatelessWidget {
+  const PrivacyInfoDialog({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   const PrivacyInfoDialog({Key? key}) : super(key: key);
 
   @override
@@ -373,16 +403,23 @@ class PrivacyInfoDialog extends StatelessWidget() {
   }
 }
 
-class _InfoItem extends StatelessWidget() {
+class _InfoItem extends StatelessWidget {
   final String icon;
   final String title;
   final String description;
 
   const _InfoItem({
+    
     required this.icon,
     required this.title,
     required this.description,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   Widget build(BuildContext context) {

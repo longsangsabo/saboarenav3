@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 import '../../../services/production_bracket_service.dart';
 
 /// Production bracket management with database integration
-class ProductionBracketWidget extends StatefulWidget() {
+class ProductionBracketWidget extends StatefulWidget {
+  const ProductionBracketWidget({super.key});
+
+} 
   final String tournamentId;
   
   const ProductionBracketWidget({
@@ -30,10 +33,10 @@ class _ProductionBracketWidgetState extends State<ProductionBracketWidget> {
     _loadTournamentData();
   }
 
-  Future<void> _loadTournamentData() async() {
+  Future<void> _loadTournamentData() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       // Load tournament info to get the actual format
       _tournamentInfo = await _bracketService.getTournamentInfo(widget.tournamentId);
       if (_tournamentInfo != null && _tournamentInfo!['format'] != null) {
@@ -47,19 +50,21 @@ class _ProductionBracketWidgetState extends State<ProductionBracketWidget> {
       if (bracketData != null) {
         _existingBracket = bracketData;
         _participants = (bracketData['participants'] as List? ?? []).cast<Map<String, dynamic>>();
-      } else() {
+      } else {
+        () {
         // Load participants for new bracket
         _participants = await _bracketService.getTournamentParticipants(widget.tournamentId);
       }
       
-    } catch (e) {
+    
+      }} catch (e) {
       _showError('Lỗi tải dữ liệu: $e');
-    } finally() {
+    } finally {
       setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _createBracket() async() {
+  Future<void> _createBracket() async {
     if (_participants.length < 4) {
       _showError('Cần ít nhất 4 người chơi để tạo bảng đấu');
       return;
@@ -67,7 +72,7 @@ class _ProductionBracketWidgetState extends State<ProductionBracketWidget> {
 
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       final result = await _bracketService.createTournamentBracket(
         tournamentId: widget.tournamentId,
         format: _selectedFormat,
@@ -76,13 +81,15 @@ class _ProductionBracketWidgetState extends State<ProductionBracketWidget> {
       if (result?['success'] == true) {
         _showSuccess(result!['message']);
         await _loadTournamentData(); // Reload to show created bracket
-      } else() {
+      } else {
+        () {
         _showError(result?['message'] ?? 'Lỗi không xác định');
       }
       
-    } catch (e) {
+    
+      }} catch (e) {
       _showError('Lỗi tạo bảng đấu: $e');
-    } finally() {
+    } finally {
       setState(() => _isLoading = false);
     }
   }
@@ -459,7 +466,7 @@ class _ProductionBracketWidgetState extends State<ProductionBracketWidget> {
   }
 }
 
-class _StatItem extends StatelessWidget() {
+class _StatItem extends StatelessWidget {
   final String label;
   final String value;
   final Color color;

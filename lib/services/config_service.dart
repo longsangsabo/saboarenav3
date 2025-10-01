@@ -2,11 +2,9 @@
 // Manages dynamic configuration from database and caches for performance
 // Implements hybrid architecture pattern from CORE_LOGIC_ARCHITECTURE.md
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:convert';
 
 /// Configuration Service quản lý các cài đặt động từ database
-class ConfigService() {
+class ConfigService {
   static ConfigService? _instance;
   static ConfigService get instance => _instance ??= ConfigService._();
   ConfigService._();
@@ -21,7 +19,7 @@ class ConfigService() {
   // ==================== TOURNAMENT CONFIGURATIONS ====================
 
   /// Get tournament format definitions từ database
-  Future<List<TournamentFormatConfig>> getTournamentFormats() async() {
+  Future<List<TournamentFormatConfig>> getTournamentFormats() async {
     const cacheKey = 'tournament_formats';
     
     if (_isCacheValid(cacheKey)) {
@@ -30,7 +28,7 @@ class ConfigService() {
           .toList();
     }
 
-    try() {
+    try {
       final response = await _supabase
           .from('tournament_formats')
           .select('*')
@@ -51,13 +49,13 @@ class ConfigService() {
   }
 
   /// Get specific tournament format by code
-  Future<TournamentFormatConfig?> getTournamentFormat(String formatCode) async() {
+  Future<TournamentFormatConfig?> getTournamentFormat(String formatCode) async {
     final formats = await getTournamentFormats();
     return formats.where((f) => f.formatCode == formatCode).firstOrNull;
   }
 
   /// Get prize pool configurations
-  Future<List<PrizePoolConfig>> getPrizePoolConfigurations() async() {
+  Future<List<PrizePoolConfig>> getPrizePoolConfigurations() async {
     const cacheKey = 'prize_pool_configs';
     
     if (_isCacheValid(cacheKey)) {
@@ -66,7 +64,7 @@ class ConfigService() {
           .toList();
     }
 
-    try() {
+    try {
       final response = await _supabase
           .from('prize_pool_configurations')
           .select('*')
@@ -89,14 +87,14 @@ class ConfigService() {
   // ==================== PLATFORM SETTINGS ====================
 
   /// Get platform settings (ELO K-factors, timeouts, etc.)
-  Future<PlatformSettings> getPlatformSettings() async() {
+  Future<PlatformSettings> getPlatformSettings() async {
     const cacheKey = 'platform_settings';
     
     if (_isCacheValid(cacheKey)) {
       return PlatformSettings.fromJson(_cache[cacheKey]);
     }
 
-    try() {
+    try {
       final response = await _supabase
           .from('platform_settings')
           .select('*')
@@ -115,13 +113,13 @@ class ConfigService() {
   }
 
   /// Get ELO configuration
-  Future<EloConfig> getEloConfig() async() {
+  Future<EloConfig> getEloConfig() async {
     final settings = await getPlatformSettings();
     return settings.eloConfig;
   }
 
   /// Get tournament timeouts configuration
-  Future<TournamentTimeouts> getTournamentTimeouts() async() {
+  Future<TournamentTimeouts> getTournamentTimeouts() async {
     final settings = await getPlatformSettings();
     return settings.tournamentTimeouts;
   }
@@ -129,7 +127,7 @@ class ConfigService() {
   // ==================== RANKING DEFINITIONS ====================
 
   /// Get ranking definitions từ database
-  Future<List<RankingDefinition>> getRankingDefinitions() async() {
+  Future<List<RankingDefinition>> getRankingDefinitions() async {
     const cacheKey = 'ranking_definitions';
     
     if (_isCacheValid(cacheKey)) {
@@ -138,7 +136,7 @@ class ConfigService() {
           .toList();
     }
 
-    try() {
+    try {
       final response = await _supabase
           .from('ranking_definitions')
           .select('*')
@@ -159,7 +157,7 @@ class ConfigService() {
   }
 
   /// Get ranking definition by ELO
-  Future<RankingDefinition?> getRankingByElo(int elo) async() {
+  Future<RankingDefinition?> getRankingByElo(int elo) async {
     final definitions = await getRankingDefinitions();
     
     for (final definition in definitions.reversed) {
@@ -174,7 +172,7 @@ class ConfigService() {
   // ==================== GAME FORMATS ====================
 
   /// Get game formats (8-ball, 9-ball, etc.)
-  Future<List<GameFormatConfig>> getGameFormats() async() {
+  Future<List<GameFormatConfig>> getGameFormats() async {
     const cacheKey = 'game_formats';
     
     if (_isCacheValid(cacheKey)) {
@@ -183,7 +181,7 @@ class ConfigService() {
           .toList();
     }
 
-    try() {
+    try {
       final response = await _supabase
           .from('game_formats')
           .select('*')
@@ -230,7 +228,7 @@ class ConfigService() {
   }
 
   /// Force refresh all configurations
-  Future<void> refreshConfigurations() async() {
+  Future<void> refreshConfigurations() async {
     clearCache();
     await Future.wait([
       getTournamentFormats(),
@@ -244,8 +242,8 @@ class ConfigService() {
   // ==================== ADMIN METHODS ====================
 
   /// Update platform settings (admin only)
-  Future<void> updatePlatformSettings(PlatformSettings settings) async() {
-    try() {
+  Future<void> updatePlatformSettings(PlatformSettings settings) async {
+    try {
       await _supabase
           .from('platform_settings')
           .upsert(settings.toJson())
@@ -258,8 +256,8 @@ class ConfigService() {
   }
 
   /// Add or update tournament format (admin only)
-  Future<void> upsertTournamentFormat(TournamentFormatConfig format) async() {
-    try() {
+  Future<void> upsertTournamentFormat(TournamentFormatConfig format) async {
+    try {
       await _supabase
           .from('tournament_formats')
           .upsert(format.toJson());
@@ -271,8 +269,8 @@ class ConfigService() {
   }
 
   /// Toggle tournament format active status (admin only)
-  Future<void> toggleTournamentFormatStatus(String formatCode, bool isActive) async() {
-    try() {
+  Future<void> toggleTournamentFormatStatus(String formatCode, bool isActive) async {
+    try {
       await _supabase
           .from('tournament_formats')
           .update({'is_active': isActive, 'updated_at': DateTime.now().toIso8601String()})
@@ -288,7 +286,7 @@ class ConfigService() {
 // ==================== CONFIGURATION MODELS ====================
 
 /// Tournament Format Configuration từ database
-class TournamentFormatConfig() {
+class TournamentFormatConfig {
   final String id;
   final String formatCode;
   final String formatName;
@@ -360,7 +358,7 @@ class TournamentFormatConfig() {
 }
 
 /// Prize Pool Configuration
-class PrizePoolConfig() {
+class PrizePoolConfig {
   final String id;
   final int minPlayers;
   final int maxPlayers;
@@ -405,7 +403,7 @@ class PrizePoolConfig() {
 }
 
 /// Platform Settings
-class PlatformSettings() {
+class PlatformSettings {
   final String id;
   final EloConfig eloConfig;
   final TournamentTimeouts tournamentTimeouts;
@@ -456,7 +454,7 @@ class PlatformSettings() {
 }
 
 /// ELO Configuration
-class EloConfig() {
+class EloConfig {
   final int startingElo;
   final int kFactorNew;
   final int kFactorRegular;
@@ -501,7 +499,7 @@ class EloConfig() {
 }
 
 /// Tournament Timeouts Configuration
-class TournamentTimeouts() {
+class TournamentTimeouts {
   final int registrationDeadlineHours;
   final int matchTimeoutMinutes;
   final int roundStartDelayMinutes;
@@ -534,7 +532,7 @@ class TournamentTimeouts() {
 }
 
 /// Ranking Definition từ database
-class RankingDefinition() {
+class RankingDefinition {
   final String id;
   final String rankCode;
   final String rankName;
@@ -591,7 +589,7 @@ class RankingDefinition() {
 }
 
 /// Game Format Configuration
-class GameFormatConfig() {
+class GameFormatConfig {
   final String id;
   final String formatCode;
   final String formatName;

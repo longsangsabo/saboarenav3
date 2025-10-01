@@ -2,24 +2,21 @@
 // Phase 2: WebSocket integration for live tournament updates
 // Handles real-time bracket updates, match results, and notifications
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:async';
-import 'package:flutter/foundation.dart';
-
 /// Service quản lý real-time updates cho tournament system
-class RealTimeTournamentService() {
+class RealTimeTournamentService {
   static RealTimeTournamentService? _instance;
-  static RealTimeTournamentService get instance => _instance ??= RealTimeTournamentService._();
+  static RealTimeTournamentService get instance =>
+      _instance ??= RealTimeTournamentService._();
   RealTimeTournamentService._();
 
   final SupabaseClient _supabase = Supabase.instance.client;
-  
+
   // Stream controllers for different types of updates
-  final StreamController<Map<String, dynamic>> _tournamentUpdatesController = 
+  final StreamController<Map<String, dynamic>> _tournamentUpdatesController =
       StreamController<Map<String, dynamic>>.broadcast();
-  final StreamController<Map<String, dynamic>> _matchUpdatesController = 
+  final StreamController<Map<String, dynamic>> _matchUpdatesController =
       StreamController<Map<String, dynamic>>.broadcast();
-  final StreamController<Map<String, dynamic>> _participantUpdatesController = 
+  final StreamController<Map<String, dynamic>> _participantUpdatesController =
       StreamController<Map<String, dynamic>>.broadcast();
 
   // Subscription management
@@ -28,74 +25,75 @@ class RealTimeTournamentService() {
   // ==================== STREAM GETTERS ====================
 
   /// Stream for tournament status changes (active, completed, etc.)
-  Stream<Map<String, dynamic>> get tournamentUpdates => _tournamentUpdatesController.stream;
+  Stream<Map<String, dynamic>> get tournamentUpdates =>
+      _tournamentUpdatesController.stream;
 
   /// Stream for match result updates and bracket progression
-  Stream<Map<String, dynamic>> get matchUpdates => _matchUpdatesController.stream;
+  Stream<Map<String, dynamic>> get matchUpdates =>
+      _matchUpdatesController.stream;
 
-  /// Stream for participant registration/withdrawal updates  
-  Stream<Map<String, dynamic>> get participantUpdates => _participantUpdatesController.stream;
+  /// Stream for participant registration/withdrawal updates
+  Stream<Map<String, dynamic>> get participantUpdates =>
+      _participantUpdatesController.stream;
 
   // ==================== SUBSCRIPTION MANAGEMENT ====================
 
   /// Subscribe to real-time updates for a specific tournament
-  Future<void> subscribeTournament(String tournamentId) async() {
-    try() {
+  Future<void> subscribeTournament(String tournamentId) async {
+    try {
       // Unsubscribe if already subscribed
       await unsubscribeTournament(tournamentId);
 
-      debugPrint('🔔 Subscribing to real-time updates for tournament: $tournamentId');
+      debugPrint(
+          '🔔 Subscribing to real-time updates for tournament: $tournamentId');
 
       // Subscribe to tournament table changes
-      final tournamentChannel = _supabase
-          .channel('tournament_$tournamentId')
-          .onPostgresChanges(
-            event: PostgresChangeEvent.all,
-            schema: 'public',
-            table: 'tournaments',
-            filter: PostgresChangeFilter(
-              type: PostgresChangeFilterType.eq,
-              column: 'id',
-              value: tournamentId,
-            ),
-            callback: (payload) {
-              _handleTournamentUpdate(payload);
-            },
-          );
+      final tournamentChannel =
+          _supabase.channel('tournament_$tournamentId').onPostgresChanges(
+                event: PostgresChangeEvent.all,
+                schema: 'public',
+                table: 'tournaments',
+                filter: PostgresChangeFilter(
+                  type: PostgresChangeFilterType.eq,
+                  column: 'id',
+                  value: tournamentId,
+                ),
+                callback: (payload) {
+                  _handleTournamentUpdate(payload);
+                },
+              );
 
       // Subscribe to matches table changes for this tournament
-      final matchesChannel = _supabase
-          .channel('matches_$tournamentId')
-          .onPostgresChanges(
-            event: PostgresChangeEvent.all,
-            schema: 'public',
-            table: 'matches',
-            filter: PostgresChangeFilter(
-              type: PostgresChangeFilterType.eq,
-              column: 'tournament_id',
-              value: tournamentId,
-            ),
-            callback: (payload) {
-              _handleMatchUpdate(payload);
-            },
-          );
+      final matchesChannel =
+          _supabase.channel('matches_$tournamentId').onPostgresChanges(
+                event: PostgresChangeEvent.all,
+                schema: 'public',
+                table: 'matches',
+                filter: PostgresChangeFilter(
+                  type: PostgresChangeFilterType.eq,
+                  column: 'tournament_id',
+                  value: tournamentId,
+                ),
+                callback: (payload) {
+                  _handleMatchUpdate(payload);
+                },
+              );
 
       // Subscribe to tournament_participants changes
-      final participantsChannel = _supabase
-          .channel('participants_$tournamentId')
-          .onPostgresChanges(
-            event: PostgresChangeEvent.all,
-            schema: 'public',
-            table: 'tournament_participants',
-            filter: PostgresChangeFilter(
-              type: PostgresChangeFilterType.eq,
-              column: 'tournament_id',
-              value: tournamentId,
-            ),
-            callback: (payload) {
-              _handleParticipantUpdate(payload);
-            },
-          );
+      final participantsChannel =
+          _supabase.channel('participants_$tournamentId').onPostgresChanges(
+                event: PostgresChangeEvent.all,
+                schema: 'public',
+                table: 'tournament_participants',
+                filter: PostgresChangeFilter(
+                  type: PostgresChangeFilterType.eq,
+                  column: 'tournament_id',
+                  value: tournamentId,
+                ),
+                callback: (payload) {
+                  _handleParticipantUpdate(payload);
+                },
+              );
 
       // Subscribe to all channels
       tournamentChannel.subscribe();
@@ -107,8 +105,8 @@ class RealTimeTournamentService() {
       _activeSubscriptions['matches_$tournamentId'] = matchesChannel;
       _activeSubscriptions['participants_$tournamentId'] = participantsChannel;
 
-      debugPrint('✅ Successfully subscribed to real-time updates for tournament: $tournamentId');
-
+      debugPrint(
+          '✅ Successfully subscribed to real-time updates for tournament: $tournamentId');
     } catch (e) {
       debugPrint('❌ Error subscribing to tournament updates: $e');
       throw Exception('Failed to subscribe to real-time updates: $e');
@@ -116,8 +114,8 @@ class RealTimeTournamentService() {
   }
 
   /// Unsubscribe from real-time updates for a specific tournament
-  Future<void> unsubscribeTournament(String tournamentId) async() {
-    try() {
+  Future<void> unsubscribeTournament(String tournamentId) async {
+    try {
       final tournamentKey = 'tournament_$tournamentId';
       final matchesKey = 'matches_$tournamentId';
       final participantsKey = 'participants_$tournamentId';
@@ -139,15 +137,14 @@ class RealTimeTournamentService() {
       }
 
       debugPrint('✅ Unsubscribed from tournament: $tournamentId');
-
     } catch (e) {
       debugPrint('❌ Error unsubscribing from tournament: $e');
     }
   }
 
   /// Unsubscribe from all tournaments
-  Future<void> unsubscribeAll() async() {
-    try() {
+  Future<void> unsubscribeAll() async {
+    try {
       for (final channel in _activeSubscriptions.values) {
         await channel.unsubscribe();
       }
@@ -162,7 +159,7 @@ class RealTimeTournamentService() {
 
   /// Handle tournament table updates (status changes, etc.)
   void _handleTournamentUpdate(PostgresChangePayload payload) {
-    try() {
+    try {
       final eventType = payload.eventType;
       final newRecord = payload.newRecord;
       final oldRecord = payload.oldRecord;
@@ -193,7 +190,6 @@ class RealTimeTournamentService() {
       }
 
       _tournamentUpdatesController.add(updateData);
-
     } catch (e) {
       debugPrint('❌ Error handling tournament update: $e');
     }
@@ -201,7 +197,7 @@ class RealTimeTournamentService() {
 
   /// Handle matches table updates (results, bracket progression)
   void _handleMatchUpdate(PostgresChangePayload payload) {
-    try() {
+    try {
       final eventType = payload.eventType;
       final newRecord = payload.newRecord;
       final oldRecord = payload.oldRecord;
@@ -212,7 +208,8 @@ class RealTimeTournamentService() {
         "type": 'match_update',
         'event': eventType.name,
         'match_id': newRecord['id'] ?? oldRecord['id'],
-        'tournament_id': newRecord['tournament_id'] ?? oldRecord['tournament_id'],
+        'tournament_id':
+            newRecord['tournament_id'] ?? oldRecord['tournament_id'],
         'new_data': newRecord,
         'old_data': oldRecord,
         'timestamp': DateTime.now().toIso8601String(),
@@ -224,7 +221,7 @@ class RealTimeTournamentService() {
         updateData['changes'] = changes;
 
         // Special handling for match completion
-        if (changes.containsKey('status') && 
+        if (changes.containsKey('status') &&
             changes['status']['new'] == 'completed') {
           updateData['match_completed'] = true;
           updateData['winner'] = newRecord['winner_id'];
@@ -235,7 +232,8 @@ class RealTimeTournamentService() {
         }
 
         // Handle score updates
-        if (changes.containsKey('player1_score') || changes.containsKey('player2_score')) {
+        if (changes.containsKey('player1_score') ||
+            changes.containsKey('player2_score')) {
           updateData['score_updated'] = true;
           updateData['current_score'] = {
             'player1': newRecord['player1_score'],
@@ -245,7 +243,6 @@ class RealTimeTournamentService() {
       }
 
       _matchUpdatesController.add(updateData);
-
     } catch (e) {
       debugPrint('❌ Error handling match update: $e');
     }
@@ -253,7 +250,7 @@ class RealTimeTournamentService() {
 
   /// Handle tournament participants updates (registration, withdrawal)
   void _handleParticipantUpdate(PostgresChangePayload payload) {
-    try() {
+    try {
       final eventType = payload.eventType;
       final newRecord = payload.newRecord;
       final oldRecord = payload.oldRecord;
@@ -264,7 +261,8 @@ class RealTimeTournamentService() {
         "type": 'participant_update',
         'event': eventType.name,
         'participant_id': newRecord['id'] ?? oldRecord['id'],
-        'tournament_id': newRecord['tournament_id'] ?? oldRecord['tournament_id'],
+        'tournament_id':
+            newRecord['tournament_id'] ?? oldRecord['tournament_id'],
         'user_id': newRecord['user_id'] ?? oldRecord['user_id'],
         'new_data': newRecord,
         'old_data': oldRecord,
@@ -291,7 +289,6 @@ class RealTimeTournamentService() {
       }
 
       _participantUpdatesController.add(updateData);
-
     } catch (e) {
       debugPrint('❌ Error handling participant update: $e');
     }
@@ -301,9 +298,7 @@ class RealTimeTournamentService() {
 
   /// Detect specific changes between old and new records
   Map<String, Map<String, dynamic>> _detectChanges(
-    Map<String, dynamic> oldRecord, 
-    Map<String, dynamic> newRecord
-  ) {
+      Map<String, dynamic> oldRecord, Map<String, dynamic> newRecord) {
     final changes = <String, Map<String, dynamic>>{};
 
     for (final key in newRecord.keys) {
@@ -334,10 +329,10 @@ class RealTimeTournamentService() {
   // ==================== CLEANUP ====================
 
   /// Dispose of all streams and subscriptions
-  Future<void> dispose() async() {
-    try() {
+  Future<void> dispose() async {
+    try {
       await unsubscribeAll();
-      
+
       await _tournamentUpdatesController.close();
       await _matchUpdatesController.close();
       await _participantUpdatesController.close();

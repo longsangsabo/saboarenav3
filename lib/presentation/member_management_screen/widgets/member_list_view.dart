@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../models/member_data.dart';
 import 'member_list_item.dart';
 
-class MemberListView extends StatefulWidget() {
+class MemberListView extends StatefulWidget {
+  const MemberListView({super.key});
+
+} 
   final List<MemberData> members;
   final List<String> selectedMembers;
   final Function(String, bool) onMemberSelected;
@@ -23,7 +26,7 @@ class MemberListView extends StatefulWidget() {
 }
 
 class _MemberListViewState extends State<MemberListView>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _listAnimationController;
   final ScrollController _scrollController = ScrollController();
   

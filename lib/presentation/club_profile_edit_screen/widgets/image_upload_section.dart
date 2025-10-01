@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/core/app_export.dart';
 
-class ImageUploadSection extends StatefulWidget() {
+class ImageUploadSection extends StatefulWidget {
+  const ImageUploadSection({super.key});
+
+} 
   final String coverImageUrl;
   final String logoImageUrl;
   final Function(String) onCoverChanged;
@@ -20,7 +23,7 @@ class ImageUploadSection extends StatefulWidget() {
 }
 
 class _ImageUploadSectionState extends State<ImageUploadSection>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _uploadController;
   late Animation<double> _uploadProgress;
   
@@ -570,12 +573,12 @@ class _ImageUploadSectionState extends State<ImageUploadSection>
     );
   }
 
-  void _simulateImageUpload(bool isCover, String source) async() {
+  void _simulateImageUpload(bool isCover, String source) async {
     setState(() {
       if (isCover) {
         _isCoverUploading = true;
         _coverUploadProgress = 0.0;
-      } else() {
+      } else {
         _isLogoUploading = true;
         _logoUploadProgress = 0.0;
       }
@@ -588,7 +591,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection>
         setState(() {
           if (isCover) {
             _coverUploadProgress = i / 100;
-          } else() {
+          } else {
             _logoUploadProgress = i / 100;
           }
         });
@@ -599,7 +602,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection>
       setState(() {
         if (isCover) {
           _isCoverUploading = false;
-        } else() {
+        } else {
           _isLogoUploading = false;
         }
       });
@@ -612,7 +615,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection>
 
       if (isCover) {
         widget.onCoverChanged(newImageUrl);
-      } else() {
+      } else {
         widget.onLogoChanged(newImageUrl);
       }
 
@@ -630,7 +633,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection>
   void _removeImage(bool isCover) {
     if (isCover) {
       widget.onCoverChanged('');
-    } else() {
+    } else {
       widget.onLogoChanged('');
     }
 

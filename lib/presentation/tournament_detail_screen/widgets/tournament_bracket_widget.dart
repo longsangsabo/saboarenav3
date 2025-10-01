@@ -7,7 +7,7 @@ import '../../../services/cached_tournament_service.dart';
 
 // Safe debug print wrapper to avoid null debug service errors
 void _safeDebugPrint(String message) {
-  try() {
+  try {
     debugPrint(message);
   } catch (e) {
     // Ignore debug service errors in production
@@ -15,7 +15,10 @@ void _safeDebugPrint(String message) {
   }
 }
 
-class TournamentBracketWidget extends StatefulWidget() {
+class TournamentBracketWidget extends StatefulWidget {
+  const TournamentBracketWidget({super.key});
+
+} 
   final Map<String, dynamic> tournament;
   final List<Map<String, dynamic>> bracketData;
 
@@ -59,8 +62,8 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
     }
   }
 
-  Future<void> _loadMatches() async() {
-    try() {
+  Future<void> _loadMatches() async {
+    try {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -70,7 +73,7 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
       
       // Use cached service for better performance instead of direct database calls
       List<Map<String, dynamic>> matches;
-      try() {
+      try {
         matches = await CachedTournamentService.loadMatches(widget.tournament['id']);
         _safeDebugPrint('📋 Loaded ${matches.length} matches from cache/service');
       } catch (e) {
@@ -94,9 +97,9 @@ class _TournamentBracketWidgetState extends State<TournamentBracketWidget> {
   }
 
   /// Force refresh data from server
-  Future<void> refreshData() async() {
+  Future<void> refreshData() async {
     _safeDebugPrint('🔄 Force refreshing bracket data from server...');
-    try() {
+    try {
       await CachedTournamentService.refreshTournamentData(widget.tournament['id']);
       await _loadMatches();
     } catch (e) {

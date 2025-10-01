@@ -1,11 +1,9 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'tournament_cache_service_complete.dart';
 
-class CachedTournamentService() {
+class CachedTournamentService {
   static const Duration _cacheMaxAge = Duration(minutes: 5);
   
   /// Load tournament with cache-first strategy
-  static Future<Map<String, dynamic>?> loadTournament(String tournamentId, {bool forceRefresh = false}) async() {
+  static Future<Map<String, dynamic>?> loadTournament(String tournamentId, {bool forceRefresh = false}) async {
     // Check if we should use cache
     if (!forceRefresh && !TournamentCacheService.isOfflineMode) {
       final hasCached = await TournamentCacheService.hasCachedTournament(tournamentId);
@@ -37,7 +35,7 @@ class CachedTournamentService() {
     }
 
     // Fetch from Supabase
-    try() {
+    try {
       final response = await Supabase.instance.client
           .from('tournaments')
           .select('*')
@@ -66,7 +64,7 @@ class CachedTournamentService() {
   }
 
   /// Load matches with cache-first strategy
-  static Future<List<Map<String, dynamic>>> loadMatches(String tournamentId, {bool forceRefresh = false}) async() {
+  static Future<List<Map<String, dynamic>>> loadMatches(String tournamentId, {bool forceRefresh = false}) async {
     // Check if we should use cache
     if (!forceRefresh && !TournamentCacheService.isOfflineMode) {
       final hasCached = await TournamentCacheService.hasCachedMatches(tournamentId);
@@ -114,7 +112,7 @@ class CachedTournamentService() {
     }
 
     // Fetch from Supabase
-    try() {
+    try {
       final response = await Supabase.instance.client
           .from('matches')
           .select('''
@@ -162,7 +160,7 @@ class CachedTournamentService() {
     required int player2Score,
     String? winnerId,
     required String status,
-  }) async() {
+  }) async {
     final updateData = {
       'player1_score': player1Score,
       'player2_score': player2Score,
@@ -188,7 +186,7 @@ class CachedTournamentService() {
     }
 
     // Try to update in Supabase
-    try() {
+    try {
       await Supabase.instance.client
           .from('matches')
           .update(updateData)
@@ -220,7 +218,7 @@ class CachedTournamentService() {
   }
 
   /// Helper to update match in cache
-  static Future<void> _updateMatchInCache(String tournamentId, String matchId, Map<String, dynamic> updateData) async() {
+  static Future<void> _updateMatchInCache(String tournamentId, String matchId, Map<String, dynamic> updateData) async {
     final cachedMatches = await TournamentCacheService.getCachedMatches(tournamentId);
     if (cachedMatches != null) {
       final matchIndex = cachedMatches.indexWhere((m) => m['id'] == matchId);
@@ -234,7 +232,7 @@ class CachedTournamentService() {
   }
 
   /// Sync pending actions when back online
-  static Future<void> syncPendingActions() async() {
+  static Future<void> syncPendingActions() async {
     if (TournamentCacheService.isOfflineMode) {
       print('📴 Cannot sync - still offline');
       return;
@@ -252,7 +250,7 @@ class CachedTournamentService() {
     List<Map<String, dynamic>> failedActions = [];
 
     for (final action in pendingActions) {
-      try() {
+      try {
         if (action['type'] == 'update_match') {
           await Supabase.instance.client
               .from('matches')
@@ -292,14 +290,14 @@ class CachedTournamentService() {
   }
 
   /// Force refresh data from server and update cache
-  static Future<void> refreshTournamentData(String tournamentId) async() {
+  static Future<void> refreshTournamentData(String tournamentId) async {
     print('🔄 Force refreshing tournament data...');
     await loadTournament(tournamentId, forceRefresh: true);
     await loadMatches(tournamentId, forceRefresh: true);
   }
 
   /// Get cache status for debugging
-  static Future<Map<String, dynamic>> getCacheStatus(String tournamentId) async() {
+  static Future<Map<String, dynamic>> getCacheStatus(String tournamentId) async {
     final stats = await TournamentCacheService.getCacheStats();
     final pendingActions = await TournamentCacheService.getPendingActions();
     final syncList = await TournamentCacheService.getSyncList();

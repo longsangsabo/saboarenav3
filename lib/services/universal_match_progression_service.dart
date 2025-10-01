@@ -9,7 +9,8 @@ import 'package:flutter/foundation.dart';
 /// Universal service quản lý progression cho tất cả tournament formats
 class UniversalMatchProgressionService {
   static UniversalMatchProgressionService? _instance;
-  static UniversalMatchProgressionService get instance => _instance ??= UniversalMatchProgressionService._();
+  static UniversalMatchProgressionService get instance =>
+      _instance ??= UniversalMatchProgressionService._();
   UniversalMatchProgressionService._();
 
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -30,9 +31,11 @@ class UniversalMatchProgressionService {
     String? notes,
   }) async {
     try {
-      debugPrint('🚀 UniversalMatchProgressionService: Starting IMMEDIATE advancement for match $matchId');
+      debugPrint(
+          '🚀 UniversalMatchProgressionService: Starting IMMEDIATE advancement for match $matchId');
       debugPrint('🎯 Tournament ID: $tournamentId');
-      debugPrint('🏆 Winner: ${winnerId.substring(0,8)}, Loser: ${loserId.substring(0,8)}');
+      debugPrint(
+          '🏆 Winner: ${winnerId.substring(0, 8)}, Loser: ${loserId.substring(0, 8)}');
 
       // 1. Update match result in database
       debugPrint('💾 Step 1: Updating match in database...');
@@ -52,7 +55,7 @@ class UniversalMatchProgressionService {
         debugPrint('🔍 Step 2: Getting tournament info...');
         final tournament = await _getTournamentInfo(tournamentId);
         final bracketFormat = tournament['bracket_format'];
-        
+
         debugPrint('🏆 Tournament format: $bracketFormat');
 
         // 4. Calculate and execute IMMEDIATE advancement
@@ -65,7 +68,8 @@ class UniversalMatchProgressionService {
           bracketFormat: bracketFormat,
         );
 
-        debugPrint('🎉 IMMEDIATE advancement completed: ${advancementResult['advancement_count']} players advanced');
+        debugPrint(
+            '🎉 IMMEDIATE advancement completed: ${advancementResult['advancement_count']} players advanced');
 
         // 5. Check tournament completion
         final isComplete = await _checkTournamentCompletion(tournamentId);
@@ -87,13 +91,13 @@ class UniversalMatchProgressionService {
           'tournament_complete': isComplete,
           'advancement_details': advancementResult['advancement_details'],
           'next_ready_matches': await _getNextReadyMatches(tournamentId),
-          'message': 'Match completed with IMMEDIATE advancement! ${advancementResult['advancement_count']} players advanced instantly.',
+          'message':
+              'Match completed with IMMEDIATE advancement! ${advancementResult['advancement_count']} players advanced instantly.',
         };
-        
       } else {
         // Challenge match - basic notifications only
         await _sendChallengeNotifications(winnerId, loserId, matchId);
-        
+
         return {
           'success': true,
           'match_updated': true,
@@ -103,7 +107,6 @@ class UniversalMatchProgressionService {
           'message': 'Challenge match completed and rewards processed',
         };
       }
-
     } catch (error) {
       debugPrint('❌ Error in universal match progression: $error');
       return {
@@ -124,7 +127,6 @@ class UniversalMatchProgressionService {
     required String loserId,
     required String bracketFormat,
   }) async {
-    
     // Get current match details
     final currentMatch = await _supabase
         .from('matches')
@@ -135,8 +137,9 @@ class UniversalMatchProgressionService {
     final matchNumber = currentMatch['match_number'] as int;
 
     // Get or calculate advancement rules
-    final advancementRules = await _getAdvancementRules(tournamentId, bracketFormat);
-    
+    final advancementRules =
+        await _getAdvancementRules(tournamentId, bracketFormat);
+
     if (!advancementRules.containsKey(matchNumber)) {
       debugPrint('⚠️ No advancement rule found for match $matchNumber');
       return {'advancement_count': 0, 'advancement_details': []};
@@ -154,7 +157,7 @@ class UniversalMatchProgressionService {
         targetMatchNumber: rule.winnerAdvancesTo!,
         advancementType: 'winner',
       );
-      
+
       if (winnerResult['success']) {
         advancementDetails.add(winnerResult);
         advancementCount++;
@@ -170,7 +173,7 @@ class UniversalMatchProgressionService {
         targetMatchNumber: rule.loserAdvancesTo!,
         advancementType: 'loser',
       );
-      
+
       if (loserResult['success']) {
         advancementDetails.add(loserResult);
         advancementCount++;
@@ -191,7 +194,6 @@ class UniversalMatchProgressionService {
     required int targetMatchNumber,
     required String advancementType,
   }) async {
-    
     // Find target match
     final targetMatches = await _supabase
         .from('matches')
@@ -200,15 +202,18 @@ class UniversalMatchProgressionService {
         .eq('match_number', targetMatchNumber);
 
     if (targetMatches.isEmpty) {
-      return {'success': false, 'error': 'Target match $targetMatchNumber not found'};
+      return {
+        'success': false,
+        'error': 'Target match $targetMatchNumber not found'
+      };
     }
 
     final targetMatch = targetMatches.first;
-    
+
     // Determine which slot to fill
     Map<String, dynamic> updateData = {};
     String slot = '';
-    
+
     if (targetMatch['player1_id'] == null) {
       updateData['player1_id'] = playerId;
       slot = 'player1';
@@ -216,7 +221,10 @@ class UniversalMatchProgressionService {
       updateData['player2_id'] = playerId;
       slot = 'player2';
     } else {
-      return {'success': false, 'error': 'Target match $targetMatchNumber is already full'};
+      return {
+        'success': false,
+        'error': 'Target match $targetMatchNumber is already full'
+      };
     }
 
     // Update match with player
@@ -232,8 +240,9 @@ class UniversalMatchProgressionService {
         .eq('id', targetMatch['id'])
         .single();
 
-    bool isMatchReady = updatedMatch['player1_id'] != null && updatedMatch['player2_id'] != null;
-    
+    bool isMatchReady = updatedMatch['player1_id'] != null &&
+        updatedMatch['player2_id'] != null;
+
     if (isMatchReady) {
       await _supabase
           .from('matches')
@@ -255,8 +264,8 @@ class UniversalMatchProgressionService {
   // ==================== ADVANCEMENT RULES CALCULATION ====================
 
   /// Get advancement rules for tournament (with caching)
-  Future<Map<int, AdvancementRule>> _getAdvancementRules(String tournamentId, String bracketFormat) async {
-    
+  Future<Map<int, AdvancementRule>> _getAdvancementRules(
+      String tournamentId, String bracketFormat) async {
     if (_advancementCache.containsKey(tournamentId)) {
       return _advancementCache[tournamentId]!;
     }
@@ -276,7 +285,8 @@ class UniversalMatchProgressionService {
   }
 
   /// Calculate Single Elimination advancement rules
-  Future<Map<int, AdvancementRule>> _calculateSingleEliminationRules(String tournamentId) async {
+  Future<Map<int, AdvancementRule>> _calculateSingleEliminationRules(
+      String tournamentId) async {
     final matches = await _supabase
         .from('matches')
         .select('match_number, round_number')
@@ -284,13 +294,13 @@ class UniversalMatchProgressionService {
         .order('match_number');
 
     final rules = <int, AdvancementRule>{};
-    
+
     // Group matches by round
     final roundsData = <int, List<int>>{};
     for (final match in matches) {
       final roundNumber = match['round_number'] as int;
       final matchNumber = match['match_number'] as int;
-      
+
       if (!roundsData.containsKey(roundNumber)) {
         roundsData[roundNumber] = [];
       }
@@ -301,18 +311,18 @@ class UniversalMatchProgressionService {
     for (final match in matches) {
       final matchNumber = match['match_number'] as int;
       final roundNumber = match['round_number'] as int;
-      
+
       // Find next round
       final nextRound = roundNumber + 1;
       int? winnerAdvancesTo;
-      
+
       if (roundsData.containsKey(nextRound)) {
         final nextRoundMatches = roundsData[nextRound]!..sort();
         final currentRoundMatches = roundsData[roundNumber]!..sort();
-        
+
         final positionInRound = currentRoundMatches.indexOf(matchNumber);
         final nextMatchIndex = positionInRound ~/ 2;
-        
+
         if (nextMatchIndex < nextRoundMatches.length) {
           winnerAdvancesTo = nextRoundMatches[nextMatchIndex];
         }
@@ -330,7 +340,8 @@ class UniversalMatchProgressionService {
   }
 
   /// Calculate Double Elimination advancement rules
-  Future<Map<int, AdvancementRule>> _calculateDoubleEliminationRules(String tournamentId) async {
+  Future<Map<int, AdvancementRule>> _calculateDoubleEliminationRules(
+      String tournamentId) async {
     final matches = await _supabase
         .from('matches')
         .select('match_number, round_number')
@@ -338,29 +349,31 @@ class UniversalMatchProgressionService {
         .order('match_number');
 
     final rules = <int, AdvancementRule>{};
-    
+
     // Separate WB and LB matches
-    final wbMatches = matches.where((m) => (m['round_number'] as int) < 100).toList();
-    final lbMatches = matches.where((m) => (m['round_number'] as int) >= 101).toList();
-    
+    final wbMatches =
+        matches.where((m) => (m['round_number'] as int) < 100).toList();
+    final lbMatches =
+        matches.where((m) => (m['round_number'] as int) >= 101).toList();
+
     // Group by round
     final wbRounds = <int, List<int>>{};
     final lbRounds = <int, List<int>>{};
-    
+
     for (final match in wbMatches) {
       final roundNumber = match['round_number'] as int;
       final matchNumber = match['match_number'] as int;
-      
+
       if (!wbRounds.containsKey(roundNumber)) {
         wbRounds[roundNumber] = [];
       }
       wbRounds[roundNumber]!.add(matchNumber);
     }
-    
+
     for (final match in lbMatches) {
       final roundNumber = match['round_number'] as int;
       final matchNumber = match['match_number'] as int;
-      
+
       if (!lbRounds.containsKey(roundNumber)) {
         lbRounds[roundNumber] = [];
       }
@@ -371,26 +384,27 @@ class UniversalMatchProgressionService {
     for (final match in wbMatches) {
       final matchNumber = match['match_number'] as int;
       final roundNumber = match['round_number'] as int;
-      
+
       // Winner advancement (next WB round)
       int? winnerAdvancesTo;
       final nextWbRound = roundNumber + 1;
       if (wbRounds.containsKey(nextWbRound)) {
         final nextRoundMatches = wbRounds[nextWbRound]!..sort();
         final currentRoundMatches = wbRounds[roundNumber]!..sort();
-        
+
         final positionInRound = currentRoundMatches.indexOf(matchNumber);
         final nextMatchIndex = positionInRound ~/ 2;
-        
+
         if (nextMatchIndex < nextRoundMatches.length) {
           winnerAdvancesTo = nextRoundMatches[nextMatchIndex];
         }
       }
-      
+
       // Loser advancement (to appropriate LB round)
       int? loserAdvancesTo;
       final lbRoundKey = _calculateLoserDestinationRound(roundNumber);
-      if (lbRounds.containsKey(lbRoundKey) && lbRounds[lbRoundKey]!.isNotEmpty) {
+      if (lbRounds.containsKey(lbRoundKey) &&
+          lbRounds[lbRoundKey]!.isNotEmpty) {
         // Simple mapping - first available LB match
         loserAdvancesTo = lbRounds[lbRoundKey]!.first;
       }
@@ -407,11 +421,12 @@ class UniversalMatchProgressionService {
     for (final match in lbMatches) {
       final matchNumber = match['match_number'] as int;
       final roundNumber = match['round_number'] as int;
-      
+
       // Winner advancement (next LB round)
       int? winnerAdvancesTo;
       final nextLbRound = roundNumber + 1;
-      if (lbRounds.containsKey(nextLbRound) && lbRounds[nextLbRound]!.isNotEmpty) {
+      if (lbRounds.containsKey(nextLbRound) &&
+          lbRounds[nextLbRound]!.isNotEmpty) {
         winnerAdvancesTo = lbRounds[nextLbRound]!.first;
       }
 
@@ -430,11 +445,16 @@ class UniversalMatchProgressionService {
   int _calculateLoserDestinationRound(int wbRound) {
     // Standard DE mapping
     switch (wbRound) {
-      case 1: return 101;
-      case 2: return 102;
-      case 3: return 104;
-      case 4: return 106;
-      default: return 101 + (wbRound - 1) * 2;
+      case 1:
+        return 101;
+      case 2:
+        return 102;
+      case 3:
+        return 104;
+      case 4:
+        return 106;
+      default:
+        return 101 + (wbRound - 1) * 2;
     }
   }
 
@@ -468,7 +488,8 @@ class UniversalMatchProgressionService {
   }
 
   /// Get next ready matches (có đủ 2 players)
-  Future<List<Map<String, dynamic>>> _getNextReadyMatches(String tournamentId) async {
+  Future<List<Map<String, dynamic>>> _getNextReadyMatches(
+      String tournamentId) async {
     final readyMatches = await _supabase
         .from('matches')
         .select('id, match_number, round_number')
@@ -490,16 +511,16 @@ class UniversalMatchProgressionService {
         .select('status')
         .eq('tournament_id', tournamentId);
 
-    final completedMatches = allMatches.where((m) => m['status'] == 'completed').length;
+    final completedMatches =
+        allMatches.where((m) => m['status'] == 'completed').length;
     final totalMatches = allMatches.length;
 
     final isComplete = totalMatches > 0 && completedMatches == totalMatches;
-    
+
     if (isComplete) {
       await _supabase
           .from('tournaments')
-          .update({'status': 'completed'})
-          .eq('id', tournamentId);
+          .update({'status': 'completed'}).eq('id', tournamentId);
     }
 
     return isComplete;
@@ -528,7 +549,8 @@ class UniversalMatchProgressionService {
   }
 
   /// Send challenge notifications
-  Future<void> _sendChallengeNotifications(String winnerId, String loserId, String matchId) async {
+  Future<void> _sendChallengeNotifications(
+      String winnerId, String loserId, String matchId) async {
     await _notificationService.sendNotification(
       userId: winnerId,
       type: 'match_victory',
@@ -536,7 +558,7 @@ class UniversalMatchProgressionService {
       message: 'Bạn đã thắng trận thách đấu và nhận được phần thưởng SPA!',
       data: {'match_id': matchId},
     );
-    
+
     await _notificationService.sendNotification(
       userId: loserId,
       type: 'match_defeat',

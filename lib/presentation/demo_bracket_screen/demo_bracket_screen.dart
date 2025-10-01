@@ -4,7 +4,10 @@
 import 'package:flutter/material.dart';
 import '../tournament_detail_screen/widgets/demo_bracket_tab.dart';
 
-class DemoBracketScreen extends StatelessWidget() {
+class DemoBracketScreen extends StatelessWidget {
+  const DemoBracketScreen({super.key});
+
+} 
   const DemoBracketScreen({super.key});
 
   @override

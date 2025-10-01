@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class ColorSettingsScreen extends StatefulWidget() {
+class ColorSettingsScreen extends StatefulWidget {
+  const ColorSettingsScreen({super.key});
+
+} 
   final String clubId;
 
   const ColorSettingsScreen({

@@ -4,7 +4,10 @@ import 'package:sabo_arena/core/app_export.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/services/tournament_service.dart';
 
-class TournamentOverviewTab extends StatefulWidget() {
+class TournamentOverviewTab extends StatefulWidget {
+  const TournamentOverviewTab({super.key});
+
+} 
   final String tournamentId;
   final String tournamentStatus;
   final VoidCallback? onStatusChanged;
@@ -23,8 +26,8 @@ class TournamentOverviewTab extends StatefulWidget() {
 class _TournamentOverviewTabState extends State<TournamentOverviewTab> {
   final TournamentService _tournamentService = TournamentService.instance;
 
-  Future<Map<String, dynamic>> _loadTournamentStats() async() {
-    try() {
+  Future<Map<String, dynamic>> _loadTournamentStats() async {
+    try {
       // Get tournament participants
       final participants = await _tournamentService
           .getTournamentParticipantsWithPaymentStatus(widget.tournamentId);

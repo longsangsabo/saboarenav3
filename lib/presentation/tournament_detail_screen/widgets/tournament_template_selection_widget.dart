@@ -7,7 +7,10 @@ import 'package:sizer/sizer.dart';
 import '../../../core/constants/tournament_constants.dart';
 import '../../../services/tournament_template_service.dart';
 
-class TournamentTemplateSelectionWidget extends StatefulWidget() {
+class TournamentTemplateSelectionWidget extends StatefulWidget {
+  const TournamentTemplateSelectionWidget({super.key});
+
+} 
   final Function(String templateId, Map<String, dynamic> templateConfig) onTemplateSelected;
   final String? clubId;
 
@@ -22,7 +25,7 @@ class TournamentTemplateSelectionWidget extends StatefulWidget() {
 }
 
 class _TournamentTemplateSelectionWidgetState extends State<TournamentTemplateSelectionWidget>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   final TournamentTemplateService _templateService = TournamentTemplateService.instance;
   
   late TabController _tabController;
@@ -38,8 +41,8 @@ class _TournamentTemplateSelectionWidgetState extends State<TournamentTemplateSe
     _loadTemplates();
   }
 
-  Future<void> _loadTemplates() async() {
-    try() {
+  Future<void> _loadTemplates() async {
+    try {
       setState(() => _isLoading = true);
 
       // Load categories and templates
@@ -463,7 +466,7 @@ class _TournamentTemplateSelectionWidgetState extends State<TournamentTemplateSe
       if (_selectedTemplateId!.startsWith('builtin_')) {
         // For built-in templates, we'll pass the template data
         config = selectedTemplate;
-      } else() {
+      } else {
         // For custom templates, use the stored config
         config = selectedTemplate['template_config'] ?? {};
       }

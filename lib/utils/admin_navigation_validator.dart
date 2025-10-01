@@ -1,63 +1,60 @@
 // Admin Navigation Flow Validation Test
 // Run this manually to check navigation flow
 
-import '../routes/app_routes.dart';
-import '../services/auth_service.dart';
-import 'package:flutter/foundation.dart';
-
 /// Class to validate admin navigation flow
-class AdminNavigationValidator() {
+class AdminNavigationValidator {
   /// Test the complete admin navigation flow
-  static Future<Map<String, bool>> validateAdminFlow() async() {
+  static Future<Map<String, bool>> validateAdminFlow() async {
     Map<String, bool> results = {};
-    
-    try() {
+
+    try {
       // 1. Check if admin routes exist in AppRoutes
       results['admin_routes_exist'] = _checkAdminRoutesExist();
-      
+
       // 2. Check if AuthService has admin methods
       results['auth_service_methods'] = _checkAuthServiceMethods();
-      
+
       // 3. Check if login screen has admin redirect logic
       results['login_redirect_logic'] = await _checkLoginRedirectLogic();
-      
+
       // 4. Check if splash screen has admin routing
       results['splash_admin_routing'] = await _checkSplashAdminRouting();
-      
+
       // 5. Check if admin screens are properly imported
       results['admin_screens_imported'] = _checkAdminScreensImported();
-      
+
       debugPrint('🔍 ADMIN NAVIGATION FLOW VALIDATION RESULTS:');
       results.forEach((test, passed) {
-        debugPrint('   ${passed ? "✅" : "❌"} $test: ${passed ? "PASSED" : "FAILED"}');
+        debugPrint(
+            '   ${passed ? "✅" : "❌"} $test: ${passed ? "PASSED" : "FAILED"}');
       });
-      
+
       final allPassed = results.values.every((result) => result);
-      debugPrint('\n${allPassed ? "🎉" : "⚠️"} Overall Status: ${allPassed ? "ALL TESTS PASSED" : "SOME TESTS FAILED"}');
-      
+      debugPrint(
+          '\n${allPassed ? "🎉" : "⚠️"} Overall Status: ${allPassed ? "ALL TESTS PASSED" : "SOME TESTS FAILED"}');
+
       return results;
-      
     } catch (e) {
       debugPrint('❌ Validation failed with error: $e');
       return {'validation_error': false};
     }
   }
-  
+
   static bool _checkAdminRoutesExist() {
-    try() {
+    try {
       // Check if admin routes are defined
-      return AppRoutes.adminDashboardScreen.isNotEmpty && 
-             AppRoutes.clubApprovalScreen.isNotEmpty;
+      return AppRoutes.adminDashboardScreen.isNotEmpty &&
+          AppRoutes.clubApprovalScreen.isNotEmpty;
     } catch (e) {
       return false;
     }
   }
-  
+
   static bool _checkAuthServiceMethods() {
-    try() {
+    try {
       // Check if AuthService has the required methods
       final authService = AuthService.instance;
-      
+
       // These methods should exist (will throw if they don't)
       // We can't call them without proper setup, but we can check they exist
       return true; // If we get here, the methods exist
@@ -65,9 +62,9 @@ class AdminNavigationValidator() {
       return false;
     }
   }
-  
-  static Future<bool> _checkLoginRedirectLogic() async() {
-    try() {
+
+  static Future<bool> _checkLoginRedirectLogic() async {
+    try {
       // This would need to be tested with actual auth context
       // For now, just check if the method exists
       return true;
@@ -75,22 +72,22 @@ class AdminNavigationValidator() {
       return false;
     }
   }
-  
-  static Future<bool> _checkSplashAdminRouting() async() {
-    try() {
+
+  static Future<bool> _checkSplashAdminRouting() async {
+    try {
       // This would need actual testing with splash screen
       return true;
     } catch (e) {
       return false;
     }
   }
-  
+
   static bool _checkAdminScreensImported() {
-    try() {
+    try {
       // Check if routes map contains admin screens
       final routes = AppRoutes.routes;
       return routes.containsKey(AppRoutes.adminDashboardScreen) &&
-             routes.containsKey(AppRoutes.clubApprovalScreen);
+          routes.containsKey(AppRoutes.clubApprovalScreen);
     } catch (e) {
       return false;
     }
@@ -98,7 +95,7 @@ class AdminNavigationValidator() {
 }
 
 /// Manual test checklist for admin flow
-class AdminFlowChecklist() {
+class AdminFlowChecklist {
   static void printChecklist() {
     debugPrint('''
 📋 MANUAL ADMIN FLOW TESTING CHECKLIST:

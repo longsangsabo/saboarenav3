@@ -8,7 +8,10 @@ import '../widgets/basic_referral_stats_widget.dart';
 
 /// Example page showing how to integrate basic referral components
 /// This demonstrates different usage patterns and layouts
-class BasicReferralExamplePage extends StatefulWidget() {
+class BasicReferralExamplePage extends StatefulWidget {
+  const BasicReferralExamplePage({super.key});
+
+} 
   final String userId;
 
   const BasicReferralExamplePage({
@@ -21,7 +24,7 @@ class BasicReferralExamplePage extends StatefulWidget() {
 }
 
 class _BasicReferralExamplePageState extends State<BasicReferralExamplePage>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -254,7 +257,10 @@ class _BasicReferralExamplePageState extends State<BasicReferralExamplePage>
 }
 
 /// Quick access floating action button for referrals
-class ReferralFloatingActionButton extends StatelessWidget() {
+class ReferralFloatingActionButton extends StatelessWidget {
+  const ReferralFloatingActionButton({super.key});
+
+} 
   final String userId;
   final VoidCallback? onPressed;
 
@@ -284,7 +290,10 @@ class ReferralFloatingActionButton extends StatelessWidget() {
 }
 
 /// Simple referral status indicator
-class ReferralStatusIndicator extends StatefulWidget() {
+class ReferralStatusIndicator extends StatefulWidget {
+  const ReferralStatusIndicator({super.key});
+
+} 
   final String userId;
 
   const ReferralStatusIndicator({
@@ -307,8 +316,8 @@ class _ReferralStatusIndicatorState extends State<ReferralStatusIndicator> {
     _loadStats();
   }
 
-  Future<void> _loadStats() async() {
-    try() {
+  Future<void> _loadStats() async {
+    try {
       // This would load from BasicReferralService
       // For demo purposes, showing sample data
       await Future.delayed(Duration(seconds: 1));

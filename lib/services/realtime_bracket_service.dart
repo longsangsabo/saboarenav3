@@ -1,26 +1,22 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/tournament.dart';
-import '../models/match.dart';
-import 'bracket_generator_service.dart';
-
 /// Real-time Bracket Updates Service with WebSocket streaming
 /// Phase 2 enhancement for live tournament updates
-class RealtimeBracketService() {
-  static final RealtimeBracketService _instance = RealtimeBracketService._internal();
+class RealtimeBracketService {
+  static final RealtimeBracketService _instance =
+      RealtimeBracketService._internal();
   factory RealtimeBracketService() => _instance;
   RealtimeBracketService._internal();
 
   final SupabaseClient _supabase = Supabase.instance.client;
   final Map<String, StreamController<List<Match>>> _matchControllers = {};
   final Map<String, StreamController<Tournament>> _tournamentControllers = {};
-  final Map<String, StreamController<List<TournamentParticipant>>> _participantControllers = {};
-  
+  final Map<String, StreamController<List<TournamentParticipant>>>
+      _participantControllers = {};
+
   /// Subscribe to real-time match updates for a tournament
   Stream<List<Match>> getMatchUpdatesStream(String tournamentId) {
     if (!_matchControllers.containsKey(tournamentId)) {
-      _matchControllers[tournamentId] = StreamController<List<Match>>.broadcast();
+      _matchControllers[tournamentId] =
+          StreamController<List<Match>>.broadcast();
       _setupMatchSubscription(tournamentId);
     }
     return _matchControllers[tournamentId]!.stream;
@@ -29,16 +25,19 @@ class RealtimeBracketService() {
   /// Subscribe to real-time tournament updates
   Stream<Tournament> getTournamentUpdatesStream(String tournamentId) {
     if (!_tournamentControllers.containsKey(tournamentId)) {
-      _tournamentControllers[tournamentId] = StreamController<Tournament>.broadcast();
+      _tournamentControllers[tournamentId] =
+          StreamController<Tournament>.broadcast();
       _setupTournamentSubscription(tournamentId);
     }
     return _tournamentControllers[tournamentId]!.stream;
   }
 
   /// Subscribe to real-time participant updates
-  Stream<List<TournamentParticipant>> getParticipantUpdatesStream(String tournamentId) {
+  Stream<List<TournamentParticipant>> getParticipantUpdatesStream(
+      String tournamentId) {
     if (!_participantControllers.containsKey(tournamentId)) {
-      _participantControllers[tournamentId] = StreamController<List<TournamentParticipant>>.broadcast();
+      _participantControllers[tournamentId] =
+          StreamController<List<TournamentParticipant>>.broadcast();
       _setupParticipantSubscription(tournamentId);
     }
     return _participantControllers[tournamentId]!.stream;
@@ -57,7 +56,7 @@ class RealtimeBracketService() {
             column: 'tournament_id',
             value: tournamentId,
           ),
-          callback: (payload) async() {
+          callback: (payload) async {
             debugPrint('🔄 Match update received for tournament $tournamentId');
             await _handleMatchUpdate(tournamentId, payload);
           },
@@ -78,7 +77,7 @@ class RealtimeBracketService() {
             column: 'id',
             value: tournamentId,
           ),
-          callback: (payload) async() {
+          callback: (payload) async {
             debugPrint('🔄 Tournament update received for $tournamentId');
             await _handleTournamentUpdate(tournamentId, payload);
           },
@@ -99,8 +98,9 @@ class RealtimeBracketService() {
             column: 'tournament_id',
             value: tournamentId,
           ),
-          callback: (payload) async() {
-            debugPrint('🔄 Participant update received for tournament $tournamentId');
+          callback: (payload) async {
+            debugPrint(
+                '🔄 Participant update received for tournament $tournamentId');
             await _handleParticipantUpdate(tournamentId, payload);
           },
         )
@@ -108,8 +108,9 @@ class RealtimeBracketService() {
   }
 
   /// Handle match update from WebSocket
-  Future<void> _handleMatchUpdate(String tournamentId, PostgresChangePayload payload) async() {
-    try() {
+  Future<void> _handleMatchUpdate(
+      String tournamentId, PostgresChangePayload payload) async {
+    try {
       // Fetch updated matches
       final matchesResponse = await _supabase
           .from('matches')
@@ -135,8 +136,9 @@ class RealtimeBracketService() {
   }
 
   /// Handle tournament update from WebSocket
-  Future<void> _handleTournamentUpdate(String tournamentId, PostgresChangePayload payload) async() {
-    try() {
+  Future<void> _handleTournamentUpdate(
+      String tournamentId, PostgresChangePayload payload) async {
+    try {
       final tournamentResponse = await _supabase
           .from('tournaments')
           .select('*')
@@ -155,11 +157,11 @@ class RealtimeBracketService() {
   }
 
   /// Handle participant update from WebSocket
-  Future<void> _handleParticipantUpdate(String tournamentId, PostgresChangePayload payload) async() {
-    try() {
-      final participantsResponse = await _supabase
-          .from('tournament_participants')
-          .select('''
+  Future<void> _handleParticipantUpdate(
+      String tournamentId, PostgresChangePayload payload) async {
+    try {
+      final participantsResponse =
+          await _supabase.from('tournament_participants').select('''
             id,
             user_id,
             display_name,
@@ -167,9 +169,7 @@ class RealtimeBracketService() {
             rank,
             elo_rating,
             seed
-          ''')
-          .eq('tournament_id', tournamentId)
-          .order('seed');
+          ''').eq('tournament_id', tournamentId).order('seed');
 
       final participants = (participantsResponse as List)
           .map((json) => TournamentParticipant(
@@ -195,8 +195,9 @@ class RealtimeBracketService() {
   }
 
   /// Check if bracket progression is needed after match completion
-  Future<void> _checkBracketProgression(String tournamentId, List<Match> matches) async() {
-    try() {
+  Future<void> _checkBracketProgression(
+      String tournamentId, List<Match> matches) async {
+    try {
       // Get tournament info
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -218,10 +219,13 @@ class RealtimeBracketService() {
       for (final entry in roundGroups.entries) {
         final round = entry.key;
         final roundMatches = entry.value;
-        final roundCompleted = roundMatches.every((m) => m.status == 'completed');
+        final roundCompleted =
+            roundMatches.every((m) => m.status == 'completed');
         final nextRoundExists = roundGroups.containsKey(round + 1);
 
-        if (roundCompleted && !nextRoundExists && round < _getMaxRounds(tournament.bracketFormat)) {
+        if (roundCompleted &&
+            !nextRoundExists &&
+            round < _getMaxRounds(tournament.bracketFormat)) {
           progressionNeeded = true;
           break;
         }
@@ -236,9 +240,11 @@ class RealtimeBracketService() {
   }
 
   /// Trigger bracket progression
-  Future<void> _triggerBracketProgression(String tournamentId, Tournament tournament, List<Match> matches) async() {
-    try() {
-      debugPrint('🚀 Triggering bracket progression for tournament $tournamentId');
+  Future<void> _triggerBracketProgression(
+      String tournamentId, Tournament tournament, List<Match> matches) async {
+    try {
+      debugPrint(
+          '🚀 Triggering bracket progression for tournament $tournamentId');
 
       // Call RPC function for bracket progression
       await _supabase.rpc('progress_tournament_bracket', params: {
@@ -246,7 +252,8 @@ class RealtimeBracketService() {
         'tournament_format': tournament.bracketFormat,
       });
 
-      debugPrint('✅ Bracket progression completed for tournament $tournamentId');
+      debugPrint(
+          '✅ Bracket progression completed for tournament $tournamentId');
     } catch (e) {
       debugPrint('❌ Error triggering bracket progression: $e');
     }
@@ -275,16 +282,13 @@ class RealtimeBracketService() {
   }
 
   /// Start live match tracking
-  Future<void> startLiveMatchTracking(String matchId) async() {
-    try() {
-      await _supabase
-          .from('matches')
-          .update({
-            "status": 'in_progress',
-            'started_at': DateTime.now().toIso8601String(),
-            'is_live': true,
-          })
-          .eq('id', matchId);
+  Future<void> startLiveMatchTracking(String matchId) async {
+    try {
+      await _supabase.from('matches').update({
+        "status": 'in_progress',
+        'started_at': DateTime.now().toIso8601String(),
+        'is_live': true,
+      }).eq('id', matchId);
 
       debugPrint('🎮 Started live tracking for match $matchId');
     } catch (e) {
@@ -293,35 +297,31 @@ class RealtimeBracketService() {
   }
 
   /// Update live match score
-  Future<void> updateLiveMatchScore(String matchId, int player1Score, int player2Score) async() {
-    try() {
-      await _supabase
-          .from('matches')
-          .update({
-            'player1_score': player1Score,
-            'player2_score': player2Score,
-            'updated_at': DateTime.now().toIso8601String(),
-          })
-          .eq('id', matchId);
+  Future<void> updateLiveMatchScore(
+      String matchId, int player1Score, int player2Score) async {
+    try {
+      await _supabase.from('matches').update({
+        'player1_score': player1Score,
+        'player2_score': player2Score,
+        'updated_at': DateTime.now().toIso8601String(),
+      }).eq('id', matchId);
 
-      debugPrint('📊 Updated live score for match $matchId: $player1Score - $player2Score');
+      debugPrint(
+          '📊 Updated live score for match $matchId: $player1Score - $player2Score');
     } catch (e) {
       debugPrint('❌ Error updating live match score: $e');
     }
   }
 
   /// Complete live match
-  Future<void> completeLiveMatch(String matchId, String winnerId) async() {
-    try() {
-      await _supabase
-          .from('matches')
-          .update({
-            "status": 'completed',
-            'winner_id': winnerId,
-            'completed_at': DateTime.now().toIso8601String(),
-            'is_live': false,
-          })
-          .eq('id', matchId);
+  Future<void> completeLiveMatch(String matchId, String winnerId) async {
+    try {
+      await _supabase.from('matches').update({
+        "status": 'completed',
+        'winner_id': winnerId,
+        'completed_at': DateTime.now().toIso8601String(),
+        'is_live': false,
+      }).eq('id', matchId);
 
       debugPrint('🏆 Completed live match $matchId with winner $winnerId');
     } catch (e) {
@@ -333,18 +333,18 @@ class RealtimeBracketService() {
   Stream<int> getMatchViewerCountStream(String matchId) {
     final controller = StreamController<int>();
     final channel = _supabase.channel('match_viewers_$matchId');
-    
+
     channel.onPresenceSync((payload) {
       final presenceState = channel.presenceState();
       controller.add(presenceState.length);
     }).subscribe();
-    
+
     return controller.stream;
   }
 
   /// Join match as viewer
-  Future<void> joinMatchAsViewer(String matchId, String userId) async() {
-    try() {
+  Future<void> joinMatchAsViewer(String matchId, String userId) async {
+    try {
       await _supabase.channel('match_viewers_$matchId').track({
         'user_id': userId,
         'joined_at': DateTime.now().toIso8601String(),
@@ -362,10 +362,10 @@ class RealtimeBracketService() {
   }
 
   /// Leave match as viewer
-  Future<void> leaveMatchAsViewer(String matchId) async() {
-    try() {
+  Future<void> leaveMatchAsViewer(String matchId) async {
+    try {
       await _supabase.channel('match_viewers_$matchId').untrack();
-      
+
       debugPrint('👋 Left match $matchId as viewer');
     } catch (e) {
       debugPrint('❌ Error leaving match as viewer: $e');
@@ -409,13 +409,13 @@ class RealtimeBracketService() {
     for (final controller in _participantControllers.values) {
       controller.close();
     }
-    
+
     _matchControllers.clear();
     _tournamentControllers.clear();
     _participantControllers.clear();
-    
+
     _supabase.removeAllChannels();
-    
+
     debugPrint('🗑️ RealtimeBracketService disposed');
   }
 }

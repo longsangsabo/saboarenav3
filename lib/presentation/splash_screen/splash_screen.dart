@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../routes/app_routes.dart';
 import '../../services/auth_service.dart';
 
-class SplashScreen extends StatefulWidget() {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
@@ -12,7 +12,7 @@ class SplashScreen extends StatefulWidget() {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late AnimationController _textAnimationController;
   late AnimationController _logoAnimationController;
@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
     _navigateToHome();
   }
 
-  void _startAnimations() async() {
+  void _startAnimations() async {
     _animationController.forward();
     await Future.delayed(const Duration(milliseconds: 500));
     _logoAnimationController.forward();
@@ -102,9 +102,15 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  _navigateToHome() async() {
+  _navigateToHome() async {
     await Future.delayed(const Duration(milliseconds: 3000), () {});
     
+    // Temporary: Force navigation to login screen for testing
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+    }
+    
+    /* Original authentication logic - commented for testing
     // Check if user is already logged in
     final isAuthenticated = AuthService.instance.isAuthenticated;
     
@@ -114,11 +120,11 @@ class _SplashScreenState extends State<SplashScreen>
       if (mounted) {
         if (isAdmin) {
           Navigator.pushReplacementNamed(context, AppRoutes.adminDashboardScreen);
-        } else() {
+        } else {
           Navigator.pushReplacementNamed(context, AppRoutes.userProfileScreen);
         }
       }
-    } else() {
+    } else {
       // User not logged in, check onboarding
       final prefs = await SharedPreferences.getInstance();
       final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
@@ -126,11 +132,12 @@ class _SplashScreenState extends State<SplashScreen>
       if (mounted) {
         if (hasSeenOnboarding) {
           Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-        } else() {
+        } else {
           Navigator.pushReplacementNamed(context, AppRoutes.onboardingScreen);
         }
       }
     }
+    */
   }
 
   @override

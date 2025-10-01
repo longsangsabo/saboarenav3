@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 /// Service để tạo QR Code cho các phương thức thanh toán
-class QRPaymentService() {
+class QRPaymentService {
   static const String _vietQRBaseUrl = 'https://img.vietqr.io/image';
   
   /// Mã ngân hàng Việt Nam (BIN codes)
@@ -235,7 +232,7 @@ class QRPaymentService() {
     required double amount,
     required String invoiceId,
     String? description,
-  }) async() {
+  }) async {
     String qrData;
     String finalDescription = description ?? 'Thanh toan hoa don $invoiceId';
     
@@ -296,8 +293,8 @@ class QRPaymentService() {
   }
 
   /// Test kết nối VietQR API
-  static Future<bool> testVietQRConnection() async() {
-    try() {
+  static Future<bool> testVietQRConnection() async {
+    try {
       final response = await http.get(
         Uri.parse('$_vietQRBaseUrl/970436-1234567890-compact2.png'),
         headers: {"User-Agent": 'SaboArena/1.0'},

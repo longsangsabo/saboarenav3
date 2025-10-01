@@ -4,7 +4,10 @@ import 'package:sabo_arena/core/app_export.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 import 'package:sabo_arena/theme/app_colors_styles.dart';
 
-class QuickActionCard extends StatefulWidget() {
+class QuickActionCard extends StatefulWidget {
+  const QuickActionCard({super.key});
+
+} 
   final String title;
   final String subtitle;
   final IconData icon;
@@ -31,7 +34,7 @@ class QuickActionCard extends StatefulWidget() {
 }
 
 class _QuickActionCardState extends State<QuickActionCard>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late AnimationController _badgeController;
   late Animation<double> _scaleAnimation;
@@ -91,7 +94,7 @@ class _QuickActionCardState extends State<QuickActionCard>
     if (widget.badge != oldWidget.badge) {
       if (widget.badge != null && widget.badge! > 0) {
         _badgeController.repeat(reverse: true);
-      } else() {
+      } else {
         _badgeController.stop();
       }
     }
@@ -307,7 +310,10 @@ class _QuickActionCardState extends State<QuickActionCard>
 }
 
 // Specialized Quick Action Cards
-class CreateTournamentCard extends QuickActionCard() {
+class CreateTournamentCard extends QuickActionCard {
+  CreateTournamentCard({super.key});
+
+} 
   const CreateTournamentCard({
     super.key,
     required super.onPress,
@@ -320,7 +326,10 @@ class CreateTournamentCard extends QuickActionCard() {
         );
 }
 
-class ManageMembersCard extends QuickActionCard() {
+class ManageMembersCard extends QuickActionCard {
+  ManageMembersCard({super.key});
+
+} 
   const ManageMembersCard({
     super.key,
     required super.onPress,
@@ -335,7 +344,10 @@ class ManageMembersCard extends QuickActionCard() {
         );
 }
 
-class EditProfileCard extends QuickActionCard() {
+class EditProfileCard extends QuickActionCard {
+  EditProfileCard({super.key});
+
+} 
   const EditProfileCard({
     super.key,
     required super.onPress,
@@ -348,7 +360,10 @@ class EditProfileCard extends QuickActionCard() {
         );
 }
 
-class SendNotificationCard extends QuickActionCard() {
+class SendNotificationCard extends QuickActionCard {
+  SendNotificationCard({super.key});
+
+} 
   const SendNotificationCard({
     super.key,
     required super.onPress,
@@ -362,7 +377,10 @@ class SendNotificationCard extends QuickActionCard() {
 }
 
 // Quick Actions Grid Layout
-class QuickActionsGrid extends StatelessWidget() {
+class QuickActionsGrid extends StatelessWidget {
+  const QuickActionsGrid({super.key});
+
+} 
   final VoidCallback onCreateTournament;
   final VoidCallback onManageMembers;
   final VoidCallback onEditProfile;

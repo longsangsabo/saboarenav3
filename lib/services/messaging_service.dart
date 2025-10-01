@@ -1,8 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services/auth_service.dart';
-import 'package:flutter/foundation.dart';
-
-class MessagingService() {
+class MessagingService {
   static final MessagingService _instance = MessagingService._internal();
   factory MessagingService() => _instance;
   MessagingService._internal();
@@ -13,8 +9,8 @@ class MessagingService() {
   final AuthService _authService = AuthService.instance;
 
   /// Get unread message count for current user
-  Future<int> getUnreadMessageCount() async() {
-    try() {
+  Future<int> getUnreadMessageCount() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return 0;
 
@@ -44,8 +40,8 @@ class MessagingService() {
   }
 
   /// Get all chat rooms for current user with last message info
-  Future<List<Map<String, dynamic>>> getChatRooms() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getChatRooms() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return [];
 
@@ -61,8 +57,9 @@ class MessagingService() {
   }
 
   /// Get messages for a specific chat room
-  Future<List<Map<String, dynamic>>> getChatMessages(String roomId, {int limit = 50}) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getChatMessages(String roomId,
+      {int limit = 50}) async {
+    try {
       final response = await _supabase
           .from('chat_messages')
           .select('''
@@ -92,8 +89,8 @@ class MessagingService() {
     required String content,
     String messageType = 'text',
     String? fileUrl,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -119,8 +116,8 @@ class MessagingService() {
   }
 
   /// Mark messages as read
-  Future<void> markMessagesAsRead(String roomId) async() {
-    try() {
+  Future<void> markMessagesAsRead(String roomId) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return;
 
@@ -128,16 +125,16 @@ class MessagingService() {
           .from('chat_messages')
           .update({'is_read': true})
           .eq('room_id', roomId)
-          .neq('sender_id', currentUser.id); // Only mark messages not sent by current user
-
+          .neq('sender_id',
+              currentUser.id); // Only mark messages not sent by current user
     } catch (e) {
       debugPrint('Error marking messages as read: $e');
     }
   }
 
   /// Create or get existing chat room with another user
-  Future<String?> createOrGetChatRoom(String otherUserId) async() {
-    try() {
+  Future<String?> createOrGetChatRoom(String otherUserId) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -153,11 +150,15 @@ class MessagingService() {
       }
 
       // Create new room
-      final newRoom = await _supabase.from('chat_rooms').insert({
-        'user1_id': currentUser.id,
-        'user2_id': otherUserId,
-        'created_at': DateTime.now().toIso8601String(),
-      }).select('id').single();
+      final newRoom = await _supabase
+          .from('chat_rooms')
+          .insert({
+            'user1_id': currentUser.id,
+            'user2_id': otherUserId,
+            'created_at': DateTime.now().toIso8601String(),
+          })
+          .select('id')
+          .single();
 
       return newRoom['id'];
     } catch (e) {
@@ -167,7 +168,8 @@ class MessagingService() {
   }
 
   /// Subscribe to real-time message updates for a room
-  RealtimeChannel subscribeToRoom(String roomId, Function(Map<String, dynamic>) onMessage) {
+  RealtimeChannel subscribeToRoom(
+      String roomId, Function(Map<String, dynamic>) onMessage) {
     return _supabase
         .channel('room_$roomId')
         .onPostgresChanges(
@@ -199,7 +201,7 @@ class MessagingService() {
           event: PostgresChangeEvent.all,
           schema: 'public',
           table: 'chat_messages',
-          callback: (payload) async() {
+          callback: (payload) async {
             // Recalculate unread count when messages change
             final count = await getUnreadMessageCount();
             onCountChanged(count);

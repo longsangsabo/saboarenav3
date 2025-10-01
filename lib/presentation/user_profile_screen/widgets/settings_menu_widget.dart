@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class SettingsMenuWidget extends StatelessWidget() {
+class SettingsMenuWidget extends StatelessWidget {
+  const SettingsMenuWidget({super.key});
+
+} 
   final VoidCallback? onAccountSettings;
   final VoidCallback? onPrivacySettings;
   final VoidCallback? onNotificationSettings;

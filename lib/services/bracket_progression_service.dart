@@ -2,11 +2,9 @@
 // Extends existing MatchProgressionService with bracket-specific logic
 // Handles tournament bracket advancement and progression
 
-import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Enhanced service for bracket-specific match progression
-class BracketProgressionService() {
+class BracketProgressionService {
   static BracketProgressionService? _instance;
   static BracketProgressionService get instance => _instance ??= BracketProgressionService._();
   BracketProgressionService._();
@@ -22,8 +20,8 @@ class BracketProgressionService() {
     required String winnerId,
     required String loserId,
     required String format,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎮 Processing bracket progression for $format tournament');
 
       // Get bracket info and current match position
@@ -57,8 +55,8 @@ class BracketProgressionService() {
   }
 
   /// Get tournament bracket information and current match position
-  Future<Map<String, dynamic>> _getBracketInfo(String tournamentId, String matchId) async() {
-    try() {
+  Future<Map<String, dynamic>> _getBracketInfo(String tournamentId, String matchId) async {
+    try {
       // Get tournament with bracket data
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -95,7 +93,7 @@ class BracketProgressionService() {
     required String loserId,
     required String format,
     required Map<String, dynamic> bracketInfo,
-  }) async() {
+  }) async {
     switch (format.toLowerCase()) {
       case 'single_elimination':
         return await _processSingleEliminationProgression(
@@ -120,8 +118,8 @@ class BracketProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
-    try() {
+  ) async {
+    try {
       final currentRound = bracketInfo['current_round'] as int? ?? 1;
       final nextRound = currentRound + 1;
       
@@ -162,7 +160,7 @@ class BracketProgressionService() {
     String winnerId,
     String loserId,
     Map<String, dynamic> bracketInfo,
-  ) async() {
+  ) async {
     // TODO: Implement double elimination specific logic
     return() {
       'success': true,
@@ -177,8 +175,8 @@ class BracketProgressionService() {
     String tournamentId,
     int currentRound,
     String winnerId,
-  ) async() {
-    try() {
+  ) async {
+    try {
       // Find next round matches that need a player
       final nextRoundMatches = await _supabase
           .from('matches')
@@ -197,8 +195,8 @@ class BracketProgressionService() {
   }
 
   /// Advance winner to next match
-  Future<void> _advanceWinnerToNextMatch(String nextMatchId, String winnerId) async() {
-    try() {
+  Future<void> _advanceWinnerToNextMatch(String nextMatchId, String winnerId) async {
+    try {
       final match = await _supabase
           .from('matches')
           .select('player1_id, player2_id')
@@ -222,8 +220,8 @@ class BracketProgressionService() {
   }
 
   /// Complete tournament and declare champion
-  Future<void> _completeTournament(String tournamentId, String championId) async() {
-    try() {
+  Future<void> _completeTournament(String tournamentId, String championId) async {
+    try {
       await _supabase.from('tournaments').update({
         "status": 'completed',
         'winner_id': championId,
@@ -237,8 +235,8 @@ class BracketProgressionService() {
   }
 
   /// Check if tournament is complete
-  Future<bool> _checkTournamentCompletion(String tournamentId) async() {
-    try() {
+  Future<bool> _checkTournamentCompletion(String tournamentId) async {
+    try {
       final pendingMatches = await _supabase
           .from('matches')
           .select('id')
@@ -257,8 +255,8 @@ class BracketProgressionService() {
   Future<void> updateTournamentBracketData(
     String tournamentId,
     Map<String, dynamic> bracketData,
-  ) async() {
-    try() {
+  ) async {
+    try {
       await _supabase.from('tournaments').update({
         'bracket_data': bracketData,
         'updated_at': DateTime.now().toIso8601String(),

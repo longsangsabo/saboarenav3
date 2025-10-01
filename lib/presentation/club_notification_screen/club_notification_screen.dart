@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../theme/app_theme.dart';
 
-class ClubNotificationScreen extends StatefulWidget() {
+class ClubNotificationScreen extends StatefulWidget {
+  const ClubNotificationScreen({super.key});
+
+} 
   final String? clubId;
 
   const ClubNotificationScreen({
@@ -192,7 +195,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
           
           // Notification Type
           DropdownButtonFormField<String>(
-            value: _notificationType,
+            initialValue: _notificationType,
             decoration: InputDecoration(
               labelText: 'Loại thông báo',
               border: OutlineInputBorder(
@@ -229,7 +232,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
           
           // Target Audience
           DropdownButtonFormField<String>(
-            value: _targetAudience,
+            initialValue: _targetAudience,
             decoration: InputDecoration(
               labelText: 'Đối tượng nhận',
               border: OutlineInputBorder(
@@ -446,14 +449,14 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
     }
   }
 
-  Future<void> _sendNotification() async() {
+  Future<void> _sendNotification() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
     });
 
-    try() {
+    try {
       // TODO: Implement notification sending API call
       await Future.delayed(const Duration(seconds: 2)); // Simulate API call
       
@@ -475,7 +478,7 @@ class _ClubNotificationScreenState extends State<ClubNotificationScreen> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;

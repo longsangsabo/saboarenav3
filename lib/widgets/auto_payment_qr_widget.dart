@@ -7,7 +7,17 @@ import 'package:sabo_arena/services/qr_payment_service.dart';
 import 'package:sabo_arena/services/real_payment_service.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class AutoPaymentQRWidget extends StatefulWidget() {
+class AutoPaymentQRWidget extends StatefulWidget {
+  const AutoPaymentQRWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String clubId;
   final double amount;
   final String description;
@@ -16,6 +26,7 @@ class AutoPaymentQRWidget extends StatefulWidget() {
   final Function(String paymentId, String error)? onPaymentFailed;
 
   const AutoPaymentQRWidget({
+    
     super.key,
     required this.clubId,
     required this.amount,
@@ -23,14 +34,20 @@ class AutoPaymentQRWidget extends StatefulWidget() {
     this.userId,
     this.onPaymentConfirmed,
     this.onPaymentFailed,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<AutoPaymentQRWidget> createState() => _AutoPaymentQRWidgetState();
 }
 
 class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   Map<String, dynamic>? clubSettings;
   List<PaymentMethod> availableMethods = [];
   PaymentMethod? selectedMethod;
@@ -71,8 +88,8 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOut));
   }
 
-  Future<void> _loadPaymentMethods() async() {
-    try() {
+  Future<void> _loadPaymentMethods() async {
+    try {
       // Load club payment settings
       clubSettings = await RealPaymentService.getClubPaymentSettings(widget.clubId);
       
@@ -155,10 +172,10 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
     }
   }
 
-  Future<void> _generateQRCode() async() {
+  Future<void> _generateQRCode() async {
     if (selectedMethod == null) return;
 
-    try() {
+    try {
       setState(() => status = 'generating');
 
       // Create payment record first
@@ -227,13 +244,13 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
     if (paymentId == null) return;
 
     // Check payment status every 5 seconds
-    Timer.periodic(const Duration(seconds: 5), (timer) async() {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!mounted || status == 'confirmed' || status == 'failed') {
         timer.cancel();
         return;
       }
 
-      try() {
+      try {
         final paymentStatus = await RealPaymentService.getPaymentStatus(paymentId!);
         if (paymentStatus == 'confirmed') {
           timer.cancel();
@@ -292,7 +309,7 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.primaryLight.withOpacity(0.12),
+            color: AppTheme.primaryLight.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -552,7 +569,7 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
           final isSelected = selectedMethod?.id == method.id;
 
           return GestureDetector(
-            onTap: () async() {
+            onTap: () async {
               if (selectedMethod?.id != method.id) {
                 setState(() => selectedMethod = method);
                 await _generateQRCode();
@@ -562,7 +579,7 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
               margin: const EdgeInsets.only(right: 12),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? method.color.withOpacity(0.12) : Colors.grey[100],
+                color: isSelected ? method.color.withValues(alpha: 0.12) : Colors.grey[100],
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(
                   color: isSelected ? method.color : Colors.grey[300]!,
@@ -818,7 +835,7 @@ class _AutoPaymentQRWidgetState extends State<AutoPaymentQRWidget>
   }
 }
 
-class PaymentMethod() {
+class PaymentMethod {
   final String id;
   final String name;
   final IconData icon;

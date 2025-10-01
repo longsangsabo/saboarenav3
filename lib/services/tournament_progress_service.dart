@@ -2,13 +2,9 @@
 // Monitors tournament matches and automatically creates next round when current round completes
 // Handles winner advancement and tournament completion logic
 
-import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'correct_bracket_logic_service.dart';
-import 'dart:math' as math;
 
 /// Service for handling tournament progression and automatic round creation
-class TournamentProgressService() {
+class TournamentProgressService {
   static TournamentProgressService? _instance;
   static TournamentProgressService get instance => _instance ??= TournamentProgressService._();
   TournamentProgressService._();
@@ -24,8 +20,8 @@ class TournamentProgressService() {
     required String tournamentId,
     required String matchId,
     required String winnerId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('$_tag: 🎯 Handling match completion: $matchId');
 
       // 1. Update match with winner
@@ -84,7 +80,7 @@ class TournamentProgressService() {
   // ==================== MATCH RESULT MANAGEMENT ====================
 
   /// Update match with winner result
-  Future<void> _updateMatchResult(String matchId, String winnerId) async() {
+  Future<void> _updateMatchResult(String matchId, String winnerId) async {
     await _supabase
         .from('matches')
         .update({
@@ -99,7 +95,7 @@ class TournamentProgressService() {
   }
 
   /// Get current round number for a match
-  Future<int> _getCurrentRound(String tournamentId, String matchId) async() {
+  Future<int> _getCurrentRound(String tournamentId, String matchId) async {
     final response = await _supabase
         .from('matches')
         .select('round')
@@ -110,7 +106,7 @@ class TournamentProgressService() {
   }
 
   /// Check if all matches in a round are completed
-  Future<bool> _checkRoundComplete(String tournamentId, int round) async() {
+  Future<bool> _checkRoundComplete(String tournamentId, int round) async {
     final response = await _supabase
         .from('matches')
         .select('id, status')
@@ -132,8 +128,8 @@ class TournamentProgressService() {
   // ==================== TOURNAMENT STATUS MONITORING ====================
 
   /// Get tournament current status and progress
-  Future<Map<String, dynamic>> getTournamentProgress(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>> getTournamentProgress(String tournamentId) async {
+    try {
       // Get tournament info
       final tournament = await _supabase
           .from('tournaments')
@@ -212,8 +208,8 @@ class TournamentProgressService() {
   // ==================== AUTOMATIC PROGRESSION ====================
 
   /// Check all tournaments for round completion and auto-advance if needed
-  Future<void> checkAllTournamentsForProgression() async() {
-    try() {
+  Future<void> checkAllTournamentsForProgression() async {
+    try {
       // Get all ongoing tournaments
       final tournaments = await _supabase
           .from('tournaments')
@@ -232,8 +228,8 @@ class TournamentProgressService() {
   }
 
   /// Check specific tournament for progression
-  Future<void> _checkTournamentProgression(String tournamentId) async() {
-    try() {
+  Future<void> _checkTournamentProgression(String tournamentId) async {
+    try {
       final progress = await getTournamentProgress(tournamentId);
       
       if (!progress['success']) return;
@@ -273,8 +269,8 @@ class TournamentProgressService() {
   Future<Map<String, dynamic>> validateMatchResult({
     required String matchId,
     required String winnerId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get match details
       final match = await _supabase
           .from('matches')

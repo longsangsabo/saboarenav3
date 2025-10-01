@@ -3,10 +3,10 @@ import '../../core/app_export.dart';
 import '../../routes/app_routes.dart';
 import '../../services/integrated_registration_service.dart';
 
-class RegisterScreen extends StatefulWidget() {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
-  @override
+@override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Future<void> _checkForQRReferral() async() {
+  Future<void> _checkForQRReferral() async {
     // Check if this registration comes from a QR scan with referral
     // In a real app, this would check app state or navigation parameters
     // For demo, we'll check if there's a passed referral code
@@ -50,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (args != null && args['referralCode'] != null) {
       final referralCode = args['referralCode'] as String;
       
-      try() {
+      try {
         final preview = await IntegratedRegistrationService.previewReferralBenefits(referralCode);
         if (preview != null && preview['valid'] == true) {
           setState(() {
@@ -65,8 +65,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _loadReferralPreview(String referralCode) async() {
-    try() {
+  Future<void> _loadReferralPreview(String referralCode) async {
+    try {
       final preview = await IntegratedRegistrationService.previewReferralBenefits(referralCode);
       if (mounted) {
         setState(() {
@@ -83,14 +83,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _handleRegister() async() {
+  Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
     
     setState(() {
       _isRegistering = true;
     });
 
-    try() {
+    try {
       final referralCode = _referralCodeController.text.trim();
       
       Map<String, dynamic> result;
@@ -104,12 +104,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           fullName: _displayNameController.text.trim(),
           scannedQRData: 'https://saboarena.com/user/DEMO?ref=$referralCode', // Reconstruct QR data
         );
-      } else() {
+      } else {
+        () {
         // Regular registration (implement normal auth here)
         result = {'success': false, "error": 'Normal registration not implemented yet'};
       }
       
-      if (result['success'] == true) {
+      
+      }if (result['success'] == true) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -120,7 +122,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           
           Navigator.of(context).pushReplacementNamed(AppRoutes.loginScreen);
         }
-      } else() {
+      } else {
+        () {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -130,7 +133,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         }
       }
-    } catch (e) {
+    
+      }} catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -139,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isRegistering = false;
@@ -373,12 +377,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Auto-preview referral benefits when typing
                         if (value.isNotEmpty && value.length >= 5) {
                           _loadReferralPreview(value);
-                        } else() {
+                        } else {
+                          () {
                           setState(() {
                             _referralPreview = null;
                           });
                         }
-                      },
+                      
+                        }},
                     ),
                     
                     // Referral Bonus Preview
@@ -517,3 +523,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+

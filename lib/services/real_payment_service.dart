@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:convert';
 
 /// Service xử lý thanh toán thực tế với Supabase
-class RealPaymentService() {
+class RealPaymentService {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Lưu thông tin thanh toán vào database
@@ -15,8 +12,8 @@ class RealPaymentService() {
     required String description,
     String? invoiceId,
     String? userId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final paymentData = {
         'club_id': clubId,
         'user_id': userId,
@@ -50,8 +47,8 @@ class RealPaymentService() {
     required String paymentId,
     required String qrData,
     String? qrImageUrl,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase
           .from('payments')
           .update({
@@ -73,8 +70,8 @@ class RealPaymentService() {
     required String paymentId,
     required String transactionId,
     Map<String, dynamic>? webhookData,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase
           .from('payments')
           .update({
@@ -96,8 +93,8 @@ class RealPaymentService() {
   }
 
   /// Cập nhật số dư CLB sau khi thanh toán thành công
-  static Future<void> _updateClubBalance(String paymentId) async() {
-    try() {
+  static Future<void> _updateClubBalance(String paymentId) async {
+    try {
       // Lấy thông tin payment
       final payment = await _supabase
           .from('payments')
@@ -123,8 +120,8 @@ class RealPaymentService() {
     String? userId,
     int limit = 50,
     int offset = 0,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('payments')
           .select('''
@@ -156,8 +153,8 @@ class RealPaymentService() {
     required String clubId,
     DateTime? fromDate,
     DateTime? toDate,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final from = fromDate?.toIso8601String() ?? 
                    DateTime.now().subtract(const Duration(days: 30)).toIso8601String();
       final to = toDate?.toIso8601String() ?? DateTime.now().toIso8601String();
@@ -181,8 +178,8 @@ class RealPaymentService() {
   static Future<void> saveClubPaymentSettings({
     required String clubId,
     required Map<String, dynamic> paymentSettings,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Encrypt sensitive data
       final encryptedSettings = _encryptPaymentSettings(paymentSettings);
 
@@ -202,8 +199,8 @@ class RealPaymentService() {
   }
 
   /// Lấy cấu hình thanh toán CLB
-  static Future<Map<String, dynamic>?> getClubPaymentSettings(String clubId) async() {
-    try() {
+  static Future<Map<String, dynamic>?> getClubPaymentSettings(String clubId) async {
+    try {
       final response = await _supabase
           .from('club_payment_settings')
           .select('settings')
@@ -230,8 +227,8 @@ class RealPaymentService() {
     required double amount,
     required String description,
     DateTime? dueDate,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final invoiceData = {
         'club_id': clubId,
         'user_id': userId,
@@ -260,8 +257,8 @@ class RealPaymentService() {
   }
 
   /// Webhook handler cho MoMo
-  static Future<bool> handleMoMoWebhook(Map<String, dynamic> webhookData) async() {
-    try() {
+  static Future<bool> handleMoMoWebhook(Map<String, dynamic> webhookData) async {
+    try {
       final partnerRefId = webhookData['partnerRefId']; // Payment ID
       final resultCode = webhookData['resultCode']; // 0 = success
       final transId = webhookData['transId']; // MoMo transaction ID
@@ -294,8 +291,8 @@ class RealPaymentService() {
   }
 
   /// Webhook handler cho ZaloPay
-  static Future<bool> handleZaloPayWebhook(Map<String, dynamic> webhookData) async() {
-    try() {
+  static Future<bool> handleZaloPayWebhook(Map<String, dynamic> webhookData) async {
+    try {
       final appTransId = webhookData['app_trans_id']; // Payment ID
       final status = webhookData['status']; // 1 = success
       final zaloTransId = webhookData['zp_trans_id']; // ZaloPay transaction ID
@@ -332,7 +329,7 @@ class RealPaymentService() {
     required double amount,
     required String description,
     String? redirectUrl,
-  }) async() {
+  }) async {
     // Trong thực tế, bạn cần:
     // 1. Đăng ký MoMo Business API
     // 2. Tạo order trên MoMo server
@@ -356,7 +353,7 @@ class RealPaymentService() {
     required double amount,
     required String description,
     String? redirectUrl,
-  }) async() {
+  }) async {
     // Tương tự MoMo, cần ZaloPay Business API
     final zaloUrl = 'zalopay://payment?'
         'app_id=ZALO_APP_ID&'
@@ -390,7 +387,7 @@ class RealPaymentService() {
     final decrypted = <String, dynamic>{};
     settings.forEach((key, value) {
       if (key.contains('account') || key.contains('secret') || key.contains('key')) {
-        try() {
+        try {
           decrypted[key] = utf8.decode(base64Decode(value.toString()));
         } catch (e) {
           decrypted[key] = value; // Fallback nếu không thể decode
@@ -403,8 +400,8 @@ class RealPaymentService() {
   }
 
   /// Check trạng thái payment
-  static Future<String> checkPaymentStatus(String paymentId) async() {
-    try() {
+  static Future<String> checkPaymentStatus(String paymentId) async {
+    try {
       final response = await _supabase
           .from('payments')
           .select('status')
@@ -421,8 +418,8 @@ class RealPaymentService() {
   }
 
   /// Hủy payment
-  static Future<void> cancelPayment(String paymentId, String reason) async() {
-    try() {
+  static Future<void> cancelPayment(String paymentId, String reason) async {
+    try {
       await _supabase
           .from('payments')
           .update({

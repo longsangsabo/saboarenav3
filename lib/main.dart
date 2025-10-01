@@ -4,22 +4,22 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sizer/sizer.dart';
 
 import '../core/app_export.dart';
-import '../widgets/custom_error_widget.dart';
+// import '../widgets/custom_error_widget.dart'; // Temporarily disabled
 import './services/supabase_service.dart';
 import './services/tournament_cache_service_complete.dart';
 
-void main() async() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Supabase
-  try() {
+  try {
     await SupabaseService.initialize();
   } catch (e) {
     debugPrint('Failed to initialize Supabase: $e');
   }
 
   // Initialize cache service silently
-  try() {
+  try {
     await TournamentCacheService.initialize();
   } catch (e) {
     debugPrint('Cache service initialization failed (non-critical): $e');
@@ -37,8 +37,10 @@ void main() async() {
         hasShownError = false;
       });
 
-      return CustomErrorWidget(
-        errorDetails: details,
+      return Container(
+        child: const Center(
+          child: Text('Error occurred', style: TextStyle(color: Colors.red)),
+        ),
       );
     }
     return SizedBox.shrink();
@@ -52,7 +54,7 @@ void main() async() {
   });
 }
 
-class MyApp extends StatelessWidget() {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override

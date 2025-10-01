@@ -1,7 +1,6 @@
-import 'dart:convert';
 
 // Task Template Model
-class TaskTemplate() {
+class TaskTemplate {
   final String id;
   final String clubId;
   final String taskType;
@@ -78,7 +77,7 @@ class TaskTemplate() {
 }
 
 // Staff Task Model
-class StaffTask() {
+class StaffTask {
   final String id;
   final String clubId;
   final String templateId;
@@ -209,7 +208,7 @@ class StaffTask() {
 }
 
 // Task Verification Model
-class TaskVerification() {
+class TaskVerification {
   final String id;
   final String taskId;
   final String clubId;
@@ -374,7 +373,7 @@ class TaskVerification() {
 }
 
 // Verification Audit Log Model
-class VerificationAuditLog() {
+class VerificationAuditLog {
   final String id;
   final String verificationId;
   final String action;
@@ -446,7 +445,7 @@ class VerificationAuditLog() {
 }
 
 // Task Statistics Model
-class TaskStatistics() {
+class TaskStatistics {
   final int totalTasks;
   final int assignedTasks;
   final int inProgressTasks;

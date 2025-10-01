@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 
-class RankRegistrationInfoModal extends StatelessWidget() {
+class RankRegistrationInfoModal extends StatelessWidget {
+  const RankRegistrationInfoModal({super.key});
+
+} 
   final VoidCallback onStartRegistration;
 
   const RankRegistrationInfoModal({

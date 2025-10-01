@@ -3,15 +3,15 @@ import 'package:sizer/sizer.dart';
 import '../../theme/app_theme.dart';
 import '../../services/admin_service.dart';
 
-class AdminUserManagementScreen extends StatefulWidget() {
+class AdminUserManagementScreen extends StatefulWidget {
   const AdminUserManagementScreen({super.key});
 
-  @override
+@override
   State<AdminUserManagementScreen> createState() => _AdminUserManagementScreenState();
 }
 
 class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final AdminService _adminService = AdminService.instance;
 
@@ -34,8 +34,8 @@ class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
     super.dispose();
   }
 
-  Future<void> _loadUsers() async() {
-    try() {
+  Future<void> _loadUsers() async {
+    try {
       setState(() {
         _isLoading = true;
       });
@@ -844,3 +844,4 @@ class _AdminUserManagementScreenState extends State<AdminUserManagementScreen>
     );
   }
 }
+

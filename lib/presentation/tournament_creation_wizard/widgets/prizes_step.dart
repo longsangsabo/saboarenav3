@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 import 'package:sabo_arena/utils/size_extensions.dart';
 
-class PrizesStep extends StatefulWidget() {
+class PrizesStep extends StatefulWidget {
+  const PrizesStep({super.key});
+
+} 
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -17,7 +20,7 @@ class PrizesStep extends StatefulWidget() {
 }
 
 class _PrizesStepState extends State<PrizesStep>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -1140,7 +1143,7 @@ class _PrizesStepState extends State<PrizesStep>
 }
 
 // Supporting Classes
-class PrizeDistribution() {
+class PrizeDistribution {
   final int position;
   final double percentage;
 
@@ -1162,7 +1165,7 @@ class PrizeDistribution() {
   }
 }
 
-class AdditionalPrize() {
+class AdditionalPrize {
   final String id;
   final String title;
   final String description;
@@ -1198,7 +1201,7 @@ class AdditionalPrize() {
   }
 }
 
-class Sponsor() {
+class Sponsor {
   final String id;
   final String name;
   final double amount;
@@ -1215,7 +1218,10 @@ class Sponsor() {
 }
 
 // Dialog Classes
-class AdditionalPrizeDialog extends StatefulWidget() {
+class AdditionalPrizeDialog extends StatefulWidget {
+  const AdditionalPrizeDialog({super.key});
+
+} 
   final Function(AdditionalPrize) onSave;
 
   const AdditionalPrizeDialog({super.key, required this.onSave});
@@ -1249,7 +1255,7 @@ class _AdditionalPrizeDialogState extends State<AdditionalPrizeDialog> {
           ),
           SizedBox(height: 16.v),
           DropdownButtonFormField<String>(
-            value: _type,
+            initialValue: _type,
             decoration: InputDecoration(labelText: "Loại giải", border: OutlineInputBorder()),
             items: [
               DropdownMenuItem(value: 'trophy', child: Text("Cúp")),
@@ -1290,7 +1296,10 @@ class _AdditionalPrizeDialogState extends State<AdditionalPrizeDialog> {
   }
 }
 
-class SponsorDialog extends StatefulWidget() {
+class SponsorDialog extends StatefulWidget {
+  const SponsorDialog({super.key});
+
+} 
   final Function(Sponsor) onSave;
 
   const SponsorDialog({super.key, required this.onSave});

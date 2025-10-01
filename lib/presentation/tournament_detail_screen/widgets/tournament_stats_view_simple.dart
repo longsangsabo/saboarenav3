@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TournamentStatsView extends StatefulWidget() {
+class TournamentStatsView extends StatefulWidget {
+  const TournamentStatsView({super.key});
+
+} 
   final String tournamentId;
   final String tournamentStatus;
 
@@ -24,7 +27,7 @@ class _TournamentStatsViewState extends State<TournamentStatsView> {
     _loadStats();
   }
 
-  Future<void> _loadStats() async() {
+  Future<void> _loadStats() async {
     await Future.delayed(Duration(seconds: 2));
     
     setState(() {

@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class ClubMembersWidget extends StatelessWidget() {
+class ClubMembersWidget extends StatelessWidget {
+  const ClubMembersWidget({super.key});
+
+} 
   final List<Map<String, dynamic>> members;
   final bool isOwner;
   final VoidCallback onViewAll;

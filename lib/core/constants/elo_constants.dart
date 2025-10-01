@@ -1,6 +1,6 @@
 /// ELO System Constants - Simple Fixed Position-Based Rewards
 /// Simplified ELO system for SABO Arena tournaments
-class EloConstants() {
+class EloConstants {
   // Starting ELO for new players
   static const int STARTING_ELO = 1000;
 

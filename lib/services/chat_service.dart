@@ -1,16 +1,14 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
-
-class ChatService() {
+class ChatService {
   static final SupabaseClient _supabase = Supabase.instance.client;
-  
+
   // ====================================
   // CHAT ROOMS
   // ====================================
-  
+
   /// Get chat rooms for current user's clubs
-  static Future<List<Map<String, dynamic>>> getChatRooms({String? clubId}) async() {
-    try() {
+  static Future<List<Map<String, dynamic>>> getChatRooms(
+      {String? clubId}) async {
+    try {
       var query = _supabase.from('chat_rooms').select('''
         *,
         clubs!inner(name, id),
@@ -23,21 +21,21 @@ class ChatService() {
           users!chat_messages_sender_id_fkey(display_name, avatar_url)
         )
       ''');
-      
+
       if (clubId != null) {
         query = query.eq('club_id', clubId);
       }
-      
+
       final response = await query
           .eq('is_active', true)
           .order('updated_at', ascending: false);
-      
+
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       throw Exception('Failed to load chat rooms: $e');
     }
   }
-  
+
   /// Create a new chat room
   static Future<Map<String, dynamic>> createChatRoom({
     required String clubId,
@@ -45,39 +43,43 @@ class ChatService() {
     String? description,
     String type = 'general',
     bool isPrivate = false,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
-      
-      final response = await _supabase.from('chat_rooms').insert({
-        'club_id': clubId,
-        'name': name,
-        'description': description,
-        'type': type,
-        'is_private': isPrivate,
-        'created_by': user.id,
-      }).select().single();
-      
+
+      final response = await _supabase
+          .from('chat_rooms')
+          .insert({
+            'club_id': clubId,
+            'name': name,
+            'description': description,
+            'type': type,
+            'is_private': isPrivate,
+            'created_by': user.id,
+          })
+          .select()
+          .single();
+
       // Add creator as admin member
       await _supabase.from('chat_room_members').insert({
         'room_id': response['id'],
         'user_id': user.id,
         "role": 'admin',
       });
-      
+
       return response;
     } catch (e) {
       throw Exception('Failed to create chat room: $e');
     }
   }
-  
+
   /// Join a chat room
-  static Future<void> joinChatRoom(String roomId) async() {
-    try() {
+  static Future<void> joinChatRoom(String roomId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
-      
+
       await _supabase.from('chat_room_members').upsert({
         'room_id': roomId,
         'user_id': user.id,
@@ -87,18 +89,18 @@ class ChatService() {
       throw Exception('Failed to join chat room: $e');
     }
   }
-  
+
   // ====================================
   // CHAT MESSAGES
   // ====================================
-  
+
   /// Get messages for a chat room
   static Future<List<Map<String, dynamic>>> getMessages({
     required String roomId,
     int limit = 50,
     int offset = 0,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('chat_messages')
           .select('''
@@ -119,13 +121,13 @@ class ChatService() {
           .eq('is_deleted', false)
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
-      
+
       return List<Map<String, dynamic>>.from(response.reversed);
     } catch (e) {
       throw Exception('Failed to load messages: $e');
     }
   }
-  
+
   /// Send a message
   static Future<Map<String, dynamic>> sendMessage({
     required String roomId,
@@ -133,11 +135,11 @@ class ChatService() {
     String messageType = 'text',
     String? replyTo,
     List<String>? attachments,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
-      
+
       final messageData = {
         'room_id': roomId,
         'sender_id': user.id,
@@ -146,11 +148,9 @@ class ChatService() {
         'reply_to': replyTo,
         'attachments': attachments,
       };
-      
-      final response = await _supabase
-          .from('chat_messages')
-          .insert(messageData)
-          .select('''
+
+      final response =
+          await _supabase.from('chat_messages').insert(messageData).select('''
             *,
             users!chat_messages_sender_id_fkey(
               id,
@@ -158,30 +158,27 @@ class ChatService() {
               avatar_url,
               rank_type
             )
-          ''')
-          .single();
-      
+          ''').single();
+
       // Update last activity in chat room
-      await _supabase
-          .from('chat_rooms')
-          .update({'updated_at': DateTime.now().toIso8601String()})
-          .eq('id', roomId);
-      
+      await _supabase.from('chat_rooms').update(
+          {'updated_at': DateTime.now().toIso8601String()}).eq('id', roomId);
+
       // Update user's last read time
       await updateLastReadTime(roomId);
-      
+
       return response;
     } catch (e) {
       throw Exception('Failed to send message: $e');
     }
   }
-  
+
   /// Update last read time for user in chat room
-  static Future<void> updateLastReadTime(String roomId) async() {
-    try() {
+  static Future<void> updateLastReadTime(String roomId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return;
-      
+
       await _supabase
           .from('chat_room_members')
           .update({'last_read_at': DateTime.now().toIso8601String()})
@@ -191,11 +188,11 @@ class ChatService() {
       debugPrint('Failed to update last read time: $e');
     }
   }
-  
+
   // ====================================
   // REAL-TIME SUBSCRIPTIONS
   // ====================================
-  
+
   /// Subscribe to new messages in a chat room
   static RealtimeChannel subscribeToMessages({
     required String roomId,
@@ -246,7 +243,7 @@ class ChatService() {
         )
         .subscribe();
   }
-  
+
   /// Subscribe to chat room updates
   static RealtimeChannel subscribeToRoomUpdates({
     required String roomId,
@@ -297,17 +294,17 @@ class ChatService() {
         )
         .subscribe();
   }
-  
+
   // ====================================
   // UTILITY FUNCTIONS
   // ====================================
-  
+
   /// Get unread message count for a room
-  static Future<int> getUnreadCount(String roomId) async() {
-    try() {
+  static Future<int> getUnreadCount(String roomId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return 0;
-      
+
       // Get user's last read time
       final memberData = await _supabase
           .from('chat_room_members')
@@ -315,11 +312,11 @@ class ChatService() {
           .eq('room_id', roomId)
           .eq('user_id', user.id)
           .maybeSingle();
-      
+
       if (memberData == null) return 0;
-      
+
       final lastReadAt = DateTime.parse(memberData['last_read_at']);
-      
+
       // Count messages after last read time
       final response = await _supabase
           .from('chat_messages')
@@ -327,21 +324,21 @@ class ChatService() {
           .eq('room_id', roomId)
           .neq('sender_id', user.id) // Don't count own messages
           .gt('created_at', lastReadAt.toIso8601String());
-      
+
       return response.length;
     } catch (e) {
       debugPrint('Failed to get unread count: $e');
       return 0;
     }
   }
-  
+
   /// Search messages in a room
   static Future<List<Map<String, dynamic>>> searchMessages({
     required String roomId,
     required String query,
     int limit = 20,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('chat_messages')
           .select('''
@@ -357,19 +354,19 @@ class ChatService() {
           .eq('is_deleted', false)
           .order('created_at', ascending: false)
           .limit(limit);
-      
+
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       throw Exception('Failed to search messages: $e');
     }
   }
-  
+
   /// Delete message (soft delete)
-  static Future<void> deleteMessage(String messageId) async() {
-    try() {
+  static Future<void> deleteMessage(String messageId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
-      
+
       await _supabase
           .from('chat_messages')
           .update({
@@ -382,13 +379,13 @@ class ChatService() {
       throw Exception('Failed to delete message: $e');
     }
   }
-  
+
   /// Edit message
-  static Future<void> editMessage(String messageId, String newMessage) async() {
-    try() {
+  static Future<void> editMessage(String messageId, String newMessage) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
-      
+
       await _supabase
           .from('chat_messages')
           .update({

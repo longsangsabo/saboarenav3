@@ -3,7 +3,10 @@ import '../../widgets/club_staff_manager.dart';
 import '../../widgets/club_staff_commission_demo.dart';
 import '../../services/club_staff_service.dart';
 
-class ClubStaffManagementScreen extends StatefulWidget() {
+class ClubStaffManagementScreen extends StatefulWidget {
+  const ClubStaffManagementScreen({super.key});
+
+} 
   final String clubId;
   
   const ClubStaffManagementScreen({
@@ -16,7 +19,7 @@ class ClubStaffManagementScreen extends StatefulWidget() {
 }
 
 class _ClubStaffManagementScreenState extends State<ClubStaffManagementScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ClubStaffService _staffService = ClubStaffService();
 
@@ -283,8 +286,8 @@ class _ClubStaffManagementScreenState extends State<ClubStaffManagementScreen>
     );
   }
 
-  Future<Map<String, dynamic>> _getCommissionSummary() async() {
-    try() {
+  Future<Map<String, dynamic>> _getCommissionSummary() async {
+    try {
       // Get club staff analytics
       final analytics = await _staffService.getClubStaffAnalytics(widget.clubId);
       return() {
@@ -297,8 +300,8 @@ class _ClubStaffManagementScreenState extends State<ClubStaffManagementScreen>
     }
   }
 
-  Future<List<Map<String, dynamic>>> _getTopStaff() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> _getTopStaff() async {
+    try {
       return await _staffService.getClubStaffList(widget.clubId);
     } catch (e) {
       return [];

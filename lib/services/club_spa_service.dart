@@ -1,9 +1,7 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
 
 /// Service to manage Club SPA balance and reward system
 /// Handles all SPA-related operations for clubs and users
-class ClubSpaService() {
+class ClubSpaService {
   static final ClubSpaService _instance = ClubSpaService._internal();
   factory ClubSpaService() => _instance;
   ClubSpaService._internal();
@@ -11,8 +9,8 @@ class ClubSpaService() {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Get SPA balance for a specific club
-  Future<Map<String, dynamic>?> getClubSpaBalance(String clubId) async() {
-    try() {
+  Future<Map<String, dynamic>?> getClubSpaBalance(String clubId) async {
+    try {
       debugPrint('🏦 ClubSpaService: Getting SPA balance for club $clubId');
       
       final response = await _supabase
@@ -35,8 +33,8 @@ class ClubSpaService() {
   }
 
   /// Get user's SPA balance in a specific club
-  Future<Map<String, dynamic>?> getUserSpaBalance(String userId, String clubId) async() {
-    try() {
+  Future<Map<String, dynamic>?> getUserSpaBalance(String userId, String clubId) async {
+    try {
       debugPrint('👤 ClubSpaService: Getting user $userId SPA balance in club $clubId');
       
       final response = await _supabase
@@ -70,8 +68,8 @@ class ClubSpaService() {
     String userId, 
     String clubId, {
     int limit = 50
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('📋 ClubSpaService: Getting SPA transactions for user $userId');
       
       final response = await _supabase
@@ -97,8 +95,8 @@ class ClubSpaService() {
     double spaAmount, {
     String? matchId,
     String? description
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎁 ClubSpaService: Awarding $spaAmount SPA to user $userId');
       
       // Call the database function to award SPA bonus
@@ -123,8 +121,8 @@ class ClubSpaService() {
   }
 
   /// Get all available rewards for a club
-  Future<List<Map<String, dynamic>>> getClubRewards(String clubId) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getClubRewards(String clubId) async {
+    try {
       debugPrint('🎁 ClubSpaService: Getting rewards for club $clubId');
       
       final response = await _supabase
@@ -152,8 +150,8 @@ class ClubSpaService() {
     required String rewardValue,
     int? quantityAvailable,
     DateTime? validUntil,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('➕ ClubSpaService: Creating new reward: $rewardName');
       
       await _supabase
@@ -183,8 +181,8 @@ class ClubSpaService() {
     String rewardId, 
     String userId, 
     String clubId
-  ) async() {
-    try() {
+  ) async {
+    try {
       debugPrint('🛒 ClubSpaService: Redeeming reward $rewardId for user $userId');
       
       // Get reward details first
@@ -281,8 +279,8 @@ class ClubSpaService() {
   Future<List<Map<String, dynamic>>> getUserRedemptions(
     String userId, 
     String clubId
-  ) async() {
-    try() {
+  ) async {
+    try {
       debugPrint('📋 ClubSpaService: Getting redemptions for user $userId');
       
       final response = await _supabase
@@ -312,8 +310,8 @@ class ClubSpaService() {
     String clubId, 
     double spaAmount, 
     String description
-  ) async() {
-    try() {
+  ) async {
+    try {
       debugPrint('🏦 ClubSpaService: Adding $spaAmount SPA to club $clubId');
       
       final response = await _supabase.rpc('add_spa_to_club', params: {
@@ -339,8 +337,8 @@ class ClubSpaService() {
   Future<List<Map<String, dynamic>>> getClubSpaTransactions(
     String clubId, {
     int limit = 100
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('📋 ClubSpaService: Getting club SPA transactions');
       
       final response = await _supabase
@@ -364,8 +362,8 @@ class ClubSpaService() {
   // ADMIN METHODS
 
   /// Get all clubs with their SPA balance information (admin only)
-  Future<List<Map<String, dynamic>>> getAllClubsWithSpaBalance() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getAllClubsWithSpaBalance() async {
+    try {
       final response = await _supabase
           .from('clubs')
           .select('''
@@ -413,8 +411,8 @@ class ClubSpaService() {
   }
 
   /// Get all SPA transactions across the system (admin only)
-  Future<List<Map<String, dynamic>>> getAllSpaTransactions() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getAllSpaTransactions() async {
+    try {
       final response = await _supabase
           .from('spa_transactions')
           .select('''
@@ -440,8 +438,8 @@ class ClubSpaService() {
   }
 
   /// Get system-wide SPA statistics (admin only)
-  Future<Map<String, dynamic>> getSystemSpaStats() async() {
-    try() {
+  Future<Map<String, dynamic>> getSystemSpaStats() async {
+    try {
       final results = await Future.wait([
         // Total allocated SPA
         _supabase
@@ -506,8 +504,8 @@ class ClubSpaService() {
     required String clubId,
     required double spaAmount,
     String? description,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase.rpc('add_spa_to_club', params: {
         'p_club_id': clubId,
         'p_spa_amount': spaAmount,

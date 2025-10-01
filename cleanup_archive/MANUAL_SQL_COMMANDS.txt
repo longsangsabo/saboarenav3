@@ -1,0 +1,39 @@
+SUPABASE SQL COMMANDS TO RUN
+=============================
+
+Go to: https://supabase.com/dashboard/project/[your-project-id]/sql
+
+Paste and run this SQL:
+
+```sql
+-- Add the new proper format columns
+ALTER TABLE tournaments 
+ADD COLUMN game_format TEXT DEFAULT '8-ball',
+ADD COLUMN bracket_format TEXT DEFAULT 'single_elimination';
+
+-- Add constraints for data integrity
+ALTER TABLE tournaments 
+ADD CONSTRAINT check_game_format 
+CHECK (game_format IN ('8-ball', '9-ball', 'straight', 'carom', 'snooker', 'other'));
+
+ALTER TABLE tournaments 
+ADD CONSTRAINT check_bracket_format 
+CHECK (bracket_format IN ('single_elimination', 'double_elimination', 'round_robin', 'swiss'));
+
+-- Create indexes for performance
+CREATE INDEX IF NOT EXISTS idx_tournaments_game_format ON tournaments(game_format);
+CREATE INDEX IF NOT EXISTS idx_tournaments_bracket_format ON tournaments(bracket_format);
+```
+
+AFTER RUNNING SQL:
+==================
+1. Run: python proper_format_implementation.py
+2. This will migrate all tournament data to use proper field names
+3. Test immediate advancement with the fixed MatchProgressionService!
+
+EXPECTED RESULT FOR sabo1:
+=========================
+- game_format: '8-ball' (game rules)
+- bracket_format: 'double_elimination' (tournament structure)
+- MatchProgressionService will use bracket_format for logic
+- Immediate advancement will work perfectly! 🚀

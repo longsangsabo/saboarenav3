@@ -4,7 +4,10 @@ import '../../../services/club_spa_service.dart';
 import '../../../services/user_service.dart';
 
 /// Screen for users to view their SPA balance and redeem rewards
-class SpaRewardScreen extends StatefulWidget() {
+class SpaRewardScreen extends StatefulWidget {
+  const SpaRewardScreen({super.key});
+
+} 
   final String clubId;
   final String clubName;
 
@@ -19,7 +22,7 @@ class SpaRewardScreen extends StatefulWidget() {
 }
 
 class _SpaRewardScreenState extends State<SpaRewardScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ClubSpaService _spaService = ClubSpaService();
   final UserService _userService = UserService.instance;
@@ -44,10 +47,10 @@ class _SpaRewardScreenState extends State<SpaRewardScreen>
     super.dispose();
   }
 
-  Future<void> _loadUserData() async() {
+  Future<void> _loadUserData() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       // Get current user
       final user = await _userService.getCurrentUserProfile();
       if (user == null) return;
@@ -75,12 +78,12 @@ class _SpaRewardScreenState extends State<SpaRewardScreen>
           SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
         );
       }
-    } finally() {
+    } finally {
       setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _redeemReward(Map<String, dynamic> reward) async() {
+  Future<void> _redeemReward(Map<String, dynamic> reward) async {
     if (_userId == null) return;
 
     // Show confirmation dialog
@@ -123,7 +126,7 @@ class _SpaRewardScreenState extends State<SpaRewardScreen>
       ),
     );
 
-    try() {
+    try {
       final result = await _spaService.redeemReward(
         reward['id'],
         _userId!,
@@ -192,7 +195,7 @@ class _SpaRewardScreenState extends State<SpaRewardScreen>
             ],
           ),
         );
-      } else() {
+      } else {
         // Show error dialog
         showDialog(
           context: context,

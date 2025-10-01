@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 
 /// Mock Attendance Service for demonstration purposes
 /// This provides sample data without requiring backend integration
-class MockAttendanceService() {
+class MockAttendanceService {
   static final MockAttendanceService _instance = MockAttendanceService._internal();
   factory MockAttendanceService() => _instance;
   MockAttendanceService._internal();
@@ -14,13 +13,13 @@ class MockAttendanceService() {
   final List<Map<String, dynamic>> _mockHistory = [];
 
   /// Get current attendance status
-  Future<Map<String, dynamic>?> getCurrentAttendance() async() {
+  Future<Map<String, dynamic>?> getCurrentAttendance() async {
     await Future.delayed(Duration(milliseconds: 500)); // Simulate network delay
     return _currentAttendance;
   }
 
   /// Get today's shifts
-  Future<List<Map<String, dynamic>>> getTodayShifts() async() {
+  Future<List<Map<String, dynamic>>> getTodayShifts() async {
     await Future.delayed(Duration(milliseconds: 300));
     
     if (_mockShifts.isEmpty) {
@@ -57,7 +56,7 @@ class MockAttendanceService() {
   }
 
   /// Get attendance history
-  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 7}) async() {
+  Future<List<Map<String, dynamic>>> getAttendanceHistory({int days = 7}) async {
     await Future.delayed(Duration(milliseconds: 400));
     
     if (_mockHistory.isEmpty) {
@@ -106,7 +105,7 @@ class MockAttendanceService() {
     required String qrData,
     required double locationLat,
     required double locationLng,
-  }) async() {
+  }) async {
     await Future.delayed(Duration(seconds: 2)); // Simulate QR processing
     
     // Mock QR verification
@@ -144,7 +143,7 @@ class MockAttendanceService() {
     required String qrData,
     required double locationLat,
     required double locationLng,
-  }) async() {
+  }) async {
     await Future.delayed(Duration(seconds: 1));
     
     if (_currentAttendance != null) {
@@ -178,7 +177,7 @@ class MockAttendanceService() {
   }
 
   /// Check out
-  Future<Map<String, dynamic>> checkOut() async() {
+  Future<Map<String, dynamic>> checkOut() async {
     await Future.delayed(Duration(seconds: 1));
     
     if (_currentAttendance == null) {
@@ -216,7 +215,7 @@ class MockAttendanceService() {
   }
 
   /// Start break
-  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType) async() {
+  Future<Map<String, dynamic>> startBreak(String attendanceId, String breakType) async {
     await Future.delayed(Duration(milliseconds: 800));
     
     if (_currentAttendance == null) {
@@ -258,7 +257,7 @@ class MockAttendanceService() {
   }
 
   /// End break
-  Future<Map<String, dynamic>> endBreak(String breakId) async() {
+  Future<Map<String, dynamic>> endBreak(String breakId) async {
     await Future.delayed(Duration(milliseconds: 800));
     
     if (_activeBreakId == null) {

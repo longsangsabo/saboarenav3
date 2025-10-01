@@ -40,15 +40,15 @@ import './widgets/empty_feed_widget.dart';
 import './widgets/feed_tab_widget.dart';
 import './widgets/feed_post_card_widget.dart';
 
-class HomeFeedScreen extends StatefulWidget() {
+class HomeFeedScreen extends StatefulWidget {
   const HomeFeedScreen({super.key});
 
-  @override
+@override
   State<HomeFeedScreen> createState() => _HomeFeedScreenState();
 }
 
 class _HomeFeedScreenState extends State<HomeFeedScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   int _selectedTabIndex = 0;
   bool _isLoading = true;
   final ScrollController _scrollController = ScrollController();
@@ -104,8 +104,8 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     _checkClubOwnerStatus();
   }
 
-  Future<void> _loadPosts() async() {
-    try() {
+  Future<void> _loadPosts() async {
+    try {
       if (mounted) {
         setState(() {
           _isLoading = true;
@@ -173,12 +173,12 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     }
   }
 
-  Future<void> _loadMorePosts() async() {
+  Future<void> _loadMorePosts() async {
     if (_isLoading) return;
 
     if (mounted) setState(() => _isLoading = true);
 
-    try() {
+    try {
       // Load more posts using getFeedPosts
       final currentList = _selectedTabIndex == 0 ? _nearbyPosts : _followingPosts;
       final morePosts = await _postRepository.getPosts(
@@ -188,7 +188,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
       
       if (_selectedTabIndex == 0) {
         _nearbyPosts.addAll(morePosts);
-      } else() {
+      } else {
         _followingPosts.addAll(morePosts);
       }
     } catch (e) {
@@ -197,15 +197,15 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
           SnackBar(content: Text('Lỗi tải thêm bài đăng: $e')),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _refreshFeed() async() {
+  Future<void> _refreshFeed() async {
     if (mounted) setState(() => _isLoading = true);
 
-    try() {
+    try {
       await _loadPosts();
       
       if (mounted) {
@@ -226,7 +226,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
@@ -244,7 +244,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     );
   }
 
-  Future<void> _handlePostAction(String action, Map<String, dynamic> post) async() {
+  Future<void> _handlePostAction(String action, Map<String, dynamic> post) async {
     switch (action) {
       case 'like':
         await _handleLikeToggle(post);
@@ -258,8 +258,8 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     }
   }
 
-  Future<void> _handleLikeToggle(Map<String, dynamic> post) async() {
-    try() {
+  Future<void> _handleLikeToggle(Map<String, dynamic> post) async {
+    try {
       final postId = post['id'];
       final currentlyLiked = post['isLiked'] ?? false;
       
@@ -274,7 +274,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
       // Call backend
       if (!currentlyLiked) {
         await _postRepository.likePost(postId);
-      } else() {
+      } else {
         await _postRepository.unlikePost(postId);
       }
       
@@ -323,7 +323,7 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     );
   }
 
-  Future<void> _handleSharePost(Map<String, dynamic> post) async() {
+  Future<void> _handleSharePost(Map<String, dynamic> post) async {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -646,8 +646,8 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     );
   }
 
-  Future<void> _checkClubOwnerStatus() async() {
-    try() {
+  Future<void> _checkClubOwnerStatus() async {
+    try {
       final user = AuthService.instance.currentUser;
       if (user == null) return;
 
@@ -961,8 +961,8 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     );
   }
 
-  Future<void> _hidePlayerQuickActions() async() {
-    try() {
+  Future<void> _hidePlayerQuickActions() async {
+    try {
       final user = AuthService.instance.currentUser;
       if (user != null) {
         final prefs = await SharedPreferences.getInstance();
@@ -977,3 +977,4 @@ class _HomeFeedScreenState extends State<HomeFeedScreen>
     }
   }
 }
+

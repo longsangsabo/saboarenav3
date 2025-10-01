@@ -2,19 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sabo_arena/services/share_service.dart';
 
-class ShareBottomSheet extends StatelessWidget() {
+class ShareBottomSheet extends StatelessWidget {
+  const ShareBottomSheet({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String postId;
   final String postTitle;
   final String? postContent;
   final String? postImageUrl;
 
   const ShareBottomSheet({
+    
     super.key,
     required this.postId,
     required this.postTitle,
     this.postContent,
     this.postImageUrl,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +186,8 @@ class ShareBottomSheet extends StatelessWidget() {
     );
   }
 
-  void _shareGeneric(BuildContext context) async() {
-    try() {
+  void _shareGeneric(BuildContext context) async {
+    try {
       final shareText = _buildShareText();
       // Use ShareService for actual sharing
       await ShareService.shareCustom(
@@ -193,8 +210,8 @@ class ShareBottomSheet extends StatelessWidget() {
     }
   }
 
-  void _copyLink(BuildContext context) async() {
-    try() {
+  void _copyLink(BuildContext context) async {
+    try {
       final link = 'https://saboarena.app/post/$postId';
       await Clipboard.setData(ClipboardData(text: link));
       Navigator.pop(context);
@@ -210,8 +227,8 @@ class ShareBottomSheet extends StatelessWidget() {
     }
   }
 
-  void _shareAsText(BuildContext context) async() {
-    try() {
+  void _shareAsText(BuildContext context) async {
+    try {
       final shareText = _buildShareText();
       await ShareService.shareCustom(
         text: shareText,
@@ -233,10 +250,10 @@ class ShareBottomSheet extends StatelessWidget() {
     }
   }
 
-  void _shareImage(BuildContext context) async() {
+  void _shareImage(BuildContext context) async {
     if (postImageUrl == null) return;
 
-    try() {
+    try {
       final shareText = '${_buildShareText()}\n\n🖼️ Hình ảnh: $postImageUrl';
       await ShareService.shareCustom(
         text: shareText,

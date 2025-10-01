@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
 
-class MessagingScreen extends StatefulWidget() {
+class MessagingScreen extends StatefulWidget {
+  const MessagingScreen({super.key});
+
+} 
   final String? chatId;
   final String? chatName;
   
@@ -48,8 +51,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
     super.dispose();
   }
 
-  Future<void> _loadChatRooms() async() {
-    try() {
+  Future<void> _loadChatRooms() async {
+    try {
       setState(() => _isLoading = true);
       
       final response = await _supabase
@@ -73,10 +76,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
     }
   }
 
-  Future<void> _loadMessages() async() {
+  Future<void> _loadMessages() async {
     if (_selectedChatId == null) return;
     
-    try() {
+    try {
       final response = await _supabase
           .from('chat_messages')
           .select('*')
@@ -122,13 +125,13 @@ class _MessagingScreenState extends State<MessagingScreen> {
         .subscribe();
   }
 
-  Future<void> _sendMessage() async() {
+  Future<void> _sendMessage() async {
     if (_messageController.text.trim().isEmpty || _selectedChatId == null) return;
 
     final content = _messageController.text.trim();
     _messageController.clear();
 
-    try() {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) {
         throw Exception('Chưa đăng nhập');
@@ -149,7 +152,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
     }
   }
 
-  Future<void> _createNewChat() async() {
+  Future<void> _createNewChat() async {
     final nameController = TextEditingController();
     
     final result = await showDialog<String>(
@@ -177,7 +180,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
     );
 
     if (result != null && result.isNotEmpty) {
-      try() {
+      try {
         final user = _supabase.auth.currentUser;
         if (user == null) throw Exception('Chưa đăng nhập');
 
@@ -235,7 +238,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
       return '${difference.inMinutes} phút trước';
     } else if (difference.inHours < 24) {
       return '${difference.inHours} giờ trước';
-    } else() {
+    } else {
       return '${difference.inDays} ngày trước';
     }
   }

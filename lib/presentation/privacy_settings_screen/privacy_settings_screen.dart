@@ -4,10 +4,10 @@ import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class PrivacySettingsScreen extends StatefulWidget() {
+class PrivacySettingsScreen extends StatefulWidget {
   const PrivacySettingsScreen({super.key});
 
-  @override
+@override
   State<PrivacySettingsScreen> createState() => _PrivacySettingsScreenState();
 }
 
@@ -23,10 +23,10 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     _loadPrivacySettings();
   }
 
-  Future<void> _loadPrivacySettings() async() {
+  Future<void> _loadPrivacySettings() async {
     setState(() => isLoading = true);
     
-    try() {
+    try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId != null) {
         final settings = await UserPrivacyService.getUserPrivacySettings(userId);
@@ -41,10 +41,10 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     }
   }
 
-  Future<void> _savePrivacySettings() async() {
+  Future<void> _savePrivacySettings() async {
     setState(() => isSaving = true);
     
-    try() {
+    try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId != null) {
         final success = await UserPrivacyService.saveUserPrivacySettings(
@@ -54,13 +54,15 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
         
         if (success) {
           _showSuccess('Đã lưu cài đặt riêng tư');
-        } else() {
+        } else {
+          () {
           _showError('Không thể lưu cài đặt');
         }
-      }
+      
+        }}
     } catch (e) {
       _showError('Lỗi khi lưu cài đặt: $e');
-    } finally() {
+    } finally {
       setState(() => isSaving = false);
     }
   }
@@ -217,7 +219,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               setting['description']!,
               isLast,
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -266,7 +268,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                 privacySettings[key] = value;
               });
             },
-            activeColor: AppTheme.primaryLight,
+            activeThumbColor: AppTheme.primaryLight,
           ),
         ],
       ),
@@ -355,3 +357,4 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     );
   }
 }
+

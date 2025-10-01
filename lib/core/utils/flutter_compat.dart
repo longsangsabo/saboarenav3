@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Extension để thay thế withValues bằng withOpacity
-extension ColorExtension on Color() {
+extension ColorExtension on Color {
   Color withAlpha(double alpha) {
     return withOpacity(alpha);
   }
@@ -40,7 +40,10 @@ class CompatDropdownButtonFormField<T> extends DropdownButtonFormField<T> {
 }
 
 // Wrapper cho Switch để xử lý activeThumbColor -> thumbColor
-class CompatSwitch extends Switch() {
+class CompatSwitch extends Switch {
+  const CompatSwitch({super.key});
+
+} 
   const CompatSwitch({
     super.key,
     required super.value,

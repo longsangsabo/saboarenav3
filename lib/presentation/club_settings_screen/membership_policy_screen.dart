@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class MembershipPolicyScreen extends StatefulWidget() {
+class MembershipPolicyScreen extends StatefulWidget {
+  const MembershipPolicyScreen({super.key});
+
+} 
   final String clubId;
 
   const MembershipPolicyScreen({

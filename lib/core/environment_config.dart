@@ -1,7 +1,7 @@
 // Environment Configuration
 // Handles different environments (dev, staging, prod)
 
-class EnvironmentConfig() {
+class EnvironmentConfig {
   static const String environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'development');
   
   // Supabase Configuration per environment

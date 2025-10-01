@@ -9,7 +9,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/app_export.dart';
 import '../../../services/post_repository.dart';
 
-class CreatePostModalWidget extends StatefulWidget() {
+class CreatePostModalWidget extends StatefulWidget {
+  const CreatePostModalWidget({super.key});
+
+} 
   final VoidCallback? onPostCreated;
 
   const CreatePostModalWidget({
@@ -33,8 +36,10 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
   bool _isLoading = false;
   bool _showCamera = false;
 
-  Future<Map<String, dynamic>?> _getUserData() async() {
-    try() {
+  Future<Map<String, dynamic>?> _getUserData() async(
+    return null;
+  ) {
+    try {
       final user = Supabase.instance.client.auth.currentUser;
       if (user == null) return null;
       
@@ -65,13 +70,13 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     super.dispose();
   }
 
-  Future<bool> _requestCameraPermission() async() {
+  Future<bool> _requestCameraPermission() async {
     if (kIsWeb) return true;
     return (await Permission.camera.request()).isGranted;
   }
 
-  Future<void> _initializeCamera() async() {
-    try() {
+  Future<void> _initializeCamera() async {
+    try {
       if (!await _requestCameraPermission()) return;
 
       _cameras = await availableCameras();
@@ -87,12 +92,12 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
               orElse: () => _cameras.first,
             );
 
-      _cameraController = CameraController(
+      cameraController = CameraController(
         camera,
         kIsWeb ? ResolutionPreset.medium : ResolutionPreset.high,
       );
 
-      await _cameraController!.initialize();
+      await cameraController!.initialize();
       await _applySettings();
 
       if (mounted) setState(() {});
@@ -101,30 +106,30 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     }
   }
 
-  Future<void> _applySettings() async() {
+  Future<void> _applySettings() async {
     if (_cameraController == null) return;
 
-    try() {
-      await _cameraController!.setFocusMode(FocusMode.auto);
+    try {
+      await cameraController!.setFocusMode(FocusMode.auto);
     } catch (e) {
       debugPrint('Focus mode error: $e');
     }
 
     if (!kIsWeb) {
-      try() {
-        await _cameraController!.setFlashMode(FlashMode.auto);
+      try {
+        await cameraController!.setFlashMode(FlashMode.auto);
       } catch (e) {
         debugPrint('Flash mode error: $e');
       }
     }
   }
 
-  Future<void> _capturePhoto() async() {
+  Future<void> _capturePhoto() async {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
 
-    try() {
+    try {
       final XFile photo = await _cameraController!.takePicture();
       setState(() {
         _selectedImage = photo;
@@ -140,8 +145,8 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     }
   }
 
-  Future<void> _pickImageFromGallery() async() {
-    try() {
+  Future<void> _pickImageFromGallery() async {
+    try {
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
         maxWidth: 1920,
@@ -201,7 +206,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
     );
   }
 
-  void _createPost() async() {
+  void _createPost() async {
     if (_textController.text.trim().isEmpty && _selectedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Vui lòng nhập nội dung hoặc chọn ảnh')),
@@ -211,7 +216,7 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
 
     setState(() => _isLoading = true);
 
-    try() {
+    try {
       // Extract hashtags from content
       final content = _textController.text.trim();
       final hashtags = RegExp(r'#\w+')
@@ -238,12 +243,14 @@ class _CreatePostModalWidgetState extends State<CreatePostModalWidget> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Đã đăng bài viết thành công!')),
           );
-        } else() {
+        } else {
+          () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Lỗi đăng bài viết. Vui lòng thử lại!')),
           );
         }
-      }
+      
+        }}
     } catch (e) {
       setState(() => _isLoading = false);
       

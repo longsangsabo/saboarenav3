@@ -1,7 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/shift_models.dart';
 
-class ShiftReportingService() {
+class ShiftReportingService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // =====================================================
@@ -17,8 +15,8 @@ class ShiftReportingService() {
     required String endTime,
     required double openingCash,
     String? notes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('shift_sessions')
           .insert({
@@ -42,8 +40,8 @@ class ShiftReportingService() {
   }
 
   /// Get active shift for staff member
-  Future<ShiftSession?> getActiveShift(String staffId) async() {
-    try() {
+  Future<ShiftSession?> getActiveShift(String staffId) async {
+    try {
       final response = await _supabase
           .from('shift_sessions')
           .select('''
@@ -70,8 +68,8 @@ class ShiftReportingService() {
   Future<bool> endShift(String sessionId, {
     required double closingCash,
     String? notes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Calculate cash difference
       final session = await _supabase
           .from('shift_sessions')
@@ -120,8 +118,8 @@ class ShiftReportingService() {
     String? customerId,
     String? receiptNumber,
     required String recordedBy,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('shift_transactions')
           .insert({
@@ -153,8 +151,8 @@ class ShiftReportingService() {
   }
 
   /// Update shift revenue totals
-  Future<void> _updateShiftRevenue(String sessionId, double amount, String paymentMethod) async() {
-    try() {
+  Future<void> _updateShiftRevenue(String sessionId, double amount, String paymentMethod) async {
+    try {
       // Get current totals
       final session = await _supabase
           .from('shift_sessions')
@@ -198,8 +196,8 @@ class ShiftReportingService() {
   }
 
   /// Get shift transactions
-  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async() {
-    try() {
+  Future<List<ShiftTransaction>> getShiftTransactions(String sessionId) async {
+    try {
       final response = await _supabase
           .from('shift_transactions')
           .select('''
@@ -238,8 +236,8 @@ class ShiftReportingService() {
     double? unitPrice,
     int? totalSold,
     String? notes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('shift_inventory')
           .insert({
@@ -269,8 +267,8 @@ class ShiftReportingService() {
   }
 
   /// Get shift inventory
-  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async() {
-    try() {
+  Future<List<ShiftInventory>> getShiftInventory(String sessionId) async {
+    try {
       final response = await _supabase
           .from('shift_inventory')
           .select()
@@ -299,8 +297,8 @@ class ShiftReportingService() {
     String? vendorName,
     required String recordedBy,
     String? approvedBy,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('shift_expenses')
           .insert({
@@ -327,8 +325,8 @@ class ShiftReportingService() {
   }
 
   /// Get shift expenses
-  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async() {
-    try() {
+  Future<List<ShiftExpense>> getShiftExpenses(String sessionId) async {
+    try {
       final response = await _supabase
           .from('shift_expenses')
           .select('''
@@ -356,8 +354,8 @@ class ShiftReportingService() {
   // =====================================================
 
   /// Generate shift report
-  Future<ShiftReport> generateShiftReport(String sessionId) async() {
-    try() {
+  Future<ShiftReport> generateShiftReport(String sessionId) async {
+    try {
       // Get shift summary using database function
       final summaryResponse = await _supabase
           .rpc('calculate_shift_summary', params: {'session_id': sessionId});
@@ -434,8 +432,8 @@ class ShiftReportingService() {
     DateTime? startDate,
     DateTime? endDate,
     String? status,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('shift_reports')
           .select('''
@@ -477,8 +475,8 @@ class ShiftReportingService() {
   Future<Map<String, dynamic>> getShiftAnalytics(String clubId, {
     DateTime? startDate,
     DateTime? endDate,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('shift_reports')
           .select('total_revenue, total_expenses, net_profit, created_at')
@@ -527,8 +525,8 @@ class ShiftReportingService() {
   Future<bool> handOverShift(String sessionId, {
     required String handOverToStaffId,
     required String handoverNotes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase
           .from('shift_sessions')
           .update({

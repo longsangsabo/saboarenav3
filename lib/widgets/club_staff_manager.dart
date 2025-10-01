@@ -3,7 +3,17 @@ import '../services/club_staff_service.dart';
 import '../services/commission_service.dart';
 
 /// Widget quản lý nhân viên club cho owner/manager
-class ClubStaffManager extends StatefulWidget() {
+class ClubStaffManager extends StatefulWidget {
+  const ClubStaffManager({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String clubId;
   final String clubName;
 
@@ -18,7 +28,7 @@ class ClubStaffManager extends StatefulWidget() {
 }
 
 class _ClubStaffManagerState extends State<ClubStaffManager>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   
   bool _isLoading = true;
@@ -38,7 +48,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     super.dispose();
   }
 
-  Future<void> _loadClubData() async() {
+  Future<void> _loadClubData() async {
     setState(() => _isLoading = true);
 
     final staffList = await ClubStaffService.getClubStaff(widget.clubId);
@@ -283,7 +293,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: hasPermission ? Colors.green.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+        color: hasPermission ? Colors.green.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: hasPermission ? Colors.green : Colors.grey,
@@ -411,9 +421,9 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,7 +437,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
                   title,
                   style: TextStyle(
                     fontSize: 12,
-                    color: color.withOpacity(0.8),
+                    color: color.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -494,7 +504,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
+        color: Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -653,7 +663,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
-        backgroundColor: isPaid ? Colors.green.withOpacity(0.2) : Colors.orange.withOpacity(0.2),
+        backgroundColor: isPaid ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
         child: Icon(
           isPaid ? Icons.check_circle : Icons.pending,
           color: isPaid ? Colors.green : Colors.orange,
@@ -787,7 +797,7 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
     );
   }
 
-  Future<void> _confirmRemoveStaff(String staffId) async() {
+  Future<void> _confirmRemoveStaff(String staffId) async {
     Navigator.pop(context);
     
     final result = await ClubStaffService.removeStaff(
@@ -829,14 +839,21 @@ class _ClubStaffManagerState extends State<ClubStaffManager>
 // ADD STAFF DIALOG
 // =====================================================
 
-class _AddStaffDialog extends StatefulWidget() {
+class _AddStaffDialog extends StatefulWidget {
   final String clubId;
   final VoidCallback onStaffAdded;
 
   const _AddStaffDialog({
+    
     required this.clubId,
     required this.onStaffAdded,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<_AddStaffDialog> createState() => _AddStaffDialogState();
@@ -881,7 +898,7 @@ class _AddStaffDialogState extends State<_AddStaffDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _selectedRole,
+                initialValue: _selectedRole,
                 decoration: const InputDecoration(labelText: 'Chức vụ'),
                 items: const [
                   DropdownMenuItem(value: 'staff', child: Text('Nhân viên')),
@@ -952,7 +969,7 @@ class _AddStaffDialogState extends State<_AddStaffDialog> {
     );
   }
 
-  Future<void> _addStaff() async() {
+  Future<void> _addStaff() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);

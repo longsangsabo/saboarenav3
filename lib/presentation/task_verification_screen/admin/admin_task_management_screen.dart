@@ -4,7 +4,10 @@ import '../shared/task_models.dart';
 import '../shared/task_verification_service.dart';
 import 'admin_task_detail_screen.dart';
 
-class AdminTaskManagementScreen extends StatefulWidget() {
+class AdminTaskManagementScreen extends StatefulWidget {
+  const AdminTaskManagementScreen({super.key});
+
+} 
   final String clubId;
 
   const AdminTaskManagementScreen({
@@ -17,7 +20,7 @@ class AdminTaskManagementScreen extends StatefulWidget() {
 }
 
 class _AdminTaskManagementScreenState extends State<AdminTaskManagementScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   final TaskVerificationService _taskService = TaskVerificationService();
   
@@ -39,9 +42,9 @@ class _AdminTaskManagementScreenState extends State<AdminTaskManagementScreen>
     super.dispose();
   }
 
-  Future<void> _loadData() async() {
+  Future<void> _loadData() async {
     setState(() => _isLoading = true);
-    try() {
+    try {
       final futures = await Future.wait([
         _taskService.getAllClubTasks(widget.clubId),
         _taskService.getPendingVerifications(widget.clubId),
@@ -370,8 +373,8 @@ class _AdminTaskManagementScreenState extends State<AdminTaskManagementScreen>
     );
   }
 
-  Future<void> _updateTaskStatus(StaffTask task, String newStatus) async() {
-    try() {
+  Future<void> _updateTaskStatus(StaffTask task, String newStatus) async {
+    try {
       await _taskService.updateTaskStatus(task.id, newStatus);
       _loadData();
       _showSuccessSnackBar('Đã cập nhật trạng thái nhiệm vụ');
@@ -380,8 +383,8 @@ class _AdminTaskManagementScreenState extends State<AdminTaskManagementScreen>
     }
   }
 
-  Future<void> _reviewVerification(TaskVerification verification, String action) async() {
-    try() {
+  Future<void> _reviewVerification(TaskVerification verification, String action) async {
+    try {
       await _taskService.reviewVerification(verification.id, action);
       _loadData();
       _showSuccessSnackBar('Đã $action xác minh');
@@ -432,7 +435,10 @@ class _AdminTaskManagementScreenState extends State<AdminTaskManagementScreen>
 }
 
 // Admin Task Card Widget
-class AdminTaskCard extends StatelessWidget() {
+class AdminTaskCard extends StatelessWidget {
+  const AdminTaskCard({super.key});
+
+} 
   final StaffTask task;
   final VoidCallback onTaskTap;
   final Function(String) onStatusChange;
@@ -559,7 +565,10 @@ class AdminTaskCard extends StatelessWidget() {
 }
 
 // Verification Review Card Widget
-class VerificationReviewCard extends StatelessWidget() {
+class VerificationReviewCard extends StatelessWidget {
+  const VerificationReviewCard({super.key});
+
+} 
   final TaskVerification verification;
   final Function(String) onReview;
 
@@ -694,7 +703,10 @@ class VerificationReviewCard extends StatelessWidget() {
 }
 
 // Create Task Dialog
-class CreateTaskDialog extends StatefulWidget() {
+class CreateTaskDialog extends StatefulWidget {
+  const CreateTaskDialog({super.key});
+
+} 
   final String clubId;
   final VoidCallback onTaskCreated;
 
@@ -756,7 +768,7 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _taskType,
+                initialValue: _taskType,
                 decoration: const InputDecoration(
                   labelText: 'Loại nhiệm vụ',
                   border: OutlineInputBorder(),
@@ -771,7 +783,7 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _priority,
+                initialValue: _priority,
                 decoration: const InputDecoration(
                   labelText: 'Độ ưu tiên',
                   border: OutlineInputBorder(),

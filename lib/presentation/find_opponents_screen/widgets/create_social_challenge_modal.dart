@@ -5,7 +5,10 @@ import '../../../services/opponent_club_service.dart';
 import '../../../services/auth_service.dart';
 import '../../../helpers/privacy_helper.dart';
 
-class CreateSocialChallengeModal extends StatefulWidget() {
+class CreateSocialChallengeModal extends StatefulWidget {
+  const CreateSocialChallengeModal({super.key});
+
+} 
   final UserProfile? currentUser;
   final List<UserProfile> opponents;
 
@@ -25,7 +28,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
 
   UserProfile? _selectedOpponent;
   String _selectedGameType = '8-ball';
-  DateTime _selectedDateTime = DateTime.now().add(const Duration(hours: 2));
+  final DateTime _selectedDateTime = DateTime.now().add(const Duration(hours: 2));
   String _selectedLocation = '';
   final TextEditingController _noteController = TextEditingController();
   bool _isCreating = false;
@@ -45,8 +48,8 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
     super.dispose();
   }
 
-  Future<void> _loadClubData() async() {
-    try() {
+  Future<void> _loadClubData() async {
+    try {
       final clubs = await _clubService.getActiveClubs();
       if (mounted) {
         setState(() {
@@ -76,12 +79,12 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
     }
   }
 
-  Future<void> _createSocialChallenge() async() {
+  Future<void> _createSocialChallenge() async {
     if (_isCreating) return;
 
     setState(() => _isCreating = true);
 
-    try() {
+    try {
       // Check privacy permissions if challenging specific user
       if (_selectedOpponent != null) {
         final currentUserId = AuthService.instance.currentUser?.id;
@@ -135,7 +138,8 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
             ),
           );
         }
-      } else() {
+      } else {
+        () {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -145,7 +149,8 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
           );
         }
       }
-    } catch (e) {
+    
+      }} catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -154,7 +159,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isCreating = false);
       }
@@ -452,7 +457,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
         ),
         const SizedBox(height: 8),
         GestureDetector(
-          onTap: () async() {
+          onTap: () async {
             final date = await showDatePicker(
               context: context,
               initialDate: _selectedDateTime,
@@ -511,7 +516,7 @@ class _CreateSocialChallengeModalState extends State<CreateSocialChallengeModal>
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: _selectedLocation.isEmpty ? null : _selectedLocation,
+          initialValue: _selectedLocation.isEmpty ? null : _selectedLocation,
           hint: const Text('Chọn hoặc nhập địa điểm'),
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),

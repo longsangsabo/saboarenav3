@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../../../services/club_spa_service.dart';
 
 /// Screen for admins to manage SPA allocation to clubs
-class AdminSpaManagementScreen extends StatefulWidget() {
+class AdminSpaManagementScreen extends StatefulWidget {
   const AdminSpaManagementScreen({super.key});
 
-  @override
+@override
   State<AdminSpaManagementScreen> createState() => _AdminSpaManagementScreenState();
 }
 
 class _AdminSpaManagementScreenState extends State<AdminSpaManagementScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ClubSpaService _spaService = ClubSpaService();
 
@@ -32,10 +32,10 @@ class _AdminSpaManagementScreenState extends State<AdminSpaManagementScreen>
     super.dispose();
   }
 
-  Future<void> _loadAdminData() async() {
+  Future<void> _loadAdminData() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       final results = await Future.wait([
         _spaService.getAllClubsWithSpaBalance(),
         _spaService.getAllSpaTransactions(),
@@ -54,12 +54,12 @@ class _AdminSpaManagementScreenState extends State<AdminSpaManagementScreen>
           SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
         );
       }
-    } finally() {
+    } finally {
       setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _showAllocateSpaDialog(String clubId, String clubName) async() {
+  Future<void> _showAllocateSpaDialog(String clubId, String clubName) async {
     final formKey = GlobalKey<FormState>();
     double spaAmount = 0;
     String description = '';
@@ -107,7 +107,7 @@ class _AdminSpaManagementScreenState extends State<AdminSpaManagementScreen>
             child: const Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async() {
+            onPressed: () async {
               if (formKey.currentState?.validate() == true) {
                 formKey.currentState?.save();
                 Navigator.pop(context);
@@ -126,7 +126,7 @@ class _AdminSpaManagementScreenState extends State<AdminSpaManagementScreen>
                     SnackBar(content: Text('Đã cấp ${spaAmount.toStringAsFixed(0)} SPA cho $clubName')),
                   );
                   _loadAdminData();
-                } else() {
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Lỗi khi cấp SPA')),
                   );
@@ -613,3 +613,4 @@ class _AdminSpaManagementScreenState extends State<AdminSpaManagementScreen>
     }
   }
 }
+

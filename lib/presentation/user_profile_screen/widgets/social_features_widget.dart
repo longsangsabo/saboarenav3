@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class SocialFeaturesWidget extends StatelessWidget() {
+class SocialFeaturesWidget extends StatelessWidget {
+  const SocialFeaturesWidget({super.key});
+
+} 
   final Map<String, dynamic> socialData;
   final VoidCallback? onFriendsListTap;
   final VoidCallback? onRecentChallengesTap;

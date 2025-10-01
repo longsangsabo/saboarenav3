@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
-import '../models/tournament.dart';
-import '../models/match.dart';
-import 'bracket_generator_service.dart';
-
 /// Advanced Bracket Visualization Service with animations and interactive features
 /// Phase 2 enhancement of the basic bracket system
-class AdvancedBracketVisualizationService() {
+class AdvancedBracketVisualizationService {
   static const Duration _animationDuration = Duration(milliseconds: 300);
   static const Curve _animationCurve = Curves.easeInOut;
 
@@ -164,8 +159,10 @@ class AdvancedBracketVisualizationService() {
     required bool showAnimations,
     required bool enableInteractions,
   }) {
-    final winnerMatches = matches.where((m) => m.bracketType == 'winner').toList();
-    final loserMatches = matches.where((m) => m.bracketType == 'loser').toList();
+    final winnerMatches =
+        matches.where((m) => m.bracketType == 'winner').toList();
+    final loserMatches =
+        matches.where((m) => m.bracketType == 'loser').toList();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -180,7 +177,7 @@ class AdvancedBracketVisualizationService() {
               showAnimations: showAnimations,
             ),
             const SizedBox(height: 20),
-            
+
             // Winner Bracket
             _buildBracketSection(
               title: 'Winner Bracket',
@@ -192,9 +189,9 @@ class AdvancedBracketVisualizationService() {
               enableInteractions: enableInteractions,
               sectionColor: Colors.green.shade100,
             ),
-            
+
             const SizedBox(height: 30),
-            
+
             // Loser Bracket
             _buildBracketSection(
               title: 'Loser Bracket',
@@ -224,7 +221,7 @@ class AdvancedBracketVisualizationService() {
   }) {
     final isSABO32 = tournament.format == 'sabo_de32';
     final title = isSABO32 ? "SABO DE32 Bracket" : 'SABO DE16 Bracket';
-    
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(
@@ -238,7 +235,7 @@ class AdvancedBracketVisualizationService() {
               showAnimations: showAnimations,
             ),
             const SizedBox(height: 20),
-            
+
             if (isSABO32) ...[
               // Group Stage for DE32
               _buildSABOGroupStage(
@@ -251,7 +248,7 @@ class AdvancedBracketVisualizationService() {
               ),
               const SizedBox(height: 30),
             ],
-            
+
             // Elimination Stage
             _buildSABOEliminationStage(
               participants: participants,
@@ -508,7 +505,7 @@ class AdvancedBracketVisualizationService() {
   }
 
   // Placeholder methods for specific bracket implementations
-  
+
   static Widget _buildSingleEliminationTree({
     required List<TournamentParticipant> participants,
     required List<Match> matches,
@@ -654,13 +651,15 @@ class AdvancedBracketVisualizationService() {
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: matches.map((match) => _buildAnimatedMatchCard(
-        match: match,
-        participants: participants,
-        onTap: enableInteractions ? onMatchTap : null,
-        onParticipantTap: enableInteractions ? onParticipantTap : null,
-        showAnimations: showAnimations,
-      )).toList(),
+      children: matches
+          .map((match) => _buildAnimatedMatchCard(
+                match: match,
+                participants: participants,
+                onTap: enableInteractions ? onMatchTap : null,
+                onParticipantTap: enableInteractions ? onParticipantTap : null,
+                showAnimations: showAnimations,
+              ))
+          .toList(),
     );
   }
 
@@ -684,11 +683,11 @@ class AdvancedBracketVisualizationService() {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: match.status == 'completed' 
-                ? Colors.green.shade300 
-                : match.status == 'in_progress'
-                  ? Colors.orange.shade300
-                  : Colors.grey.shade300,
+              color: match.status == 'completed'
+                  ? Colors.green.shade300
+                  : match.status == 'in_progress'
+                      ? Colors.orange.shade300
+                      : Colors.grey.shade300,
             ),
             boxShadow: [
               BoxShadow(
@@ -740,11 +739,11 @@ class AdvancedBracketVisualizationService() {
         name: match.player1Name ?? 'TBD',
       ),
     );
-    
+
     final participant2 = participants.firstWhere(
       (p) => p.id == match.player2Id,
       orElse: () => TournamentParticipant(
-        id: 'unknown', 
+        id: 'unknown',
         name: match.player2Name ?? 'TBD',
       ),
     );
@@ -779,18 +778,14 @@ class AdvancedBracketVisualizationService() {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: isWinner 
-            ? Colors.green.shade50 
-            : Colors.grey.shade50,
+          color: isWinner ? Colors.green.shade50 : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(4),
-          border: isWinner 
-            ? Border.all(color: Colors.green.shade300) 
-            : null,
+          border: isWinner ? Border.all(color: Colors.green.shade300) : null,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isWinner) 
+            if (isWinner)
               Icon(
                 Icons.emoji_events,
                 size: 14,

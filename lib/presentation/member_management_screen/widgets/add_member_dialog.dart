@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../models/member_data.dart';
 
-class AddMemberDialog extends StatefulWidget() {
+class AddMemberDialog extends StatefulWidget {
+  const AddMemberDialog({super.key});
+
+} 
   final String clubId;
   final Function(MemberData) onMemberAdded;
 
@@ -16,7 +19,7 @@ class AddMemberDialog extends StatefulWidget() {
 }
 
 class _AddMemberDialogState extends State<AddMemberDialog>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   
   // Form controllers
@@ -588,10 +591,10 @@ class _AddMemberDialogState extends State<AddMemberDialog>
     }
   }
 
-  Future<void> _handleAddMember() async() {
+  Future<void> _handleAddMember() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       // Simulate API call
       await Future.delayed(Duration(seconds: 2));
       
@@ -614,7 +617,7 @@ class _AddMemberDialogState extends State<AddMemberDialog>
           backgroundColor: Colors.red,
         ),
       );
-    } finally() {
+    } finally {
       setState(() => _isLoading = false);
     }
   }

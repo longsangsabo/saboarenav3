@@ -6,10 +6,12 @@ void main() {
   group('Privacy System Tests', () {
     // Test UserPrivacyService
     group('UserPrivacyService', () {
-      test('should get default privacy settings for non-existent user', () async {
+      test('should get default privacy settings for non-existent user',
+          () async {
         // This should return default settings even if user doesn't exist
-        final settings = await UserPrivacyService.getUserPrivacySettings('fake-user-id');
-        
+        final settings =
+            await UserPrivacyService.getUserPrivacySettings('fake-user-id');
+
         // Should return default values
         expect(settings, isNotNull);
         if (settings != null) {
@@ -22,13 +24,15 @@ void main() {
 
       test('should check social feed visibility correctly', () async {
         // Test with fake user ID - should return default (true)
-        final shouldShow = await UserPrivacyService.shouldShowInSocialFeed('fake-user-id');
+        final shouldShow =
+            await UserPrivacyService.shouldShowInSocialFeed('fake-user-id');
         expect(shouldShow, true);
       });
 
       test('should check challenge list visibility correctly', () async {
         // Test with fake user ID - should return default (true)
-        final shouldShow = await UserPrivacyService.shouldShowInChallengeList('fake-user-id');
+        final shouldShow =
+            await UserPrivacyService.shouldShowInChallengeList('fake-user-id');
         expect(shouldShow, true);
       });
 
@@ -41,7 +45,9 @@ void main() {
           'email': 'test@example.com',
           'location': 'Test City',
           'club_membership': 'Test Club',
-          'match_history': [{'match': 'data'}],
+          'match_history': [
+            {'match': 'data'}
+          ],
           'win_rate': 75.5,
           'current_rank': 'Gold',
           'achievements': ['Achievement 1']
@@ -76,7 +82,7 @@ void main() {
             'location': 'City 1'
           },
           {
-            'id': 'user2', 
+            'id': 'user2',
             'username': 'user2',
             'real_name': 'User Two',
             'location': 'City 2'
@@ -90,7 +96,7 @@ void main() {
 
         expect(filteredUsers, isNotNull);
         expect(filteredUsers.length, lessThanOrEqualTo(usersList.length));
-        
+
         // Check that filtered users have expected structure
         for (final user in filteredUsers) {
           expect(user.containsKey('id'), true);
@@ -109,7 +115,7 @@ void main() {
         expect(permission, isNotNull);
         expect(permission.containsKey('allowed'), true);
         expect(permission.containsKey('message'), true);
-        
+
         // Should allow challenges by default
         expect(permission['allowed'], true);
       });
@@ -160,7 +166,7 @@ void main() {
 
       test('should have valid quick privacy presets', () {
         final presets = PrivacyHelper.getQuickPrivacyPresets();
-        
+
         expect(presets, isNotNull);
         expect(presets.containsKey('public'), true);
         expect(presets.containsKey('friends_only'), true);
@@ -172,7 +178,7 @@ void main() {
           expect(preset.containsKey('description'), true);
           expect(preset.containsKey('icon'), true);
           expect(preset.containsKey('settings'), true);
-          
+
           final settings = preset['settings'] as Map<String, dynamic>;
           expect(settings.containsKey('show_in_social_feed'), true);
           expect(settings.containsKey('show_in_challenge_list'), true);
@@ -185,18 +191,21 @@ void main() {
     group('Privacy Integration Tests', () {
       test('privacy system end-to-end flow', () async {
         const testUserId = 'integration-test-user';
-        
+
         // 1. Get initial settings (should be defaults)
-        final initialSettings = await UserPrivacyService.getUserPrivacySettings(testUserId);
+        final initialSettings =
+            await UserPrivacyService.getUserPrivacySettings(testUserId);
         expect(initialSettings, isNotNull);
-        
+
         // 2. Test privacy checking functions
-        final showInSocial = await UserPrivacyService.shouldShowInSocialFeed(testUserId);
-        final showInChallenge = await UserPrivacyService.shouldShowInChallengeList(testUserId);
-        
+        final showInSocial =
+            await UserPrivacyService.shouldShowInSocialFeed(testUserId);
+        final showInChallenge =
+            await UserPrivacyService.shouldShowInChallengeList(testUserId);
+
         expect(showInSocial, true); // Default should be true
         expect(showInChallenge, true); // Default should be true
-        
+
         // 3. Test user filtering
         final testUserData = {
           'id': testUserId,
@@ -204,23 +213,23 @@ void main() {
           'real_name': 'Test User',
           'location': 'Test Location'
         };
-        
+
         final filteredData = await UserPrivacyService.getFilteredUserInfo(
           testUserId,
           testUserData,
         );
-        
+
         expect(filteredData, isNotNull);
         expect(filteredData['username'], 'testuser');
         expect(filteredData['location'], 'Test Location');
-        
+
         // 4. Test privacy helper integration
         final users = [testUserData];
         final filteredUsers = await PrivacyHelper.filterUsersForPublicDisplay(
           users,
           'social_feed',
         );
-        
+
         expect(filteredUsers, isNotNull);
         expect(filteredUsers.length, 1);
       });

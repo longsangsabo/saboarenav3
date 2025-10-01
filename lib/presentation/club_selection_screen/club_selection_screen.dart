@@ -3,10 +3,10 @@ import 'package:sabo_arena/models/club.dart';
 import 'package:sabo_arena/services/club_service.dart';
 import 'package:sabo_arena/presentation/rank_registration_screen/rank_registration_screen.dart';
 
-class ClubSelectionScreen extends StatefulWidget() {
+class ClubSelectionScreen extends StatefulWidget {
   const ClubSelectionScreen({super.key});
 
-  @override
+@override
   State<ClubSelectionScreen> createState() => _ClubSelectionScreenState();
 }
 
@@ -24,8 +24,8 @@ class _ClubSelectionScreenState extends State<ClubSelectionScreen> {
     _searchController.addListener(_filterClubs);
   }
 
-  Future<List<Club>> _loadClubs() async() {
-    try() {
+  Future<List<Club>> _loadClubs() async {
+    try {
       final clubs = await _clubService.getAllClubs();
       setState(() {
         _allClubs = clubs;
@@ -56,7 +56,7 @@ class _ClubSelectionScreenState extends State<ClubSelectionScreen> {
     });
   }
 
-  Future<void> _sendRankRequest(Club club) async() {
+  Future<void> _sendRankRequest(Club club) async {
     // Navigate to the improved rank registration screen
     Navigator.push(
       context,
@@ -180,3 +180,4 @@ class _ClubSelectionScreenState extends State<ClubSelectionScreen> {
     );
   }
 }
+

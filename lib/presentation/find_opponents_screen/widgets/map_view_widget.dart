@@ -6,7 +6,10 @@ import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
-class MapViewWidget extends StatefulWidget() {
+class MapViewWidget extends StatefulWidget {
+  const MapViewWidget({super.key});
+
+} 
   final List<Map<String, dynamic>> players;
   final Function(Map<String, dynamic>)? onPlayerTap;
 
@@ -32,8 +35,8 @@ class _MapViewWidgetState extends State<MapViewWidget> {
     _getCurrentLocation();
   }
 
-  Future<void> _getCurrentLocation() async() {
-    try() {
+  Future<void> _getCurrentLocation() async {
+    try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() => _isLoading = false);

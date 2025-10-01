@@ -1,7 +1,8 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
-class TournamentCacheService() {
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class TournamentCacheService {
   static const String _tournamentsPrefix = 'tournament_';
   static const String _matchesPrefix = 'matches_';
   static const String _playersPrefix = 'player_';
@@ -11,13 +12,13 @@ class TournamentCacheService() {
   static SharedPreferences? _prefs;
 
   /// Initialize SharedPreferences
-  static Future<void> initialize() async() {
+  static Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     print('🗃️ TournamentCacheService initialized with SharedPreferences');
   }
 
   /// Ensure _prefs is initialized
-  static Future<SharedPreferences> _getPrefs() async() {
+  static Future<SharedPreferences> _getPrefs() async {
     if (_prefs == null) {
       await initialize();
     }
@@ -25,7 +26,7 @@ class TournamentCacheService() {
   }
 
   /// Cache tournament data
-  static Future<void> cacheTournament(String tournamentId, Map<String, dynamic> tournamentData) async() {
+  static Future<void> cacheTournament(String tournamentId, Map<String, dynamic> tournamentData) async {
     final prefs = await _getPrefs();
     final key = '$_tournamentsPrefix$tournamentId';
     await prefs.setString(key, jsonEncode(tournamentData));
@@ -33,7 +34,7 @@ class TournamentCacheService() {
   }
 
   /// Get cached tournament
-  static Future<Map<String, dynamic>?> getCachedTournament(String tournamentId) async() {
+  static Future<Map<String, dynamic>?> getCachedTournament(String tournamentId) async {
     final prefs = await _getPrefs();
     final key = '$_tournamentsPrefix$tournamentId';
     final cached = prefs.getString(key);
@@ -45,7 +46,7 @@ class TournamentCacheService() {
   }
 
   /// Cache match data for a tournament
-  static Future<void> cacheMatches(String tournamentId, List<Map<String, dynamic>> matches) async() {
+  static Future<void> cacheMatches(String tournamentId, List<Map<String, dynamic>> matches) async {
     final key = '${tournamentId}_matches';
     await _matches?.put(key, jsonEncode(matches));
     print('💾 Cached ${matches.length} matches for tournament: ${tournamentId.substring(0, 8)}...');
@@ -65,7 +66,7 @@ class TournamentCacheService() {
   }
 
   /// Update single match in cache
-  static Future<void> updateCachedMatch(String tournamentId, Map<String, dynamic> updatedMatch) async() {
+  static Future<void> updateCachedMatch(String tournamentId, Map<String, dynamic> updatedMatch) async {
     final matches = getCachedMatches(tournamentId);
     if (matches != null) {
       final matchIndex = matches.indexWhere((m) => m['id'] == updatedMatch['id']);
@@ -78,7 +79,7 @@ class TournamentCacheService() {
   }
 
   /// Cache player data
-  static Future<void> cachePlayer(String playerId, Map<String, dynamic> playerData) async() {
+  static Future<void> cachePlayer(String playerId, Map<String, dynamic> playerData) async {
     await _players?.put(playerId, jsonEncode(playerData));
   }
 
@@ -92,7 +93,7 @@ class TournamentCacheService() {
   }
 
   /// Cache multiple players at once
-  static Future<void> cachePlayers(List<Map<String, dynamic>> players) async() {
+  static Future<void> cachePlayers(List<Map<String, dynamic>> players) async {
     for (final player in players) {
       await cachePlayer(player['id'], player);
     }
@@ -111,14 +112,14 @@ class TournamentCacheService() {
   }
 
   /// Clear cache for specific tournament
-  static Future<void> clearTournamentCache(String tournamentId) async() {
+  static Future<void> clearTournamentCache(String tournamentId) async {
     await _tournaments?.delete(tournamentId);
     await _matches?.delete('${tournamentId}_matches');
     print('🗑️ Cleared cache for tournament: ${tournamentId.substring(0, 8)}...');
   }
 
   /// Clear all cache
-  static Future<void> clearAllCache() async() {
+  static Future<void> clearAllCache() async {
     await _tournaments?.clear();
     await _matches?.clear();
     await _players?.clear();
@@ -135,7 +136,7 @@ class TournamentCacheService() {
   }
 
   /// Store pending offline actions
-  static Future<void> storePendingAction(Map<String, dynamic> action) async() {
+  static Future<void> storePendingAction(Map<String, dynamic> action) async {
     final pending = getPendingActions();
     pending.add(action);
     await _tournaments?.put('_pending_actions', jsonEncode(pending));
@@ -153,13 +154,13 @@ class TournamentCacheService() {
   }
 
   /// Clear pending actions after sync
-  static Future<void> clearPendingActions() async() {
+  static Future<void> clearPendingActions() async {
     await _tournaments?.delete('_pending_actions');
     print('✅ Cleared pending actions');
   }
 
   /// Mark data as needing sync
-  static Future<void> markForSync(String tournamentId) async() {
+  static Future<void> markForSync(String tournamentId) async {
     final syncList = getSyncList();
     if (!syncList.contains(tournamentId)) {
       syncList.add(tournamentId);
@@ -179,7 +180,7 @@ class TournamentCacheService() {
   }
 
   /// Remove from sync list after successful sync
-  static Future<void> removeFromSyncList(String tournamentId) async() {
+  static Future<void> removeFromSyncList(String tournamentId) async {
     final syncList = getSyncList();
     syncList.remove(tournamentId);
     await _tournaments?.put('_sync_list', jsonEncode(syncList));

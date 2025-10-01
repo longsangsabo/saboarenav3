@@ -1,6 +1,7 @@
+
 import '../core/utils/rank_migration_helper.dart';
 
-class UserProfile() {
+class UserProfile {
   final String id;
   final String email;
   final String fullName;
@@ -88,7 +89,7 @@ class UserProfile() {
   }
 
   Map<String, dynamic> toJson() {
-    return() {
+    return {
       'id': id,
       'email': email,
       'full_name': fullName,
@@ -155,17 +156,17 @@ class UserProfile() {
     );
   }
 
-  double get winRate() {
+  double get winRate {
     int totalGames = totalWins + totalLosses;
     if (totalGames == 0) return 0.0;
     return (totalWins / totalGames) * 100;
   }
 
-  String get displayRank() {
+  String get displayRank {
     return RankMigrationHelper.getNewDisplayName(rank);
   }
 
-  String get skillLevelDisplay() {
+  String get skillLevelDisplay {
     switch (skillLevel) {
       case 'beginner':
         return 'Người mới';
@@ -180,7 +181,7 @@ class UserProfile() {
     }
   }
 
-  String get roleDisplay() {
+  String get roleDisplay {
     switch (role) {
       case 'player':
         return 'Người chơi';

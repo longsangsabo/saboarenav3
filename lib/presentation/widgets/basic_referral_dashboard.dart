@@ -7,7 +7,10 @@ import 'basic_referral_stats_widget.dart';
 
 /// Complete Basic Referral Dashboard
 /// Combines all referral widgets into a comprehensive dashboard
-class BasicReferralDashboard extends StatefulWidget() {
+class BasicReferralDashboard extends StatefulWidget {
+  const BasicReferralDashboard({super.key});
+
+} 
   final String userId;
   final bool allowCodeInput;
   final bool showStats;
@@ -297,7 +300,10 @@ class _BasicReferralDashboardState extends State<BasicReferralDashboard> {
 }
 
 /// Mini referral widget for quick access
-class MiniReferralWidget extends StatelessWidget() {
+class MiniReferralWidget extends StatelessWidget {
+  const MiniReferralWidget({super.key});
+
+} 
   final String userId;
   final VoidCallback? onTapExpand;
 

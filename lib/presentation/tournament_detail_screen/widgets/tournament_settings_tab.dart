@@ -7,7 +7,10 @@ import 'package:sabo_arena/services/tournament_service.dart';
 import 'package:sabo_arena/services/bracket_service.dart';
 import 'package:sabo_arena/services/tournament_completion_service.dart';
 
-class TournamentSettingsTab extends StatefulWidget() {
+class TournamentSettingsTab extends StatefulWidget {
+  const TournamentSettingsTab({super.key});
+
+} 
   final String tournamentId;
   final VoidCallback? onStatusChanged;
 
@@ -39,13 +42,13 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     _loadTournamentData();
   }
 
-  Future<void> _loadTournamentData() async() {
+  Future<void> _loadTournamentData() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try() {
+    try {
       // Load tournament matches and participants
       _matches = await _tournamentService.getTournamentMatches(widget.tournamentId);
       
@@ -86,8 +89,8 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     return _bracketService.isTournamentComplete(_matches);
   }
 
-  Future<void> _debugDirectDatabaseQuery() async() {
-    try() {
+  Future<void> _debugDirectDatabaseQuery() async {
+    try {
       debugPrint('🔍 Direct DB Query: Checking tournament_participants table...');
       final response = await Supabase.instance.client
           .from('tournament_participants')
@@ -569,7 +572,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
     );
   }
 
-  Future<void> _completeTournament() async() {
+  Future<void> _completeTournament() async {
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
@@ -600,7 +603,7 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
 
     setState(() => _isCompleting = true);
 
-    try() {
+    try {
       // Use the new TournamentCompletionService for complete workflow
       final result = await _completionService.completeTournament(
         tournamentId: widget.tournamentId,
@@ -633,18 +636,20 @@ class _TournamentSettingsTabState extends State<TournamentSettingsTab> {
         // Show completion report dialog
         _showCompletionReport(result['completion_report']);
         
-      } else() {
+      } else {
+        () {
         throw Exception(result['message'] ?? 'Unknown completion error');
       }
       
-    } catch (e) {
+    
+      }} catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Lỗi hoàn thành giải đấu: ${e.toString()}'),
           backgroundColor: AppTheme.errorLight,
         ),
       );
-    } finally() {
+    } finally {
       setState(() => _isCompleting = false);
     }
   }

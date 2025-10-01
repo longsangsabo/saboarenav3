@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../member_management_screen/member_management_screen.dart';
 
-class MemberSettingsTab extends StatefulWidget() {
+class MemberSettingsTab extends StatefulWidget {
+  const MemberSettingsTab({super.key});
+
+} 
   final MemberData memberData;
   final Function(MemberData) onMemberUpdated;
 
@@ -17,7 +20,7 @@ class MemberSettingsTab extends StatefulWidget() {
 }
 
 class _MemberSettingsTabState extends State<MemberSettingsTab>
-    with AutomaticKeepAliveClientMixin() {
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -593,7 +596,7 @@ class _MemberSettingsTabState extends State<MemberSettingsTab>
   }
 }
 
-class _MembershipTypeDialog extends StatelessWidget() {
+class _MembershipTypeDialog extends StatelessWidget {
   final MembershipType currentType;
   final Function(MembershipType) onChanged;
 

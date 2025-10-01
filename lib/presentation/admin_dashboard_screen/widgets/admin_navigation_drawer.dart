@@ -6,7 +6,10 @@ import '../../admin_tournament_management_screen/admin_tournament_management_scr
 import '../club_rank_change_management_screen.dart';
 import '../system_admin_rank_management_screen.dart';
 
-class AdminNavigationDrawer extends StatelessWidget() {
+class AdminNavigationDrawer extends StatelessWidget {
+  const AdminNavigationDrawer({super.key});
+
+} 
   const AdminNavigationDrawer({super.key});
 
   @override
@@ -426,8 +429,8 @@ class AdminNavigationDrawer extends StatelessWidget() {
     Navigator.of(context).pushReplacementNamed(AppRoutes.userProfileScreen);
   }
 
-  void _handleLogout(BuildContext context) async() {
-    try() {
+  void _handleLogout(BuildContext context) async {
+    try {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -464,7 +467,7 @@ class AdminNavigationDrawer extends StatelessWidget() {
   }
 }
 
-class _NavigationItem() {
+class _NavigationItem {
   final IconData icon;
   final String title;
   final String? route;

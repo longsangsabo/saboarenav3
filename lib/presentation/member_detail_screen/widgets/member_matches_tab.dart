@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../member_management_screen/member_management_screen.dart';
 
-class MemberMatchesTab extends StatefulWidget() {
+class MemberMatchesTab extends StatefulWidget {
+  const MemberMatchesTab({super.key});
+
+} 
   final MemberData memberData;
 
   const MemberMatchesTab({
@@ -15,7 +18,7 @@ class MemberMatchesTab extends StatefulWidget() {
 }
 
 class _MemberMatchesTabState extends State<MemberMatchesTab>
-    with AutomaticKeepAliveClientMixin() {
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -527,7 +530,7 @@ class _MemberMatchesTabState extends State<MemberMatchesTab>
       return 'Hôm qua';
     } else if (difference < 7) {
       return '$difference ngày trước';
-    } else() {
+    } else {
       return '${date.day}/${date.month}/${date.year}';
     }
   }
@@ -568,7 +571,7 @@ class _MemberMatchesTabState extends State<MemberMatchesTab>
 
 enum MatchResult { win, loss, draw }
 
-class MatchRecord() {
+class MatchRecord {
   final String id;
   final String opponent;
   final MatchResult result;

@@ -6,7 +6,10 @@ import 'package:sabo_arena/presentation/payment/payment_setup_screen.dart';
 import 'package:sabo_arena/services/real_payment_service.dart';
 import 'package:sabo_arena/widgets/auto_payment_qr_widget.dart';
 
-class PaymentSettingsScreen extends StatefulWidget() {
+class PaymentSettingsScreen extends StatefulWidget {
+  const PaymentSettingsScreen({super.key});
+
+} 
   final String clubId;
 
   const PaymentSettingsScreen({
@@ -29,8 +32,8 @@ class _PaymentSettingsScreenState extends State<PaymentSettingsScreen> {
     _loadPaymentSettings();
   }
 
-  Future<void> _loadPaymentSettings() async() {
-    try() {
+  Future<void> _loadPaymentSettings() async {
+    try {
       final settings = await RealPaymentService.getClubPaymentSettings(widget.clubId);
       setState(() {
         currentSettings = settings;
@@ -606,7 +609,7 @@ class _PaymentSettingsScreenState extends State<PaymentSettingsScreen> {
   }
 
   // Action methods
-  void _startSetup() async() {
+  void _startSetup() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -620,7 +623,7 @@ class _PaymentSettingsScreenState extends State<PaymentSettingsScreen> {
     }
   }
 
-  void _editSettings() async() {
+  void _editSettings() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(

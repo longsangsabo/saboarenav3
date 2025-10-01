@@ -5,7 +5,10 @@ import '../../services/basic_referral_service.dart';
 
 /// Basic Referral Stats Widget
 /// Simple dashboard showing referral statistics and SPA earned
-class BasicReferralStatsWidget extends StatefulWidget() {
+class BasicReferralStatsWidget extends StatefulWidget {
+  const BasicReferralStatsWidget({super.key});
+
+} 
   final String userId;
   final bool showTitle;
 
@@ -29,10 +32,10 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
     _loadStats();
   }
 
-  Future<void> _loadStats() async() {
+  Future<void> _loadStats() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       final stats = await BasicReferralService.getUserReferralStats(widget.userId);
       setState(() {
         _stats = stats;
@@ -44,7 +47,7 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
     }
   }
 
-  Future<void> _refreshStats() async() {
+  Future<void> _refreshStats() async {
     await _loadStats();
   }
 
@@ -391,7 +394,10 @@ class _BasicReferralStatsWidgetState extends State<BasicReferralStatsWidget> {
 }
 
 /// Compact stats widget for inline display
-class CompactReferralStats extends StatelessWidget() {
+class CompactReferralStats extends StatelessWidget {
+  const CompactReferralStats({super.key});
+
+} 
   final String userId;
 
   const CompactReferralStats({

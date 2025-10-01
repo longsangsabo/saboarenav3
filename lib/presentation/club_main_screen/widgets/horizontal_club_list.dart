@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../models/club.dart';
 
-class HorizontalClubList extends StatelessWidget() {
+class HorizontalClubList extends StatelessWidget {
+  const HorizontalClubList({super.key});
+
+} 
   final List<Club> clubs;
   final Club? selectedClub;
   final Function(Club) onClubSelected;
@@ -286,7 +289,7 @@ class HorizontalClubList extends StatelessWidget() {
       return 350; // Desktop
     } else if (screenWidth > 600) {
       return 300; // Tablet
-    } else() {
+    } else {
       return screenWidth * 0.7; // Mobile
     }
   }

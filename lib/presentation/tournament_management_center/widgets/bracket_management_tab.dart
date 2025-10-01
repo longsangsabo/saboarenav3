@@ -11,7 +11,10 @@ import '../../../services/correct_bracket_logic_service.dart';
 import '../../../services/bracket_visualization_service.dart';
 import '../../../services/tournament_service.dart';
 
-class BracketManagementTab extends StatefulWidget() {
+class BracketManagementTab extends StatefulWidget {
+  const BracketManagementTab({super.key});
+
+} 
   final Tournament tournament;
 
   const BracketManagementTab({
@@ -291,7 +294,7 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
   /// Bracket view
   Widget _buildBracketView() {
     return Expanded(
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: FutureBuilder<Widget>(
           future: _visualizationService.buildTournamentBracket(
@@ -333,13 +336,13 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
   // ==================== DATA METHODS ====================
 
   /// Load existing bracket data
-  Future<void> _loadBracketData() async() {
+  Future<void> _loadBracketData() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try() {
+    try {
       // Load matches from database to check if bracket exists
       final matches = await Supabase.instance.client
           .from('matches')
@@ -379,7 +382,8 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
           _hasBracket = true;
           _isLoading = false;
         });
-      } else() {
+      } else {
+        () {
         // No matches found - no bracket exists yet
         setState(() {
           _hasBracket = false;
@@ -387,7 +391,8 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
         });
       }
 
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() {
         _errorMessage = e.toString();
         _isLoading = false;
@@ -396,13 +401,13 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
   }
 
   /// Generate new bracket using proper single elimination logic
-  Future<void> _generateBracket() async() {
+  Future<void> _generateBracket() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try() {
+    try {
       // Get participants for bracket generation
       final participants = await _tournamentService.getTournamentParticipants(widget.tournament.id);
       
@@ -439,14 +444,16 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
             ),
           );
         }
-      } else() {
+      } else {
+        () {
         setState(() {
           _errorMessage = result['error'] ?? 'Failed to generate bracket';
           _isLoading = false;
         });
       }
 
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() {
         _errorMessage = e.toString();
         _isLoading = false;
@@ -455,12 +462,12 @@ class _BracketManagementTabState extends State<BracketManagementTab> {
   }
 
   /// Refresh bracket data
-  Future<void> _refreshBracket() async() {
+  Future<void> _refreshBracket() async {
     await _loadBracketData();
   }
 
   /// Regenerate bracket
-  Future<void> _regenerateBracket() async() {
+  Future<void> _regenerateBracket() async {
     final confirm = await _showConfirmationDialog(
       'Regenerate Bracket',
       'This will create a new bracket and overwrite the existing one. Continue?',

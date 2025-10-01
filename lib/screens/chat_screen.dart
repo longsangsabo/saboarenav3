@@ -4,7 +4,10 @@ import '../services/messaging_service.dart';
 import '../widgets/chat_ui_components.dart';
 
 /// Simplified Chat Screen that works with existing messaging system
-class ChatScreen extends StatefulWidget() {
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
+} 
   final String chatId;
   final String? otherUserName;
   final String? otherUserAvatar;
@@ -40,8 +43,8 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  Future<void> _loadMessages() async() {
-    try() {
+  Future<void> _loadMessages() async {
+    try {
       setState(() => _isLoading = true);
       final messages = await _messagingService.getChatMessages(widget.chatId);
       setState(() {
@@ -57,10 +60,10 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<void> _sendMessage(String content) async() {
+  Future<void> _sendMessage(String content) async {
     if (content.trim().isEmpty) return;
 
-    try() {
+    try {
       final success = await _messagingService.sendMessage(
         roomId: widget.chatId,
         content: content.trim(),
@@ -269,8 +272,10 @@ class _ChatScreenState extends State<ChatScreen> {
     
     if (difference.inDays > 0) {
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
-    } else() {
+    } else {
+      () {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     }
-  }
+  
+    }}
 }

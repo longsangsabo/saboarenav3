@@ -1,6 +1,7 @@
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PreferencesService() {
+class PreferencesService {
   static PreferencesService? _instance;
   static PreferencesService get instance => _instance ??= PreferencesService._();
   PreferencesService._();
@@ -8,7 +9,7 @@ class PreferencesService() {
   static SharedPreferences? _prefs;
 
   // Initialize SharedPreferences
-  Future<void> init() async() {
+  Future<void> init() async {
     _prefs ??= await SharedPreferences.getInstance();
   }
 
@@ -18,18 +19,18 @@ class PreferencesService() {
   static const String _keyLastLoginTime = 'last_login_time';
 
   // Remember login preferences
-  Future<bool> getRememberLogin() async() {
+  Future<bool> getRememberLogin() async {
     await init();
     return _prefs?.getBool(_keyRememberLogin) ?? false;
   }
 
-  Future<void> setRememberLogin(bool remember) async() {
+  Future<void> setRememberLogin(bool remember) async {
     await init();
     await _prefs?.setBool(_keyRememberLogin, remember);
   }
 
   // Remembered email
-  Future<String?> getRememberedEmail() async() {
+  Future<String?> getRememberedEmail() async {
     await init();
     final remember = await getRememberLogin();
     if (remember) {
@@ -38,13 +39,13 @@ class PreferencesService() {
     return null;
   }
 
-  Future<void> setRememberedEmail(String email) async() {
+  Future<void> setRememberedEmail(String email) async {
     await init();
     await _prefs?.setString(_keyRememberedEmail, email);
   }
 
   // Last login time
-  Future<DateTime?> getLastLoginTime() async() {
+  Future<DateTime?> getLastLoginTime() async {
     await init();
     final timestamp = _prefs?.getInt(_keyLastLoginTime);
     if (timestamp != null) {
@@ -53,7 +54,7 @@ class PreferencesService() {
     return null;
   }
 
-  Future<void> setLastLoginTime(DateTime time) async() {
+  Future<void> setLastLoginTime(DateTime time) async {
     await init();
     await _prefs?.setInt(_keyLastLoginTime, time.millisecondsSinceEpoch);
   }
@@ -62,18 +63,18 @@ class PreferencesService() {
   Future<void> saveLoginInfo({
     required String email,
     required bool rememberLogin,
-  }) async() {
+  }) async {
     await setRememberLogin(rememberLogin);
     if (rememberLogin) {
       await setRememberedEmail(email);
       await setLastLoginTime(DateTime.now());
-    } else() {
+    } else {
       await clearLoginInfo();
     }
   }
 
   // Clear all remembered login info
-  Future<void> clearLoginInfo() async() {
+  Future<void> clearLoginInfo() async {
     await init();
     await _prefs?.remove(_keyRememberedEmail);
     await _prefs?.remove(_keyLastLoginTime);
@@ -81,7 +82,7 @@ class PreferencesService() {
   }
 
   // Check if login info is still valid (e.g., within 30 days)
-  Future<bool> isLoginInfoValid() async() {
+  Future<bool> isLoginInfoValid() async {
     final lastLogin = await getLastLoginTime();
     if (lastLogin == null) return false;
     
@@ -93,20 +94,20 @@ class PreferencesService() {
   }
 
   // Get login info if valid and remember is enabled
-  Future<Map<String, dynamic>> getValidLoginInfo() async() {
+  Future<Map<String, dynamic>> getValidLoginInfo() async {
     final remember = await getRememberLogin();
     final isValid = await isLoginInfoValid();
     
     if (remember && isValid) {
       final email = await getRememberedEmail();
-      return() {
+      return {
         'remember': true,
         'email': email,
         'isValid': true,
       };
     }
     
-    return() {
+    return {
       'remember': remember,
       'email': null,
       'isValid': false,

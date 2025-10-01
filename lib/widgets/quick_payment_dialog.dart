@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/auto_payment_qr_widget.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class QuickPaymentDialog extends StatelessWidget() {
+class QuickPaymentDialog extends StatelessWidget {
+  const QuickPaymentDialog({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String clubId;
   final double amount;
   final String description;
@@ -10,13 +20,20 @@ class QuickPaymentDialog extends StatelessWidget() {
   final Function(String paymentId)? onSuccess;
 
   const QuickPaymentDialog({
+    
     super.key,
     required this.clubId,
     required this.amount,
     required this.description,
     this.userId,
     this.onSuccess,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   static Future<bool?> show({
     required BuildContext context,
@@ -92,7 +109,7 @@ class QuickPaymentDialog extends StatelessWidget() {
 }
 
 // Extension để dễ dàng tích hợp vào bất kỳ đâu trong app
-extension QuickPayment on BuildContext() {
+extension QuickPayment on BuildContext {
   Future<bool?> showPaymentQR({
     required String clubId,
     required double amount,

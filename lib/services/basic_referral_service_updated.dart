@@ -1,7 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
 
-class BasicReferralService() {
+class BasicReferralService {
   static final _supabase = Supabase.instance.client;
 
   // Create a new referral code
@@ -11,8 +9,8 @@ class BasicReferralService() {
     int maxUses = 10,
     int referrerReward = 100,
     int referredReward = 50,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase
           .from('referral_codes')
           .insert({
@@ -38,8 +36,8 @@ class BasicReferralService() {
   }
 
   // Get user's referral codes
-  static Future<List<Map<String, dynamic>>> getUserReferralCodes(String userId) async() {
-    try() {
+  static Future<List<Map<String, dynamic>>> getUserReferralCodes(String userId) async {
+    try {
       final response = await _supabase
           .from('referral_codes')
           .select('*')
@@ -57,8 +55,8 @@ class BasicReferralService() {
   static Future<Map<String, dynamic>?> applyReferralCode({
     required String code,
     required String newUserId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get referral code details
       final codeResponse = await _supabase
           .from('referral_codes')
@@ -111,8 +109,8 @@ class BasicReferralService() {
   }
 
   // Award SPA to user
-  static Future<void> awardSpaToUser(String userId, int spaAmount) async() {
-    try() {
+  static Future<void> awardSpaToUser(String userId, int spaAmount) async {
+    try {
       // Get current user data
       final userResponse = await _supabase
           .from('users')
@@ -136,8 +134,8 @@ class BasicReferralService() {
   }
 
   // Get referral code by code string
-  static Future<Map<String, dynamic>?> getReferralCodeDetails(String code) async() {
-    try() {
+  static Future<Map<String, dynamic>?> getReferralCodeDetails(String code) async {
+    try {
       final response = await _supabase
           .from('referral_codes')
           .select('*')
@@ -153,8 +151,8 @@ class BasicReferralService() {
   }
 
   // Get referral usage statistics
-  static Future<Map<String, dynamic>> getReferralStats(String userId) async() {
-    try() {
+  static Future<Map<String, dynamic>> getReferralStats(String userId) async {
+    try {
       // Get codes created by user
       final codesResponse = await _supabase
           .from('referral_codes')

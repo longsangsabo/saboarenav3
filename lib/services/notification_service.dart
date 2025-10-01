@@ -1,18 +1,15 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services/auth_service.dart';
-import 'package:flutter/foundation.dart';
-
-class NotificationService() {
+class NotificationService {
   static NotificationService? _instance;
-  static NotificationService get instance => _instance ??= NotificationService._();
+  static NotificationService get instance =>
+      _instance ??= NotificationService._();
   NotificationService._();
 
   final SupabaseClient _supabase = Supabase.instance.client;
   final AuthService _authService = AuthService.instance;
 
   /// Get unread notification count for current user
-  Future<int> getUnreadNotificationCount() async() {
-    try() {
+  Future<int> getUnreadNotificationCount() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return 0;
 
@@ -31,8 +28,9 @@ class NotificationService() {
   }
 
   /// Get all notifications for current user
-  Future<List<Map<String, dynamic>>> getUserNotifications({int limit = 20}) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getUserNotifications(
+      {int limit = 20}) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return [];
 
@@ -51,26 +49,27 @@ class NotificationService() {
   }
 
   /// Mark notification as read
-  Future<void> markNotificationAsRead(String notificationId) async() {
-    try() {
-      await _supabase
-          .from('notifications')
-          .update({'is_read': true, 'read_at': DateTime.now().toIso8601String()})
-          .eq('id', notificationId);
+  Future<void> markNotificationAsRead(String notificationId) async {
+    try {
+      await _supabase.from('notifications').update({
+        'is_read': true,
+        'read_at': DateTime.now().toIso8601String()
+      }).eq('id', notificationId);
     } catch (e) {
       debugPrint('Error marking notification as read: $e');
     }
   }
 
   /// Mark all notifications as read for current user
-  Future<void> markAllNotificationsAsRead() async() {
-    try() {
+  Future<void> markAllNotificationsAsRead() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return;
 
       await _supabase
           .from('notifications')
-          .update({'is_read': true, 'read_at': DateTime.now().toIso8601String()})
+          .update(
+              {'is_read': true, 'read_at': DateTime.now().toIso8601String()})
           .eq('user_id', currentUser.id)
           .eq('is_read', false);
     } catch (e) {
@@ -83,8 +82,8 @@ class NotificationService() {
     required String tournamentId,
     required String userId,
     required String paymentMethod,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get tournament details
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -109,7 +108,8 @@ class NotificationService() {
           .maybeSingle();
 
       if (clubAdminResponse == null) {
-        debugPrint('⚠️ No club admin found for tournament registration notification');
+        debugPrint(
+            '⚠️ No club admin found for tournament registration notification');
         return;
       }
 
@@ -146,35 +146,30 @@ Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
   Future<List<Map<String, dynamic>>> getNotifications({
     bool? isRead,
     int limit = 20,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
-      var query = _supabase
-          .from('notifications')
-          .select('*')
-          .eq('user_id', user.id);
+      var query =
+          _supabase.from('notifications').select('*').eq('user_id', user.id);
 
       if (isRead != null) {
         query = query.eq('is_read', isRead);
       }
 
-      return await query
-          .order('created_at', ascending: false)
-          .limit(limit);
+      return await query.order('created_at', ascending: false).limit(limit);
     } catch (error) {
       throw Exception('Failed to get notifications: $error');
     }
   }
 
   /// Mark notification as read
-  Future<void> markAsRead(String notificationId) async() {
-    try() {
+  Future<void> markAsRead(String notificationId) async {
+    try {
       await _supabase
           .from('notifications')
-          .update({'is_read': true})
-          .eq('id', notificationId);
+          .update({'is_read': true}).eq('id', notificationId);
     } catch (error) {
       throw Exception('Failed to mark notification as read: $error');
     }
@@ -187,8 +182,8 @@ Vui lòng xác nhận thanh toán khi thành viên đến thi đấu.
     required String message,
     required String type,
     Map<String, dynamic>? data,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase.from('notifications').insert({
         'user_id': userId,
         'title': title,

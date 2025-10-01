@@ -102,7 +102,8 @@ class TournamentSearchDelegate extends SearchDelegate<String> {
     final colorScheme = theme.colorScheme;
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: Gaps.xl, vertical: Gaps.sm),
+      margin:
+          const EdgeInsets.symmetric(horizontal: Gaps.xl, vertical: Gaps.sm),
       child: ListTile(
         contentPadding: const EdgeInsets.all(Gaps.lg),
         leading: ClipRRect(
@@ -229,7 +230,7 @@ class TournamentSearchDelegate extends SearchDelegate<String> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-      padding: const EdgeInsets.all(Gaps.xl),
+          padding: const EdgeInsets.all(Gaps.xl),
           child: Text(
             'Tìm kiếm gần đây',
             style: theme.textTheme.titleSmall?.copyWith(
@@ -312,7 +313,7 @@ class TournamentSearchDelegate extends SearchDelegate<String> {
     }
 
     return Container(
-  padding: const EdgeInsets.symmetric(horizontal: Gaps.md, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: Gaps.md, vertical: 2),
       decoration: BoxDecoration(
         color: badgeColor,
         borderRadius: BorderRadius.circular(12),

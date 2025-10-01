@@ -7,7 +7,10 @@ import '../../../core/app_export.dart';
 import '../../../core/utils/rank_migration_helper.dart';
 import '../../../services/integrated_qr_service.dart';
 
-class QRCodeWidget extends StatefulWidget() {
+class QRCodeWidget extends StatefulWidget {
+  const QRCodeWidget({super.key});
+
+} 
   final Map<String, dynamic> userData;
   final VoidCallback? onClose;
 
@@ -31,12 +34,12 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
     _generateQRCode();
   }
 
-  Future<void> _generateQRCode() async() {
+  Future<void> _generateQRCode() async {
     setState(() {
       _isGenerating = true;
     });
 
-    try() {
+    try {
       // Get real user data
       final userId = widget.userData["id"] as String? ?? "temp-id";
       final username = widget.userData["username"] as String? ?? widget.userData["displayName"] as String? ?? "user";
@@ -422,7 +425,8 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           ),
         ),
       );
-    } else() {
+    } else {
+      () {
       HapticFeedback.lightImpact();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -431,7 +435,8 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
         ),
       );
     }
-  }
+  
+    }}
 
   void _saveQRCode(BuildContext context) {
     // In real app, implement save to gallery functionality

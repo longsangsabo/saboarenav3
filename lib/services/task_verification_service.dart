@@ -1,7 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/task_models.dart';
 
-class TaskVerificationService() {
+class TaskVerificationService {
   static final SupabaseClient _client = Supabase.instance.client;
 
   // =====================================================
@@ -21,8 +19,8 @@ class TaskVerificationService() {
     int? deadlineHours,
     Map<String, dynamic> instructions = const {},
     String? verificationNotes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _client.from('task_templates').insert({
         'club_id': clubId,
         'task_type': taskType,
@@ -45,8 +43,8 @@ class TaskVerificationService() {
   }
 
   /// Lấy danh sách mẫu công việc của club
-  static Future<List<TaskTemplate>> getTaskTemplates(String clubId) async() {
-    try() {
+  static Future<List<TaskTemplate>> getTaskTemplates(String clubId) async {
+    try {
       final response = await _client
           .from('task_templates')
           .select()
@@ -75,8 +73,8 @@ class TaskVerificationService() {
     DateTime? dueAt,
     Map<String, dynamic>? requiredLocation,
     String? assignmentNotes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get template details
       final template = await _client
           .from('task_templates')
@@ -108,8 +106,8 @@ class TaskVerificationService() {
   }
 
   /// Lấy danh sách công việc của nhân viên
-  static Future<List<StaffTask>> getStaffTasks(String staffId, {String? status}) async() {
-    try() {
+  static Future<List<StaffTask>> getStaffTasks(String staffId, {String? status}) async {
+    try {
       var query = _client
           .from('staff_tasks')
           .select()
@@ -129,8 +127,8 @@ class TaskVerificationService() {
   }
 
   /// Lấy danh sách công việc của club (cho manager)
-  static Future<List<StaffTask>> getClubTasks(String clubId, {String? status}) async() {
-    try() {
+  static Future<List<StaffTask>> getClubTasks(String clubId, {String? status}) async {
+    try {
       var query = _client
           .from('staff_tasks')
           .select('''
@@ -158,8 +156,8 @@ class TaskVerificationService() {
     required String status,
     int? completionPercentage,
     String? completionNotes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final Map<String, dynamic> updates = {
         'status': status,
         'updated_at': DateTime.now().toIso8601String(),
@@ -214,8 +212,8 @@ class TaskVerificationService() {
     required DateTime capturedAt,
     Map<String, dynamic> deviceInfo = const {},
     Map<String, dynamic> cameraMetadata = const {},
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _client.from('task_verifications').insert({
         'task_id': taskId,
         'club_id': clubId,
@@ -246,8 +244,8 @@ class TaskVerificationService() {
   }
 
   /// Lấy xác minh của một công việc
-  static Future<TaskVerification?> getTaskVerification(String taskId) async() {
-    try() {
+  static Future<TaskVerification?> getTaskVerification(String taskId) async {
+    try {
       final response = await _client
           .from('task_verifications')
           .select()
@@ -263,8 +261,8 @@ class TaskVerificationService() {
   }
 
   /// Lấy danh sách xác minh cần review
-  static Future<List<TaskVerification>> getVerificationsForReview(String clubId) async() {
-    try() {
+  static Future<List<TaskVerification>> getVerificationsForReview(String clubId) async {
+    try {
       final response = await _client
           .from('task_verifications')
           .select('''
@@ -290,8 +288,8 @@ class TaskVerificationService() {
     required String status, // 'verified' or 'rejected'
     String? reviewNotes,
     String? rejectionReason,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _client
           .from('task_verifications')
           .update({
@@ -338,8 +336,8 @@ class TaskVerificationService() {
   // =====================================================
 
   /// Lấy thống kê công việc của club
-  static Future<TaskStatistics> getTaskStatistics(String clubId, {DateTime? fromDate, DateTime? toDate}) async() {
-    try() {
+  static Future<TaskStatistics> getTaskStatistics(String clubId, {DateTime? fromDate, DateTime? toDate}) async {
+    try {
       // Get basic task counts
       var query = _client
           .from('staff_tasks')
@@ -418,8 +416,8 @@ class TaskVerificationService() {
   // =====================================================
 
   /// Trigger auto-verification (simulate RPC call)
-  static Future<void> _triggerAutoVerification(String verificationId) async() {
-    try() {
+  static Future<void> _triggerAutoVerification(String verificationId) async {
+    try {
       // For now, we'll implement basic auto-verification logic
       // In a real implementation, this would be handled by database functions
       

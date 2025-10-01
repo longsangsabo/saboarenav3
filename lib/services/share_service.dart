@@ -1,18 +1,16 @@
-import 'package:share_plus/share_plus.dart';
-import 'package:sabo_arena/models/user_profile.dart';
-
-class ShareService() {
+class ShareService {
   static const String _baseUrl = 'https://saboarena.com';
-  
+
   /// Generate unique code for user
   static String generateUserCode(String userId) {
     // Generate SABO prefix + last 6 chars of userId
-    final shortId = userId.length > 6 ? userId.substring(userId.length - 6) : userId;
+    final shortId =
+        userId.length > 6 ? userId.substring(userId.length - 6) : userId;
     return 'SABO${shortId.toUpperCase()}';
   }
-  
+
   /// Share user profile
-  static Future<void> shareUserProfile(UserProfile user) async() {
+  static Future<void> shareUserProfile(UserProfile user) async {
     final userCode = generateUserCode(user.id);
     final shareText = '''
 🏆 Hãy thách đấu với tôi trên SABO ARENA!
@@ -35,7 +33,7 @@ class ShareService() {
       subject: 'Thách đấu cùng ${user.fullName} trên SABO ARENA',
     );
   }
-  
+
   /// Share tournament
   static Future<void> shareTournament({
     required String tournamentId,
@@ -43,7 +41,7 @@ class ShareService() {
     required String startDate,
     required int participants,
     required String prizePool,
-  }) async() {
+  }) async {
     final shareText = '''
 🏆 Tham gia giải đấu SABO ARENA!
 
@@ -63,7 +61,7 @@ class ShareService() {
       subject: 'Tham gia giải đấu: $tournamentName',
     );
   }
-  
+
   /// Share match result
   static Future<void> shareMatchResult({
     required String player1Name,
@@ -72,7 +70,7 @@ class ShareService() {
     required String winner,
     required String matchDate,
     String? matchId,
-  }) async() {
+  }) async {
     final shareText = '''
 🏸 Kết quả trận đấu SABO ARENA
 
@@ -91,7 +89,7 @@ ${matchId != null ? "🔗 Chi tiết: $_baseUrl/match/$matchId\n" : ''}📱 Tả
       subject: 'Kết quả trận đấu: $player1Name vs $player2Name',
     );
   }
-  
+
   /// Share club
   static Future<void> shareClub({
     required String clubId,
@@ -99,7 +97,7 @@ ${matchId != null ? "🔗 Chi tiết: $_baseUrl/match/$matchId\n" : ''}📱 Tả
     required String location,
     required int memberCount,
     String? description,
-  }) async() {
+  }) async {
     final shareText = '''
 🏛️ Tham gia CLB $clubName!
 
@@ -117,9 +115,9 @@ ${description != null ? "📝 $description\n" : ''}
       subject: 'Tham gia CLB: $clubName',
     );
   }
-  
+
   /// Share app download
-  static Future<void> shareApp() async() {
+  static Future<void> shareApp() async {
     const shareText = '''
 🏸 SABO ARENA - Ứng dụng cầu lông #1 Việt Nam!
 
@@ -141,25 +139,25 @@ ${description != null ? "📝 $description\n" : ''}
       subject: 'SABO ARENA - Ứng dụng cầu lông #1 Việt Nam',
     );
   }
-  
+
   /// Share with custom content
   static Future<void> shareCustom({
     required String text,
     String? subject,
-  }) async() {
+  }) async {
     await Share.share(text, subject: subject);
   }
-  
+
   /// Generate QR data for user
   static String generateUserQRData(UserProfile user) {
     return '$_baseUrl/user/${user.id}';
   }
-  
+
   /// Generate QR data for tournament
   static String generateTournamentQRData(String tournamentId) {
     return '$_baseUrl/tournament/$tournamentId';
   }
-  
+
   /// Generate QR data for club
   static String generateClubQRData(String clubId) {
     return '$_baseUrl/club/$clubId';

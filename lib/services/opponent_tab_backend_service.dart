@@ -1,8 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
 
 /// Service for testing opponent tab backend integration
-class OpponentTabBackendService() {
+class OpponentTabBackendService {
   final _supabase = Supabase.instance.client;
 
   /// Test get_nearby_players function
@@ -10,8 +8,8 @@ class OpponentTabBackendService() {
     required double latitude,
     required double longitude,
     int radiusKm = 10,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase.rpc(
         'get_nearby_players',
         params: {
@@ -41,8 +39,8 @@ class OpponentTabBackendService() {
     String stakesType = 'none',
     int stakesAmount = 0,
     Map<String, dynamic>? matchConditions,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase.rpc(
         'create_challenge',
         params: {
@@ -66,8 +64,8 @@ class OpponentTabBackendService() {
   /// Test get_user_challenges function
   Future<List<Map<String, dynamic>>> testGetUserChallenges({
     String? statusFilter,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase.rpc(
         'get_user_challenges',
         params: {
@@ -92,8 +90,8 @@ class OpponentTabBackendService() {
   Future<String?> testAcceptChallenge({
     required String challengeId,
     String? responseMessage,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase.rpc(
         'accept_challenge',
         params: {
@@ -114,8 +112,8 @@ class OpponentTabBackendService() {
   Future<bool> testDeclineChallenge({
     required String challengeId,
     String? responseMessage,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final response = await _supabase.rpc(
         'decline_challenge',
         params: {
@@ -133,8 +131,8 @@ class OpponentTabBackendService() {
   }
 
   /// Check if backend tables have required columns
-  Future<void> checkBackendSchema() async() {
-    try() {
+  Future<void> checkBackendSchema() async {
+    try {
       debugPrint('🔍 Checking backend schema...');
 
       // Check matches table columns
@@ -167,8 +165,8 @@ class OpponentTabBackendService() {
   }
 
   /// Get current user's location (for testing nearby players)
-  Future<Map<String, double>?> getCurrentUserLocation() async() {
-    try() {
+  Future<Map<String, double>?> getCurrentUserLocation() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return null;
 
@@ -191,7 +189,7 @@ class OpponentTabBackendService() {
   }
 
   /// Run comprehensive backend tests
-  Future<void> runComprehensiveTest() async() {
+  Future<void> runComprehensiveTest() async {
     debugPrint('🧪 Starting comprehensive backend test...\n');
     
     // 1. Check schema

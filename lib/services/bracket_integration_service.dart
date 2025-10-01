@@ -1,11 +1,8 @@
 // 🚀 SABO ARENA - Bracket Integration Service
 // Tích hợp BracketGeneratorService với database hiện tại
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'bracket_generator_service.dart';
-import 'package:flutter/foundation.dart';
 
-class BracketIntegrationService() {
+class BracketIntegrationService {
   static const String _tag = '🎯 BracketIntegration';
   static final _supabase = Supabase.instance.client;
 
@@ -25,8 +22,8 @@ class BracketIntegrationService() {
     required String format,
     required String seedingMethod,
     Map<String, dynamic>? options,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('$_tag: Creating bracket for tournament $tournamentId');
 
       // 1. Load tournament participants
@@ -73,7 +70,7 @@ class BracketIntegrationService() {
   /// Load participants from database and convert to TournamentParticipant
   static Future<List<TournamentParticipant>> _loadTournamentParticipants(
     String tournamentId
-  ) async() {
+  ) async {
     // Get participants with user profile data
     final response = await _supabase
         .from('tournament_participants')
@@ -119,7 +116,7 @@ class BracketIntegrationService() {
   static Future<void> _saveBracketMetadata(
     String tournamentId,
     TournamentBracket bracket,
-  ) async() {
+  ) async {
     final bracketData = {
       'format': bracket.format,
       'structure': bracket.structure,
@@ -151,7 +148,7 @@ class BracketIntegrationService() {
   static Future<void> _updateParticipantSeeding(
     String tournamentId,
     List<TournamentParticipant> participants,
-  ) async() {
+  ) async {
     final updates = participants.map((participant) {
       final participantId = participant.metadata?['participantId'];
       return() {
@@ -184,7 +181,7 @@ class BracketIntegrationService() {
   static Future<void> _createBracketMatches(
     String tournamentId,
     TournamentBracket bracket,
-  ) async() {
+  ) async {
     final matches = <Map<String, dynamic>>[];
 
     for (final round in bracket.rounds) {
@@ -225,8 +222,8 @@ class BracketIntegrationService() {
   /// Load existing bracket from database
   static Future<Map<String, dynamic>?> loadTournamentBracket(
     String tournamentId
-  ) async() {
-    try() {
+  ) async {
+    try {
       // Get tournament bracket data
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -271,8 +268,8 @@ class BracketIntegrationService() {
     required int player1Score,
     required int player2Score,
     Map<String, dynamic>? additionalData,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('$_tag: Updating match $matchId with winner $winnerId');
 
       // Update match result
@@ -301,7 +298,7 @@ class BracketIntegrationService() {
   }
 
   /// Progress bracket after match completion (placeholder for future)
-  static Future<void> _progressBracket(String matchId, String winnerId) async() {
+  static Future<void> _progressBracket(String matchId, String winnerId) async {
     // TODO: Implement automatic bracket progression
     // - Find next round matches that need this winner
     // - Update player1_id or player2_id in next match
@@ -312,7 +309,7 @@ class BracketIntegrationService() {
   /// Get bracket visualization data
   static Future<Map<String, dynamic>?> getBracketVisualizationData(
     String tournamentId
-  ) async() {
+  ) async {
     final bracketData = await loadTournamentBracket(tournamentId);
     
     if (bracketData == null) return null;

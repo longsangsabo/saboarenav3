@@ -3,7 +3,17 @@ import '../services/club_staff_service.dart';
 import '../services/commission_service.dart';
 
 /// Widget hiển thị dashboard cho staff với earnings và analytics
-class StaffDashboard extends StatefulWidget() {
+class StaffDashboard extends StatefulWidget {
+  const StaffDashboard({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String staffId;
   final Map<String, dynamic> staffInfo;
 
@@ -28,7 +38,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
     _loadStaffData();
   }
 
-  Future<void> _loadStaffData() async() {
+  Future<void> _loadStaffData() async {
     setState(() => _isLoading = true);
 
     final earnings = await ClubStaffService.getStaffEarnings(widget.staffId);
@@ -211,9 +221,9 @@ class _StaffDashboardState extends State<StaffDashboard> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,7 +237,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
                   title,
                   style: TextStyle(
                     fontSize: 12,
-                    color: color.withOpacity(0.8),
+                    color: color.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -316,9 +326,9 @@ class _StaffDashboardState extends State<StaffDashboard> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
@@ -394,7 +404,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
-        backgroundColor: _getCommissionTypeColor(type).withOpacity(0.2),
+        backgroundColor: _getCommissionTypeColor(type).withValues(alpha: 0.2),
         child: Icon(
           _getCommissionTypeIcon(type),
           color: _getCommissionTypeColor(type),

@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 import '../../widgets/loading_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class ShiftAnalyticsScreen extends StatefulWidget() {
+class ShiftAnalyticsScreen extends StatefulWidget {
+  const ShiftAnalyticsScreen({super.key});
+
+} 
   final String clubId;
   final Map<String, dynamic>? analytics;
 

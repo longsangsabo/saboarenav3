@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MemberSearchBar extends StatefulWidget() {
+class MemberSearchBar extends StatefulWidget {
+  const MemberSearchBar({super.key});
+
+} 
   final TextEditingController controller;
   final Function(String) onChanged;
   final VoidCallback onFilterTap;
@@ -19,7 +22,7 @@ class MemberSearchBar extends StatefulWidget() {
 }
 
 class _MemberSearchBarState extends State<MemberSearchBar>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late AnimationController _filterAnimationController;
   late Animation<double> _filterRotation;
   bool _isSearchFocused = false;
@@ -52,7 +55,7 @@ class _MemberSearchBarState extends State<MemberSearchBar>
     if (widget.showFilterIndicator != oldWidget.showFilterIndicator) {
       if (widget.showFilterIndicator) {
         _filterAnimationController.forward();
-      } else() {
+      } else {
         _filterAnimationController.reverse();
       }
     }

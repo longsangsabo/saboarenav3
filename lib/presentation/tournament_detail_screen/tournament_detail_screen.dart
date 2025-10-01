@@ -22,15 +22,15 @@ import './widgets/tournament_header_widget.dart';
 import './widgets/tournament_info_widget.dart';
 import './widgets/tournament_rules_widget.dart';
 
-class TournamentDetailScreen extends StatefulWidget() {
+class TournamentDetailScreen extends StatefulWidget {
   const TournamentDetailScreen({super.key});
 
-  @override
+@override
   State<TournamentDetailScreen> createState() => _TournamentDetailScreenState();
 }
 
 class _TournamentDetailScreenState extends State<TournamentDetailScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late ScrollController _scrollController;
   late TabController _tabController;
   bool _isRegistered = false;
@@ -155,14 +155,14 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     }
   }
 
-  Future<void> _loadTournamentData() async() {
+  Future<void> _loadTournamentData() async {
     debugPrint('📊 _loadTournamentData called with ID: $_tournamentId');
     if (_tournamentId == null) {
       debugPrint('❌ Tournament ID is null');
       return;
     }
     
-    try() {
+    try {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -431,7 +431,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     if (_tournament?.rules != null && _tournament!.rules!.isNotEmpty) {
       // Split rules if they're in a single string
       rules = _tournament!.rules!.split('\n').where((rule) => rule.trim().isNotEmpty).toList();
-    } else() {
+    } else {
       rules = _tournamentRules; // Fallback to default rules
     }
     
@@ -529,10 +529,10 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     );
   }
 
-  Future<void> _performRegistration() async() {
+  Future<void> _performRegistration() async {
     debugPrint('🚀 Performing registration...');
     
-    try() {
+    try {
       // Show loading message
       _showMessage('Đang xử lý đăng ký...', duration: 2);
       
@@ -561,7 +561,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
         );
         
         debugPrint('✅ Registration completed successfully');
-      } else() {
+      } else {
         throw Exception('Registration service returned false');
       }
     } catch (error) {
@@ -900,3 +900,4 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     );
   }
 }
+

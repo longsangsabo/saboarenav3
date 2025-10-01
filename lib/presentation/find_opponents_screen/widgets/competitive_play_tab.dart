@@ -11,7 +11,10 @@ import './create_spa_challenge_modal.dart';
 
 
 
-class CompetitivePlayTab extends StatefulWidget() {
+class CompetitivePlayTab extends StatefulWidget {
+  const CompetitivePlayTab({super.key});
+
+} 
   final bool isLoading;
   final String? errorMessage;
   final List<UserProfile> players;
@@ -42,8 +45,8 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
     _loadCurrentUser();
   }
 
-  Future<void> _loadCurrentUser() async() {
-    try() {
+  Future<void> _loadCurrentUser() async {
+    try {
       final user = Supabase.instance.client.auth.currentUser;
       if (user != null) {
         final userProfile = await _userService.getCurrentUserProfile();
@@ -53,14 +56,16 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
             _isLoadingUser = false;
           });
         }
-      } else() {
+      } else {
+        () {
         if (mounted) {
           setState(() {
             _isLoadingUser = false;
           });
         }
       }
-    } catch (e) {
+    
+      }} catch (e) {
       debugPrint('Error loading current user: $e');
       if (mounted) {
         setState(() {
@@ -215,7 +220,8 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
         icon: const Icon(Icons.sports_martial_arts),
         label: const Text('Tạo thách đấu'),
       );
-    } else() {
+    } else {
+      () {
       // User doesn't have rank - show register rank button
       return FloatingActionButton.extended(
         onPressed: () => _navigateToRankRegistration(context),
@@ -225,7 +231,8 @@ class _CompetitivePlayTabState extends State<CompetitivePlayTab> {
         label: const Text('Đăng ký hạng'),
       );
     }
-  }
+  
+    }}
 
   Widget _buildBody(BuildContext context) {
     if (widget.isLoading) {

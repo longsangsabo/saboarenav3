@@ -4,7 +4,17 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sabo_arena/services/qr_payment_service.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class PaymentQRWidget extends StatefulWidget() {
+class PaymentQRWidget extends StatefulWidget {
+  const PaymentQRWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String paymentMethod; // 'bank', 'momo', 'zalopay', 'viettelpay'
   final Map<String, dynamic> paymentInfo;
   final double? amount;
@@ -12,13 +22,20 @@ class PaymentQRWidget extends StatefulWidget() {
   final String? invoiceId;
 
   const PaymentQRWidget({
+    
     super.key,
     required this.paymentMethod,
     required this.paymentInfo,
     this.amount,
     this.description,
     this.invoiceId,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<PaymentQRWidget> createState() => _PaymentQRWidgetState();
@@ -36,8 +53,8 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
     _generateQRCode();
   }
 
-  Future<void> _generateQRCode() async() {
-    try() {
+  Future<void> _generateQRCode() async {
+    try {
       setState(() {
         isLoading = true;
         error = null;
@@ -77,7 +94,8 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
           description: widget.description ?? 
                       (widget.invoiceId != null ? 'Thanh toan ${widget.invoiceId}' : null),
         );
-      } else() {
+      } else {
+        () {
         // Tạo QR Code cho ví điện tử
         final phoneNumber = widget.paymentInfo['phoneNumber'] as String;
         final receiverName = widget.paymentInfo['receiverName'] as String;
@@ -100,7 +118,8 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
         );
       }
 
-      setState(() {
+      
+      }setState(() {
         isLoading = false;
       });
     } catch (e) {
@@ -178,7 +197,7 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, color: color, size: 24),
@@ -338,7 +357,8 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
           Icons.person,
         ),
       ]);
-    } else() {
+    } else {
+      () {
       infoItems.addAll([
         _buildInfoItem(
           'Ví điện tử',
@@ -359,7 +379,8 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
       ]);
     }
 
-    if (widget.amount != null) {
+    
+    }if (widget.amount != null) {
       infoItems.add(_buildInfoItem(
         'Số tiền',
         _formatCurrency(widget.amount!),
@@ -382,7 +403,7 @@ class _PaymentQRWidgetState extends State<PaymentQRWidget> {
       decoration: BoxDecoration(
         color: AppTheme.backgroundLight,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.dividerLight.withOpacity(0.3)),
+        border: Border.all(color: AppTheme.dividerLight.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

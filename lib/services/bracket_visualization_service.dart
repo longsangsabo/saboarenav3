@@ -2,13 +2,9 @@
 // Renders real tournament brackets with live participant data and match results
 // Converts bracket data into UI-ready components with real-time updates
 
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../presentation/tournament_detail_screen/widgets/demo_bracket/components/bracket_components.dart';
-import 'dart:math' as math;
 
 /// Service for rendering tournament brackets with real participant data
-class BracketVisualizationService() {
+class BracketVisualizationService {
   static BracketVisualizationService? _instance;
   static BracketVisualizationService get instance => _instance ??= BracketVisualizationService._();
   BracketVisualizationService._();
@@ -23,8 +19,8 @@ class BracketVisualizationService() {
     required Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates = true,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final format = bracketData['format'] ?? 'single_elimination';
       
       debugPrint('🎨 Building bracket visualization for format: $format');
@@ -75,7 +71,7 @@ class BracketVisualizationService() {
     Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates,
-  ) async() {
+  ) async {
     final matches = bracketData['matches'] as List<dynamic>? ?? [];
     
     if (matches.isEmpty) {
@@ -261,7 +257,7 @@ class BracketVisualizationService() {
     Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates,
-  ) async() {
+  ) async {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -314,7 +310,7 @@ class BracketVisualizationService() {
     Map<String, dynamic> bracketData,
     VoidCallback? onMatchTap,
     bool showLiveUpdates,
-  ) async() {
+  ) async {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(

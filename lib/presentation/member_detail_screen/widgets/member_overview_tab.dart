@@ -3,7 +3,10 @@ import 'package:sabo_arena/models/user_profile.dart';
 import 'package:sabo_arena/services/ranking_service.dart';
 import 'package:intl/intl.dart';
 
-class MemberOverviewTab extends StatefulWidget() {
+class MemberOverviewTab extends StatefulWidget {
+  const MemberOverviewTab({super.key});
+
+} 
   final UserProfile user;
 
   const MemberOverviewTab({
@@ -16,7 +19,7 @@ class MemberOverviewTab extends StatefulWidget() {
 }
 
 class _MemberOverviewTabState extends State<MemberOverviewTab>
-    with AutomaticKeepAliveClientMixin() {
+    with AutomaticKeepAliveClientMixin {
   final RankingService _rankingService = RankingService();
 
   @override

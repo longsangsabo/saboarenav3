@@ -7,7 +7,7 @@ import '../../services/auth_service.dart';
 import 'club_registration_screen/club_registration_screen.dart';
 import '../../widgets/player_welcome_guide.dart';
 
-class RegisterScreen extends StatefulWidget() {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
@@ -54,12 +54,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  Future<void> _signUpWithEmail() async() {
+  Future<void> _signUpWithEmail() async {
     if (!_emailFormKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    try() {
+    try {
       final response = await AuthService.instance.signUpWithEmail(
         email: _emailController.text.trim(),
         password: _passwordController.text,
@@ -73,15 +73,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           // Check role and redirect accordingly
           if (_selectedRole == 'club_owner') {
             _showClubOwnerWelcomeDialog();
-          } else() {
+          } else {
+            () {
             // Show player welcome guide first
             _showPlayerWelcomeGuide();
           }
-        } else() {
+        
+          }} else {
+          () {
           // Email confirmation required
           _showEmailConfirmationDialog();
         }
-      }
+      
+        }}
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -91,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isLoading = false);
       }
@@ -116,14 +120,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _isVerifyingOtp = false;
         _secondsRemaining = 0;
         _otpTimer?.cancel();
-      } else() {
+      } else {
+        () {
         _emailController.clear();
         _passwordController.clear();
         _confirmPasswordController.clear();
         _isPasswordVisible = false;
         _isConfirmPasswordVisible = false;
       }
-    });
+    
+      }});
   }
 
   String _normalizePhoneNumber(String input) {
@@ -157,15 +163,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _secondsRemaining = 0;
         });
-      } else() {
+      } else {
+        () {
         setState(() {
           _secondsRemaining--;
         });
       }
-    });
+    
+      }});
   }
 
-  Future<void> _requestPhoneOtp() async() {
+  Future<void> _requestPhoneOtp() async {
     if (!_phoneFormKey.currentState!.validate()) return;
 
     final normalizedPhone = _normalizePhoneNumber(_phoneController.text);
@@ -178,13 +186,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     setState(() => _isSendingOtp = true);
 
-    try() {
+    try {
       if (_isOtpSent) {
         await AuthService.instance.sendPhoneOtp(
           phone: normalizedPhone,
           createUserIfNeeded: false,
         );
-      } else() {
+      } else {
+        () {
         await AuthService.instance.signUpWithPhone(
           phone: normalizedPhone,
           password: _phonePasswordController.text,
@@ -193,7 +202,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       }
 
-      if (mounted) {
+      
+      }if (mounted) {
         setState(() {
           _isOtpSent = true;
         });
@@ -214,14 +224,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isSendingOtp = false);
       }
     }
   }
 
-  Future<void> _verifyPhoneOtp() async() {
+  Future<void> _verifyPhoneOtp() async {
     if (!_phoneFormKey.currentState!.validate()) return;
     if (_otpController.text.trim().length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -235,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     setState(() => _isVerifyingOtp = true);
 
-    try() {
+    try {
       await AuthService.instance.verifyPhoneOtp(
         phone: normalizedPhone,
         token: _otpController.text.trim(),
@@ -261,11 +271,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         // Check role and redirect accordingly
         if (_selectedRole == 'club_owner') {
           _showClubOwnerWelcomeDialog();
-        } else() {
+        } else {
+          () {
           // Show player welcome guide first
           _showPlayerWelcomeGuide();
         }
-      }
+      
+        }}
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -275,7 +287,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isVerifyingOtp = false);
       }
@@ -584,7 +596,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           SizedBox(height: 3.h),
           // Role selection
           DropdownButtonFormField<String>(
-            value: _selectedRole,
+            initialValue: _selectedRole,
             decoration: InputDecoration(
               labelText: 'Vai trò',
               prefixIcon: const Icon(Icons.assignment_ind_outlined),
@@ -746,7 +758,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           SizedBox(height: 3.h),
           // Role selection
           DropdownButtonFormField<String>(
-            value: _selectedRole,
+            initialValue: _selectedRole,
             decoration: InputDecoration(
               labelText: 'Vai trò',
               prefixIcon: const Icon(Icons.assignment_ind_outlined),

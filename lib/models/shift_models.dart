@@ -3,7 +3,7 @@
 // Sabo Arena - Club Shift Management Models
 // =====================================================
 
-class ShiftSession() {
+class ShiftSession {
   final String id;
   final String clubId;
   final String staffId;
@@ -143,7 +143,7 @@ class ShiftSession() {
   }
 }
 
-class ShiftTransaction() {
+class ShiftTransaction {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -225,7 +225,7 @@ class ShiftTransaction() {
   bool get isCashPayment => paymentMethod == 'cash';
 }
 
-class ShiftInventory() {
+class ShiftInventory {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -317,7 +317,7 @@ class ShiftInventory() {
   double get sellThroughRate => openingStock > 0 ? (totalSold / openingStock) * 100 : 0;
 }
 
-class ShiftExpense() {
+class ShiftExpense {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -400,7 +400,7 @@ class ShiftExpense() {
   bool get needsApproval => !isApproved && amount > 100000; // Needs approval for expenses > 100k
 }
 
-class ShiftReport() {
+class ShiftReport {
   final String id;
   final String shiftSessionId;
   final String clubId;
@@ -533,7 +533,7 @@ class ShiftReport() {
 }
 
 // Helper classes for related data
-class ClubStaff() {
+class ClubStaff {
   final String id;
   final String userId;
   final String role;
@@ -556,7 +556,7 @@ class ClubStaff() {
   }
 }
 
-class User() {
+class User {
   final String id;
   final String fullName;
   final String? avatarUrl;
@@ -576,7 +576,7 @@ class User() {
   }
 }
 
-class Club() {
+class Club {
   final String id;
   final String name;
   final String? logoUrl;

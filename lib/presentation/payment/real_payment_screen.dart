@@ -7,7 +7,10 @@ import 'package:sabo_arena/services/qr_payment_service.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 
-class RealPaymentScreen extends StatefulWidget() {
+class RealPaymentScreen extends StatefulWidget {
+  const RealPaymentScreen({super.key});
+
+} 
   final String clubId;
   final double amount;
   final String description;
@@ -67,8 +70,8 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
     super.dispose();
   }
 
-  Future<void> _loadPaymentMethods() async() {
-    try() {
+  Future<void> _loadPaymentMethods() async {
+    try {
       final settings = await RealPaymentService.getClubPaymentSettings(widget.clubId);
       if (settings != null) {
         setState(() {
@@ -94,14 +97,14 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
     }
   }
 
-  Future<void> _createPayment() async() {
+  Future<void> _createPayment() async {
     if (selectedMethodInfo == null) return;
     
     setState(() {
       isCreatingPayment = true;
     });
 
-    try() {
+    try {
       // Tạo payment record
       final paymentRecord = await RealPaymentService.createPaymentRecord(
         clubId: widget.clubId,
@@ -123,17 +126,17 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
 
     } catch (e) {
       _showError('Không thể tạo thanh toán: $e');
-    } finally() {
+    } finally {
       setState(() {
         isCreatingPayment = false;
       });
     }
   }
 
-  Future<void> _generateQRCode() async() {
+  Future<void> _generateQRCode() async {
     if (paymentId == null || selectedMethodInfo == null) return;
 
-    try() {
+    try {
       if (selectedPaymentMethod == 'bank') {
         // Tạo VietQR
         qrImageUrl = QRPaymentService.generateBankQRUrl(
@@ -151,7 +154,8 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
           amount: widget.amount,
           description: '${widget.description} - ID: $paymentId',
         );
-      } else() {
+      } else {
+        () {
         // Tạo deep link cho ví điện tử
         if (selectedPaymentMethod == 'momo') {
           qrData = await RealPaymentService.createMoMoPayment(
@@ -165,7 +169,7 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
             amount: widget.amount,
             description: widget.description,
           );
-        } else() {
+        } else {
           qrData = QRPaymentService.generateEWalletQRData(
             walletType: selectedPaymentMethod,
             phoneNumber: selectedMethodInfo!['phoneNumber'],
@@ -177,7 +181,8 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
       }
 
       // Update QR data trong database
-      if (paymentId != null) {
+      
+      }if (paymentId != null) {
         await RealPaymentService.updatePaymentQR(
           paymentId: paymentId!,
           qrData: qrData!,
@@ -193,9 +198,9 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
   }
 
   void _startStatusPolling() {
-    statusTimer = Timer.periodic(const Duration(seconds: 3), (timer) async() {
+    statusTimer = Timer.periodic(const Duration(seconds: 3), (timer) async {
       if (paymentId != null) {
-        try() {
+        try {
           final status = await RealPaymentService.checkPaymentStatus(paymentId!);
           setState(() {
             paymentStatus = status;
@@ -546,7 +551,8 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
         '4. Xác nhận thông tin và thanh toán',
         '5. Chờ hệ thống xác nhận (1-3 phút)',
       ];
-    } else() {
+    } else {
+      () {
       final walletName = selectedPaymentMethod.toUpperCase();
       instructions = [
         '1. Mở app $walletName',
@@ -557,7 +563,8 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
       ];
     }
 
-    return Container(
+    
+    }return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.backgroundLight,
@@ -663,7 +670,7 @@ class _RealPaymentScreenState extends State<RealPaymentScreen> {
             child: const Text('Không'),
           ),
           ElevatedButton(
-            onPressed: () async() {
+            onPressed: () async {
               if (paymentId != null) {
                 await RealPaymentService.cancelPayment(
                   paymentId!, 

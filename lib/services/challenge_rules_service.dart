@@ -1,9 +1,7 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../core/utils/rank_migration_helper.dart';
 
 /// Service để handle tất cả các quy tắc thách đấu SABO Arena
 /// Bao gồm: rank eligibility, SPA betting, handicap calculation
-class ChallengeRulesService() {
+class ChallengeRulesService {
   static ChallengeRulesService? _instance;
   static ChallengeRulesService get instance => _instance ??= ChallengeRulesService._();
   ChallengeRulesService._();
@@ -173,8 +171,8 @@ class ChallengeRulesService() {
     required String challengerId,
     required String challengedId,
     required int spaBetAmount,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get both players' ranks
       final challengerData = await _supabase
           .from('users')
@@ -297,7 +295,7 @@ class ChallengeRulesService() {
 }
 
 /// 📊 Result of handicap calculation
-class ChallengeHandicapResult() {
+class ChallengeHandicapResult {
   final bool isValid;
   final String? errorMessage;
   final double challengerHandicap;
@@ -318,7 +316,7 @@ class ChallengeHandicapResult() {
 }
 
 /// 📋 Result of complete challenge validation
-class ChallengeValidationResult() {
+class ChallengeValidationResult {
   final bool isValid;
   final String? errorMessage;
   final String? challengerRank;

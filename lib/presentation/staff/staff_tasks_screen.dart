@@ -4,7 +4,10 @@ import '../services/live_photo_verification_service.dart';
 import '../models/task_models.dart';
 
 // Staff Task Management Screen
-class StaffTasksScreen extends StatefulWidget() {
+class StaffTasksScreen extends StatefulWidget {
+  const StaffTasksScreen({super.key});
+
+} 
   final String staffId;
   final String clubId;
 
@@ -19,7 +22,7 @@ class StaffTasksScreen extends StatefulWidget() {
 }
 
 class _StaffTasksScreenState extends State<StaffTasksScreen>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<StaffTask> _assignedTasks = [];
   List<StaffTask> _completedTasks = [];
@@ -38,18 +41,18 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
     super.dispose();
   }
 
-  Future<void> _loadTasks() async() {
+  Future<void> _loadTasks() async {
     setState(() {
       _isLoading = true;
     });
 
-    try() {
+    try {
       // Load tasks from API
       _assignedTasks = await TaskService.getAssignedTasks(widget.staffId);
       _completedTasks = await TaskService.getCompletedTasks(widget.staffId);
     } catch (e) {
       print('Error loading tasks: $e');
-    } finally() {
+    } finally {
       setState(() {
         _isLoading = false;
       });
@@ -205,7 +208,7 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
     );
   }
 
-  Future<void> _handleTaskAction(StaffTask task, String action) async() {
+  Future<void> _handleTaskAction(StaffTask task, String action) async {
     switch (action) {
       case 'start':
         await _startTask(task);
@@ -220,8 +223,8 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
     _loadTasks(); // Refresh tasks
   }
 
-  Future<void> _startTask(StaffTask task) async() {
-    try() {
+  Future<void> _startTask(StaffTask task) async {
+    try {
       await TaskService.updateTaskStatus(task.id, 'in_progress');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Đã bắt đầu công việc: ${task.taskName}')),
@@ -233,7 +236,7 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
     }
   }
 
-  Future<void> _completeTask(StaffTask task) async() {
+  Future<void> _completeTask(StaffTask task) async {
     // Show completion dialog
     String? notes = await showDialog<String>(
       context: context,
@@ -241,7 +244,7 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
     );
 
     if (notes != null) {
-      try() {
+      try {
         await TaskService.completeTask(task.id, notes);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Đã đánh dấu hoàn thành: ${task.taskName}')),
@@ -254,7 +257,7 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
     }
   }
 
-  Future<void> _verifyTask(StaffTask task) async() {
+  Future<void> _verifyTask(StaffTask task) async {
     // Navigate to live photo capture
     TaskVerification? verification = await LivePhotoService().captureTaskVerification(
       taskId: task.id,
@@ -275,7 +278,10 @@ class _StaffTasksScreenState extends State<StaffTasksScreen>
 }
 
 // Individual Task Card Widget
-class TaskCard extends StatelessWidget() {
+class TaskCard extends StatelessWidget {
+  const TaskCard({super.key});
+
+} 
   final StaffTask task;
   final Function(StaffTask, String) onTaskAction;
 
@@ -514,7 +520,10 @@ class TaskCard extends StatelessWidget() {
 }
 
 // Completed Task Card (Read-only)
-class CompletedTaskCard extends StatelessWidget() {
+class CompletedTaskCard extends StatelessWidget {
+  const CompletedTaskCard({super.key});
+
+} 
   final StaffTask task;
 
   const CompletedTaskCard({Key? key, required this.task}) : super(key: key);
@@ -583,7 +592,10 @@ class CompletedTaskCard extends StatelessWidget() {
 }
 
 // Task Completion Dialog
-class TaskCompletionDialog extends StatefulWidget() {
+class TaskCompletionDialog extends StatefulWidget {
+  const TaskCompletionDialog({super.key});
+
+} 
   @override
   State<TaskCompletionDialog> createState() => _TaskCompletionDialogState();
 }

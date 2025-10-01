@@ -1,8 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
 
 /// Service quản lý commission calculation và payments
-class CommissionService() {
+class CommissionService {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   // =====================================================
@@ -12,8 +10,8 @@ class CommissionService() {
   /// Calculate và record commission từ customer transaction
   static Future<Map<String, dynamic>> calculateCommission({
     required String transactionId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get transaction details với referral info
       final transaction = await _supabase
           .from('customer_transactions')
@@ -80,8 +78,8 @@ class CommissionService() {
   static Future<List<Map<String, dynamic>>> getPendingCommissions({
     String? clubId,
     String? staffId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('staff_commissions')
           .select('''
@@ -122,8 +120,8 @@ class CommissionService() {
     String? paymentMethod,
     String? paymentReference,
     String? notes,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final paymentData = {
         'is_paid': true,
         'paid_at': DateTime.now().toIso8601String(),
@@ -172,8 +170,8 @@ class CommissionService() {
     required String staffId,
     DateTime? fromDate,
     DateTime? toDate,
-  }) async() {
-    try() {
+  }) async {
+    try {
       fromDate ??= DateTime.now().subtract(const Duration(days: 30));
       toDate ??= DateTime.now();
 
@@ -250,8 +248,8 @@ class CommissionService() {
     required String clubId,
     DateTime? fromDate,
     DateTime? toDate,
-  }) async() {
-    try() {
+  }) async {
+    try {
       fromDate ??= DateTime.now().subtract(const Duration(days: 30));
       toDate ??= DateTime.now();
 
@@ -345,8 +343,8 @@ class CommissionService() {
     DateTime? fromDate,
     DateTime? toDate,
     String reportType = 'detailed', // 'detailed', 'summary'
-  }) async() {
-    try() {
+  }) async {
+    try {
       fromDate ??= DateTime.now().subtract(const Duration(days: 30));
       toDate ??= DateTime.now();
 
@@ -413,8 +411,8 @@ class CommissionService() {
   }
 
   /// Update staff referral totals
-  static Future<void> _updateStaffReferralTotals(String staffId) async() {
-    try() {
+  static Future<void> _updateStaffReferralTotals(String staffId) async {
+    try {
       // Calculate totals from transactions và commissions
       final totalsQuery = '''
         SELECT 
@@ -442,8 +440,8 @@ class CommissionService() {
     String staffId,
     DateTime fromDate,
     DateTime toDate,
-  ) async() {
-    try() {
+  ) async {
+    try {
       final query = '''
         SELECT 
           u.id,

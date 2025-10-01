@@ -5,7 +5,10 @@ import '../../../services/club_spa_service.dart';
 import '../../../services/simple_challenge_service.dart';
 import '../../../services/user_service.dart';
 
-class CreateSpaChallengeModal extends StatefulWidget() {
+class CreateSpaChallengeModal extends StatefulWidget {
+  const CreateSpaChallengeModal({super.key});
+
+} 
   final UserProfile? currentUser;
   final List<UserProfile> opponents;
 
@@ -52,12 +55,12 @@ class _CreateSpaChallengeModalState extends State<CreateSpaChallengeModal> {
     return true; // Always allow creation (either specific opponent or open challenge)
   }
 
-  Future<void> _createChallenge() async() {
+  Future<void> _createChallenge() async {
     if (!_canCreateChallenge) return;
 
     setState(() => _isCreating = true);
 
-    try() {
+    try {
       // Get current user profile
       final currentUser = await _userService.getCurrentUserProfile();
       if (currentUser == null) {
@@ -74,7 +77,8 @@ class _CreateSpaChallengeModalState extends State<CreateSpaChallengeModal> {
         // If no club balance record exists, we can still create the challenge
         // The SPA reward will be handled when the match is completed
         debugPrint('⚠️ No club SPA balance found, proceeding with challenge creation');
-      } else() {
+      } else {
+        () {
         final availableSpa = clubBalance['available_spa'] ?? 0.0;
         if (availableSpa < _selectedSpaBonus) {
           throw Exception('Club không đủ SPA để tạo thách đấu (Cần: $_selectedSpaBonus, Có: ${availableSpa.toInt()})');
@@ -82,7 +86,8 @@ class _CreateSpaChallengeModalState extends State<CreateSpaChallengeModal> {
       }
 
       // Create the challenge with SPA stakes
-      final challengeResult = await _challengeService.sendChallenge(
+      
+      }final challengeResult = await _challengeService.sendChallenge(
         challengedUserId: _selectedOpponent?.id ?? '', // Use empty string for open challenge, service will handle as null
         challengeType: 'thach_dau', // SPA challenges are competitive
         gameType: _selectedGameType, // Use selected game type
@@ -119,10 +124,12 @@ class _CreateSpaChallengeModalState extends State<CreateSpaChallengeModal> {
             ),
           );
         }
-      } else() {
+      } else {
+        () {
         throw Exception('Không thể tạo thách đấu');
       }
-    } catch (e) {
+    
+      }} catch (e) {
       debugPrint('Error creating SPA challenge: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -133,7 +140,7 @@ class _CreateSpaChallengeModalState extends State<CreateSpaChallengeModal> {
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isCreating = false);
       }
@@ -384,7 +391,7 @@ class _CreateSpaChallengeModalState extends State<CreateSpaChallengeModal> {
                     const Text('Loại game:', style: TextStyle(fontSize: 14)),
                     const SizedBox(height: 4),
                     DropdownButtonFormField<String>(
-                      value: _selectedGameType,
+                      initialValue: _selectedGameType,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

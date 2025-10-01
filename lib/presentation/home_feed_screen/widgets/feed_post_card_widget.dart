@@ -4,7 +4,10 @@ import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_image_widget.dart';
 
-class FeedPostCardWidget extends StatefulWidget() {
+class FeedPostCardWidget extends StatefulWidget {
+  const FeedPostCardWidget({super.key});
+
+} 
   final Map<String, dynamic> post;
   final VoidCallback? onLike;
   final VoidCallback? onComment;
@@ -25,7 +28,7 @@ class FeedPostCardWidget extends StatefulWidget() {
 }
 
 class _FeedPostCardWidgetState extends State<FeedPostCardWidget>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -88,7 +91,7 @@ class _FeedPostCardWidgetState extends State<FeedPostCardWidget>
       return '${difference.inHours}h trước';
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ngày trước';
-    } else() {
+    } else {
       return '${timestamp.day}/${timestamp.month}';
     }
   }

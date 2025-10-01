@@ -1,8 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'bracket_generator_service.dart';
 
 /// Service for production bracket management with Supabase integration
-class ProductionBracketService() {
+class ProductionBracketService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   /// Convert tournament creation format to bracket generator format
@@ -26,8 +24,8 @@ class ProductionBracketService() {
   }
 
   /// Get tournament information including format
-  Future<Map<String, dynamic>?> getTournamentInfo(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>?> getTournamentInfo(String tournamentId) async {
+    try {
       final response = await _supabase
           .from('tournaments')
           .select('id, name, format, max_participants, status, start_date')
@@ -42,8 +40,8 @@ class ProductionBracketService() {
   }
 
   /// Get tournaments that are ready for bracket creation
-  Future<List<Map<String, dynamic>>> getTournamentsReadyForBracket() async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getTournamentsReadyForBracket() async {
+    try {
       final response = await _supabase
           .from('tournaments')
           .select('''
@@ -89,8 +87,8 @@ class ProductionBracketService() {
   }
 
   /// Get tournament participants ready for bracket
-  Future<List<Map<String, dynamic>>> getTournamentParticipants(String tournamentId) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getTournamentParticipants(String tournamentId) async {
+    try {
       final response = await _supabase
           .from('tournament_participants')
           .select('''
@@ -121,8 +119,8 @@ class ProductionBracketService() {
     required String tournamentId,
     required String format,
     List<Map<String, dynamic>>? customParticipants,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get tournament info
       final tournamentResponse = await _supabase
           .from('tournaments')
@@ -218,8 +216,8 @@ class ProductionBracketService() {
   }
 
   /// Save bracket matches to database
-  Future<void> _saveBracketMatches(String tournamentId, List<TournamentRound> rounds) async() {
-    try() {
+  Future<void> _saveBracketMatches(String tournamentId, List<TournamentRound> rounds) async {
+    try {
       final List<Map<String, dynamic>> matchesToInsert = [];
       
       for (final round in rounds) {
@@ -251,8 +249,8 @@ class ProductionBracketService() {
   }
 
   /// Load existing tournament bracket
-  Future<Map<String, dynamic>?> loadTournamentBracket(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>?> loadTournamentBracket(String tournamentId) async {
+    try {
       // Get tournament
       final tournament = await _supabase
           .from('tournaments')
@@ -295,8 +293,8 @@ class ProductionBracketService() {
     required String winnerId,
     required int player1Score,
     required int player2Score,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase
           .from('matches')
           .update({
@@ -319,8 +317,8 @@ class ProductionBracketService() {
   }
 
   /// Progress winner to next round
-  Future<void> _progressWinnerToNextRound(String matchId, String winnerId) async() {
-    try() {
+  Future<void> _progressWinnerToNextRound(String matchId, String winnerId) async {
+    try {
       // Get current match info
       final match = await _supabase
           .from('matches')
@@ -362,8 +360,8 @@ class ProductionBracketService() {
   }
 
   /// Get tournament statistics
-  Future<Map<String, dynamic>> getTournamentStats(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>> getTournamentStats(String tournamentId) async {
+    try {
       final matches = await _supabase
           .from('matches')
           .select('*')

@@ -10,7 +10,10 @@ import '../club_owner/active_shift_screen.dart';
 import '../club_owner/shift_history_screen.dart';
 import '../club_owner/shift_analytics_screen.dart';
 
-class ShiftReportingDashboard extends StatefulWidget() {
+class ShiftReportingDashboard extends StatefulWidget {
+  const ShiftReportingDashboard({super.key});
+
+} 
   final String clubId;
 
   const ShiftReportingDashboard({
@@ -23,7 +26,7 @@ class ShiftReportingDashboard extends StatefulWidget() {
 }
 
 class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   final ShiftReportingService _shiftService = ShiftReportingService();
   final UserRoleService _roleService = UserRoleService();
   
@@ -50,8 +53,8 @@ class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
     super.dispose();
   }
 
-  Future<void> _loadDashboardData() async() {
-    try() {
+  Future<void> _loadDashboardData() async {
+    try {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -98,10 +101,10 @@ class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
     }
   }
 
-  Future<void> _startNewShift() async() {
+  Future<void> _startNewShift() async {
     if (_currentStaffId == null) return;
 
-    try() {
+    try {
       // Show start shift dialog
       final result = await showDialog<Map<String, dynamic>>(
         context: context,
@@ -404,7 +407,7 @@ class _ShiftReportingDashboardState extends State<ShiftReportingDashboard>
   }
 }
 
-class _StartShiftDialog extends StatefulWidget() {
+class _StartShiftDialog extends StatefulWidget {
   @override
   State<_StartShiftDialog> createState() => _StartShiftDialogState();
 }
@@ -414,9 +417,9 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
   final _openingCashController = TextEditingController();
   final _notesController = TextEditingController();
   
-  DateTime _selectedDate = DateTime.now();
-  TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay(hour: (TimeOfDay.now().hour + 8) % 24, minute: 0);
+  final DateTime _selectedDate = DateTime.now();
+  final TimeOfDay _startTime = TimeOfDay.now();
+  final TimeOfDay _endTime = TimeOfDay(hour: (TimeOfDay.now().hour + 8) % 24, minute: 0);
 
   @override
   void dispose() {
@@ -440,7 +443,7 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
                 leading: const Icon(Icons.calendar_today),
                 title: const Text('Ngày làm việc'),
                 subtitle: Text(DateFormat('dd/MM/yyyy').format(_selectedDate)),
-                onTap: () async() {
+                onTap: () async {
                   final date = await showDatePicker(
                     context: context,
                     initialDate: _selectedDate,
@@ -458,7 +461,7 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
                 leading: const Icon(Icons.access_time),
                 title: const Text('Giờ bắt đầu'),
                 subtitle: Text(_startTime.format(context)),
-                onTap: () async() {
+                onTap: () async {
                   final time = await showTimePicker(
                     context: context,
                     initialTime: _startTime,
@@ -474,7 +477,7 @@ class _StartShiftDialogState extends State<_StartShiftDialog> {
                 leading: const Icon(Icons.access_time_filled),
                 title: const Text('Giờ kết thúc'),
                 subtitle: Text(_endTime.format(context)),
-                onTap: () async() {
+                onTap: () async {
                   final time = await showTimePicker(
                     context: context,
                     initialTime: _endTime,

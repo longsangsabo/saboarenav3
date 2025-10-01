@@ -1,4 +1,4 @@
-class PostModel() {
+class PostModel {
   final String id;
   final String title;
   final String content;

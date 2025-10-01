@@ -4,7 +4,10 @@ import 'package:sabo_arena/core/app_export.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/services/tournament_service.dart';
 
-class ParticipantManagementTab extends StatefulWidget() {
+class ParticipantManagementTab extends StatefulWidget {
+  const ParticipantManagementTab({super.key});
+
+} 
   final String tournamentId;
 
   const ParticipantManagementTab({super.key, required this.tournamentId});
@@ -25,13 +28,13 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
     _loadParticipants();
   }
 
-  Future<void> _loadParticipants() async() {
+  Future<void> _loadParticipants() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    try() {
+    try {
       final participants = await _tournamentService
           .getTournamentParticipantsWithPaymentStatus(widget.tournamentId);
       debugPrint('🎯 UI: Loaded ${participants.length} participants');
@@ -391,7 +394,7 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
 
   String _formatRegistrationDate(String? dateStr) {
     if (dateStr == null) return '';
-    try() {
+    try {
       final date = DateTime.parse(dateStr);
       return 'Đăng ký: ${date.day}/${date.month}/${date.year}';
     } catch (e) {
@@ -399,7 +402,7 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
     }
   }
 
-  Future<void> _confirmAllPayments() async() {
+  Future<void> _confirmAllPayments() async {
     final unconfirmedParticipants = _participants
         .where((p) => p['payment_status'] != 'confirmed')
         .toList();
@@ -451,12 +454,12 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
       ),
     );
 
-    try() {
+    try {
       int successCount = 0;
       int errorCount = 0;
 
       for (final participant in unconfirmedParticipants) {
-        try() {
+        try {
           await _tournamentService.updateParticipantPaymentStatus(
             tournamentId: widget.tournamentId,
             userId: participant['user_id'],
@@ -495,8 +498,8 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
 
 
 
-  Future<void> _confirmPayment(Map<String, dynamic> participant) async() {
-    try() {
+  Future<void> _confirmPayment(Map<String, dynamic> participant) async {
+    try {
       // Show confirmation dialog first
       final confirm = await showDialog<bool>(
         context: context,
@@ -573,8 +576,8 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
     }
   }
 
-  Future<void> _resetPaymentStatus(Map<String, dynamic> participant) async() {
-    try() {
+  Future<void> _resetPaymentStatus(Map<String, dynamic> participant) async {
+    try {
       await _tournamentService.updateParticipantPaymentStatus(
         tournamentId: widget.tournamentId,
         userId: participant['user_id'],
@@ -621,8 +624,8 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
             child: Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async() {
-              try() {
+            onPressed: () async {
+              try {
                 await _tournamentService.updateParticipantPaymentStatus(
                   tournamentId: widget.tournamentId,
                   userId: participant['user_id'],
@@ -662,8 +665,8 @@ class _ParticipantManagementTabState extends State<ParticipantManagementTab> {
             child: Text('Hủy'),
           ),
           ElevatedButton(
-            onPressed: () async() {
-              try() {
+            onPressed: () async {
+              try {
                 // Implementation for removing participant
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(

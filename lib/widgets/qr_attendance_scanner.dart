@@ -3,13 +3,30 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../services/attendance_service.dart';
 
-class QRAttendanceScanner extends StatefulWidget() {
+class QRAttendanceScanner extends StatefulWidget {
+  const QRAttendanceScanner({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final Function(Map<String, dynamic>) onScanResult;
   
   const QRAttendanceScanner({
+    
     super.key,
     required this.onScanResult,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<QRAttendanceScanner> createState() => _QRAttendanceScannerState();
@@ -36,7 +53,7 @@ class _QRAttendanceScannerState extends State<QRAttendanceScanner> {
     super.dispose();
   }
 
-  Future<void> _checkCameraPermission() async() {
+  Future<void> _checkCameraPermission() async {
     final status = await Permission.camera.status;
     if (status.isDenied) {
       await Permission.camera.request();
@@ -52,7 +69,7 @@ class _QRAttendanceScannerState extends State<QRAttendanceScanner> {
     });
   }
 
-  Future<void> _handleScanResult(String qrData) async() {
+  Future<void> _handleScanResult(String qrData) async {
     if (isProcessing) return;
     
     setState(() {
@@ -61,7 +78,7 @@ class _QRAttendanceScannerState extends State<QRAttendanceScanner> {
       errorMessage = null;
     });
 
-    try() {
+    try {
       // Verify QR code
       final verificationResult = await _attendanceService.verifyAttendanceQR(qrData);
       
@@ -69,7 +86,8 @@ class _QRAttendanceScannerState extends State<QRAttendanceScanner> {
         // Stop scanning and return result
         await controller?.pauseCamera();
         widget.onScanResult(verificationResult);
-      } else() {
+      } else {
+        () {
         setState(() {
           errorMessage = verificationResult['error'];
           isProcessing = false;
@@ -82,7 +100,8 @@ class _QRAttendanceScannerState extends State<QRAttendanceScanner> {
           errorMessage = null;
         });
       }
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() {
         errorMessage = 'Lỗi quét QR: $e';
         isProcessing = false;
@@ -97,12 +116,12 @@ class _QRAttendanceScannerState extends State<QRAttendanceScanner> {
     }
   }
 
-  void _toggleFlash() async() {
+  void _toggleFlash() async {
     await controller?.toggleFlash();
     setState(() {});
   }
 
-  void _flipCamera() async() {
+  void _flipCamera() async {
     await controller?.flipCamera();
     setState(() {});
   }

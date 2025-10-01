@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
-
 import '../presentation/splash_screen/splash_screen.dart';
+import '../presentation/login_screen.dart';
+import '../presentation/register_screen/register_screen.dart';
+import '../presentation/forgot_password_screen.dart';
 import '../presentation/onboarding_screen/onboarding_screen.dart';
 import '../presentation/home_feed_screen/home_feed_screen.dart';
+import '../presentation/user_profile_screen/user_profile_screen.dart';
 import '../presentation/tournament_list_screen/tournament_list_screen.dart';
+import '../presentation/tournament_detail_screen/tournament_detail_screen.dart';
 import '../presentation/find_opponents_screen/find_opponents_screen.dart';
 import '../presentation/club_main_screen/club_main_screen.dart';
 import '../presentation/club_profile_screen/club_profile_screen.dart';
 import '../presentation/club_registration_screen/club_registration_screen.dart';
-import '../presentation/club_selection_screen/club_selection_screen.dart';
-import 'package:sabo_arena/presentation/user_profile_screen/user_profile_screen.dart';
-import '../presentation/tournament_detail_screen/tournament_detail_screen.dart';
-import '../presentation/login_screen.dart';
-import '../presentation/register_screen.dart';
-import '../presentation/forgot_password_screen.dart';
-import '../presentation/admin_dashboard_screen/admin_main_screen.dart';
-import '../presentation/admin_dashboard_screen/admin_dashboard_main_screen.dart';
-import '../presentation/admin_dashboard_screen/admin_club_approval_main_screen.dart';
-import '../presentation/admin_dashboard_screen/admin_tournament_main_screen.dart';
-import '../presentation/admin_dashboard_screen/admin_user_management_main_screen.dart';
-import '../presentation/admin_dashboard_screen/admin_more_main_screen.dart';
 import '../presentation/my_clubs_screen/my_clubs_screen.dart';
+import '../presentation/club_selection_screen/club_selection_screen.dart';
 import '../presentation/attendance_screen/attendance_screen.dart';
-import '../presentation/club_owner/club_attendance_dashboard.dart';
-import '../presentation/shift_reporting/shift_reporting_dashboard.dart';
-import '../presentation/demo_qr_screen/demo_qr_screen.dart';
-// import '../presentation/club_staff_screen/club_staff_management_screen.dart';
 
-class AppRoutes() {
+class AppRoutes {
   static const String splashScreen = '/splash';
   static const String onboardingScreen = '/onboarding';
   static const String homeFeedScreen = '/home_feed_screen';
@@ -62,6 +51,7 @@ class AppRoutes() {
 
   static Map<String, WidgetBuilder> get routes => {
         splashScreen: (context) => const SplashScreen(),
+        // Real implemented screens
         onboardingScreen: (context) => const OnboardingScreen(),
         homeFeedScreen: (context) => const HomeFeedScreen(),
         tournamentListScreen: (context) => const TournamentListScreen(),
@@ -74,39 +64,15 @@ class AppRoutes() {
         loginScreen: (context) => const LoginScreen(),
         registerScreen: (context) => const RegisterScreen(),
         forgotPasswordScreen: (context) => const ForgotPasswordScreen(),
-        adminDashboardScreen: (context) => const AdminDashboardScreen(),
-        adminMainScreen: (context) => const AdminMainScreen(),
-        clubApprovalScreen: (context) => const AdminClubApprovalMainScreen(),
-        adminTournamentScreen: (context) => const AdminTournamentMainScreen(),
-        adminUserManagementScreen: (context) => const AdminUserManagementMainScreen(),
-        adminMoreScreen: (context) => const AdminMoreMainScreen(),
-        myClubsScreen: (context) => const MyClubsScreen(),
-        clubSelectionScreen: (context) => ClubSelectionScreen(),
-        attendanceScreen: (context) => const AttendanceScreen(),
-        attendanceDashboard: (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-          final clubId = (args?['clubId'] as String?) ?? '';
-          final clubName = (args?['clubName'] as String?) ?? '';
-          return ClubAttendanceDashboard(clubId: clubId, clubName: clubName);
-        },
-        clubAttendanceDashboard: (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-          final clubId = (args?['clubId'] as String?) ?? '';
-          final clubName = (args?['clubName'] as String?) ?? '';
-          return ClubAttendanceDashboard(clubId: clubId, clubName: clubName);
-        },
-        shiftReportingDashboard: (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-          final clubId = (args?['clubId'] as String?) ?? '';
-          return ShiftReportingDashboard(clubId: clubId);
-        },
-        demoQRScreen: (context) => const DemoQRCodeScreen(),
-        // clubStaffManagementScreen: (context) {
-        //   final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-        //   final clubId = args?['clubId'] ?? '';
-        //   return ClubStaffManagementScreen(clubId: clubId);
-        // },
-        // messagingScreen: (context) => const MessagingScreen(),
-        // clubDashboardScreen: (context) => const ClubDashboardScreenSimple(clubId: ''),
+        adminDashboardScreen: (context) => const Scaffold(body: Center(child: Text('Admin Dashboard Screen'))),
+        adminMainScreen: (context) => const Scaffold(body: Center(child: Text('Admin Main Screen'))),
+        clubApprovalScreen: (context) => const Scaffold(body: Center(child: Text('Club Approval Screen'))),
+        adminTournamentScreen: (context) => const Scaffold(body: Center(child: Text('Admin Tournament Screen'))),
+        adminUserManagementScreen: (context) => const Scaffold(body: Center(child: Text('Admin User Management Screen'))),
+        adminMoreScreen: (context) => const Scaffold(body: Center(child: Text('Admin More Screen'))),
+        myClubsScreen: (context) => const Scaffold(body: Center(child: Text('My Clubs Screen'))),
+        clubSelectionScreen: (context) => const Scaffold(body: Center(child: Text('Club Selection Screen'))),
+        attendanceScreen: (context) => const Scaffold(body: Center(child: Text('Attendance Screen'))),
+        demoQRScreen: (context) => const Scaffold(body: Center(child: Text('Demo QR Screen'))),
       };
 }

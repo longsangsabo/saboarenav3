@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../member_management_screen/member_management_screen.dart';
 
-class MemberTournamentsTab extends StatefulWidget() {
+class MemberTournamentsTab extends StatefulWidget {
+  const MemberTournamentsTab({super.key});
+
+} 
   final MemberData memberData;
 
   const MemberTournamentsTab({
@@ -15,7 +18,7 @@ class MemberTournamentsTab extends StatefulWidget() {
 }
 
 class _MemberTournamentsTabState extends State<MemberTournamentsTab>
-    with AutomaticKeepAliveClientMixin() {
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -638,7 +641,7 @@ class _MemberTournamentsTabState extends State<MemberTournamentsTab>
 
 enum TournamentStatus { ongoing, completed, upcoming }
 
-class TournamentParticipation() {
+class TournamentParticipation {
   final String id;
   final String name;
   final DateTime startDate;

@@ -6,7 +6,10 @@ import 'package:sizer/sizer.dart';
 import '../../../core/app_export.dart';
 import '../../../services/match_progression_service.dart';
 
-class MatchResultEntryWidget extends StatefulWidget() {
+class MatchResultEntryWidget extends StatefulWidget {
+  const MatchResultEntryWidget({super.key});
+
+} 
   final String matchId;
   final String tournamentId;
   final Map<String, dynamic> matchData;
@@ -543,12 +546,12 @@ class _MatchResultEntryWidgetState extends State<MatchResultEntryWidget> {
            _player1Id != null && _player2Id != null;
   }
 
-  Future<void> _submitResult() async() {
+  Future<void> _submitResult() async {
     if (!_canSubmit) return;
 
     setState(() => _isSubmitting = true);
 
-    try() {
+    try {
       final loserId = _selectedWinner == _player1Id ? _player2Id! : _player1Id!;
       
       final result = await _progressionService.updateMatchResult(
@@ -583,18 +586,20 @@ class _MatchResultEntryWidgetState extends State<MatchResultEntryWidget> {
         // Close dialog
         Navigator.pop(context, result);
 
-      } else() {
+      } else {
+        () {
         throw Exception(result['error'] ?? 'Unknown error');
       }
 
-    } catch (e) {
+    
+      }} catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('❌ Lỗi cập nhật kết quả: ${e.toString()}'),
           backgroundColor: AppTheme.errorLight,
         ),
       );
-    } finally() {
+    } finally {
       setState(() => _isSubmitting = false);
     }
   }

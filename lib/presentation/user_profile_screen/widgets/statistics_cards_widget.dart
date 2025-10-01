@@ -7,7 +7,10 @@ import '../../widgets/rank_change_request_dialog.dart';
 import '../../../core/utils/rank_migration_helper.dart';
 import '../../../core/app_export.dart';
 
-class StatisticsCardsWidget extends StatefulWidget() {
+class StatisticsCardsWidget extends StatefulWidget {
+  const StatisticsCardsWidget({super.key});
+
+} 
   final String userId;
 
   const StatisticsCardsWidget({
@@ -31,8 +34,8 @@ class _StatisticsCardsWidgetState extends State<StatisticsCardsWidget> {
     _loadStatistics();
   }
 
-  Future<void> _loadStatistics() async() {
-    try() {
+  Future<void> _loadStatistics() async {
+    try {
       setState(() {
         _isLoading = true;
       });

@@ -5,7 +5,7 @@ library;
 import 'package:flutter/material.dart';
 
 /// Message model representing a single chat message
-class MessageModel() {
+class MessageModel {
   final String id;
   final String chatId;
   final String senderId;
@@ -200,7 +200,7 @@ class MessageModel() {
 }
 
 /// Chat model representing a conversation
-class ChatModel() {
+class ChatModel {
   final String id;
   final String name;
   final String? description;
@@ -378,7 +378,7 @@ class ChatModel() {
 }
 
 /// Chat participant model
-class ChatParticipant() {
+class ChatParticipant {
   final String userId;
   final ChatRole role;
   final DateTime joinedAt;
@@ -432,7 +432,7 @@ class ChatParticipant() {
 }
 
 /// User profile model for messaging
-class UserProfile() {
+class UserProfile {
   final String id;
   final String username;
   final String? avatarUrl;
@@ -475,7 +475,7 @@ class UserProfile() {
 }
 
 /// Message reaction model
-class MessageReaction() {
+class MessageReaction {
   final String messageId;
   final String userId;
   final String emoji;
@@ -513,7 +513,7 @@ class MessageReaction() {
 }
 
 /// Chat settings model
-class ChatSettings() {
+class ChatSettings {
   final bool allowMembersToAddOthers;
   final bool allowMembersToEditInfo;
   final bool onlyAdminsCanSendMessages;
@@ -566,7 +566,7 @@ class ChatSettings() {
 }
 
 /// Typing indicator model
-class TypingIndicator() {
+class TypingIndicator {
   final String chatId;
   final String userId;
   final bool isTyping;
@@ -605,7 +605,7 @@ class TypingIndicator() {
 
 /// Enums
 
-enum MessageType() {
+enum MessageType {
   text('text'),
   image('image'),
   video('video'),
@@ -663,7 +663,7 @@ enum MessageType() {
   }
 }
 
-enum MessageStatus() {
+enum MessageStatus {
   sending('sending'),
   sent('sent'),
   delivered('delivered'),
@@ -726,7 +726,7 @@ enum MessageStatus() {
   }
 }
 
-enum ChatType() {
+enum ChatType {
   private('private'),
   group('group'),
   channel('channel');
@@ -764,7 +764,7 @@ enum ChatType() {
   }
 }
 
-enum ChatRole() {
+enum ChatRole {
   member('member'),
   admin('admin'),
   owner('owner');
@@ -791,7 +791,7 @@ enum ChatRole() {
   }
 }
 
-enum UserStatus() {
+enum UserStatus {
   online('online'),
   away('away'),
   busy('busy'),
@@ -835,7 +835,7 @@ enum UserStatus() {
 }
 
 /// Message templates for common message types
-class MessageTemplates() {
+class MessageTemplates {
   static MessageModel createSystemMessage({
     required String chatId,
     required String content,

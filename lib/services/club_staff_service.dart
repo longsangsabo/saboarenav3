@@ -1,8 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart';
 
 /// Service quản lý club staff và commission system
-class ClubStaffService() {
+class ClubStaffService {
   static final SupabaseClient _supabase = Supabase.instance.client;
 
   // =====================================================
@@ -18,8 +16,8 @@ class ClubStaffService() {
     bool canEnterScores = true,
     bool canManageTournaments = false,
     bool canViewReports = false,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Check if user is club owner or manager
       final currentUser = _supabase.auth.currentUser;
       if (currentUser == null) {
@@ -64,8 +62,8 @@ class ClubStaffService() {
   static Future<Map<String, dynamic>> removeStaff({
     required String staffId,
     String? reason,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase.from('club_staff').update({
         'is_active': false,
         'terminated_at': DateTime.now().toIso8601String(),
@@ -86,8 +84,8 @@ class ClubStaffService() {
   }
 
   /// Get danh sách staff của club
-  static Future<List<Map<String, dynamic>>> getClubStaff(String clubId) async() {
-    try() {
+  static Future<List<Map<String, dynamic>>> getClubStaff(String clubId) async {
+    try {
       final response = await _supabase
           .from('club_staff')
           .select('''
@@ -115,8 +113,8 @@ class ClubStaffService() {
     String staffId, 
     String userId, 
     String clubId
-  ) async() {
-    try() {
+  ) async {
+    try {
       // Get user info
       final userResponse = await _supabase
           .from('users')
@@ -153,8 +151,8 @@ class ClubStaffService() {
   static Future<Map<String, dynamic>> applyStaffReferral({
     required String referralCode,
     required String newCustomerId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Get staff referral code details
       final codeResponse = await _supabase
           .from('referral_codes')
@@ -218,8 +216,8 @@ class ClubStaffService() {
     String? matchId,
     String? description,
     String? paymentMethod,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Check if customer was referred by staff
       final staffReferral = await _supabase
           .from('staff_referrals')
@@ -278,8 +276,8 @@ class ClubStaffService() {
   // =====================================================
 
   /// Get staff earnings summary
-  static Future<Map<String, dynamic>> getStaffEarnings(String staffId) async() {
-    try() {
+  static Future<Map<String, dynamic>> getStaffEarnings(String staffId) async {
+    try {
       // Get total commissions
       final commissionsResponse = await _supabase
           .from('staff_commissions')
@@ -332,8 +330,8 @@ class ClubStaffService() {
   }
 
   /// Get club commission summary (for owners)
-  static Future<Map<String, dynamic>> getClubCommissionSummary(String clubId) async() {
-    try() {
+  static Future<Map<String, dynamic>> getClubCommissionSummary(String clubId) async {
+    try {
       final response = await _supabase
           .from('staff_commissions')
           .select('''
@@ -382,8 +380,8 @@ class ClubStaffService() {
   // =====================================================
 
   /// Check if user can manage staff
-  static Future<bool> _canManageStaff(String userId, String clubId) async() {
-    try() {
+  static Future<bool> _canManageStaff(String userId, String clubId) async {
+    try {
       final response = await _supabase
           .from('club_staff')
           .select('staff_role, can_manage_staff')
@@ -407,7 +405,7 @@ class ClubStaffService() {
   static Future<Map<String, dynamic>> _applyBasicReferral(
     Map<String, dynamic> codeData, 
     String newUserId
-  ) async() {
+  ) async {
     // This would integrate with existing BasicReferralService
     // For now, just return the reward amounts
     return() {
@@ -417,8 +415,8 @@ class ClubStaffService() {
   }
 
   /// Check if user is staff at any club
-  static Future<Map<String, dynamic>?> getUserStaffInfo(String userId) async() {
-    try() {
+  static Future<Map<String, dynamic>?> getUserStaffInfo(String userId) async {
+    try {
       final response = await _supabase
           .from('club_staff')
           .select('''

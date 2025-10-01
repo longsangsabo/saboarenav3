@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 
-class ClubNotificationScreenSimple extends StatefulWidget() {
+class ClubNotificationScreenSimple extends StatefulWidget {
+  const ClubNotificationScreenSimple({super.key});
+
+} 
   final String? clubId;
 
   const ClubNotificationScreenSimple({
@@ -290,7 +293,7 @@ class _ClubNotificationScreenSimpleState extends State<ClubNotificationScreenSim
     }
   }
 
-  Future<void> _sendNotification() async() {
+  Future<void> _sendNotification() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -299,7 +302,7 @@ class _ClubNotificationScreenSimpleState extends State<ClubNotificationScreenSim
       _isLoading = true;
     });
 
-    try() {
+    try {
       // TODO: Implement actual notification sending
       await Future.delayed(const Duration(seconds: 2)); // Simulate API call
       
@@ -315,7 +318,7 @@ class _ClubNotificationScreenSimpleState extends State<ClubNotificationScreenSim
           SnackBar(content: Text('Lỗi gửi thông báo: $e')),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;

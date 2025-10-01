@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// A class that contains all theme configurations for the Vietnamese billiards social networking application.
-class AppTheme() {
+class AppTheme {
   AppTheme._();
 
   // Modern Billiards Color Palette - Updated for better UX
@@ -11,10 +11,12 @@ class AppTheme() {
       Color(0xFF004D40); // Deeper supportive green
   static const Color secondaryLight = Color(0xFF26A69A); // Vibrant accent
   static const Color secondaryVariantLight = Color(0xFF4DB6AC); // Light success
-  static const Color backgroundLight = Color(0xFFF8FFFE); // Ultra clean white with teal hint
+  static const Color backgroundLight =
+      Color(0xFFF8FFFE); // Ultra clean white with teal hint
   static const Color surfaceLight = Color(0xFFFFFFFF); // Pure white
   static const Color errorLight = Color(0xFFE53E3E); // Modern red
-  static const Color accentLight = Color(0xFFFF8A50); // Warm orange for highlights
+  static const Color accentLight =
+      Color(0xFFFF8A50); // Warm orange for highlights
   static const Color warningLight = Color(0xFFFFB020); // Modern amber
   static const Color successLight = Color(0xFF38A169); // Fresh success green
   static const Color onPrimaryLight = Color(0xFFFFFFFF);
@@ -349,7 +351,8 @@ class AppTheme() {
       collapsedTextColor: textPrimaryLight,
       iconColor: textSecondaryLight,
       collapsedIconColor: textSecondaryLight,
-    ), dialogTheme: DialogThemeData(backgroundColor: dialogLight),
+    ),
+    dialogTheme: DialogThemeData(backgroundColor: dialogLight),
   );
 
   /// Dark theme optimized for low-light billiards venues
@@ -607,7 +610,8 @@ class AppTheme() {
       collapsedTextColor: textPrimaryDark,
       iconColor: textSecondaryDark,
       collapsedIconColor: textSecondaryDark,
-    ), dialogTheme: DialogThemeData(backgroundColor: dialogDark),
+    ),
+    dialogTheme: DialogThemeData(backgroundColor: dialogDark),
   );
 
   /// Helper method to build text theme with Vietnamese character support

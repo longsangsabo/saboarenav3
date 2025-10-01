@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../models/member_data.dart';
 
-class MemberListItem extends StatefulWidget() {
+class MemberListItem extends StatefulWidget {
+  const MemberListItem({super.key});
+
+} 
   final MemberData member;
   final bool isSelected;
   final Function(bool) onSelectionChanged;
@@ -22,7 +25,7 @@ class MemberListItem extends StatefulWidget() {
 }
 
 class _MemberListItemState extends State<MemberListItem>
-    with SingleTickerProviderStateMixin() {
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   Animation<Color?>? _colorAnimation;
@@ -61,7 +64,7 @@ class _MemberListItemState extends State<MemberListItem>
     if (widget.isSelected != oldWidget.isSelected) {
       if (widget.isSelected) {
         _controller.forward();
-      } else() {
+      } else {
         _controller.reverse();
       }
     }

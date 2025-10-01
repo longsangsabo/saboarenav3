@@ -1,7 +1,5 @@
-import '../models/user_profile.dart';
-
 /// Mock service để cung cấp dữ liệu demo cho opponent cards
-class MockPlayerService() {
+class MockPlayerService {
   static List<UserProfile> getDemoPlayers() {
     return [
       UserProfile(
@@ -11,7 +9,8 @@ class MockPlayerService() {
         displayName: 'Đặng Khang',
         username: 'admin_175796958',
         bio: 'Pro player tại SABO Arena',
-        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
         role: 'player',
         skillLevel: 'advanced',
         rank: 'H+', // Hạng H+ thay vì "Nâng cao"
@@ -34,7 +33,8 @@ class MockPlayerService() {
         displayName: 'Nguyễn Đức Anh',
         username: 'champion_duc',
         bio: 'Vô địch quận 1',
-        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
         role: 'player',
         skillLevel: 'professional',
         rank: 'G',
@@ -57,7 +57,8 @@ class MockPlayerService() {
         displayName: 'Trần Minh Hoàng',
         username: 'hoang_billiards',
         bio: 'Học viên xuất sắc',
-        avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
         role: 'player',
         skillLevel: 'intermediate',
         rank: 'I+',
@@ -80,7 +81,8 @@ class MockPlayerService() {
         displayName: 'Lê Văn Nam',
         username: 'nam_rookie',
         bio: 'Tài năng trẻ',
-        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
         role: 'player',
         skillLevel: 'beginner',
         rank: 'K+',
@@ -103,7 +105,8 @@ class MockPlayerService() {
         displayName: 'Phạm Thị Lan',
         username: 'lan_pro',
         bio: 'Nữ hoàng billiards',
-        avatarUrl: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face',
         role: 'player',
         skillLevel: 'advanced',
         rank: 'F',
@@ -133,7 +136,7 @@ class MockPlayerService() {
       'CLB ROYAL BILLIARDS',
       'CLB ELITE PLAYERS',
     ];
-    
+
     return clubs[(DateTime.now().millisecondsSinceEpoch % clubs.length)];
   }
 }

@@ -10,10 +10,10 @@ import 'demo_bracket/formats/swiss_system_bracket.dart';
 import 'demo_bracket/components/bracket_components.dart';
 import 'demo_bracket/shared/tournament_data_generator.dart';
 
-class DemoBracketTab extends StatefulWidget() {
+class DemoBracketTab extends StatefulWidget {
   const DemoBracketTab({super.key});
 
-  @override
+@override
   State<DemoBracketTab> createState() => _DemoBracketTabState();
 }
 
@@ -266,10 +266,12 @@ class _DemoBracketTabState extends State<DemoBracketTab> {
         // SABO Arena rule: Double Elimination with 32 players uses DE32 format
         if (_selectedPlayerCount == 32) {
           dialog = _buildDE32FullscreenDialog();
-        } else() {
+        } else {
+          () {
           dialog = _buildDoubleEliminationFullscreenDialog();
         }
-        break;
+        
+        }break;
       case 'round_robin':
         dialog = RoundRobinFullscreenDialog(playerCount: _selectedPlayerCount);
         break;
@@ -903,3 +905,4 @@ class _DemoBracketTabState extends State<DemoBracketTab> {
 
 
 }
+

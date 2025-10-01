@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 import 'package:sabo_arena/utils/size_extensions.dart';
 
-class ScheduleStep extends StatefulWidget() {
+class ScheduleStep extends StatefulWidget {
+  const ScheduleStep({super.key});
+
+} 
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -17,7 +20,7 @@ class ScheduleStep extends StatefulWidget() {
 }
 
 class _ScheduleStepState extends State<ScheduleStep>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -842,7 +845,7 @@ class _ScheduleStepState extends State<ScheduleStep>
     Function(DateTime) onDateChanged,
     DateTime? minDate,
     DateTime? maxDate,
-  ) async() {
+  ) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: currentDate,
@@ -916,7 +919,7 @@ class _ScheduleStepState extends State<ScheduleStep>
   }
 }
 
-class TimeSlot() {
+class TimeSlot {
   final String id;
   final String start;
   final String end;
@@ -974,7 +977,10 @@ class TimeSlot() {
   }
 }
 
-class TimeSlotDialog extends StatefulWidget() {
+class TimeSlotDialog extends StatefulWidget {
+  const TimeSlotDialog({super.key});
+
+} 
   final TimeSlot? timeSlot;
   final Function(TimeSlot) onSave;
 
@@ -1093,7 +1099,7 @@ class _TimeSlotDialogState extends State<TimeSlotDialog> {
     );
   }
 
-  void _selectTime(bool isStart) async() {
+  void _selectTime(bool isStart) async {
     final currentTime = isStart ? _startTime : _endTime;
     final timeParts = currentTime.split(":');
     
@@ -1110,10 +1116,12 @@ class _TimeSlotDialogState extends State<TimeSlotDialog> {
       setState(() {
         if (isStart) {
           _startTime = timeString;
-        } else() {
+        } else {
+          () {
           _endTime = timeString;
         }
-      });
+      
+        }});
     }
   }
 

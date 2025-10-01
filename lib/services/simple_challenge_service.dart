@@ -1,11 +1,7 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'notification_service.dart';
-import 'test_user_service.dart';
-import 'package:flutter/foundation.dart';
 
 /// Simple Challenge Service for basic challenge functionality
 /// This version doesn't depend on advanced challenge rules
-class SimpleChallengeService() {
+class SimpleChallengeService {
   static SimpleChallengeService? _instance;
   static SimpleChallengeService get instance => _instance ??= SimpleChallengeService._();
   SimpleChallengeService._();
@@ -22,8 +18,8 @@ class SimpleChallengeService() {
     int handicap = 0,
     int spaPoints = 0,
     String? message,
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🚀 SimpleChallengeService.sendChallenge called');
       debugPrint('📊 Parameters:');
       debugPrint('   challengedUserId: $challengedUserId');
@@ -115,7 +111,7 @@ class SimpleChallengeService() {
 
       // Send notification (skip for open challenge)
       if (!isOpenChallenge) {
-        try() {
+        try {
           await _sendChallengeNotification(
             challengeId: challengeResponse['id'],
             challengerName: userResponse['display_name'] ?? 'Người chơi',
@@ -152,8 +148,8 @@ class SimpleChallengeService() {
     required DateTime scheduledTime,
     required String location,
     required int spaPoints,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final challengeTypeVi = challengeType == 'thach_dau' ? "thách đấu" : 'giao lưu';
       final spaInfo = spaPoints > 0 ? " ($spaPoints SPA)" : '';
       
@@ -200,8 +196,8 @@ Hãy vào ứng dụng để phản hồi!
   }
 
   /// Simple validation (always returns true for now)
-  Future<bool> canPlayersChallenge(String challengerId, String challengedId) async() {
-    try() {
+  Future<bool> canPlayersChallenge(String challengerId, String challengedId) async {
+    try {
       // Basic check - make sure both users exist
       await _supabase
           .from('users')

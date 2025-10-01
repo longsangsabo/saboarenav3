@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 
-class ClubMember() {
+class ClubMember {
   final String id;
   final String userId;
   final String clubId;

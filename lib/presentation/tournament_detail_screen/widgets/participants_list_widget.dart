@@ -4,7 +4,10 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class ParticipantsListWidget extends StatelessWidget() {
+class ParticipantsListWidget extends StatelessWidget {
+  const ParticipantsListWidget({super.key});
+
+} 
   final List<Map<String, dynamic>> participants;
   final VoidCallback? onViewAllTap;
 

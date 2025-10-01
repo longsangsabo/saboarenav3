@@ -5,7 +5,10 @@ import '../../services/basic_referral_service.dart';
 
 /// Basic Referral Code Input Widget
 /// Input field for entering referral codes during registration
-class BasicReferralCodeInput extends StatefulWidget() {
+class BasicReferralCodeInput extends StatefulWidget {
+  const BasicReferralCodeInput({super.key});
+
+} 
   final String userId;
   final Function(bool success, String message)? onResult;
   final bool showTitle;
@@ -33,7 +36,7 @@ class _BasicReferralCodeInputState extends State<BasicReferralCodeInput> {
     super.dispose();
   }
 
-  Future<void> _validateAndApplyCode() async() {
+  Future<void> _validateAndApplyCode() async {
     final code = _codeController.text.trim();
     
     if (code.isEmpty) {
@@ -50,7 +53,7 @@ class _BasicReferralCodeInputState extends State<BasicReferralCodeInput> {
       _isValid = null;
     });
 
-    try() {
+    try {
       final result = await BasicReferralService.applyReferralCode(
         widget.userId,
         code,
@@ -66,7 +69,8 @@ class _BasicReferralCodeInputState extends State<BasicReferralCodeInput> {
         
         // Clear the input after successful application
         _codeController.clear();
-      } else() {
+      } else {
+        () {
         setState(() {
           _validationMessage = '❌ ${result?['message'] ?? 'Mã không hợp lệ'}';
           _isValid = false;
@@ -74,14 +78,15 @@ class _BasicReferralCodeInputState extends State<BasicReferralCodeInput> {
         
         widget.onResult?.call(false, result?['message']?.toString() ?? 'Có lỗi xảy ra');
       }
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() {
         _validationMessage = '❌ Lỗi kết nối: $e';
         _isValid = false;
       });
       
       widget.onResult?.call(false, 'Lỗi kết nối: $e');
-    } finally() {
+    } finally {
       setState(() => _isValidating = false);
     }
   }
@@ -294,7 +299,10 @@ class _BasicReferralCodeInputState extends State<BasicReferralCodeInput> {
 }
 
 /// Compact version for inline use
-class CompactReferralCodeInput extends StatelessWidget() {
+class CompactReferralCodeInput extends StatelessWidget {
+  const CompactReferralCodeInput({super.key});
+
+} 
   final String userId;
   final Function(bool success, String message)? onResult;
 

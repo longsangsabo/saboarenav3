@@ -11,7 +11,10 @@ import 'payment_settings_screen.dart';
 import 'color_settings_screen.dart';
 import 'membership_policy_screen.dart';
 
-class ClubSettingsScreen extends StatefulWidget() {
+class ClubSettingsScreen extends StatefulWidget {
+  const ClubSettingsScreen({super.key});
+
+} 
   final String clubId;
 
   const ClubSettingsScreen({

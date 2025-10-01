@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
-import '../presentation/spa_management/spa_reward_screen.dart';
-import '../presentation/spa_management/club_spa_management_screen.dart';
-import '../presentation/spa_management/admin_spa_management_screen.dart';
 
 /// Navigation utilities for SPA management system
-class SpaNavigationHelper() {
+class SpaNavigationHelper {
   /// Navigate to user SPA rewards screen
   static void navigateToUserSpaRewards(
     BuildContext context, {

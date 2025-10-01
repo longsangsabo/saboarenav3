@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/theme/theme_extensions.dart';
 import 'package:sabo_arena/utils/size_extensions.dart';
 
-class ReviewStep extends StatefulWidget() {
+class ReviewStep extends StatefulWidget {
+  const ReviewStep({super.key});
+
+} 
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
   final VoidCallback onPublish;
@@ -19,7 +22,7 @@ class ReviewStep extends StatefulWidget() {
 }
 
 class _ReviewStepState extends State<ReviewStep>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -724,12 +727,12 @@ class _ReviewStepState extends State<ReviewStep>
     }
   }
 
-  Future<void> _handlePublish() async() {
+  Future<void> _handlePublish() async {
     setState(() {
       _isPublishing = true;
     });
 
-    try() {
+    try {
       // Simulate publishing process
       await Future.delayed(Duration(seconds: 2));
       
@@ -775,7 +778,7 @@ class _ReviewStepState extends State<ReviewStep>
           ),
         );
       }
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() {
           _isPublishing = false;

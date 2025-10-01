@@ -3,7 +3,17 @@ import 'package:sizer/sizer.dart';
 import '../models/messaging_models.dart';
 
 /// Chat App Bar widget for chat screen
-class ChatAppBar extends StatelessWidget implements PreferredSizeWidget() {
+class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const ChatAppBar({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String title;
   final String? subtitle;
   final String? avatarUrl;
@@ -12,6 +22,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget() {
   final List<Widget>? actions;
 
   const ChatAppBar({
+    
     super.key,
     required this.title,
     this.subtitle,
@@ -19,7 +30,13 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget() {
     this.onBackPressed,
     this.onUserPressed,
     this.actions,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +133,17 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget() {
 }
 
 /// Message Input widget for sending messages
-class MessageInput extends StatefulWidget() {
+class MessageInput extends StatefulWidget {
+  const MessageInput({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final Function(String) onSendMessage;
   final Function(String)? onTyping;
   final VoidCallback? onAttachFile;
@@ -125,6 +152,7 @@ class MessageInput extends StatefulWidget() {
   final String? hintText;
 
   const MessageInput({
+    
     super.key,
     required this.onSendMessage,
     this.onTyping,
@@ -132,7 +160,13 @@ class MessageInput extends StatefulWidget() {
     this.onRecordVoice,
     this.isEnabled = true,
     this.hintText,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<MessageInput> createState() => _MessageInputState();
@@ -254,7 +288,17 @@ class _MessageInputState extends State<MessageInput> {
 }
 
 /// Message Bubble widget for displaying messages
-class MessageBubble extends StatelessWidget() {
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final MessageModel message;
   final bool isFromCurrentUser;
   final VoidCallback? onTap;
@@ -263,6 +307,7 @@ class MessageBubble extends StatelessWidget() {
   final bool showTimestamp;
 
   const MessageBubble({
+    
     super.key,
     required this.message,
     required this.isFromCurrentUser,
@@ -270,7 +315,13 @@ class MessageBubble extends StatelessWidget() {
     this.onLongPress,
     this.showAvatar = true,
     this.showTimestamp = true,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -566,20 +617,37 @@ class MessageBubble extends StatelessWidget() {
 }
 
 /// Typing Indicator widget
-class TypingIndicatorWidget extends StatefulWidget() {
+class TypingIndicatorWidget extends StatefulWidget {
+  const TypingIndicatorWidget({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final List<String> usernames;
 
   const TypingIndicatorWidget({
+    
     super.key,
     required this.usernames,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<TypingIndicatorWidget> createState() => _TypingIndicatorWidgetState();
 }
 
 class _TypingIndicatorWidgetState extends State<TypingIndicatorWidget>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
@@ -637,7 +705,7 @@ class _TypingIndicatorWidgetState extends State<TypingIndicatorWidget>
                     width: 1.5.w,
                     height: 1.5.w,
                     decoration: BoxDecoration(
-                      color: Colors.grey[600]?.withOpacity(opacity),
+                      color: Colors.grey[600]?.withValues(alpha: opacity),
                       shape: BoxShape.circle,
                     ),
                   );

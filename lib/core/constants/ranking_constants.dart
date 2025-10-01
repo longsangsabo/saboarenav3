@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
-
 /// 🎱 SABO ARENA - Ranking System Constants
 /// Vietnamese billiards ranking system with verification requirements
 
-class RankingConstants() {
+class RankingConstants {
   // Rank codes in progression order
   static const String UNRANKED = 'UNRANKED';
   static const String RANK_K = 'K';
@@ -136,7 +134,8 @@ class RankingConstants() {
     RANK_F_PLUS: {
       "name": 'F+',
       "name_en": 'Grand Master',
-      "description": 'Safety & spin control khá chắc; sắt ngưỡng lên Huyền thoại',
+      "description":
+          'Safety & spin control khá chắc; sắt ngưỡng lên Huyền thoại',
       "description_en": 'Good safety & spin control; about to reach Legend',
       "color": '#FF4500',
     },
@@ -151,7 +150,8 @@ class RankingConstants() {
       "name": 'E+',
       "name_en": 'Champion',
       "description": 'Điều bi phức tạp, safety chủ động; đỉnh cao kỹ thuật',
-      "description_en": 'Complex ball control, proactive safety; peak technical level',
+      "description_en":
+          'Complex ball control, proactive safety; peak technical level',
       "color": '#B22222',
     },
   };
@@ -227,12 +227,13 @@ class RankingConstants() {
 
   // Get rank display info
   static Map<String, String> getRankDisplayInfo(String rank) {
-    return RANK_DETAILS[rank] ?? {
-      "name": 'Unknown',
-      "name_en": 'Unknown',
-      "description": 'Unknown rank',
-      "description_en": 'Unknown rank',
-      "color": '#999999',
-    };
+    return RANK_DETAILS[rank] ??
+        {
+          "name": 'Unknown',
+          "name_en": 'Unknown',
+          "description": 'Unknown rank',
+          "description_en": 'Unknown rank',
+          "color": '#999999',
+        };
   }
 }

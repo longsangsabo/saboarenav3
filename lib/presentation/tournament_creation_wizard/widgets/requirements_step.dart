@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 // import 'package:sabo_arena/core/app_export.dart';
 
 
-class RequirementsStep extends StatefulWidget() {
+class RequirementsStep extends StatefulWidget {
+  const RequirementsStep({super.key});
+
+} 
   final Map<String, dynamic> data;
   final Function(Map<String, dynamic>) onDataChanged;
 
@@ -17,7 +20,7 @@ class RequirementsStep extends StatefulWidget() {
 }
 
 class _RequirementsStepState extends State<RequirementsStep>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -952,7 +955,7 @@ class _RequirementsStepState extends State<RequirementsStep>
   }
 }
 
-class TournamentRule() {
+class TournamentRule {
   final String id;
   final String title;
   final String description;
@@ -998,7 +1001,10 @@ class TournamentRule() {
   }
 }
 
-class CustomRuleDialog extends StatefulWidget() {
+class CustomRuleDialog extends StatefulWidget {
+  const CustomRuleDialog({super.key});
+
+} 
   final TournamentRule? rule;
   final Function(TournamentRule) onSave;
 

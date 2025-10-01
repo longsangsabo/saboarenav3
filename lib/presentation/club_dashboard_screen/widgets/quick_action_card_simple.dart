@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class QuickActionCard extends StatefulWidget() {
+class QuickActionCard extends StatefulWidget {
+  const QuickActionCard({super.key});
+
+} 
   final String title;
   final String subtitle;
   final IconData icon;

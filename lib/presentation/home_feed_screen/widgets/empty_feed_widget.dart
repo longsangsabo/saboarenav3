@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 
 
 
-class EmptyFeedWidget extends StatelessWidget() {
+class EmptyFeedWidget extends StatelessWidget {
+  const EmptyFeedWidget({super.key});
+
+} 
   final bool isNearbyTab;
   final VoidCallback? onCreatePost;
   final VoidCallback? onFindFriends;

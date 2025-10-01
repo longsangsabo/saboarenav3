@@ -4,19 +4,36 @@ import 'package:sabo_arena/repositories/comment_repository.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
-class CommentsModal extends StatefulWidget() {
+class CommentsModal extends StatefulWidget {
+  const CommentsModal({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String postId;
   final String postTitle;
   final VoidCallback? onCommentAdded;
   final VoidCallback? onCommentDeleted;
 
   const CommentsModal({
+    
     super.key,
     required this.postId,
     required this.postTitle,
     this.onCommentAdded,
     this.onCommentDeleted,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<CommentsModal> createState() => _CommentsModalState();
@@ -58,12 +75,12 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _refreshComments() async() {
+  Future<void> _refreshComments() async {
     await _loadComments();
   }
 
-  Future<void> _loadComments() async() {
-    try() {
+  Future<void> _loadComments() async {
+    try {
       setState(() {
         _isLoading = true;
         _hasMore = true;
@@ -98,10 +115,10 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _loadMoreComments() async() {
+  Future<void> _loadMoreComments() async {
     if (_isLoading || !_hasMore) return;
 
-    try() {
+    try {
       setState(() => _isLoading = true);
       
       final moreComments = await _commentRepository.getPostComments(
@@ -131,7 +148,7 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _postComment() async() {
+  Future<void> _postComment() async {
     // Prevent double tapping
     if (_isPosting) {
       debugPrint('🚫 Already posting, ignoring tap');
@@ -162,7 +179,7 @@ class _CommentsModalState extends State<CommentsModal> {
       return;
     }
 
-    try() {
+    try {
       setState(() => _isPosting = true);
       
       // Clear input immediately for better UX
@@ -218,14 +235,16 @@ class _CommentsModalState extends State<CommentsModal> {
 
         // Notify parent about new comment
         widget.onCommentAdded?.call();
-      } else() {
+      } else {
+        () {
         // Remove optimistic comment if failed
         setState(() {
           _comments.removeWhere((c) => c['id'] == optimisticComment['id']);
         });
         throw Exception('Không thể tạo bình luận');
       }
-    } catch (e) {
+    
+      }} catch (e) {
       // Remove optimistic comment if failed
       setState(() {
         _comments.removeWhere((c) => c['is_temp'] == true);
@@ -243,14 +262,14 @@ class _CommentsModalState extends State<CommentsModal> {
       
       // Restore comment text if failed
       _commentController.text = commentText;
-    } finally() {
+    } finally {
       if (mounted) {
         setState(() => _isPosting = false);
       }
     }
   }
 
-  Future<void> _editComment(Map<String, dynamic> comment, int index) async() {
+  Future<void> _editComment(Map<String, dynamic> comment, int index) async {
     final controller = TextEditingController(text: comment['content']);
     final result = await showDialog<String>(
       context: context,
@@ -279,7 +298,7 @@ class _CommentsModalState extends State<CommentsModal> {
     );
 
     if (result != null && result.isNotEmpty && result != comment['content']) {
-      try() {
+      try {
         final updatedComment = await _commentRepository.updateComment(comment['id'], result);
         if (updatedComment != null) {
           setState(() {
@@ -308,8 +327,8 @@ class _CommentsModalState extends State<CommentsModal> {
     }
   }
 
-  Future<void> _deleteComment(String commentId, int index) async() {
-    try() {
+  Future<void> _deleteComment(String commentId, int index) async {
+    try {
       final canDelete = await _commentRepository.canDeleteComment(commentId);
       if (!canDelete) {
         if (mounted) {

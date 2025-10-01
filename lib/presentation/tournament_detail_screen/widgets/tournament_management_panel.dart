@@ -7,7 +7,10 @@ import 'participant_management_tab.dart';
 import 'match_management_tab.dart';
 import 'tournament_settings_tab.dart';
 
-class TournamentManagementPanel extends StatefulWidget() {
+class TournamentManagementPanel extends StatefulWidget {
+  const TournamentManagementPanel({super.key});
+
+} 
   final String tournamentId;
   final String tournamentStatus;
   final VoidCallback? onStatusChanged;
@@ -24,7 +27,7 @@ class TournamentManagementPanel extends StatefulWidget() {
 }
 
 class _TournamentManagementPanelState extends State<TournamentManagementPanel>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
 

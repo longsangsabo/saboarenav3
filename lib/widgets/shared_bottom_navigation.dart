@@ -3,15 +3,32 @@ import '../core/app_export.dart';
 import '../services/messaging_service.dart';
 import '../services/notification_service.dart';
 
-class SharedBottomNavigation extends StatefulWidget() {
+class SharedBottomNavigation extends StatefulWidget {
+  const SharedBottomNavigation({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final int currentIndex;
   final Function(String) onNavigate;
 
   const SharedBottomNavigation({
+    
     super.key,
     required this.currentIndex,
     required this.onNavigate,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   State<SharedBottomNavigation> createState() => _SharedBottomNavigationState();
@@ -30,8 +47,8 @@ class _SharedBottomNavigationState extends State<SharedBottomNavigation> {
     _loadUnreadNotificationCount();
   }
 
-  Future<void> _loadUnreadMessageCount() async() {
-    try() {
+  Future<void> _loadUnreadMessageCount() async {
+    try {
       final count = await _messagingService.getUnreadMessageCount();
       if (mounted) {
         setState(() {
@@ -43,8 +60,8 @@ class _SharedBottomNavigationState extends State<SharedBottomNavigation> {
     }
   }
 
-  Future<void> _loadUnreadNotificationCount() async() {
-    try() {
+  Future<void> _loadUnreadNotificationCount() async {
+    try {
       final count = await _notificationService.getUnreadNotificationCount();
       if (mounted) {
         setState(() {
@@ -74,7 +91,7 @@ class _SharedBottomNavigationState extends State<SharedBottomNavigation> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               spreadRadius: 0,
               blurRadius: 20,
               offset: const Offset(0, -5),

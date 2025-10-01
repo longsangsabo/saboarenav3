@@ -3,7 +3,17 @@ import '../services/club_staff_service.dart';
 import '../services/commission_service.dart';
 
 /// Demo app để test Club Staff Commission System
-class ClubStaffCommissionDemo extends StatefulWidget() {
+class ClubStaffCommissionDemo extends StatefulWidget {
+  const ClubStaffCommissionDemo({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   const ClubStaffCommissionDemo({Key? key}) : super(key: key);
 
   @override
@@ -12,7 +22,7 @@ class ClubStaffCommissionDemo extends StatefulWidget() {
 
 class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
   final _scrollController = ScrollController();
-  List<String> _logs = [];
+  final List<String> _logs = [];
   bool _isRunning = false;
 
   @override
@@ -146,7 +156,7 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
     });
   }
 
-  Future<void> _runFullDemo() async() {
+  Future<void> _runFullDemo() async {
     setState(() => _isRunning = true);
     
     _addLog('🚀 Bắt đầu Demo Hệ Thống Club Staff Commission');
@@ -164,11 +174,11 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
     setState(() => _isRunning = false);
   }
 
-  Future<void> _testStaffManagement() async() {
+  Future<void> _testStaffManagement() async {
     _addLog('📋 TEST 1: Staff Management System');
     _addLog('-----------------------------------');
     
-    try() {
+    try {
       // Test 1: Add staff to club
       _addLog('🔹 Testing: Thêm nhân viên vào club...');
       
@@ -184,11 +194,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
       
       if (addResult['success']) {
         _addLog('✅ Thêm nhân viên thành công! Staff ID: ${addResult['staff_id']}');
-      } else() {
+      } else {
+        () {
         _addLog('❌ Lỗi thêm nhân viên: ${addResult['message']}');
       }
       
-      await Future.delayed(const Duration(milliseconds: 500));
+      
+      }await Future.delayed(const Duration(milliseconds: 500));
       
       // Test 2: Get club staff list
       _addLog('🔹 Testing: Lấy danh sách nhân viên...');
@@ -211,21 +223,23 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
       final staffInfo = await ClubStaffService.getUserStaffInfo('demo-user-id');
       if (staffInfo != null) {
         _addLog('✅ User là staff tại club: ${staffInfo['clubs']?['name'] ?? 'Unknown'}');
-      } else() {
+      } else {
+        () {
         _addLog('ℹ️ User chưa là staff tại club nào');
       }
       
-    } catch (e) {
+    
+      }} catch (e) {
       _addLog('❌ Lỗi test Staff Management: $e');
     }
   }
 
-  Future<void> _testCommissionSystem() async() {
+  Future<void> _testCommissionSystem() async {
     _addLog('');
     _addLog('💰 TEST 2: Commission System');
     _addLog('------------------------------');
     
-    try() {
+    try {
       // Test 1: Apply staff referral
       _addLog('🔹 Testing: Áp dụng mã giới thiệu staff...');
       
@@ -238,11 +252,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
         _addLog('✅ Áp dụng mã giới thiệu thành công!');
         _addLog('   💎 Khách hàng nhận: ${referralResult['referred_reward']} SPA');
         _addLog('   💰 Staff nhận: ${referralResult['referrer_reward']} SPA');
-      } else() {
+      } else {
+        () {
         _addLog('❌ Lỗi áp dụng mã giới thiệu: ${referralResult['message']}');
       }
       
-      await Future.delayed(const Duration(milliseconds: 500));
+      
+      }await Future.delayed(const Duration(milliseconds: 500));
       
       // Test 2: Record customer transaction
       _addLog('🔹 Testing: Ghi nhận giao dịch khách hàng...');
@@ -260,11 +276,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
         _addLog('✅ Ghi nhận giao dịch thành công!');
         _addLog('   💵 Số tiền: 50,000 VND');
         _addLog('   💰 Hoa hồng tự động: ${transactionResult['commission_amount']} VND');
-      } else() {
+      } else {
+        () {
         _addLog('❌ Lỗi ghi nhận giao dịch: ${transactionResult['message']}');
       }
       
-      await Future.delayed(const Duration(milliseconds: 500));
+      
+      }await Future.delayed(const Duration(milliseconds: 500));
       
       // Test 3: Calculate commission
       _addLog('🔹 Testing: Tính toán hoa hồng...');
@@ -277,11 +295,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
         _addLog('✅ Tính hoa hồng thành công!');
         _addLog('   💰 Hoa hồng: ${commissionResult['commission_amount']} VND');
         _addLog('   📊 Tỷ lệ: ${commissionResult['commission_rate']}%');
-      } else() {
+      } else {
+        () {
         _addLog('ℹ️ ${commissionResult['message']}');
       }
       
-      await Future.delayed(const Duration(milliseconds: 500));
+      
+      }await Future.delayed(const Duration(milliseconds: 500));
       
       // Test 4: Get pending commissions
       _addLog('🔹 Testing: Lấy danh sách hoa hồng chờ thanh toán...');
@@ -306,12 +326,12 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
     }
   }
 
-  Future<void> _testAnalytics() async() {
+  Future<void> _testAnalytics() async {
     _addLog('');
     _addLog('📊 TEST 3: Analytics & Reports');
     _addLog('-------------------------------');
     
-    try() {
+    try {
       // Test 1: Staff earnings summary
       _addLog('🔹 Testing: Tổng hợp thu nhập staff...');
       
@@ -323,11 +343,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
         _addLog('   📅 Tháng này: ${earnings['this_month_commissions']?.toStringAsFixed(0) ?? '0'} VND');
         _addLog('   👥 Khách hàng active: ${earnings['active_referrals'] ?? 0}');
         _addLog('   💵 Doanh thu khách: ${earnings['total_customer_spending']?.toStringAsFixed(0) ?? '0'} VND');
-      } else() {
+      } else {
+        () {
         _addLog('ℹ️ ${earnings['message']}');
       }
       
-      await Future.delayed(const Duration(milliseconds: 500));
+      
+      }await Future.delayed(const Duration(milliseconds: 500));
       
       // Test 2: Club commission analytics
       _addLog('🔹 Testing: Phân tích hoa hồng club...');
@@ -357,11 +379,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
             count++;
           }
         }
-      } else() {
+      } else {
+        () {
         _addLog('ℹ️ ${analytics['message']}');
       }
       
-      await Future.delayed(const Duration(milliseconds, 500));
+      
+      }await Future.delayed(const Duration(milliseconds, 500));
       
       // Test 3: Commission report generation
       _addLog('🔹 Testing: Tạo báo cáo hoa hồng...');
@@ -381,11 +405,13 @@ class _ClubStaffCommissionDemoState extends State<ClubStaffCommissionDemo> {
           _addLog('   💰 Tổng HH: ${summary['total_commissions']?.toStringAsFixed(0) ?? '0'} VND');
           _addLog('   📈 Tổng doanh thu: ${summary['total_revenue']?.toStringAsFixed(0) ?? '0'} VND');
         }
-      } else() {
+      } else {
+        () {
         _addLog('ℹ️ ${report['message']}');
       }
       
-    } catch (e) {
+    
+      }} catch (e) {
       _addLog('❌ Lỗi test Analytics: $e');
     }
   }

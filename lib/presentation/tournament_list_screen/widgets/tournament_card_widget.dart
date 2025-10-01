@@ -5,7 +5,10 @@ import '../../../core/app_export.dart';
 import '../../../models/tournament.dart';
 import '../../../routes/app_routes.dart';
 
-class TournamentCardWidget extends StatelessWidget() {
+class TournamentCardWidget extends StatelessWidget {
+  const TournamentCardWidget({super.key});
+
+} 
   final Tournament tournament;
 
   const TournamentCardWidget({

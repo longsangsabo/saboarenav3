@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class PricingSettingsScreen extends StatefulWidget() {
+class PricingSettingsScreen extends StatefulWidget {
+  const PricingSettingsScreen({super.key});
+
+} 
   final String clubId;
 
   const PricingSettingsScreen({
@@ -551,12 +554,14 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                       'description': descController.text,
                       'isActive': true,
                     });
-                  } else() {
+                  } else {
+                    () {
                     tableRates[index!]['name'] = nameController.text;
                     tableRates[index]['hourlyRate'] = int.parse(rateController.text);
                     tableRates[index]['description'] = descController.text;
                   }
-                });
+                
+                  }});
                 Navigator.pop(context);
               }
             },
@@ -638,13 +643,15 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                       'benefits': benefitsController.text,
                       'isActive': true,
                     });
-                  } else() {
+                  } else {
+                    () {
                     membershipFees[index!]['name'] = nameController.text;
                     membershipFees[index]['monthlyFee'] = int.parse(monthlyController.text);
                     membershipFees[index]['yearlyFee'] = int.parse(yearlyController.text.isEmpty ? '0' : yearlyController.text);
                     membershipFees[index]['benefits'] = benefitsController.text;
                   }
-                });
+                
+                  }});
                 Navigator.pop(context);
               }
             },
@@ -724,13 +731,15 @@ class _PricingSettingsScreenState extends State<PricingSettingsScreen> {
                       'description': descController.text,
                       'isActive': true,
                     });
-                  } else() {
+                  } else {
+                    () {
                     additionalServices[index!]['name'] = nameController.text;
                     additionalServices[index]['price'] = int.parse(priceController.text);
                     additionalServices[index]['unit'] = unitController.text.isEmpty ? 'lần' : unitController.text;
                     additionalServices[index]['description'] = descController.text;
                   }
-                });
+                
+                  }});
                 Navigator.pop(context);
               }
             },

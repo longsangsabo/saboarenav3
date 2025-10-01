@@ -7,7 +7,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 // Task Verification Models
-class TaskVerification() {
+class TaskVerification {
   final String id;
   final String taskId;
   final String staffId;
@@ -36,7 +36,7 @@ class TaskVerification() {
 enum VerificationStatus { pending, verified, rejected }
 
 // Live Photo Capture Service
-class LivePhotoService() {
+class LivePhotoService {
   static final LivePhotoService _instance = LivePhotoService._internal();
   factory LivePhotoService() => _instance;
   LivePhotoService._internal();
@@ -47,8 +47,8 @@ class LivePhotoService() {
     required String taskType,
     required String description,
     required String clubId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // 1. Check permissions
       if (!await _checkPermissions()) {
         throw Exception('Camera và GPS permissions required');
@@ -117,7 +117,7 @@ class LivePhotoService() {
   }
 
   // Check required permissions
-  Future<bool> _checkPermissions() async() {
+  Future<bool> _checkPermissions() async {
     LocationPermission locationPermission = await Geolocator.checkPermission();
     if (locationPermission == LocationPermission.denied) {
       locationPermission = await Geolocator.requestPermission();
@@ -128,7 +128,7 @@ class LivePhotoService() {
   }
 
   // Get current accurate location
-  Future<Position> _getCurrentLocation() async() {
+  Future<Position> _getCurrentLocation() async {
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
       timeLimit: Duration(seconds: 10),
@@ -141,7 +141,7 @@ class LivePhotoService() {
     required Position position,
     required String taskId,
     required String taskType,
-  }) async() {
+  }) async {
     // Read image
     File imageFile = File(photoPath);
     Uint8List imageBytes = await imageFile.readAsBytes();
@@ -181,7 +181,7 @@ LIVE CAPTURE - VERIFIED
   }
 
   // Calculate photo hash for integrity verification
-  Future<String> calculatePhotoHash(String photoPath) async() {
+  Future<String> calculatePhotoHash(String photoPath) async {
     File file = File(photoPath);
     List<int> bytes = await file.readAsBytes();
     var digest = sha256.convert(bytes);
@@ -189,7 +189,7 @@ LIVE CAPTURE - VERIFIED
   }
 
   // Upload verification to backend
-  Future<void> _uploadVerification(TaskVerification verification) async() {
+  Future<void> _uploadVerification(TaskVerification verification) async {
     // Upload to Supabase
     await SupabaseService.client
         .from('task_verifications')
@@ -198,7 +198,10 @@ LIVE CAPTURE - VERIFIED
 }
 
 // Live Camera Capture Screen  
-class LiveCaptureScreen extends StatefulWidget() {
+class LiveCaptureScreen extends StatefulWidget {
+  const LiveCaptureScreen({super.key});
+
+} 
   final CameraDescription camera;
   final String taskType;
   final String taskDescription;
@@ -311,10 +314,12 @@ class _LiveCaptureScreenState extends State<LiveCaptureScreen> {
                       ),
                     ],
                   );
-                } else() {
+                } else {
+                  () {
                   return Center(child: CircularProgressIndicator());
                 }
-              },
+              
+                }},
             ),
           ),
           
@@ -362,7 +367,7 @@ class _LiveCaptureScreenState extends State<LiveCaptureScreen> {
   }
 
   Widget _buildCameraOverlay() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: double.infinity,
       child: CustomPaint(
@@ -371,15 +376,15 @@ class _LiveCaptureScreenState extends State<LiveCaptureScreen> {
     );
   }
 
-  Future<void> _capturePhoto() async() {
+  Future<void> _capturePhoto() async {
     if (_isProcessing) return;
     
     setState(() {
       _isProcessing = true;
     });
 
-    try() {
-      await _initializeControllerFuture;
+    try {
+      await initializeControllerFuture;
       
       // Capture image
       XFile photo = await _controller.takePicture();
@@ -391,7 +396,7 @@ class _LiveCaptureScreenState extends State<LiveCaptureScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Lỗi chụp ảnh: $e')),
       );
-    } finally() {
+    } finally {
       setState(() {
         _isProcessing = false;
       });
@@ -426,7 +431,7 @@ class _LiveCaptureScreenState extends State<LiveCaptureScreen> {
 }
 
 // Custom painter for camera overlay
-class CameraOverlayPainter extends CustomPainter() {
+class CameraOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()

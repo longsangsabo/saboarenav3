@@ -4,7 +4,10 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class PrizePoolWidget extends StatelessWidget() {
+class PrizePoolWidget extends StatelessWidget {
+  const PrizePoolWidget({super.key});
+
+} 
   final Map<String, dynamic> tournament;
 
   const PrizePoolWidget({

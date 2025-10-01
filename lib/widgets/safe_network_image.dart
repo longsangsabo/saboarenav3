@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class SafeNetworkImage extends StatelessWidget() {
+class SafeNetworkImage extends StatelessWidget {
+  const SafeNetworkImage({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   final String? imageUrl;
   final Widget? placeholder;
   final Widget? errorWidget;
@@ -11,6 +21,7 @@ class SafeNetworkImage extends StatelessWidget() {
   final BorderRadius? borderRadius;
 
   const SafeNetworkImage({
+    
     super.key,
     required this.imageUrl,
     this.placeholder,
@@ -19,7 +30,13 @@ class SafeNetworkImage extends StatelessWidget() {
     this.height,
     this.fit,
     this.borderRadius,
+  
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
 
   @override
   Widget build(BuildContext context) {

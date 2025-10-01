@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class LocationPicker extends StatefulWidget() {
+class LocationPicker extends StatefulWidget {
+  const LocationPicker({super.key});
+
+} 
   final String? initialAddress;
   final Function(String address, double lat, double lng) onLocationSelected;
 

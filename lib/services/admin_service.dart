@@ -1,9 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/club.dart';
-import '../models/user_profile.dart';
-import 'package:flutter/foundation.dart';
 
-class AdminService() {
+class AdminService {
   static AdminService? _instance;
   static AdminService get instance => _instance ??= AdminService._();
   AdminService._();
@@ -15,8 +11,8 @@ class AdminService() {
   // ==========================================
 
   /// Get all clubs pending approval
-  Future<List<Club>> getPendingClubs() async() {
-    try() {
+  Future<List<Club>> getPendingClubs() async {
+    try {
       final response = await _supabase
           .from('clubs')
           .select('''
@@ -42,8 +38,8 @@ class AdminService() {
     String? status, // 'pending', 'approved', 'rejected'
     int limit = 50,
     int offset = 0,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('clubs')
           .select('''
@@ -79,8 +75,8 @@ class AdminService() {
   }
 
   /// Approve a club
-  Future<Club> approveClub(String clubId, {String? adminNotes}) async() {
-    try() {
+  Future<Club> approveClub(String clubId, {String? adminNotes}) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('Admin not authenticated');
 
@@ -147,8 +143,8 @@ class AdminService() {
   }
 
   /// Reject a club
-  Future<Club> rejectClub(String clubId, String reason, {String? adminNotes}) async() {
-    try() {
+  Future<Club> rejectClub(String clubId, String reason, {String? adminNotes}) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('Admin not authenticated');
 
@@ -187,8 +183,8 @@ class AdminService() {
   // ==========================================
 
   /// Get admin dashboard statistics
-  Future<Map<String, dynamic>> getAdminStats() async() {
-    try() {
+  Future<Map<String, dynamic>> getAdminStats() async {
+    try {
       final results = await Future.wait([
         // Clubs stats
         _supabase.from(\'clubs\').select(\'count\').eq('approval_status', 'pending').count(),
@@ -228,8 +224,8 @@ class AdminService() {
   }
 
   /// Get recent activities for admin dashboard
-  Future<List<Map<String, dynamic>>> getRecentActivities({int limit = 20}) async() {
-    try() {
+  Future<List<Map<String, dynamic>>> getRecentActivities({int limit = 20}) async {
+    try {
       // Get recent club registrations
       final clubActivities = await _supabase
           .from('clubs')
@@ -273,8 +269,8 @@ class AdminService() {
 
   /// Add all users to a tournament (for testing purposes)
   /// Uses RPC function to bypass RLS restrictions
-  Future<Map<String, dynamic>> addAllUsersToTournament(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>> addAllUsersToTournament(String tournamentId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('Admin not authenticated');
 
@@ -318,8 +314,8 @@ class AdminService() {
 
   /// Remove all users from a tournament (for testing cleanup)
   /// Uses RPC function to bypass RLS restrictions  
-  Future<Map<String, dynamic>> removeAllUsersFromTournament(String tournamentId) async() {
-    try() {
+  Future<Map<String, dynamic>> removeAllUsersFromTournament(String tournamentId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('Admin not authenticated');
 
@@ -366,8 +362,8 @@ class AdminService() {
     String? status,
     int limit = 50,
     int offset = 0,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase
           .from('tournaments')
           .select('''
@@ -400,8 +396,8 @@ class AdminService() {
     String? role,
     int limit = 50,
     int offset = 0,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase.from('users').select();
 
       if (search != null && search.isNotEmpty) {
@@ -427,8 +423,8 @@ class AdminService() {
   // ==========================================
 
   /// Check if current user is admin
-  Future<bool> isCurrentUserAdmin() async() {
-    try() {
+  Future<bool> isCurrentUserAdmin() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -450,8 +446,8 @@ class AdminService() {
     required String action,
     required String targetId,
     Map<String, dynamic>? details,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase.from('admin_logs').insert({
         'admin_id': adminId,
         'action': action,

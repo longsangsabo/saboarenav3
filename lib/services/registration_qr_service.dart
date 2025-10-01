@@ -1,10 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sabo_arena/models/user_profile.dart';
-import 'package:sabo_arena/services/share_service.dart';
-import 'package:sabo_arena/services/user_code_service.dart';
-import 'package:flutter/foundation.dart';
 
-class RegistrationQRService() {
+class RegistrationQRService {
   static final SupabaseClient _supabase = Supabase.instance.client;
   
   /// Complete user registration with automatic QR code generation
@@ -18,8 +13,8 @@ class RegistrationQRService() {
     DateTime? dateOfBirth,
     String skillLevel = 'beginner',
     String role = 'player',
-  }) async() {
-    try() {
+  }) async {
+    try {
       debugPrint('🎯 Starting registration with QR for user: $userId');
       
       // 1. Generate unique user code
@@ -103,8 +98,8 @@ class RegistrationQRService() {
   }
   
   /// Get user's QR information
-  static Future<Map<String, dynamic>?> getUserQRInfo(String userId) async() {
-    try() {
+  static Future<Map<String, dynamic>?> getUserQRInfo(String userId) async {
+    try {
       final result = await _supabase
           .from('users')
           .select('user_code, qr_data, qr_generated_at, full_name, elo_rating, rank')
@@ -119,8 +114,8 @@ class RegistrationQRService() {
   }
   
   /// Regenerate QR code for user (if needed)
-  static Future<Map<String, dynamic>> regenerateUserQR(String userId) async() {
-    try() {
+  static Future<Map<String, dynamic>> regenerateUserQR(String userId) async {
+    try {
       // Get current user data
       final userData = await _supabase
           .from('users')
@@ -162,8 +157,8 @@ class RegistrationQRService() {
   }
   
   /// Validate QR code and get user info (for scanning)
-  static Future<Map<String, dynamic>> validateAndGetUserByQR(String qrData) async() {
-    try() {
+  static Future<Map<String, dynamic>> validateAndGetUserByQR(String qrData) async {
+    try {
       // Extract user ID from QR data
       final uri = Uri.parse(qrData);
       final pathSegments = uri.pathSegments;
@@ -200,8 +195,8 @@ class RegistrationQRService() {
   }
   
   /// Get QR statistics (for future analytics)
-  static Future<Map<String, dynamic>> getQRStats() async() {
-    try() {
+  static Future<Map<String, dynamic>> getQRStats() async {
+    try {
       final stats = await _supabase
           .from('users')
           .select('user_code, qr_generated_at')

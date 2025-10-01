@@ -1,9 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services/auth_service.dart';
-import '../models/messaging_models.dart';
-import 'package:flutter/foundation.dart';
-
-class ChatRoomService() {
+class ChatRoomService {
   static final ChatRoomService _instance = ChatRoomService._internal();
   factory ChatRoomService() => _instance;
   ChatRoomService._internal();
@@ -14,12 +9,13 @@ class ChatRoomService() {
   final AuthService _authService = AuthService.instance;
 
   /// Get all chat rooms for current user
-  Future<List<ChatRoom>> getUserChatRooms() async() {
-    try() {
+  Future<List<ChatRoom>> getUserChatRooms() async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return [];
 
-      final response = await _supabase.rpc('get_user_chat_rooms_detailed', params: {
+      final response =
+          await _supabase.rpc('get_user_chat_rooms_detailed', params: {
         'current_user_id': currentUser.id,
       });
 
@@ -31,11 +27,9 @@ class ChatRoomService() {
   }
 
   /// Get specific chat room details
-  Future<ChatRoom?> getChatRoom(String roomId) async() {
-    try() {
-      final response = await _supabase
-          .from('chat_rooms')
-          .select('''
+  Future<ChatRoom?> getChatRoom(String roomId) async {
+    try {
+      final response = await _supabase.from('chat_rooms').select('''
             id,
             name,
             description,
@@ -47,9 +41,7 @@ class ChatRoomService() {
             user2_id,
             user1:user1_id(id, full_name, avatar_url),
             user2:user2_id(id, full_name, avatar_url)
-          ''')
-          .eq('id', roomId)
-          .single();
+          ''').eq('id', roomId).single();
 
       return ChatRoom.fromJson(response);
     } catch (e) {
@@ -64,8 +56,8 @@ class ChatRoomService() {
     String? name,
     String? description,
     String roomType = 'direct',
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -84,10 +76,8 @@ class ChatRoomService() {
         'created_at': DateTime.now().toIso8601String(),
       };
 
-      final response = await _supabase
-          .from('chat_rooms')
-          .insert(roomData)
-          .select('''
+      final response =
+          await _supabase.from('chat_rooms').insert(roomData).select('''
             id,
             name,
             description,
@@ -99,8 +89,7 @@ class ChatRoomService() {
             user2_id,
             user1:user1_id(id, full_name, avatar_url),
             user2:user2_id(id, full_name, avatar_url)
-          ''')
-          .single();
+          ''').single();
 
       return ChatRoom.fromJson(response);
     } catch (e) {
@@ -110,8 +99,8 @@ class ChatRoomService() {
   }
 
   /// Get or create direct message room
-  Future<ChatRoom?> getDirectMessageRoom(String otherUserId) async() {
-    try() {
+  Future<ChatRoom?> getDirectMessageRoom(String otherUserId) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -151,8 +140,8 @@ class ChatRoomService() {
     required String roomId,
     String? name,
     String? description,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -175,8 +164,8 @@ class ChatRoomService() {
   }
 
   /// Delete chat room
-  Future<bool> deleteChatRoom(String roomId) async() {
-    try() {
+  Future<bool> deleteChatRoom(String roomId) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -198,8 +187,8 @@ class ChatRoomService() {
   Future<bool> addParticipant({
     required String roomId,
     required String userId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -221,8 +210,8 @@ class ChatRoomService() {
   Future<bool> removeParticipant({
     required String roomId,
     required String userId,
-  }) async() {
-    try() {
+  }) async {
+    try {
       await _supabase
           .from('chat_participants')
           .delete()
@@ -237,17 +226,14 @@ class ChatRoomService() {
   }
 
   /// Get room participants
-  Future<List<ChatParticipant>> getRoomParticipants(String roomId) async() {
-    try() {
-      final response = await _supabase
-          .from('chat_participants')
-          .select('''
+  Future<List<ChatParticipant>> getRoomParticipants(String roomId) async {
+    try {
+      final response = await _supabase.from('chat_participants').select('''
             user_id,
             joined_at,
             role,
             user:user_id(id, full_name, avatar_url, status)
-          ''')
-          .eq('room_id', roomId);
+          ''').eq('room_id', roomId);
 
       return response.map((item) => ChatParticipant.fromJson(item)).toList();
     } catch (e) {
@@ -257,8 +243,8 @@ class ChatRoomService() {
   }
 
   /// Mute/unmute chat room
-  Future<bool> muteRoom(String roomId, bool mute) async() {
-    try() {
+  Future<bool> muteRoom(String roomId, bool mute) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return false;
 
@@ -277,8 +263,8 @@ class ChatRoomService() {
   }
 
   /// Get room settings for current user
-  Future<Map<String, dynamic>?> getRoomSettings(String roomId) async() {
-    try() {
+  Future<Map<String, dynamic>?> getRoomSettings(String roomId) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return null;
 
@@ -297,8 +283,8 @@ class ChatRoomService() {
   }
 
   /// Search chat rooms
-  Future<List<ChatRoom>> searchChatRooms(String query) async() {
-    try() {
+  Future<List<ChatRoom>> searchChatRooms(String query) async {
+    try {
       final currentUser = _authService.currentUser;
       if (currentUser == null) return [];
 
@@ -315,8 +301,8 @@ class ChatRoomService() {
   }
 
   /// Get room message statistics
-  Future<Map<String, dynamic>> getRoomStats(String roomId) async() {
-    try() {
+  Future<Map<String, dynamic>> getRoomStats(String roomId) async {
+    try {
       final response = await _supabase.rpc('get_chat_room_stats', params: {
         'room_id_param': roomId,
       });
@@ -329,7 +315,8 @@ class ChatRoomService() {
   }
 
   /// Subscribe to chat room updates
-  RealtimeChannel subscribeToRoomUpdates(String roomId, Function(Map<String, dynamic>) onUpdate) {
+  RealtimeChannel subscribeToRoomUpdates(
+      String roomId, Function(Map<String, dynamic>) onUpdate) {
     return _supabase
         .channel('room_updates_$roomId')
         .onPostgresChanges(

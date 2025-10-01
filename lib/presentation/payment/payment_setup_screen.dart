@@ -6,7 +6,10 @@ import 'package:sabo_arena/theme/app_theme.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/widgets/payment_qr_widget.dart';
 
-class PaymentSetupScreen extends StatefulWidget() {
+class PaymentSetupScreen extends StatefulWidget {
+  const PaymentSetupScreen({super.key});
+
+} 
   final String clubId;
 
   const PaymentSetupScreen({
@@ -53,10 +56,10 @@ class _PaymentSetupScreenState extends State<PaymentSetupScreen> {
     setState(() {});
   }
 
-  Future<void> _loadCurrentSettings() async() {
+  Future<void> _loadCurrentSettings() async {
     setState(() => isLoading = true);
     
-    try() {
+    try {
       final settings = await RealPaymentService.getClubPaymentSettings(widget.clubId);
       if (settings != null) {
         setState(() {
@@ -377,7 +380,7 @@ class _PaymentSetupScreenState extends State<PaymentSetupScreen> {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
-            value: selectedBank,
+            initialValue: selectedBank,
             decoration: InputDecoration(
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -744,12 +747,12 @@ class _PaymentSetupScreenState extends State<PaymentSetupScreen> {
     );
   }
 
-  Future<void> _saveSettings() async() {
+  Future<void> _saveSettings() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => isSaving = true);
 
-    try() {
+    try {
       // Prepare settings data
       Map<String, dynamic> settings = {
         'cash_enabled': cashEnabled,
@@ -786,7 +789,7 @@ class _PaymentSetupScreenState extends State<PaymentSetupScreen> {
 
     } catch (e) {
       _showError('Không thể lưu cài đặt: $e');
-    } finally() {
+    } finally {
       setState(() => isSaving = false);
     }
   }

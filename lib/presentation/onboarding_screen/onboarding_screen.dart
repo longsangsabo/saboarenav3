@@ -4,10 +4,10 @@ import 'package:sizer/sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_export.dart';
 
-class OnboardingScreen extends StatefulWidget() {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
-  @override
+@override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
@@ -126,10 +126,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    } else() {
+    } else {
+      () {
       _finishOnboarding();
     }
-  }
+  
+    }}
 
   void _previousPage() {
     if (_currentPage > 0) {
@@ -140,8 +142,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  Future<void> _finishOnboarding() async() {
-    try() {
+  Future<void> _finishOnboarding() async {
+    try {
       // Mark onboarding as completed and save user role
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('has_seen_onboarding', true);
@@ -274,10 +276,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                         if (data.showRoleSelection) {
                           return _buildRoleSelectionPage(data);
-                        } else() {
+                        } else {
+                          () {
                           return _buildContentPage(data);
                         }
-                      },
+                      
+                        return null;
+                        }},
                     ),
                   ),
                   Padding(
@@ -818,7 +823,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class _DecorativeCircle extends StatelessWidget() {
+class _DecorativeCircle extends StatelessWidget {
   final double diameter;
   final Color color;
 
@@ -840,7 +845,7 @@ class _DecorativeCircle extends StatelessWidget() {
   }
 }
 
-class _RoleOptionCard extends StatelessWidget() {
+class _RoleOptionCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final bool isSelected;
@@ -945,7 +950,7 @@ class _RoleOptionCard extends StatelessWidget() {
   }
 }
 
-class OnboardingData() {
+class OnboardingData {
   final String title;
   final String description;
   final String imagePath;
@@ -958,3 +963,4 @@ class OnboardingData() {
     required this.showRoleSelection,
   });
 }
+

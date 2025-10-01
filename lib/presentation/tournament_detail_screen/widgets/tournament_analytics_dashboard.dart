@@ -8,7 +8,10 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../services/tournament_statistics_service.dart';
 import '../../../core/constants/tournament_constants.dart';
 
-class TournamentAnalyticsDashboard extends StatefulWidget() {
+class TournamentAnalyticsDashboard extends StatefulWidget {
+  const TournamentAnalyticsDashboard({super.key});
+
+} 
   final String tournamentId;
   final bool showRealTimeUpdates;
 
@@ -23,7 +26,7 @@ class TournamentAnalyticsDashboard extends StatefulWidget() {
 }
 
 class _TournamentAnalyticsDashboardState extends State<TournamentAnalyticsDashboard>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   final TournamentStatisticsService _statisticsService = TournamentStatisticsService.instance;
   
   Map<String, dynamic>? _analyticsData;
@@ -63,8 +66,8 @@ class _TournamentAnalyticsDashboardState extends State<TournamentAnalyticsDashbo
     ));
   }
 
-  Future<void> _loadAnalyticsData() async() {
-    try() {
+  Future<void> _loadAnalyticsData() async {
+    try {
       setState(() {
         _isLoading = true;
         _error = null;

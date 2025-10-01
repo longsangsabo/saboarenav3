@@ -1,11 +1,9 @@
-import 'package:geolocator/geolocator.dart';
-
 /// A service class to handle location-related functionalities.
 ///
 /// This service abstracts the logic for checking permissions,
 /// requesting permissions, and fetching the user's current location
 /// using the geolocator package.
-class LocationService() {
+class LocationService {
   // Singleton instance
   static LocationService? _instance;
   static LocationService get instance => _instance ??= LocationService._();
@@ -15,7 +13,7 @@ class LocationService() {
   ///
   /// When the location services are not enabled or permissions
   /// are denied the `Future` will return an error.
-  Future<Position> getCurrentPosition() async() {
+  Future<Position> getCurrentPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 

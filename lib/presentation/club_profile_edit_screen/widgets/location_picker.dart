@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/core/app_export.dart';
 
-class LocationPicker extends StatefulWidget() {
+class LocationPicker extends StatefulWidget {
+  const LocationPicker({super.key});
+
+} 
   final Map<String, double> initialLocation;
   final Function(Map<String, double>) onLocationChanged;
 
@@ -16,7 +19,7 @@ class LocationPicker extends StatefulWidget() {
 }
 
 class _LocationPickerState extends State<LocationPicker>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -90,7 +93,7 @@ class _LocationPickerState extends State<LocationPicker>
         });
         if (_isExpanded) {
           _animationController.forward();
-        } else() {
+        } else {
           _animationController.reverse();
         }
       },
@@ -639,7 +642,7 @@ class _LocationPickerState extends State<LocationPicker>
     );
   }
 
-  void _getCurrentLocation() async() {
+  void _getCurrentLocation() async {
     setState(() {
       _isLoading = true;
     });

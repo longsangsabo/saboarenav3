@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sabo_arena/widgets/custom_app_bar.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 
-class OperatingHoursScreen extends StatefulWidget() {
+class OperatingHoursScreen extends StatefulWidget {
+  const OperatingHoursScreen({super.key});
+
+} 
   final String clubId;
 
   const OperatingHoursScreen({
@@ -451,7 +454,7 @@ class _OperatingHoursScreenState extends State<OperatingHoursScreen> {
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
-  Future<void> _selectTime(BuildContext context, String day, String timeType) async() {
+  Future<void> _selectTime(BuildContext context, String day, String timeType) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: operatingHours[day]![timeType],

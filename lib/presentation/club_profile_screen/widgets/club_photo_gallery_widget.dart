@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class ClubPhotoGalleryWidget extends StatelessWidget() {
+class ClubPhotoGalleryWidget extends StatelessWidget {
+  const ClubPhotoGalleryWidget({super.key});
+
+} 
   final List<String> photos;
   final VoidCallback onViewAll;
 

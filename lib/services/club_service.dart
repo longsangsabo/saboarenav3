@@ -1,9 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/club.dart';
-import '../models/user_profile.dart';
-import 'package:flutter/foundation.dart';
 
-class ClubService() {
+class ClubService {
   static ClubService? _instance;
   static ClubService get instance => _instance ??= ClubService._();
   ClubService._();
@@ -15,8 +11,8 @@ class ClubService() {
     double? longitude,
     double? radiusKm,
     int limit = 50,
-  }) async() {
-    try() {
+  }) async {
+    try {
       var query = _supabase.from('clubs').select();
 
       // Add location-based filtering if coordinates provided
@@ -42,8 +38,8 @@ class ClubService() {
     }
   }
 
-  Future<Club> getClubById(String clubId) async() {
-    try() {
+  Future<Club> getClubById(String clubId) async {
+    try {
       final response =
           await _supabase.from('clubs').select().eq('id', clubId).single();
 
@@ -54,8 +50,8 @@ class ClubService() {
   }
 
   /// Tìm club mà user sở hữu (owner_id = user_id)
-  Future<Club?> getClubByOwnerId(String userId) async() {
-    try() {
+  Future<Club?> getClubByOwnerId(String userId) async {
+    try {
       final response = await _supabase
           .from('clubs')
           .select()
@@ -74,8 +70,8 @@ class ClubService() {
   }
 
   /// Tìm club đầu tiên mà user là member hoặc owner
-  Future<Club?> getFirstClubForUser(String userId) async() {
-    try() {
+  Future<Club?> getFirstClubForUser(String userId) async {
+    try {
       // Thử tìm club mà user sở hữu trước
       Club? ownedClub = await getClubByOwnerId(userId);
       if (ownedClub != null) {
@@ -101,8 +97,8 @@ class ClubService() {
     }
   }
 
-  Future<List<Club>> getAllClubs({int limit = 100}) async() {
-    try() {
+  Future<List<Club>> getAllClubs({int limit = 100}) async {
+    try {
       final response = await _supabase
           .from('clubs')
           .select()
@@ -117,8 +113,8 @@ class ClubService() {
     }
   }
 
-  Future<List<UserProfile>> getClubMembers(String clubId) async() {
-    try() {
+  Future<List<UserProfile>> getClubMembers(String clubId) async {
+    try {
       final response = await _supabase.from('club_members').select('''
             club_id,
             user_id,
@@ -152,8 +148,8 @@ class ClubService() {
     }
   }
 
-  Future<bool> joinClub(String clubId) async() {
-    try() {
+  Future<bool> joinClub(String clubId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -168,8 +164,8 @@ class ClubService() {
     }
   }
 
-  Future<bool> leaveClub(String clubId) async() {
-    try() {
+  Future<bool> leaveClub(String clubId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -185,8 +181,8 @@ class ClubService() {
     }
   }
 
-  Future<bool> isClubMember(String clubId) async() {
-    try() {
+  Future<bool> isClubMember(String clubId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -203,8 +199,8 @@ class ClubService() {
     }
   }
 
-  Future<bool> toggleFavoriteClub(String clubId) async() {
-    try() {
+  Future<bool> toggleFavoriteClub(String clubId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -237,8 +233,8 @@ class ClubService() {
     }
   }
 
-  Future<List<Club>> getUserFavoriteClubs() async() {
-    try() {
+  Future<List<Club>> getUserFavoriteClubs() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -259,8 +255,8 @@ class ClubService() {
     }
   }
 
-  Future<List<Club>> searchClubs(String query) async() {
-    try() {
+  Future<List<Club>> searchClubs(String query) async {
+    try {
       final response = await _supabase
           .from('clubs')
           .select()
@@ -285,8 +281,8 @@ class ClubService() {
     double? pricePerHour,
     double? latitude,
     double? longitude,
-  }) async() {
-    try() {
+  }) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -316,8 +312,8 @@ class ClubService() {
   }
 
   /// Get clubs owned by current user
-  Future<List<Club>> getMyClubs() async() {
-    try() {
+  Future<List<Club>> getMyClubs() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -334,8 +330,8 @@ class ClubService() {
   }
 
   /// Check if current user is owner of a specific club
-  Future<bool> isClubOwner(String clubId) async() {
-    try() {
+  Future<bool> isClubOwner(String clubId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return false;
 
@@ -353,8 +349,8 @@ class ClubService() {
   }
 
   /// Get current user's primary club (first approved club they own)
-  Future<Club?> getCurrentUserClub() async() {
-    try() {
+  Future<Club?> getCurrentUserClub() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) return null;
 
@@ -376,8 +372,8 @@ class ClubService() {
   }
 
   /// Update club logo
-  Future<Club> updateClubLogo(String clubId, String logoUrl) async() {
-    try() {
+  Future<Club> updateClubLogo(String clubId, String logoUrl) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -402,8 +398,8 @@ class ClubService() {
   }
 
   /// Upload club logo to storage and update database
-  Future<Club> uploadAndUpdateClubLogo(String clubId, Uint8List fileBytes, String fileName) async() {
-    try() {
+  Future<Club> uploadAndUpdateClubLogo(String clubId, Uint8List fileBytes, String fileName) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 
@@ -433,8 +429,8 @@ class ClubService() {
   }
 
   /// Remove club logo
-  Future<Club> removeClubLogo(String clubId) async() {
-    try() {
+  Future<Club> removeClubLogo(String clubId) async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not authenticated');
 

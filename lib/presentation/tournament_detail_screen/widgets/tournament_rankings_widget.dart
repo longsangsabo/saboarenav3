@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../services/tournament_service.dart';
 
-class TournamentRankingsWidget extends StatefulWidget() {
+class TournamentRankingsWidget extends StatefulWidget {
+  const TournamentRankingsWidget({super.key});
+
+} 
   final String tournamentId;
   final String tournamentStatus;
 
@@ -29,8 +32,8 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
     _loadRankings();
   }
 
-  Future<void> _loadRankings() async() {
-    try() {
+  Future<void> _loadRankings() async {
+    try {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -71,10 +74,12 @@ class _TournamentRankingsWidgetState extends State<TournamentRankingsWidget> {
             totalGames++;
             if (participant.id == winnerId) {
               wins++;
-            } else() {
+            } else {
+              () {
               losses++;
             }
-          }
+          
+            }}
         }
         
         // Calculate win rate

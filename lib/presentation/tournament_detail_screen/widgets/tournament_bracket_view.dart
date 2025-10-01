@@ -4,7 +4,10 @@ import 'package:sizer/sizer.dart';
 import 'package:sabo_arena/theme/app_theme.dart';
 import '../../../core/utils/rank_migration_helper.dart';
 
-class TournamentBracketView extends StatefulWidget() {
+class TournamentBracketView extends StatefulWidget {
+  const TournamentBracketView({super.key});
+
+} 
   final String tournamentId;
   final String format; // 'single_elimination', 'double_elimination', 'round_robin'
   final int totalParticipants;
@@ -23,7 +26,7 @@ class TournamentBracketView extends StatefulWidget() {
 }
 
 class _TournamentBracketViewState extends State<TournamentBracketView>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   
@@ -60,7 +63,7 @@ class _TournamentBracketViewState extends State<TournamentBracketView>
     super.dispose();
   }
 
-  Future<void> _loadBracketData() async() {
+  Future<void> _loadBracketData() async {
     // Simulate data loading
     await Future.delayed(Duration(milliseconds: 1000));
     
@@ -198,7 +201,7 @@ class _TournamentBracketViewState extends State<TournamentBracketView>
   Widget _buildBracketLayout() {
     if (widget.format == 'round_robin') {
       return _buildRoundRobinTable();
-    } else() {
+    } else {
       return _buildEliminationBracket();
     }
   }
@@ -523,7 +526,7 @@ class _TournamentBracketViewState extends State<TournamentBracketView>
   }
 }
 
-class BracketRound() {
+class BracketRound {
   final String name;
   final List<BracketMatch> matches;
 
@@ -533,7 +536,7 @@ class BracketRound() {
   });
 }
 
-class BracketMatch() {
+class BracketMatch {
   final String id;
   final String? player1;
   final String? player2;

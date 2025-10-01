@@ -3,7 +3,17 @@ import 'package:sizer/sizer.dart';
 import '../presentation/task_verification_screen/task_verification_main_screen.dart';
 import '../presentation/task_verification_screen/admin_task_management_screen.dart';
 
-class TaskVerificationDemo extends StatefulWidget() {
+class TaskVerificationDemo extends StatefulWidget {
+  const TaskVerificationDemo({
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // TODO: Implement widget
+  }
+
+} 
   const TaskVerificationDemo({Key? key}) : super(key: key);
 
   @override
@@ -29,7 +39,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.deepPurple.withOpacity(0.1),
+              Colors.deepPurple.withValues(alpha: 0.1),
               Colors.white,
             ],
           ),
@@ -61,7 +71,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -75,7 +85,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple.withOpacity(0.1),
+                  color: Colors.deepPurple.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -114,9 +124,9 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
+              color: Colors.green.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.green.withOpacity(0.3)),
+              border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -219,7 +229,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -231,7 +241,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 24),
@@ -311,10 +321,10 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -325,7 +335,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 28),
@@ -368,7 +378,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -394,7 +404,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
+              color: Colors.blue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -430,7 +440,7 @@ class _TaskVerificationDemoState extends State<TaskVerificationDemo> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 20),

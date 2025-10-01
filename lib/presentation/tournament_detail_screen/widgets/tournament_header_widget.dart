@@ -4,7 +4,10 @@ import '../../../core/layout/responsive.dart';
 
 import '../../../core/app_export.dart';
 
-class TournamentHeaderWidget extends StatelessWidget() {
+class TournamentHeaderWidget extends StatelessWidget {
+  const TournamentHeaderWidget({super.key});
+
+} 
   final Map<String, dynamic> tournament;
   final VoidCallback? onShareTap;
   final ScrollController scrollController;

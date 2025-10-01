@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class OperatingHoursEditor extends StatefulWidget() {
+class OperatingHoursEditor extends StatefulWidget {
+  const OperatingHoursEditor({super.key});
+
+} 
   final Map<String, Map<String, String>>? initialHours;
   final Function(Map<String, Map<String, String>>) onHoursChanged;
 

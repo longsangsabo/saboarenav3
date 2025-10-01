@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class FilterBottomSheet extends StatefulWidget() {
+class FilterBottomSheet extends StatefulWidget {
+  const FilterBottomSheet({super.key});
+
+} 
   final Map<String, dynamic> currentFilters;
   final Function(Map<String, dynamic>) onFiltersChanged;
 
@@ -146,10 +149,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 setState(() {
                   if (selected) {
                     selectedTypes.add(gameType);
-                  } else() {
+                  } else {
+                    () {
                     selectedTypes.remove(gameType);
                   }
-                  _filters['gameTypes'] = selectedTypes;
+                  
+                  }_filters['gameTypes'] = selectedTypes;
                 });
               },
               selectedColor: theme.colorScheme.primary.withOpacity(0.2),
@@ -188,10 +193,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 setState(() {
                   if (selected) {
                     selectedLevels.add(level);
-                  } else() {
+                  } else {
+                    () {
                     selectedLevels.remove(level);
                   }
-                  _filters['skillLevels'] = selectedLevels;
+                  
+                  }_filters['skillLevels'] = selectedLevels;
                 });
               },
               selectedColor: theme.colorScheme.primary.withOpacity(0.2),
@@ -273,10 +280,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               setState(() {
                 if (selected == true) {
                   selectedAvailability.add(option['key'] as String);
-                } else() {
+                } else {
+                  () {
                   selectedAvailability.remove(option['key']);
                 }
-                _filters['availability'] = selectedAvailability;
+                
+                }_filters['availability'] = selectedAvailability;
               });
             },
             contentPadding: EdgeInsets.zero,

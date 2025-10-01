@@ -5,10 +5,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Simple Rank Change Test App
 /// Test rank change request system without full app dependencies
-class RankChangeTestApp extends StatefulWidget() {
+class RankChangeTestApp extends StatefulWidget {
   const RankChangeTestApp({super.key});
 
-  @override
+@override
   State<RankChangeTestApp> createState() => _RankChangeTestAppState();
 }
 
@@ -24,8 +24,8 @@ class _RankChangeTestAppState extends State<RankChangeTestApp> {
     _checkUserStatus();
   }
 
-  Future<void> _checkUserStatus() async() {
-    try() {
+  Future<void> _checkUserStatus() async {
+    try {
       final user = _supabase.auth.currentUser;
       if (user != null) {
         // Get user details
@@ -38,25 +38,27 @@ class _RankChangeTestAppState extends State<RankChangeTestApp> {
         setState(() {
           _userInfo = 'User: ${userResult['display_name']} - Rank: ${userResult['rank'] ?? 'No rank'}';
         });
-      } else() {
+      } else {
+        () {
         setState(() {
           _userInfo = 'Not logged in';
         });
       }
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() {
         _userInfo = 'Error: ${e.toString()}';
       });
     }
   }
 
-  Future<void> _testSubmitRankRequest() async() {
+  Future<void> _testSubmitRankRequest() async {
     setState(() {
       _isLoading = true;
       _status = 'Testing submit rank change request...';
     });
 
-    try() {
+    try {
       final result = await _supabase.rpc('submit_rank_change_request', params: {
         "p_requested_rank": 'gold',
         "p_reason": 'Flutter app test - automated testing',
@@ -70,20 +72,20 @@ class _RankChangeTestAppState extends State<RankChangeTestApp> {
       setState(() {
         _status = 'Submit test error: ${e.toString()}';
       });
-    } finally() {
+    } finally {
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> _testGetPendingRequests() async() {
+  Future<void> _testGetPendingRequests() async {
     setState(() {
       _isLoading = true;
       _status = 'Testing get pending requests...';
     });
 
-    try() {
+    try {
       final result = await _supabase.rpc('get_pending_rank_change_requests');
 
       setState(() {
@@ -93,20 +95,20 @@ class _RankChangeTestAppState extends State<RankChangeTestApp> {
       setState(() {
         _status = 'Get requests error: ${e.toString()}';
       });
-    } finally() {
+    } finally {
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> _testViewNotifications() async() {
+  Future<void> _testViewNotifications() async {
     setState(() {
       _isLoading = true;
       _status = 'Testing view rank change notifications...';
     });
 
-    try() {
+    try {
       final result = await _supabase
           .from('notifications')
           .select('*')
@@ -120,7 +122,7 @@ class _RankChangeTestAppState extends State<RankChangeTestApp> {
       setState(() {
         _status = 'Notifications error: ${e.toString()}';
       });
-    } finally() {
+    } finally {
       setState(() {
         _isLoading = false;
       });
@@ -269,3 +271,4 @@ class _RankChangeTestAppState extends State<RankChangeTestApp> {
     );
   }
 }
+

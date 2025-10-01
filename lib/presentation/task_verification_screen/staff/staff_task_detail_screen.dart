@@ -4,7 +4,10 @@ import '../shared/task_models.dart';
 import '../shared/task_verification_service.dart';
 import 'live_photo_verification_screen.dart';
 
-class StaffTaskDetailScreen extends StatefulWidget() {
+class StaffTaskDetailScreen extends StatefulWidget {
+  const StaffTaskDetailScreen({super.key});
+
+} 
   final StaffTask task;
 
   const StaffTaskDetailScreen({
@@ -27,9 +30,9 @@ class _StaffTaskDetailScreenState extends State<StaffTaskDetailScreen> {
     _loadVerifications();
   }
 
-  Future<void> _loadVerifications() async() {
+  Future<void> _loadVerifications() async {
     setState(() => _isLoading = true);
-    try() {
+    try {
       final verifications = await _taskService.getTaskVerifications(widget.task.id);
       setState(() {
         _verifications = verifications;
@@ -713,8 +716,8 @@ class _StaffTaskDetailScreenState extends State<StaffTaskDetailScreen> {
     return const SizedBox.shrink();
   }
 
-  Future<void> _startTask() async() {
-    try() {
+  Future<void> _startTask() async {
+    try {
       await _taskService.startTask(widget.task.id);
       _showSuccessSnackBar('Đã bắt đầu nhiệm vụ');
       Navigator.pop(context, true); // Return to main screen to refresh
@@ -723,7 +726,7 @@ class _StaffTaskDetailScreenState extends State<StaffTaskDetailScreen> {
     }
   }
 
-  Future<void> _completeTask() async() {
+  Future<void> _completeTask() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(

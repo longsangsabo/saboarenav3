@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sabo_arena/core/app_export.dart';
 
-class OperatingHoursEditor extends StatefulWidget() {
+class OperatingHoursEditor extends StatefulWidget {
+  const OperatingHoursEditor({super.key});
+
+} 
   final Map<String, String> initialHours;
   final Function(Map<String, String>) onHoursChanged;
 
@@ -16,7 +19,7 @@ class OperatingHoursEditor extends StatefulWidget() {
 }
 
 class _OperatingHoursEditorState extends State<OperatingHoursEditor>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
 
@@ -71,7 +74,7 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor>
           widget.initialHours[day] != 'closed') {
         _hours[day] = widget.initialHours[day]!;
         _isOpen[day] = true;
-      } else() {
+      } else {
         _hours[day] = '09:00-22:00';
         _isOpen[day] = false;
       }
@@ -120,7 +123,7 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor>
         });
         if (_isExpanded) {
           _animationController.forward();
-        } else() {
+        } else {
           _animationController.reverse();
         }
       },
@@ -469,7 +472,7 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor>
     return '22:00";
   }
 
-  void _selectTime(String day, bool isOpenTime) async() {
+  void _selectTime(String day, bool isOpenTime) async {
     final currentTime = isOpenTime ? _getOpenTime(day) : _getCloseTime(day);
     final timeParts = currentTime.split(":');
     
@@ -497,7 +500,7 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor>
       setState(() {
         if (isOpenTime) {
           _hours[day] = '$timeString-${_getCloseTime(day)}';
-        } else() {
+        } else {
           _hours[day] = '${_getOpenTime(day)}-$timeString';
         }
       });
@@ -540,7 +543,7 @@ class _OperatingHoursEditorState extends State<OperatingHoursEditor>
     for (String day in _days) {
       if (_isOpen[day]!) {
         result[day] = _hours[day]!;
-      } else() {
+      } else {
         result[day] = 'closed';
       }
     }

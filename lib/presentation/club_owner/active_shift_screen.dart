@@ -6,7 +6,10 @@ import '../../services/mock_shift_reporting_service.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 
-class ActiveShiftScreen extends StatefulWidget() {
+class ActiveShiftScreen extends StatefulWidget {
+  const ActiveShiftScreen({super.key});
+
+} 
   final ShiftSession shiftSession;
   final VoidCallback onShiftEnded;
 
@@ -21,7 +24,7 @@ class ActiveShiftScreen extends StatefulWidget() {
 }
 
 class _ActiveShiftScreenState extends State<ActiveShiftScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   final ShiftReportingService _shiftService = ShiftReportingService();
   
   late TabController _tabController;
@@ -45,8 +48,8 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
     super.dispose();
   }
 
-  Future<void> _loadShiftData() async() {
-    try() {
+  Future<void> _loadShiftData() async {
+    try {
       setState(() {
         _isLoading = true;
         _error = null;
@@ -72,8 +75,8 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
     }
   }
 
-  Future<void> _endShift() async() {
-    try() {
+  Future<void> _endShift() async {
+    try {
       final result = await showDialog<double>(
         context: context,
         builder: (context) => _EndShiftDialog(),
@@ -747,7 +750,7 @@ class _ActiveShiftScreenState extends State<ActiveShiftScreen>
   }
 }
 
-class _EndShiftDialog extends StatefulWidget() {
+class _EndShiftDialog extends StatefulWidget {
   @override
   State<_EndShiftDialog> createState() => _EndShiftDialogState();
 }

@@ -3,7 +3,10 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class ClubTournamentsWidget extends StatelessWidget() {
+class ClubTournamentsWidget extends StatelessWidget {
+  const ClubTournamentsWidget({super.key});
+
+} 
   final List<Map<String, dynamic>> tournaments;
   final bool isOwner;
   final VoidCallback onCreateTournament;
@@ -271,7 +274,7 @@ class ClubTournamentsWidget extends StatelessWidget() {
   String _formatDate(dynamic date) {
     if (date == null) return 'Chưa xác định';
     
-    try() {
+    try {
       final DateTime dateTime = date is DateTime ? date : DateTime.parse(date.toString());
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
     } catch (e) {
@@ -282,13 +285,13 @@ class ClubTournamentsWidget extends StatelessWidget() {
   String _formatPrize(dynamic prize) {
     if (prize == null) return '';
     
-    try() {
+    try {
       final num prizeValue = num.parse(prize.toString());
       if (prizeValue >= 1000000) {
         return '${(prizeValue / 1000000).toStringAsFixed(1)}M VND';
       } else if (prizeValue >= 1000) {
         return '${(prizeValue / 1000).toStringAsFixed(0)}K VND';
-      } else() {
+      } else {
         return '$prizeValue VND';
       }
     } catch (e) {

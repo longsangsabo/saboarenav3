@@ -7,15 +7,15 @@ import 'widgets/location_picker_simple.dart';
 import 'widgets/image_upload_section_simple.dart';
 import 'package:flutter/foundation.dart';
 
-class ClubProfileEditScreen extends StatefulWidget() {
+class ClubProfileEditScreen extends StatefulWidget {
   const ClubProfileEditScreen({super.key});
 
-  @override
+@override
   _ClubProfileEditScreenState createState() => _ClubProfileEditScreenState();
 }
 
 class _ClubProfileEditScreenState extends State<ClubProfileEditScreen>
-    with TickerProviderStateMixin() {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -633,7 +633,7 @@ class _ClubProfileEditScreenState extends State<ClubProfileEditScreen>
                   setState(() {
                     if (selected) {
                       _selectedFacilities.add(facility);
-                    } else() {
+                    } else {
                       _selectedFacilities.remove(facility);
                     }
                     _hasUnsavedChanges = true;
@@ -691,7 +691,7 @@ class _ClubProfileEditScreenState extends State<ClubProfileEditScreen>
                   setState(() {
                     if (selected) {
                       _tableTypes.add(type);
-                    } else() {
+                    } else {
                       _tableTypes.remove(type);
                     }
                     _hasUnsavedChanges = true;
@@ -945,7 +945,7 @@ class _ClubProfileEditScreenState extends State<ClubProfileEditScreen>
   }
 
   // Event Handlers
-  Future<bool> _onWillPop() async() {
+  Future<bool> _onWillPop() async {
     if (_hasUnsavedChanges) {
       return await _showUnsavedDialog() ?? false;
     }
@@ -972,13 +972,13 @@ class _ClubProfileEditScreenState extends State<ClubProfileEditScreen>
     );
   }
 
-  void _onClosePressed() async() {
+  void _onClosePressed() async {
     if (await _onWillPop()) {
       Navigator.of(context).pop();
     }
   }
 
-  void _onSavePressed() async() {
+  void _onSavePressed() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
         _isLoading = true;
@@ -1040,3 +1040,4 @@ class _ClubProfileEditScreenState extends State<ClubProfileEditScreen>
     debugPrint("Remove photo at index $index");
   }
 }
+

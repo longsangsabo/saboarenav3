@@ -7,7 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-class RankRegistrationScreen extends StatefulWidget() {
+class RankRegistrationScreen extends StatefulWidget {
+  const RankRegistrationScreen({super.key});
+
+} 
   final String clubId;
 
   const RankRegistrationScreen({
@@ -77,10 +80,10 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
     super.dispose();
   }
 
-  Future<void> _loadData() async() {
+  Future<void> _loadData() async {
     setState(() => _isLoading = true);
     
-    try() {
+    try {
       final club = await _clubService.getClubById(widget.clubId);
       
       // Check if user has pending rank request for this club
@@ -109,8 +112,8 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
   }
 
   // Image picker methods for tournament evidence
-  Future<void> _pickImages() async() {
-    try() {
+  Future<void> _pickImages() async {
+    try {
       final List<XFile> pickedFiles = await _imagePicker.pickMultiImage(
         imageQuality: 70,
       );
@@ -351,7 +354,7 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
     return widgets;
   }
 
-  Future<void> _submitRankRequest() async() {
+  Future<void> _submitRankRequest() async {
     if (!_formKey.currentState!.validate()) return;
 
     // Additional validation for evidence method
@@ -367,14 +370,14 @@ class _RankRegistrationScreenState extends State<RankRegistrationScreen> {
 
     setState(() => _isLoading = true);
 
-    try() {
+    try {
       // Upload evidence images first if verification method is evidence and images are selected
       List<String> imageUrls = [];
       if (_verificationMethod == 'evidence' && _evidenceImages.isNotEmpty) {
         setState(() => _isUploadingImages = true);
         
         for (File image in _evidenceImages) {
-          try() {
+          try {
             final String fileName = 'rank_evidence_${DateTime.now().millisecondsSinceEpoch}_${path.basename(image.path)}';
             final result = await _userService.uploadImage(image, fileName);
             if (result['success'] == true && result['url'] != null) {
@@ -412,7 +415,8 @@ ${imageUrls.isNotEmpty ? "\nHình ảnh bằng chứng: ${imageUrls.length} ản
         await _loadData();
         // Show success dialog
         _showSuccessDialog(result);
-      } else() {
+      } else {
+        () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(result['message'] ?? 'Có lỗi xảy ra'),
@@ -420,7 +424,8 @@ ${imageUrls.isNotEmpty ? "\nHình ảnh bằng chứng: ${imageUrls.length} ản
           ),
         );
       }
-    } catch (e) {
+    
+      }} catch (e) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -522,8 +527,8 @@ ${imageUrls.isNotEmpty ? "\nHình ảnh bằng chứng: ${imageUrls.length} ản
     );
   }
 
-  void _showRequestHistory() async() {
-    try() {
+  void _showRequestHistory() async {
+    try {
       final requests = await _userService.getUserRankRequests(); 
       
       showModalBottomSheet(

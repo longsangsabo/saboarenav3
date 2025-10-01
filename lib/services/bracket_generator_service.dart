@@ -2,12 +2,10 @@
 // SEPARATED LOGIC FOR EACH FORMAT TO AVOID CONFUSION
 // Each format has its own dedicated generation method
 
-import '../core/constants/tournament_constants.dart';
-import 'package:flutter/foundation.dart';
 // import 'dart:math' as math; // Currently unused
 
 /// Tournament participant data
-class TournamentParticipant() {
+class TournamentParticipant {
   final String id;
   final String name;
   final String? rank;
@@ -35,7 +33,7 @@ class TournamentParticipant() {
 }
 
 /// Tournament match representation
-class TournamentMatch() {
+class TournamentMatch {
   final String id;
   final String roundId;
   final int roundNumber;
@@ -84,7 +82,7 @@ class TournamentMatch() {
 }
 
 /// Tournament round representation
-class TournamentRound() {
+class TournamentRound {
   final String id;
   final int roundNumber;
   final String name;
@@ -112,7 +110,7 @@ class TournamentRound() {
 }
 
 /// Complete tournament bracket structure
-class TournamentBracket() {
+class TournamentBracket {
   final String tournamentId;
   final String format;
   final List<TournamentParticipant> participants;
@@ -140,7 +138,7 @@ class TournamentBracket() {
 }
 
 /// Main bracket generator service
-class BracketGeneratorService() {
+class BracketGeneratorService {
   static const String _tag = 'BracketGeneratorService';
 
   /// Generate complete tournament bracket based on format
@@ -150,7 +148,7 @@ class BracketGeneratorService() {
     required List<TournamentParticipant> participants,
     String seedingMethod = 'elo_based',
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating bracket for $format with ${participants.length} participants');
 
     // Validate format and participants
@@ -239,7 +237,7 @@ class BracketGeneratorService() {
     List<TournamentParticipant> participants,
     String seedingMethod,
     Map<String, dynamic>? options,
-  ) async() {
+  ) async {
     debugPrint('$_tag: Seeding participants using $seedingMethod method');
 
     switch (seedingMethod) {
@@ -432,7 +430,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating single elimination bracket');
     
     final bracketSize = _nearestPowerOfTwo(participants.length);
@@ -537,7 +535,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating double elimination bracket');
     
     final bracketSize = _nearestPowerOfTwo(participants.length);
@@ -610,7 +608,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating Sabo Double Elimination DE16 bracket');
     
     // Sabo DE16 requires exactly 16 players
@@ -671,7 +669,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating Sabo Double Elimination DE32 bracket');
     
     // Sabo DE32 requires exactly 32 players
@@ -736,7 +734,7 @@ class BracketGeneratorService() {
     List<TournamentParticipant> participants,
     int bracketSize,
     int totalRounds,
-  ) async() {
+  ) async {
     final rounds = <TournamentRound>[];
     
     // Same logic as single elimination but with 'winner' type
@@ -810,7 +808,7 @@ class BracketGeneratorService() {
     int bracketSize,
     int loserRounds,
     int winnerRounds,
-  ) async() {
+  ) async {
     final rounds = <TournamentRound>[];
     
     // Loser bracket has complex structure
@@ -869,7 +867,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating round robin bracket');
     
     final playerCount = participants.length;
@@ -973,7 +971,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating Swiss system bracket');
     
     final playerCount = participants.length;
@@ -1077,7 +1075,7 @@ class BracketGeneratorService() {
     String tournamentId, {
     required List<TournamentParticipant> participants,
     Map<String, dynamic>? options,
-  }) async() {
+  }) async {
     debugPrint('$_tag: Generating parallel groups bracket');
     
     final playerCount = participants.length;
@@ -1961,8 +1959,8 @@ class BracketGeneratorService() {
     required List<TournamentParticipant> participants,
     required List<TournamentMatch> currentMatches,
     required String format,
-  }) async() {
-    try() {
+  }) async {
+    try {
       // Group matches by round
       final roundsMap = <int, List<TournamentMatch>>{};
       for (final match in currentMatches) {
@@ -2041,7 +2039,7 @@ class BracketGeneratorService() {
     required List<TournamentMatch> completedMatches,
     required String format,
     required List<TournamentMatch> allMatches,
-  }) async() {
+  }) async {
     final nextRoundNum = completedRound + 1;
 
     // Extract winners from completed matches

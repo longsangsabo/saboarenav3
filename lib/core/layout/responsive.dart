@@ -9,8 +9,10 @@ bool isTablet(BuildContext context) {
 }
 
 // Viewport percentage helpers (avoid overuse for height scrolling content)
-double vw(BuildContext context, double percent) => MediaQuery.of(context).size.width * (percent / 100);
-double vh(BuildContext context, double percent) => MediaQuery.of(context).size.height * (percent / 100);
+double vw(BuildContext context, double percent) =>
+    MediaQuery.of(context).size.width * (percent / 100);
+double vh(BuildContext context, double percent) =>
+    MediaQuery.of(context).size.height * (percent / 100);
 
 // Scaled text: we keep a base of 16 and scale modestly on larger screens.
 double scaledFont(BuildContext context, double size) {
@@ -21,7 +23,7 @@ double scaledFont(BuildContext context, double size) {
 }
 
 // Spacing tokens (in logical pixels) - keep consistent across app
-class Gaps() {
+class Gaps {
   static const double xs = 4;
   static const double sm = 8;
   static const double md = 12;
